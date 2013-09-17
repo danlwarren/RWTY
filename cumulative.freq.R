@@ -26,11 +26,9 @@ cumulative.freq <- function(x, burnin=0, window, gens.per.tree = 1, ...){
     clade.table[is.na(clade.table)] <- 0
 
     thissd <- apply(clade.table[,2:length(clade.table[1,])], 1, sd)
-
-    thismean <- apply(clade.table[,2:length(clade.table[1,])], 1, mean) 
-
     clade.table$sd <- thissd
 
+    thismean <- apply(clade.table[,2:length(clade.table[1,])], 1, mean) 
     clade.table$mean <- thismean
 
     clade.table <- clade.table[order(clade.table$sd, decreasing=TRUE),]
