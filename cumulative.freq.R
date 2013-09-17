@@ -1,9 +1,11 @@
-cumulative.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1, slide.freq.table = NA ...){ 
+cumulative.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1, slide.freq.table = NA, ...){ 
 
-    if(slide.freq.table == NA){
+    if(is.na(slide.freq.table)){
         slide.freq.table = slide.freq(tree.list, burnin, window.size, gens.per.tree, ...) 
     }
-
+    
+    slide.freq.table <- slide.freq.table[,!(names(slide.freq.table) %in% c("sd", "mean"))]
+    
     cum.freq.table <- apply(slide.freq.table, 1, cummean)
 
     cum.freq.table <- as.data.frame(t(cum.freq.table))
