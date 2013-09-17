@@ -1,4 +1,6 @@
 setwd("~/Dropbox/R Projects/RWTY")
+#setwd("~/Documents/Projects_current/RWTY")
+
 source("RWTY.R")
 
 test1 <- read.nexus(file="PCFW.nex.run1.t")
