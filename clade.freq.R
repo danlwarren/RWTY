@@ -19,6 +19,7 @@ clade.freq <- function (x, start, end, check.labels = TRUE) {
     cladenames[i] <- paste(clades[[i]], collapse=" ")
   }
   clade.df <- data.frame(cladenames, cladefreqs)  
-  output <- list("cladefreqs" = clade.df, "tiplabels" = tiplabels)
-  output
+  clade.df
+  #output <- list("cladefreqs" = clade.df, "tiplabels" = tiplabels)
+  #output
 }
