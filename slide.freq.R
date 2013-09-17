@@ -1,23 +1,60 @@
-slide.freq <- function(x, burnin=0, window, gens.per.tree = 1, ...){ #Specify burnin in TREES, not GENERATIONS
-    start <- burnin
-    n.windows <- as.integer((length(x) - burnin)/window)
-    print("Populating table...")
-    allnames <- clade.freq(x, start = start, end  = length(x))$cladefreqs[,1] #Getting all clades from chain into table
-    clade.table <- as.data.frame(matrix(0, ncol=0, nrow = length(allnames)))
-    clade.table$cladenames <- allnames
-    for(i in 1:n.windows){
-        print(paste("window", i, "of", n.windows))
-        thiswindow.table <- clade.freq(x, start = start + (i-1) * window, end  = start + (i) * window)
-        clade.table <- merge(clade.table, thiswindow.table$cladefreqs, by = "cladenames", all = TRUE)
-        colnames(clade.table)[i+1] <- ((i-1) * window * gens.per.tree) + (burnin * gens.per.tree)
-    } 
-    clade.table[is.na(clade.table)] <- 0
-    thissd <- apply(clade.table[,2:length(clade.table[1,])], 1, sd)
-    thismean <- apply(clade.table[,2:length(clade.table[1,])], 1, mean) 
-    clade.table$sd <- thissd
-    clade.table$mean <- thismean
-    clade.table <- clade.table[order(clade.table$sd, decreasing=TRUE),]
-    output <- list("cladetable" = clade.table, "plot" = plawty(clade.table, ...))
-    class(output) <- "rwty.slide"
-    output
-  }
+slide.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1, ...){ 
+    #Specify burnin in TREES, not GENERATIONS
+
+    start <- burnin + 1
+
+    n.windows <- as.integer((length(tree.list) - start)/window.size)
+
+    # first we slice up our tree list into smaller lists
+    tree.index <- seq_along(tree.list)
+    tree.windows <- split(tree.list, ceiling(tree.index/window.size))[1:n.windows]
+
+    # now we calculate clade frequencies on each of the lists of trees
+    clade.freq.list <- lapply(tree.windows, clade.freq, start=1, end=window.size)
+
+    # and rename the list to the first tree of each window
+    names(clade.freq.list) = prettyNum(seq(1:length(clade.freq.list))*window.size*gens.per.tree, sci=TRUE)    
+
+    # this is the table of frequencies in each window
+    slide.freq.table <- clade.freq.list[[1]]
+    colnames(slide.freq.table)[-1] <- names(clade.freq.list)[1]
+
+    # now add in the rest
+    for(i in 2:length(clade.freq.list)){
+        print(i)
+
+        # add data to slide.freq table
+        slide.freq.table <- merge(slide.freq.table, clade.freq.list[[i]], by="cladenames", all=TRUE)
+        colnames(slide.freq.table)[which(colnames(slide.freq.table)=="cladefreqs")] <- names(clade.freq.list)[i]
+
+    }
+
+    slide.freq.table[is.na(slide.freq.table)] <- 0.0
+    rownames(slide.freq.table) <- slide.freq.table$cladenames
+    slide.freq.table <- slide.freq.table[,-1]
+
+    slide.freq.table    
+
+}
+
+
+    # this is the table of cumulative frequencies
+    cum.freq.table <- clade.freq.list[[1]]
+    colnames(cum.freq.table)[-1] <- names(clade.freq.list)[1]
+
+
+    for(i in 1:length(clade.freq.list)){
+        print(i)
+
+        # add data to slide.freq table
+        slide.freq.table <- merge(slide.freq.table, clade.freq.list[[i]], by="cladenames", all=TRUE)
+        colnames(slide.freq.table)[which(colnames(slide.freq.table)=="cladefreqs")] <- names(clade.freq.list)[i]
+
+    }
+
+
+
+
+    clade.freq.list
+}
+
