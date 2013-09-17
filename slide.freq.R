@@ -38,23 +38,4 @@ slide.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1, ...)
 }
 
 
-    # this is the table of cumulative frequencies
-    cum.freq.table <- clade.freq.list[[1]]
-    colnames(cum.freq.table)[-1] <- names(clade.freq.list)[1]
-
-
-    for(i in 1:length(clade.freq.list)){
-        print(i)
-
-        # add data to slide.freq table
-        slide.freq.table <- merge(slide.freq.table, clade.freq.list[[i]], by="cladenames", all=TRUE)
-        colnames(slide.freq.table)[which(colnames(slide.freq.table)=="cladefreqs")] <- names(clade.freq.list)[i]
-
-    }
-
-
-
-
-    clade.freq.list
-}
-
+   
