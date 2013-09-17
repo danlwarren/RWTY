@@ -2,7 +2,6 @@ slide.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1, ...)
     #Specify burnin in TREES, not GENERATIONS
 
     start <- burnin + 1
-
     n.windows <- as.integer((length(tree.list) - start)/window.size)
 
     # first we slice up our tree list into smaller lists
@@ -21,12 +20,9 @@ slide.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1, ...)
 
     # now add in the rest
     for(i in 2:length(clade.freq.list)){
-        print(i)
-
         # add data to slide.freq table
         slide.freq.table <- merge(slide.freq.table, clade.freq.list[[i]], by="cladenames", all=TRUE)
         colnames(slide.freq.table)[which(colnames(slide.freq.table)=="cladefreqs")] <- names(clade.freq.list)[i]
-
     }
 
     slide.freq.table[is.na(slide.freq.table)] <- 0.0
