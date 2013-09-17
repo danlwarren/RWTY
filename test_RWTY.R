@@ -1,8 +1,6 @@
 setwd("~/Dropbox/R Projects/RWTY")
 source("RWTY.R")
 
-# here's a comment at the top
-
 test1 <- read.nexus(file="PCFW.nex.run1.t")
 test2 <- read.nexus(file="PCFW.nex.run2.t")
 test3 <- read.nexus(file="PCFW.nex.run1.t")
@@ -14,7 +12,3 @@ compntest <- compare.n(x=list(test1, test2, test3, test4), setnames = c("test1",
 # Change in SD along chain for cumulative?
 # Same for n chains?
 # For compare.n, use melt and plotmatrix
-# comment
-# comment from DAN
-# another comment from DAN
-# I wrote this in RStudio
