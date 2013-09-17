@@ -1,6 +1,6 @@
-cumulative.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1, slide.freq.table = NA, ...){ 
+cumulative.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1, slide.freq.table = NULL, ...){ 
 
-    if(is.na(slide.freq.table)){
+    if(is.null(slide.freq.table)){
         slide.freq.table = slide.freq(tree.list, burnin, window.size, gens.per.tree, ...) 
     }
     
