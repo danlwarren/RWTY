@@ -1,40 +1,28 @@
-cumulative.freq <- function(x, burnin=0, window, gens.per.tree = 1, ...){ 
-    #Specify burnin in TREES, not GENERATIONS
+cumulative.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1, slide.freq.table = NA ...){ 
 
-    start <- burnin + 1
-
-    # define number of non-overlapping windows
-    n.windows <- as.integer((length(x) - burnin)/window)
-
-    print("Populating table...")
-
-    #Getting all clades from chain into table
-    allnames <- clade.freq(x, start = start, end  = length(x))$cladefreqs[,1] 
-
-    clade.table <- as.data.frame(matrix(0, ncol=0, nrow = length(allnames)))
-    
-    clade.table$cladenames <- allnames
-
-    for(i in 1:n.windows){
-        print(paste("window", i, "of", n.windows))
-        thiswindow.table <- clade.freq(x, start = start, end  = start + (i) * window)
-        clade.table <- merge(clade.table, thiswindow.table$cladefreqs, by = "cladenames", all = TRUE)
-        colnames(clade.table)[i+1] <- ((i-1) * window * gens.per.tree) + (burnin * gens.per.tree)
+    if(slide.freq.table == NA){
+        slide.freq.table = slide.freq(tree.list, burnin, window.size, gens.per.tree, ...) 
     }
 
-    clade.table[is.na(clade.table)] <- 0
+    cum.freq.table <- apply(slide.freq.table, 1, cummean)
 
-    thissd <- apply(clade.table[,2:length(clade.table[1,])], 1, sd)
-    clade.table$sd <- thissd
+    cum.freq.table <- as.data.frame(t(cum.freq.table))
 
-    thismean <- apply(clade.table[,2:length(clade.table[1,])], 1, mean) 
-    clade.table$mean <- thismean
+    colnames(cum.freq.table) <- colnames(slide.freq.table)
 
-    clade.table <- clade.table[order(clade.table$sd, decreasing=TRUE),]
+    # calculate sd and mean of cumulative frequency and mean
+    thissd <- apply(cum.freq.table, 1, sd)
+    cum.freq.table$sd <- thissd
 
-    output <- list("cladetable" = clade.table, "plot" = plawty(clade.table, ...))
+    thismean <- apply(cum.freq.table, 1, mean) 
+    cum.freq.table$mean <- thismean
 
-    class(output) <- "rwty.cumulative"
+    cum.freq.table <- cum.freq.table[order(cum.freq.table$sd, decreasing=TRUE),]
 
-    output
-  }
+    cum.freq.table
+}
+
+cummean <- function(x){
+    r <- (cumsum(as.numeric(x)))/seq(1:length(x))
+    r
+}
