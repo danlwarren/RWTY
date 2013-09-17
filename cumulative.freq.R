@@ -3,8 +3,6 @@ cumulative.freq <- function(x, burnin=0, window, gens.per.tree = 1, ...){
 
     start <- burnin + 1
 
-    # figure out how many segments to split the list of trees into
-
     # define number of non-overlapping windows
     n.windows <- as.integer((length(x) - burnin)/window)
 
@@ -19,7 +17,7 @@ cumulative.freq <- function(x, burnin=0, window, gens.per.tree = 1, ...){
 
     for(i in 1:n.windows){
         print(paste("window", i, "of", n.windows))
-        thiswindow.table <- clade.freq(x, start = start, end  = burnin + (i) * window)
+        thiswindow.table <- clade.freq(x, start = start, end  = start + (i) * window)
         clade.table <- merge(clade.table, thiswindow.table$cladefreqs, by = "cladenames", all = TRUE)
         colnames(clade.table)[i+1] <- ((i-1) * window * gens.per.tree) + (burnin * gens.per.tree)
     }
