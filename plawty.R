@@ -10,6 +10,7 @@ plawty <- function(x, numclades=10){
   for(i in 1:length(x[,1])){
     y <- cbind(y, as.numeric(x[i,2:length(x[1,])]))
   }
+
   colnames(y) <- c("gen", as.character(x[,1]))
   y <- as.data.frame(y)
   y <- melt(y, id="gen")
@@ -24,4 +25,24 @@ plawty <- function(x, numclades=10){
     axis.title.x = element_text(size=14), axis.title.y = element_text(size=14))
 
   thisplot
+}
+
+plot.cladeprobs <- function(input.table, numclades=nrow(input.table)){ 
+    # clade probability plot over generations
+
+    # TODO should put a check in here to make sure it only accepts slidetest or cumtest objects
+
+    x <- input.table[1:numclades,2:length(input.table) - 2] #Stripping off mean and SD
+    x$clade <- rownames(x)
+    x <- melt(x, id.vars="clade")
+    colnames(x) <- c("Clade", "Generations", "Posterior.Probability")
+    x$Clade <- as.factor(x$Clade)
+
+    thisplot <- ggplot(data=x, aes(x=Generations, y=Posterior.Probability, group=Clade, color=Clade)) + 
+      geom_line() +
+      theme(legend.position="none")
+
+  thisplot
+}
+
 }
