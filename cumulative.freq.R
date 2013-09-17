@@ -5,6 +5,7 @@ cumulative.freq <- function(x, burnin=0, window, gens.per.tree = 1, ...){
 
     # figure out how many segments to split the list of trees into
 
+    # define number of non-overlapping windows
     n.windows <- as.integer((length(x) - burnin)/window)
 
     print("Populating table...")
