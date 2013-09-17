@@ -17,8 +17,10 @@ compntest <- compare.n(x=list(test1, test2, test3, test4), setnames = c("test1",
 
 test.hox1 <- read.nexus(file="./testdata/hoxgenes/Dataset2_con.nex.run1.t")
 test.hox2 <- read.nexus(file="./testdata/hoxgenes/Dataset2_con.nex.run2.t")
-cumtest <- cumulative.freq(test1, burnin=100, window=100, gens.per.tree=1000)
+
 slidetest <- slide.freq(test1, burnin=100, window=100, gens.per.tree=1000)
+
+cumtest <- cumulative.freq(test1, burnin=100, window=100, gens.per.tree=1000, slide.freq.table=slidetest)
 plot.cladeprobs(cumtest, 20)
 plot.cladeprobs(slidetest, 20)
 plot.cladevar(cumtest, 20)
