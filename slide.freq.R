@@ -32,6 +32,15 @@ slide.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1, ...)
     slide.freq.table[is.na(slide.freq.table)] <- 0.0
     rownames(slide.freq.table) <- slide.freq.table$cladenames
     slide.freq.table <- slide.freq.table[,-1]
+    
+    # calculate sd and mean of cumulative frequency and mean
+    thissd <- apply(slide.freq.table, 1, sd)
+    slide.freq.table$sd <- thissd
+    
+    thismean <- apply(slide.freq.table, 1, mean) 
+    slide.freq.table$mean <- thismean
+    
+    slide.freq.table <- slide.freq.table[order(slide.freq.table$sd, decreasing=TRUE),]
 
     slide.freq.table    
 
