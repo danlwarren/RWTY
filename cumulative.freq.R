@@ -1,5 +1,8 @@
 cumulative.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1, slide.freq.table = NULL, ...){ 
 
+    # NB if you pass in a slide.freq.table, all the other stats are ignored.
+    # TODO: need to make this clear to users.
+
     if(is.null(slide.freq.table)){
         slide.freq.table = slide.freq(tree.list, burnin, window.size, gens.per.tree, ...) 
     }
