@@ -1,5 +1,8 @@
-tree.ess <- function(tree.list){
+tree.ess <- function(tree.list, burnin=0){
 	# Estimate ESS for a list of trees at various subsamplings
+
+
+	tree.list <- tree.list[1:(length(tree.list)-burnin)]
 
 	# this ensures that there are at least 100 samples in each analysis, which
 	# 1. Ensures that all sample sizes are equal (since we reduce >100 to 100)
@@ -7,14 +10,17 @@ tree.ess <- function(tree.list){
 	max.thinning <- as.integer(length(tree.list)/100)
 
 	# we analyse up to 20 thinnings spread evenly, less if there are non-unique numbers
-	thinnings <- unique(as.integer(seq(from = 0, to = max.thinning, length.out=20)))
+	thinnings <- unique(as.integer(seq(from = 1, to = max.thinning, length.out=20)))
 
 	# first make a shuffled list of trees and get the baseline estimate
 	tree.list.shuffled <- sample(tree.list, length(tree.list), replace=FALSE)
 
 	print("Estimating uncorrelated tree distance")
 	distances.shuffled <- get.sequential.distances(tree.list.shuffled)
-	mean.uncorrelated <- mean(distances.shuffled)
+	average.uncorrelated <- median(distances.shuffled)
+	# bootmed <- apply(matrix(sample(distances.shuffled,rep=TRUE,10^4*length(distances.shuffled)),nrow=10^4),1,median)
+	# CI.uncorrelated <- quantile(bootmed,c(.025,0.975))[2]
+
 
 	r <- data.frame()
 	for(gapsize in thinnings) {
@@ -24,11 +30,11 @@ tree.ess <- function(tree.list){
 		# the uncorrelated distances are greater than the observed 
 		p <- wilcox.test(distances.shuffled, d, exact=FALSE, alternative="greater")$p.value
 		sig <- as.logical(p<0.05)
-		e <- c(mean(d), gapsize, p, sig)
+		e <- c(median(d), gapsize, p, sig)
 		r <- rbind(r, e)
 	}
 
-	colnames(r) <- c('mean.distance', 'gapsize', 'p.value', 'significant.difference')
+	colnames(r) <- c('average.distance', 'gapsize', 'p.value', 'significant.difference')
 
 	# calculate the approximate ESS
 	if(FALSE %in% r$significant.difference){
@@ -41,7 +47,7 @@ tree.ess <- function(tree.list){
 		approx.ESS <- paste("<", approx.ESS)
 	}
 
-	r <- list('tree.distances'=r, 'uncorrelated.distance'=mean.uncorrelated, "approx.ESS" = approx.ESS)
+	r <- list('tree.distances'=r, 'uncorrelated.distance'=average.uncorrelated, "approx.ESS" = approx.ESS)
 	r
 }
 
@@ -51,7 +57,7 @@ tree.distance <- function(two.trees){
 	# type = 2: branch.score.difference
 	# type = 3: path difference
 	# type = 4: weighted path difference
-	type = 1
+	type = 3
 	d <- treedist(two.trees[[1]], two.trees[[2]])[[type]]	
 	d
 }
