@@ -1,23 +1,33 @@
 tree.ess <- function(tree.list){
-	# Estimate ESS for a list of trees
+	# Estimate ESS for a list of trees at various subsamplings
+	thinnings <- seq(from = 0, to = as.integer(length(tree.list)/21), by=10)
 
-	# 1. make a list of thinned out tree lists
-	# we define a set of thinning regimes
-	# 0 is no sub sampling
-	# max the biggest we can do to still get 10 samples
-	thinnings <- seq(1:as.integer(length(tree.list)/21))
+	# first make a shuffled list of trees and get the baseline estimate
+	tree.list.shuffled <- sample(tree.list, length(tree.list), replace=FALSE)
+	print("Estimating uncorrelated tree distance")
+	distances.shuffled <- get.sequential.distances(tree.list.shuffled)
+	mean.uncorrelated <- mean(distances.shuffled)
+
 	r <- data.frame()
-
-	for(jump in thinnings) {
-		print(paste("Working on gapsize ", jump))
-
-		d <- get.sequential.distances(tree.list, jump)
-
-		r <- rbind(r, d)
+	for(gapsize in thinnings) {
+		print(paste("Working on gapsize ", gapsize))
+		d <- get.sequential.distances(tree.list, gapsize+1)
+		# use a two-sample Kolmogorov–Smirnov test to determine if
+		# the uncorrelated distances are greater than the observed 
+		p <- wilcox.test(distances.shuffled, d, exact=FALSE, alternative="greater")$p.value
+		e <- c(mean(d), gapsize, p)
+		r <- rbind(r, e)
 	}
 
-	r
+	colnames(r) <- c('mean.distance', 'gapsize', 'p.value')
 
+	r$sig <- r$p.value<0.05
+
+	min.gap <- r$gapsize[min(which(r$p.value>0.05))]
+	approx.ESS <- length(tree.list) / min.gap
+
+	r <- list('tree.distances'=r, 'uncorrelated.distance'=mean.uncorrelated, "approx.ESS" = approx.ESS)
+	r
 }
 
 
@@ -27,51 +37,45 @@ tree.distance <- function(two.trees){
 	# type = 3: path difference
 	# type = 4: weighted path difference
 	type = 3
-	print(two.trees)
 	d <- treedist(two.trees[[1]], two.trees[[2]])[[type]]	
 	d
 }
 
 get.sequential.distances <- function(tree.list, thinning=1){
 
-	# return two things: the average distance between sequential pairs
-	# 				   : the average distance between the same number of random pairs
-	#
-
-	# first make a shuffled list of trees
-	tree.list.s <- sample(tree.list, length(tree.list), replace=FALSE)
-
 	# now thin out both lists
 	keep <- seq(from=1, to=length(tree.list), by=thinning)
-	tree.list.original <- tree.list[keep]
-	tree.list.shuffled <- tree.list.s[keep]
-	tree.index <- seq_along(tree.list.original)
+	
+	evens <- seq(from=1, to=length(keep), by=2)
+
+	print(paste("length of evens: ", length(evens)))
+
+	# we only want to look at 100 samples, for efficiency
+	if((length(evens)-1)>100){
+		evens <- sample(evens[1:(length(evens)-1)], 100, replace=FALSE)
+	}
+
+	odds <- evens+1
+
+	evens
+
+	keep <- sort(c(odds, evens))
+
+	print(paste("keep", keep))
+
+	tree.list <- tree.list[keep]
+	tree.index <- seq_along(tree.list)
 
 	# turn the tree list into a list of sequential pairs
 	# e.g. c(a, b, c, d, e) -> c(a,b), c(c,d)
 	tree.pairs <- split(tree.list, ceiling(tree.index/2))
 	tree.pairs <- tree.pairs[1:(length(tree.pairs)-1)] # cut the last pair which is often incomplete
 
-	distances.original <- lapply(tree.pairs, tree.distance)
-	distances.original <- as.numeric(unlist(distances.original))
-
-	tree.pairs.shuffled <- split(tree.list.shuffled, ceiling(tree.index/2))
-	tree.pairs.shuffled <- tree.pairs.shuffled[1:(length(tree.pairs.shuffled)-1)] # cut the last pair which is often incomplete
+	distances <- lapply(tree.pairs, tree.distance)
+	distances <- as.numeric(unlist(distances))
 
 
-	distances.shuffled <- lapply(tree.pairs.shuffled, tree.distance)
-	distances.shuffled <- as.numeric(unlist(distances.shuffled))
-
-	r <- data.frame("original" = mean(distances.original), "shuffled" = mean(distances.shuffled), "thinning" = thinning)
-
-	#r <- data.frame('original'=distances.original, 'shuffled'=distances.shuffled)
-
-	#r <- melt(r, value.name="tree.dist",  id=c())
-	#r$thinning <- thinning
-
-	#r <- melt(r, value.name="tree.dist",  id=c("thinning"))
-	
-	r
+	distances
 }
 
 
