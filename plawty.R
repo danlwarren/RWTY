@@ -76,7 +76,7 @@ plot.tree.ess <- function(tree.ess.result){
 
 
 
-    t <- ggplot(data=tree.ess.result$tree.distances, aes(x=gapsize, y=mean.distance)) + 
+    t <- ggplot(data=tree.ess.result$tree.distances, aes(x=gapsize, y=average.distance)) + 
          geom_point(size = 2, aes(color=significant.difference)) + 
          geom_smooth(size=0, method="loess") +
          geom_hline(yintercept=tree.ess.result$uncorrelated.distance, linetype="dashed") + 
