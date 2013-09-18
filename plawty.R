@@ -72,11 +72,17 @@ abs.diffs <- function(x){
 }
 
 
-plot.tree.ess <- function(tree.ess.table){
+plot.tree.ess <- function(tree.ess.result){
 
 
-  
+
+    t <- ggplot(data=tree.ess.result$tree.distances, aes(x=gapsize, y=mean.distance)) + 
+         geom_point(size = 2, aes(color=sig)) + 
+         geom_smooth(size=0) +
+         geom_hline(yintercept=tree.ess.result$uncorrelated.distance, linetype="dashed") + 
+         theme(legend.position="none")
 
 
+    t
 
 }
