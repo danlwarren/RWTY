@@ -1,2 +1,6 @@
 
 .DS_Store
+
+testdata/lithomoda/lithomodaexons.nex.run1.t
+
+testdata/lithomoda/lithomodaexons.nex.run2.t

@@ -8,6 +8,8 @@ tree.ess <- function(tree.list, burnin=0){
 	# we analyse up to 20 thinnings spread evenly, less if there are non-unique numbers
 	thinnings <- unique(as.integer(seq(from = 1, to = max.thinning, length.out=20)))
 
+	# first we get the reference set of distances. To do this I hack my own function
+	# because I want all possible pairs of trees exactly max(thinnings) apart.
 	print("calculating reference")
 	d.max <- get.sequential.distances(tree.list, max(thinnings))
 	d.max.average <- median(d.max)
