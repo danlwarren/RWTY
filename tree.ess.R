@@ -4,11 +4,10 @@ tree.ess <- function(tree.list, burnin=0){
 
 	tree.list <- tree.list[1:(length(tree.list)-burnin)]
 
-	# this ensures that there are at least 100 samples in each analysis, which
-	# 1. Ensures that all sample sizes are equal (since we reduce >100 to 100)
-	# 2. Means we have a minumum detection of approx ESS<100, which is fine.
-	max.thinning <- as.integer(length(tree.list)/100)
+	print(paste("Analysing list of ", length(tree.list), " trees"))
 
+	# this ensures that we can tell you if your ESS is <100
+	max.thinning <- as.integer(length(tree.list)/100)
 	# we analyse up to 20 thinnings spread evenly, less if there are non-unique numbers
 	thinnings <- unique(as.integer(seq(from = 1, to = max.thinning, length.out=20)))
 
@@ -17,20 +16,29 @@ tree.ess <- function(tree.list, burnin=0){
 
 	print("Estimating uncorrelated tree distance")
 	distances.shuffled <- get.sequential.distances(tree.list.shuffled)
-	average.uncorrelated <- mean(distances.shuffled)
-	# bootmed <- apply(matrix(sample(distances.shuffled,rep=TRUE,10^4*length(distances.shuffled)),nrow=10^4),1,median)
-	# CI.uncorrelated <- quantile(bootmed,c(.025,0.975))[2]
+	average.uncorrelated <- median(distances.shuffled)
 
+	# we use this to do a 1-tailed significance test of whether an observed value is significantly less
+	# than the uncorrelated distance. Hence the 5% cutoff
+	boot.uncorrelated <- apply(matrix(sample(distances.shuffled,rep=TRUE,10^4*length(distances.shuffled)),nrow=10^4),1,median)
+	lowerCI.uncorrelated <- quantile(boot.uncorrelated,c(0.05,0.95))[1]
+	bootmed <- sort(boot.uncorrelated)
 
 	r <- data.frame()
 	for(gapsize in thinnings) {
 		print(paste("Working on gapsize ", gapsize))
 		d <- get.sequential.distances(tree.list, gapsize)
-		# use a two-sample Kolmogorov–Smirnov test to determine if
-		# the uncorrelated distances are greater than the observed 
+		d.average <- median(d)
+
+		# calculate significance as position in a ranked list of bootstrapped averages
+		#p <- p.from.ranked.list(boot.uncorrelated, d.average, 'smaller')
+
 		p <- wilcox.test(distances.shuffled, d, exact=FALSE, alternative="greater")$p.value
+		
+
 		sig <- as.logical(p<0.05)
-		e <- c(mean(d), gapsize, p, sig)
+
+		e <- c(d.average, gapsize, p, sig)
 		r <- rbind(r, e)
 	}
 
@@ -47,7 +55,15 @@ tree.ess <- function(tree.list, burnin=0){
 		approx.ESS <- paste("<", approx.ESS)
 	}
 
-	r <- list('tree.distances'=r, 'uncorrelated.distance'=average.uncorrelated, "approx.ESS" = approx.ESS)
+	p <- plot.tree.ess(r, average.uncorrelated)
+
+	r <- list('tree.distances'=r, 
+			  'uncorrelated.distance'=average.uncorrelated, 
+			  'lowerCI.uncorrelated.distance'=lowerCI.uncorrelated,
+			  'approx.ESS' = approx.ESS,
+			  'plot'=p
+			  )
+
 	r
 }
 
@@ -66,9 +82,9 @@ get.sequential.distances <- function(tree.list, thinning = 1){
 
 	if(thinning==0){ thinning = 1 }
 
-
 	# now thin out the input list
 	keep <- seq(from=1, to=length(tree.list), by=thinning)
+
 
 	# first we cut off any trailing trees from the input list
 	if(length(keep)%%2 != 0){
@@ -76,12 +92,14 @@ get.sequential.distances <- function(tree.list, thinning = 1){
 	}
 
 	# we only want to look at 100 samples, for efficiency
-	odds <- seq(from=1, to=length(keep), by=2)
+	odds <- seq(from=1, to=length(keep), by=2) #indices of the tree1 trees in keep
 	if((length(odds))>100){
 		odds <- sample(odds[1:(length(odds))], 100, replace=FALSE)
-		evens <- odds + 1
-		keep <- sort(c(odds, evens))
+		evens <- odds + 1 # indices of the tree2 trees in keep
+		indices <- sort(c(odds, evens))
+		keep <- keep[indices]
 	}
+
 
 	tree.list <- tree.list[keep]
 	tree.index <- seq_along(tree.list)
@@ -93,6 +111,33 @@ get.sequential.distances <- function(tree.list, thinning = 1){
 	distances <- lapply(tree.pairs, tree.distance)
 	distances <- as.numeric(unlist(distances))
 	distances
+}
+
+
+p.from.ranked.list <- function(null.dist, obs, type='smaller'){
+
+	null.dist <- sort(null.dist)
+
+	if(obs %in% null.dist){
+		pos <- mean(which(null.dist==obs))
+	} 
+	else if(obs<min(null.dist)){
+		pos <- 1
+	}
+	else if(obs>max(null.dist)){
+		pos <- length(null.dist)+1
+	}
+	else{
+		pos <- min(which(null.dist>obs))
+
+	}
+
+	if(type=='greater'){
+		pos <- length(null.dist)+1 - pos
+	}
+
+	p <- pos/(length(null.dist)+1)
+	p
 }
 
 
