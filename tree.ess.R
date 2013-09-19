@@ -17,7 +17,7 @@ tree.ess <- function(tree.list, burnin=0){
 
 	print("Estimating uncorrelated tree distance")
 	distances.shuffled <- get.sequential.distances(tree.list.shuffled)
-	average.uncorrelated <- median(distances.shuffled)
+	average.uncorrelated <- mean(distances.shuffled)
 	# bootmed <- apply(matrix(sample(distances.shuffled,rep=TRUE,10^4*length(distances.shuffled)),nrow=10^4),1,median)
 	# CI.uncorrelated <- quantile(bootmed,c(.025,0.975))[2]
 
@@ -30,7 +30,7 @@ tree.ess <- function(tree.list, burnin=0){
 		# the uncorrelated distances are greater than the observed 
 		p <- wilcox.test(distances.shuffled, d, exact=FALSE, alternative="greater")$p.value
 		sig <- as.logical(p<0.05)
-		e <- c(median(d), gapsize, p, sig)
+		e <- c(mean(d), gapsize, p, sig)
 		r <- rbind(r, e)
 	}
 
