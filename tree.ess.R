@@ -1,28 +1,16 @@
 tree.ess <- function(tree.list, burnin=0){
 	# Estimate ESS for a list of trees at various subsamplings
-
-
 	tree.list <- tree.list[1:(length(tree.list)-burnin)]
-
-	print(paste("Analysing list of ", length(tree.list), " trees"))
 
 	# this ensures that we can tell you if your ESS is <100
 	max.thinning <- as.integer(length(tree.list)/100)
+
 	# we analyse up to 20 thinnings spread evenly, less if there are non-unique numbers
 	thinnings <- unique(as.integer(seq(from = 1, to = max.thinning, length.out=20)))
 
-	# first make a shuffled list of trees and get the baseline estimate
-	tree.list.shuffled <- sample(tree.list, length(tree.list), replace=FALSE)
-
-	print("Estimating uncorrelated tree distance")
-	distances.shuffled <- get.sequential.distances(tree.list.shuffled)
-	average.uncorrelated <- median(distances.shuffled)
-
-	# we use this to do a 1-tailed significance test of whether an observed value is significantly less
-	# than the uncorrelated distance. Hence the 5% cutoff
-	boot.uncorrelated <- apply(matrix(sample(distances.shuffled,rep=TRUE,10^4*length(distances.shuffled)),nrow=10^4),1,median)
-	lowerCI.uncorrelated <- quantile(boot.uncorrelated,c(0.05,0.95))[1]
-	bootmed <- sort(boot.uncorrelated)
+	print("calculating reference")
+	d.max <- get.sequential.distances(tree.list, max(thinnings))
+	d.max.average <- median(d.max)
 
 	r <- data.frame()
 	for(gapsize in thinnings) {
@@ -30,12 +18,7 @@ tree.ess <- function(tree.list, burnin=0){
 		d <- get.sequential.distances(tree.list, gapsize)
 		d.average <- median(d)
 
-		# calculate significance as position in a ranked list of bootstrapped averages
-		#p <- p.from.ranked.list(boot.uncorrelated, d.average, 'smaller')
-
-		p <- wilcox.test(distances.shuffled, d, exact=FALSE, alternative="greater")$p.value
-		
-
+		p <- wilcox.test(d.max, d, exact=FALSE, alternative="greater")$p.value
 		sig <- as.logical(p<0.05)
 
 		e <- c(d.average, gapsize, p, sig)
@@ -55,11 +38,9 @@ tree.ess <- function(tree.list, burnin=0){
 		approx.ESS <- paste("<", approx.ESS)
 	}
 
-	p <- plot.tree.ess(r, average.uncorrelated)
+	p <- plot.tree.ess(r)
 
 	r <- list('tree.distances'=r, 
-			  'uncorrelated.distance'=average.uncorrelated, 
-			  'lowerCI.uncorrelated.distance'=lowerCI.uncorrelated,
 			  'approx.ESS' = approx.ESS,
 			  'plot'=p
 			  )
