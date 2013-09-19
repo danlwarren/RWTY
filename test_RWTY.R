@@ -17,12 +17,17 @@ compntest <- compare.n(x=list(test1, test2, test3, test4), setnames = c("test1",
 
 test.hox1 <- read.nexus(file="./testdata/hoxgenes/Dataset2_con.nex.run1.t")
 test.hox2 <- read.nexus(file="./testdata/hoxgenes/Dataset2_con.nex.run2.t")
-
 slidetest <- slide.freq(test.hox1, burnin=100, window=100, gens.per.tree=1000)
-
 cumtest <- cumulative.freq(test.hox1, burnin=100, window=100, gens.per.tree=1000, slide.freq.table=slidetest)
 
 plot.cladeprobs(cumtest, 20)
 plot.cladeprobs(slidetest, 20)
 plot.cladevar(cumtest, 20)
 plot.cladevar(slidetest, 20)
+
+
+
+test.bigdata <- read.nexus(file="./testdata/lithomoda/lithomodaexons.nex.run1.t")
+tree.ess <- tree.ess(test.bigdata[20000:30000], burnin=0)
+
+
