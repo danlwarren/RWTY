@@ -1,4 +1,4 @@
-setwd("~/Dropbox/R Projects/RWTY")
+setwd("~/Documents/GitHub/RWTY")
 #setwd("~/Documents/Projects_current/RWTY")
 
 source("RWTY.R")
@@ -17,7 +17,9 @@ compntest <- compare.n(x=list(test1, test2, test3, test4), setnames = c("test1",
 
 test.hox1 <- read.nexus(file="./testdata/hoxgenes/Dataset2_con.nex.run1.t")
 test.hox2 <- read.nexus(file="./testdata/hoxgenes/Dataset2_con.nex.run2.t")
+
 slidetest <- slide.freq(test.hox1, burnin=100, window=100, gens.per.tree=1000)
+
 cumtest <- cumulative.freq(test.hox1, burnin=100, window=100, gens.per.tree=1000, slide.freq.table=slidetest)
 
 plot.cladeprobs(cumtest, 20)
@@ -25,9 +27,7 @@ plot.cladeprobs(slidetest, 20)
 plot.cladevar(cumtest, 20)
 plot.cladevar(slidetest, 20)
 
+test.distmatrix1 <- tree.dist.matrix(c(test1[900:1000], test2[900:1000]), 
+    treenames=c(paste("Run.1", seq(1:101), sep="."), paste("Run.2", seq(1:101), sep=".")))
 
-
-test.bigdata <- read.nexus(file="./testdata/lithomoda/lithomodaexons.nex.run1.t")
-tree.ess <- tree.ess(test.bigdata[20000:30000], burnin=0)
-
-
+mds.treespace <- cmdscale(test.distmatrix1 ,eig=TRUE, k=2)
