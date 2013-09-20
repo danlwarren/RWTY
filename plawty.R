@@ -84,3 +84,9 @@ plot.tree.ess <- function(tree.ess.table){
     t
 
 }
+
+plot.mds.treespace <- function(){
+    # This fundtion will take an mds.treespace object and produce plots 
+    # of chains in treespace
+    
+}
