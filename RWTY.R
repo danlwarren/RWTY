@@ -9,5 +9,6 @@ source("plawty.R")
 source("compare.two.R")
 source("compare.n.R")
 source("tree.ess.R")
+source("tree.dist.matrix.R")
 
 # test
