@@ -19,3 +19,22 @@ mds.treespace <- function(trees, filenames=NA, burnin=0, step=1){
     trees
     
 }
+
+
+mds.single <- function(trees, burnin=0, dim=2){
+    # do MDS on a single list of trees
+
+    d <- tree.dist.matrix(trees[burnin+1:length(trees)])
+
+    fit <- isoMDS(d, k=dim)
+
+    points <- as.data.frame(fit$points)
+    names(points) <- c("x", "y")
+    points$mcmc.sample <- seq(from=1, to=nrow(points))
+    fit$points <- points
+
+    p <- plot.mds.treespace(fit$points, dim)
+
+    r <- list("mds" = fit, "plot" = p)
+
+}
