@@ -85,8 +85,32 @@ plot.tree.ess <- function(tree.ess.table){
 
 }
 
-plot.mds.treespace <- function(){
+plot.mds.treespace <- function(points, dim){
     # This fundtion will take an mds.treespace object and produce plots 
     # of chains in treespace
     
+    p <- ggplot(data=points, aes(x=x, y=y, colour=mcmc.sample)) + geom_point(alpha=0.02, size=20) + geom_point()  + scale_colour_gradient(low="red", high='blue')
+
+    p
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
