@@ -14,7 +14,9 @@ tree.dist.matrix <- function(x, treenames=names(x)){
         for(j in i:length(x)){
             if(j <= length(x)){
 
-                output[j,i] <- output[i,j] <- output[i,j] <- RF.dist(x[[i]], x[[j]])
+                rfd <- RF.dist(x[[i]], x[[j]])
+                if(rfd==0){rfd=0.0000001} # MDS can't deal with zeros, but it can deal with v. small values
+                output[j,i] <- output[i,j] <- rfd
             }
         }
     }
