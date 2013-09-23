@@ -89,14 +89,20 @@ plot.mds.treespace <- function(points, dim){
     # This fundtion will take an mds.treespace object and produce plots 
     # of chains in treespace
     
-    p <- ggplot(data=points, aes(x=x, y=y, colour=mcmc.sample)) + geom_point(alpha=0.02, size=20) + geom_point()  + scale_colour_gradient(low="red", high='blue')
-
+    p <- ggplot(data=points, aes(x=x,y=y,fill=LnL)) + 
+          geom_path(alpha=0.2, linetype='dashed') + 
+          geom_point(shape=21, size=7, alpha=0.85, colour='white') + 
+          scale_fill_gradient() +
+          geom_point(data=points, aes(x=x, y=y, colour=mcmc.sample), size=3)  + 
+          scale_colour_gradient(low='red', high='white')
     p
 
 }
 
 
 
+
+    p <- ggplot(data=points) + geom_point(aes(x=x, y=y, colour=mcmc.sample))  + scale_colour_gradient()
 
 
 
