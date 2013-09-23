@@ -11,8 +11,10 @@ tree.ess <- function(tree.list, burnin=0){
 	# first we get the reference set of distances. To do this I hack my own function
 	# because I want all possible pairs of trees exactly max(thinnings) apart.
 	print("calculating reference")
-	d.max <- get.sequential.distances(tree.list, max(thinnings))
-	d.max.average <- median(d.max)
+	tree.list.shuffled <- sample(tree.list, length(tree.list), replace=FALSE)
+	d.reference <- get.sequential.distances(tree.list.shuffled)
+	#d.reference <- get.sequential.distances(tree.list, max(thinnings))
+	d.reference.average <- median(d.reference)
 
 	r <- data.frame()
 	for(gapsize in thinnings) {
@@ -20,14 +22,15 @@ tree.ess <- function(tree.list, burnin=0){
 		d <- get.sequential.distances(tree.list, gapsize)
 		d.average <- median(d)
 
-		p <- wilcox.test(d.max, d, exact=FALSE, alternative="greater")$p.value
-		sig <- as.logical(p<0.05)
+		p <- wilcox.test(d.reference, d, exact=FALSE, alternative="greater")$p.value
+		sig <- p<0.05
 
 		e <- c(d.average, gapsize, p, sig)
 		r <- rbind(r, e)
 	}
 
 	colnames(r) <- c('average.distance', 'gapsize', 'p.value', 'significant.difference')
+	r$significant.difference <- as.logical(r$significant.difference)
 
 	# calculate the approximate ESS
 	if(FALSE %in% r$significant.difference){
@@ -40,10 +43,11 @@ tree.ess <- function(tree.list, burnin=0){
 		approx.ESS <- paste("<", approx.ESS)
 	}
 
-	p <- plot.tree.ess(r)
+	p <- plot.tree.ess(r, d.reference.average)
 
 	r <- list('tree.distances'=r, 
 			  'approx.ESS' = approx.ESS,
+			  'reference.distance' = d.reference.average,
 			  'plot'=p
 			  )
 
@@ -56,7 +60,7 @@ tree.distance <- function(two.trees){
 	# type = 2: branch.score.difference
 	# type = 3: path difference
 	# type = 4: weighted path difference
-	type = 3
+	type = 1
 	d <- treedist(two.trees[[1]], two.trees[[2]])[[type]]	
 	d
 }
