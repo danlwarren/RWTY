@@ -31,3 +31,9 @@ test.distmatrix1 <- tree.dist.matrix(c(test1[900:1000], test2[900:1000]),
     treenames=c(paste("Run.1", seq(1:101), sep="."), paste("Run.2", seq(1:101), sep=".")))
 
 mds.treespace <- cmdscale(test.distmatrix1 ,eig=TRUE, k=2)
+
+
+
+
+
+test9.t <- read.nexus("~/Documents/Projects_Current/RWTY/testdata/t_and_p/AllDataProt.nex.run1.t")
