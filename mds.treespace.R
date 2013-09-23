@@ -21,20 +21,25 @@ mds.treespace <- function(trees, filenames=NA, burnin=0, step=1){
 }
 
 
-mds.single <- function(trees, burnin=0, dim=2){
+mds.single <- function(trees, burnin=0, dim=2, p.file = NULL){
     # do MDS on a single list of trees
+    # p.file is a list of likelihoods...
 
     d <- tree.dist.matrix(trees[burnin+1:length(trees)])
 
-    fit <- isoMDS(d, k=dim)
+    mds <- isoMDS(d, k=dim)
 
-    points <- as.data.frame(fit$points)
+    points <- as.data.frame(mds$points)
     names(points) <- c("x", "y")
     points$mcmc.sample <- seq(from=1, to=nrow(points))
-    fit$points <- points
+    mds$points <- points
 
-    p <- plot.mds.treespace(fit$points, dim)
+    if(!is.null(p.file)){
+        mds$points <- cbind(mds$points, p.file)
+    }
 
-    r <- list("mds" = fit, "plot" = p)
+    p <- plot.mds.treespace(mds$points, dim)
+
+    r <- list("mds" = mds, "plot" = p)
 
 }
