@@ -1,4 +1,4 @@
-tree.dist.matrix <- function(x, treenames){
+tree.dist.matrix <- function(x, treenames=names(x)){
     
     if(length(x) != length(treenames)){
         stop("Names and tree list must be the same length")
@@ -10,9 +10,10 @@ tree.dist.matrix <- function(x, treenames){
     #Stepping through trees in x to create an upper diagonal matrix of
     #tree distances
     for(i in 1:length(x)){
+        print(paste("Tree", i, "of", length(x)))
         for(j in i:length(x)){
             if(j <= length(x)){
-                print(paste("Comparing", i, "to", j))
+
                 output[j,i] <- output[i,j] <- output[i,j] <- RF.dist(x[[i]], x[[j]])
             }
         }
