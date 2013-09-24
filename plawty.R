@@ -102,10 +102,6 @@ plot.mds.treespace <- function(points, dim){
 
 
 
-    p <- ggplot(data=points) + geom_point(aes(x=x, y=y, colour=mcmc.sample))  + scale_colour_gradient()
-
-
-
 
 
 
