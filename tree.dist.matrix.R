@@ -29,16 +29,17 @@ tree.dist.matrix <- function(x, treenames=names(x)){
 }
 
 
-tree.dist.matrix.liam <- function(x){
-    multiRF<-function(trees){
+tree.dist.matrix.liam <- function(trees){
     if(class(trees)!="multiPhylo")
         stop("trees should be an object of class \"multiPhylo\"")
     N<-length(trees)
     RF<-matrix(0,N,N)
-    if(any(sapply(unclass(trees),is.rooted))){
-        cat("Some trees are rooted. Unrooting all trees.\n")
-        trees<-lapply(unclass(trees),unroot)
-    }
+    
+    #if(any(sapply(unclass(trees),is.rooted))){
+    #    cat("Some trees are rooted. Unrooting all trees.\n")
+    #    trees<-lapply(unclass(trees),unroot)
+    #}
+    
     foo<-function(pp) lapply(pp,function(x,pp)
     sort(attr(pp,"labels")[x]),pp=pp)
     xx<-lapply(unclass(trees),function(x) foo(prop.part(x)))
