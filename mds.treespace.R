@@ -41,7 +41,7 @@ treespace.single <- function(trees, burnin=0, p.file = NULL){
         mds$points <- cbind(mds$points, p.file$LnL)
     }
 
-    p <- plot.mds.treespace(mds$points, dimensions)
+    p <- plot.treespace(mds$points)
 
     r <- list("mds" = mds, "plot" = p)
 
