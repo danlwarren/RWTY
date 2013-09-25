@@ -74,10 +74,11 @@ abs.diffs <- function(x){
 }
 
 
-plot.tree.ess <- function(tree.ess.table){
+plot.tree.ess <- function(tree.ess.table, reference.average){
 
 
     t <- ggplot(data=tree.ess.table, aes(x=gapsize, y=average.distance)) + 
+         geom_hline(yintercept=reference.average, linetype='dashed') +
          geom_point(size = 2, aes(color=significant.difference)) + 
          geom_smooth(size=0, method="loess") +
          theme(legend.position="none")

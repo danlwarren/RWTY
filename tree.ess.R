@@ -1,6 +1,6 @@
 tree.ess <- function(tree.list, burnin=0){
 	# Estimate ESS for a list of trees at various subsamplings
-	tree.list <- tree.list[burnin + 1:(length(tree.list))]
+	tree.list <- tree.list[(burnin + 1):(length(tree.list))]
 
 	# this ensures that we can tell you if your ESS is <100
 	max.thinning <- as.integer(length(tree.list)/100)
@@ -8,17 +8,15 @@ tree.ess <- function(tree.list, burnin=0){
 	# we analyse up to 20 thinnings spread evenly, less if there are non-unique numbers
 	thinnings <- unique(as.integer(seq(from = 1, to = max.thinning, length.out=20)))
 
-	# first we get the reference set of distances. To do this I hack my own function
-	# because I want all possible pairs of trees exactly max(thinnings) apart.
+	# first we get the reference set of distances from a shuffled list
 	print("calculating reference")
 	tree.list.shuffled <- sample(tree.list, length(tree.list), replace=FALSE)
-	d.reference <- get.sequential.distances(tree.list.shuffled)
-	#d.reference <- get.sequential.distances(tree.list, max(thinnings))
+	d.reference <- get.sequential.distances(tree.list.shuffled, 1)
 	d.reference.average <- median(d.reference)
 
 	r <- data.frame()
 	for(gapsize in thinnings) {
-		print(paste("Working on gapsize ", gapsize))
+		print(paste("Working on thinning ", gapsize))
 		d <- get.sequential.distances(tree.list, gapsize)
 		d.average <- median(d)
 
@@ -67,16 +65,11 @@ tree.distance <- function(two.trees){
 
 get.sequential.distances <- function(tree.list, thinning = 1){
 
-	if(thinning==0){ thinning = 1 }
-
 	# now thin out the input list
 	keep <- seq(from=1, to=length(tree.list), by=thinning)
 
-
 	# first we cut off any trailing trees from the input list
-	if(length(keep)%%2 != 0){
-		keep <- keep[1:(length(keep)-1)]
-	}
+	if(length(keep)%%2 != 0) keep <- keep[1:(length(keep)-1)]
 
 	# we only want to look at 100 samples, for efficiency
 	odds <- seq(from=1, to=length(keep), by=2) #indices of the tree1 trees in keep
@@ -86,7 +79,6 @@ get.sequential.distances <- function(tree.list, thinning = 1){
 		indices <- sort(c(odds, evens))
 		keep <- keep[indices]
 	}
-
 
 	tree.list <- tree.list[keep]
 	tree.index <- seq_along(tree.list)
