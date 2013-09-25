@@ -21,7 +21,7 @@ mds.treespace <- function(trees, filenames=NA, burnin=0, step=1){
 }
 
 
-mds.single <- function(trees, burnin=0, dim=2, p.file = NULL){
+treespace.single <- function(trees, burnin=0, dim=2, p.file = NULL){
     # do MDS on a single list of trees
     # p.file is a list of likelihoods...
 
