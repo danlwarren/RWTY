@@ -10,7 +10,9 @@ tree.dist.matrix <- function(trees, treenames=names(trees)){
         
     for(i in 1:(N-1)){
         print(paste("Tree", i, "of", N))        
-        for(j in (i+1):N){ 
+        for(j in (i+1):N){
+            RFd <- RF.dist(trees[[i]],trees[[j]])
+            if(RFd==0) RFd = 0.000000001
             RF[i,j]<-RF[j,i]<-RF.dist(trees[[i]],trees[[j]])
         }
     }
