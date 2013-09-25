@@ -1,4 +1,4 @@
-tree.ess <- function(tree.list, burnin=0){
+tree.ess <- function(tree.list, burnin=0, N=20){
 	# Estimate ESS for a list of trees at various subsamplings
 	tree.list <- tree.list[(burnin + 1):(length(tree.list))]
 
@@ -6,7 +6,7 @@ tree.ess <- function(tree.list, burnin=0){
 	max.thinning <- as.integer(length(tree.list)/100)
 
 	# we analyse up to 20 thinnings spread evenly, less if there are non-unique numbers
-	thinnings <- unique(as.integer(seq(from = 1, to = max.thinning, length.out=20)))
+	thinnings <- unique(as.integer(seq(from = 1, to = max.thinning, length.out=N)))
 
 	# first we get the reference set of distances from a shuffled list
 	print("calculating reference")
