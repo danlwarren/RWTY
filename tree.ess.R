@@ -1,6 +1,6 @@
 tree.ess <- function(tree.list, burnin=0){
 	# Estimate ESS for a list of trees at various subsamplings
-	tree.list <- tree.list[1:(length(tree.list)-burnin)]
+	tree.list <- tree.list[burnin + 1:(length(tree.list))]
 
 	# this ensures that we can tell you if your ESS is <100
 	max.thinning <- as.integer(length(tree.list)/100)
