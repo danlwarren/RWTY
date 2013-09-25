@@ -1,12 +1,28 @@
 slide.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1, ...){ 
     #Specify burnin in TREES, not GENERATIONS
-    tree.list <- tree.list[burnin+1:length(tree.list)]
+    print(paste("input list length:", length(tree.list)))
+    print(paste("burnin:", burnin))
+
+
+    tree.list <- tree.list[(burnin+1):length(tree.list)]
+
     N <- length(tree.list)
+
+    print(paste("post-burnin list length:", length(tree.list)))
+
     n.windows <- as.integer(N/window.size)
+
+    print(paste("number of windows:", n.windows))
+
+    print("a")
+
 
     # first we slice up our tree list into smaller lists
     tree.index <- seq_along(tree.list)
     tree.windows <- split(tree.list, ceiling(tree.index/window.size))[1:n.windows]
+
+    print("b")
+
 
     # now we calculate clade frequencies on each of the lists of trees
     clade.freq.list <- lapply(tree.windows, clade.freq, start=1, end=window.size)
