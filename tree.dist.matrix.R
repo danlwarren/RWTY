@@ -1,31 +1,25 @@
-tree.dist.matrix <- function(x, treenames=names(x)){
-    
-    if(length(x) != length(treenames)){
+tree.dist.matrix <- function(trees, treenames=names(trees)){
+    N <- length(trees)
+
+    if(N != length(treenames)){
         stop("Names and tree list must be the same length")
     }
     
     #Create an empty matrix for results
-    output <- matrix(ncol=length(x), nrow=length(x))
-    
-    #Stepping through trees in x to create an upper diagonal matrix of
-    #tree distances
-    for(i in 1:length(x)){
-        print(paste("Tree", i, "of", length(x)))
-        for(j in i:length(x)){
-            if(j <= length(x)){
-
-                rfd <- RF.dist(x[[i]], x[[j]])
-                if(rfd==0){rfd=0.0000001} # MDS can't deal with zeros, but it can deal with v. small values
-                output[j,i] <- output[i,j] <- rfd
-            }
+    RF <- matrix(0, N, N)
+        
+    for(i in 1:(N-1)){
+        print(paste("Tree", i, "of", N))        
+        for(j in (i+1):N){ 
+            RF[i,j]<-RF[j,i]<-RF.dist(trees[[i]],trees[[j]])
         }
     }
-    
+
     #Row and column names
-    rownames(output) <- treenames
-    colnames(output) <- treenames
+    rownames(RF) <- treenames
+    colnames(RF) <- treenames
     
-    output
+    RF
 }
 
 
