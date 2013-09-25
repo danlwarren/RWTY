@@ -21,13 +21,16 @@ mds.treespace <- function(trees, filenames=NA, burnin=0, step=1){
 }
 
 
-treespace.single <- function(trees, burnin=0, dim=2, p.file = NULL){
+treespace.single <- function(trees, burnin=0, p.file = NULL){
     # do MDS on a single list of trees
     # p.file is a list of likelihoods...
 
+    # for now this is hard-coded, who wants a 3D plot anyway, right?
+    dimensions=2
+
     d <- tree.dist.matrix(trees[burnin+1:length(trees)])
 
-    mds <- isoMDS(d, k=dim)
+    mds <- isoMDS(d, k=dimensions)
 
     points <- as.data.frame(mds$points)
     names(points) <- c("x", "y")
@@ -35,11 +38,16 @@ treespace.single <- function(trees, burnin=0, dim=2, p.file = NULL){
     mds$points <- points
 
     if(!is.null(p.file)){
-        mds$points <- cbind(mds$points, p.file)
+        mds$points <- cbind(mds$points, p.file$LnL)
     }
 
-    p <- plot.mds.treespace(mds$points, dim)
+    p <- plot.mds.treespace(mds$points, dimensions)
 
     r <- list("mds" = mds, "plot" = p)
 
 }
+
+
+
+
+
