@@ -33,7 +33,15 @@ test.distmatrix1 <- tree.dist.matrix(c(test1[900:1000], test2[900:1000]),
 mds.treespace <- cmdscale(test.distmatrix1 ,eig=TRUE, k=2)
 
 
-
-
-
+# plot treespace
 test9.t <- read.nexus("~/Documents/Projects_Current/RWTY/testdata/t_and_p/AllDataProt.nex.run1.t")
+d <- treespace.single(test9.t[1:100])
+d
+
+
+
+
+
+
+
+
