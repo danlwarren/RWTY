@@ -40,8 +40,29 @@ test9.t <- read.nexus("./testdata/t_and_p/AllDataProt.nex.run1.t")
 d <- treespace.single(test9.t[1:100])
 d
 
+# test ESS metric with continuous data
+library(coda)
+test9.p <- read.table("./testdata/t_and_p/AllDataProt.nex.run1.p", header=TRUE, skip=1)
 
+est1 <- continuous.ess(test9.p$TL, burnin=1000, N=500)
+est2 <- effectiveSize(test9.p$TL[1000:length(test9.p$TL)])
+est1$approx.ESS
+est2
 
+est1 <- continuous.ess(test9.p$TL, burnin=5000, N=500)
+est2 <- effectiveSize(test9.p$TL[5000:length(test9.p$TL)])
+est1$approx.ESS
+est2
+
+est1 <- continuous.ess(test9.p$TL, burnin=8000, N=500)
+est2 <- effectiveSize(test9.p$TL[8000:length(test9.p$TL)])
+est1$approx.ESS
+est2
+
+est1 <- continuous.ess(test9.p$TL[3000:7000], burnin=0, N=500)
+est2 <- effectiveSize(test9.p$TL[3000:7000])
+est1$approx.ESS
+est2
 
 
 

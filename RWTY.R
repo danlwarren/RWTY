@@ -12,5 +12,6 @@ source("compare.n.R")
 source("tree.ess.R")
 source("tree.dist.matrix.R")
 source("mds.treespace.R")
+source("continuous.ess.R")
 
 # test
