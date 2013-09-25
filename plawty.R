@@ -27,7 +27,7 @@ plawty <- function(x, numclades=10){
   thisplot
 }
 
-plot.cladeprobs <- function(input.table, numclades=nrow(input.table)){ 
+plot.cladeprobs <- function(input.table, numclades=20){ 
     # clade probability plot over generations
 
     # TODO should put a check in here to make sure it only accepts slidetest or cumtest objects
@@ -38,9 +38,10 @@ plot.cladeprobs <- function(input.table, numclades=nrow(input.table)){
     colnames(x) <- c("Clade", "Generations", "Posterior.Probability")
     x$Clade <- as.factor(x$Clade)
 
-    thisplot <- ggplot(data=x, aes(x=Generations, y=Posterior.Probability, group=Clade, color=Clade)) + 
+    thisplot <- ggplot(data=x, aes(x=as.numeric(Generations), y=Posterior.Probability, group=Clade, color=Clade)) + 
       geom_line() +
-      theme(legend.position="none")
+      theme(legend.position="none") +
+      xlab("Generations")
 
   thisplot
 }
@@ -59,9 +60,10 @@ plot.cladevar <- function(input.table, numclades=nrow(input.table)){
     colnames(d) <- c("Clade", "Generations", "Variation.in.posterior.probability")
     d$Clade <- as.factor(d$Clade)
 
-    thisplot <- ggplot(data=d, aes(x=Generations, y=Variation.in.posterior.probability, group=Generations)) + 
+    thisplot <- ggplot(data=d, aes(x=as.numeric(Generations), y=Variation.in.posterior.probability, group=Generations)) + 
       geom_boxplot() +
-      theme(legend.position="none")
+      theme(legend.position="none") +
+      xlab("Generations")
 
   thisplot
 }
