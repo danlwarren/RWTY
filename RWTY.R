@@ -14,5 +14,6 @@ source("mds.treespace.R")
 source("continuous.ess.R")
 source("parse.clades.R")
 source("load.trees.R")
+source("analyse.rwty.R")
 
 # test
