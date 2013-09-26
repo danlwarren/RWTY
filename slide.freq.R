@@ -1,8 +1,12 @@
 slide.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1, ...){ 
     #Specify burnin in TREES, not GENERATIONS
+    
+    # Peel just the trees off of rwty.trees object
+    # so the function can take rwty.trees or multiPhylo
+    if(class(tree.list) == "rwty.trees"){tree.list <- tree.list$trees}
+    
     print(paste("input list length:", length(tree.list)))
     print(paste("burnin:", burnin))
-
 
     tree.list <- tree.list[(burnin+1):length(tree.list)]
 

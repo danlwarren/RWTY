@@ -1,5 +1,6 @@
 # Modified from prop.part in APE, returning data in a more useful format
 clade.freq <- function (x, start, end, check.labels = TRUE) {
+  if(class(x) == "rwty.trees"){x <- x$trees}  
   obj <- list(x[start:end])
   if (length(obj) == 1 && class(obj[[1]]) != "phylo") 
     obj <- obj[[1]]
