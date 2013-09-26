@@ -1,3 +1,9 @@
+# This function takes a set of tree files, an option array of names for those
+# files, and a burnin argument.  It returns a table with the frequencies of 
+# each clade in each of those tree files, a distance metric indicating the mean
+# difference between clade frequencies, a plot of each chain against the others,
+# and a translation table.
+
 compare.n <- function(x, setnames=NA, burnin){ # In this case x is a list of treefiles
   print("Populating table...")
   print(paste("Working on set", 1))
@@ -24,7 +30,11 @@ compare.n <- function(x, setnames=NA, burnin){ # In this case x is a list of tre
   clade.table$sd <- thissd
   clade.table$mean <- thismean
   clade.table <- clade.table[order(clade.table$sd, decreasing=TRUE),]
-  output <- list("cladetable" = clade.table, "dist" = d)
+  
+  translation.table <- cbind(as.numeric(clade.table[,1]), as.character(clade.table[,1]), parse.clades(clade.table[,1], x[[1]]))
+  clade.table[,1] <- as.numeric(clade.table[,1])
+  
+  output <- list("cladetable" = clade.table, "dist" = d, "translation" = translation.table)
   class(output) = "rwty.comparen"
   output
 }
