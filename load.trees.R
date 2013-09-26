@@ -1,16 +1,24 @@
 #custom functions to load tree lists so that we can do basic processing on the way in
 
 #sample that works
-load.trees <- function(file){
+load.trees <- function(file, type="nexus"){
     
     # Read in trees
-    treelist <- read.nexus(file=file)
+    print("Reading trees...")
+    if(type == "nexus") {treelist <- read.nexus(file=file)}
+    else {treelist <- read.tree(file=file)}
     
     # Unroot all trees.  Can't use lapply because it was
     # deleting tip labels.
-    for(i in 1:length(treelist)){
-        treelist[[i]] <- unroot(treelist[[i]])
+    if(is.rooted(treelist[[1]])){
+        print("Unrooting, this may take a while...")
+        for(i in 1:length(treelist)){
+            treelist[[i]] <- unroot(treelist[[i]])
+        }
     }
+    else{print("Trees are unrooted...")}
+    
+    
     
     # Reset class
     class(treelist) <- "multiPhylo"
