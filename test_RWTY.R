@@ -67,10 +67,21 @@ est2
 
 # and with simulated data
 ar.sim <- arima.sim(model=list(ar=c(.001)),n=10000)
+ts.plot(ar.sim)
 est1 <- continuous.ess(ar.sim, burnin=0, N=500)
 est2 <- effectiveSize(ar.sim)
 est1$approx.ESS
 est2
 
+ar.sim <- arima.sim(model=list(ar=c(.25)),n=10000)
+est1 <- continuous.ess(ar.sim, burnin=0, N=500)
+est2 <- effectiveSize(ar.sim)
+est1$approx.ESS
+est2
 
+ar.sim <- arima.sim(model=list(ar=c(.5)),n=10000)
+est1 <- continuous.ess(ar.sim, burnin=0, N=500)
+est2 <- effectiveSize(ar.sim)
+est1$approx.ESS
+est2
 
