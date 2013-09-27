@@ -28,7 +28,7 @@ treespace.single <- function(trees, burnin=0, p.file = NULL){
     # for now this is hard-coded, who wants a 3D plot anyway, right?
     dimensions=2
 
-    d <- tree.dist.matrix(trees[burnin+1:length(trees)])
+    d <- tree.dist.matrix(trees[(burnin+1):length(trees)])
 
     mds <- isoMDS(d, k=dimensions)
 
