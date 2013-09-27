@@ -1,12 +1,16 @@
-continuous.ess <- function(tree.list, burnin=0, N=20){
+continuous.ess <- function(tree.list, burnin=0, N.thinning=20, N.sample=100){
 	# Estimate ESS for a list of trees at various subsamplings
 	tree.list <- tree.list[(burnin + 1):(length(tree.list))]
 
 	# this ensures that we can tell you if your ESS is <200
 	max.thinning <- as.integer(length(tree.list)/200)
 
+	# this ensures that all estimates are taken with equal sample sizes
+	if(N.sample > as.integer(length(tree.list)/max.thinning))
+		N.sample <- as.integer(length(tree.list/max.thinning))
+
 	# we analyse up to 20 thinnings spread evenly, less if there are non-unique numbers
-	thinnings <- unique(as.integer(seq(from = 1, to = max.thinning, length.out=N)))
+	thinnings <- unique(as.integer(seq(from = 1, to = max.thinning, length.out=N.thinning)))
 
 	# first we get the reference set of distances from a shuffled list
 	tree.list.shuffled <- sample(tree.list, length(tree.list), replace=FALSE)
@@ -14,26 +18,23 @@ continuous.ess <- function(tree.list, burnin=0, N=20){
 	print(paste("Calculating reference with", samples, "samples"))
 	d.reference <- get.sequential.distances.c(tree.list.shuffled, 1, samples)
 	d.reference.average <- median(d.reference)
+	d.reference.boot <- apply(matrix(sample(d.reference,rep=TRUE,10^3*length(d.reference)),nrow=10^3),1,median)
+	d.reference.lowerCI <- quantile(d.reference.boot,c(0.05,0.95))[1]
 
 	r <- data.frame()
 	for(gapsize in thinnings) {
 		print(paste("Working on thinning ", gapsize))
-		d <- get.sequential.distances.c(tree.list, gapsize, 500)
-		d.average <- median(d)
-
-		p <- NA
-		sig <- d.average<d.reference.average
-
-		e <- c(d.average, gapsize, p, sig)
+		d <- get.sequential.distances.c(tree.list, gapsize, N.sample)
+		e <- c(median(d), gapsize)
 		r <- rbind(r, e)
 	}
 
-	colnames(r) <- c('average.distance', 'gapsize', 'p.value', 'significant.difference')
-	r$significant.difference <- as.logical(r$significant.difference)
+	colnames(r) <- c('average.distance', 'gapsize')
+	r$lower <- as.logical(r$average.distance < d.reference.lowerCI)
 
 	# calculate the approximate ESS
-	if(FALSE %in% r$significant.difference){
-		min.gap <- r$gapsize[min(which(r$sig==FALSE))]
+	if(FALSE %in% r$lower){
+		min.gap <- r$gapsize[min(which(r$lower==FALSE))]
 		approx.ESS <- length(tree.list) / min.gap
 	}
 	else{
@@ -42,13 +43,16 @@ continuous.ess <- function(tree.list, burnin=0, N=20){
 		approx.ESS <- paste("<", approx.ESS)
 	}
 
-	p <- plot.tree.ess(r, d.reference.average)
 
 	r <- list('tree.distances'=r, 
 			  'approx.ESS' = approx.ESS,
 			  'reference.distance' = d.reference.average,
-			  'plot'=p
+			  'reference.distance.lowerCI' = d.reference.lowerCI
 			  )
+
+	p <- plot.tree.ess(r)
+
+	r$plot <- p
 
 	r
 }
@@ -86,8 +90,6 @@ get.sequential.distances.c <- function(tree.list, thinning = 1, N=100){
 	# turn the tree list into a list of sequential pairs
 	# e.g. c(a, b, c, d, e) -> c(a,b), c(c,d)
 	tree.pairs <- split(tree.list, ceiling(tree.index/2))
-
-	print(length(tree.pairs))
 
 	distances <- lapply(tree.pairs, continuous.distance)
 	distances <- as.numeric(unlist(distances))
