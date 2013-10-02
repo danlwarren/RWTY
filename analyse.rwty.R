@@ -9,12 +9,14 @@ analyse.rwty <- function(chains, burnin, window.size, gens.per.tree, step=1, ...
     # function.  Otherwise it assumes that multiple rwty.trees objects
     # have been passed as a list.
     if(class(chains) == "rwty.trees"){
+        print("Analyzing single chain...")
         analyse.single(chains, burnin, window.size,
                        gens.per.tree, step, ...)
     }
     
     else{
-        analyse.multi(chains, burnin, gens.per.tree, step, ...)
+        print("Analyzing multiple chains...")
+        analyse.multi(chains, burnin, window.size, gens.per.tree, step, ...)
     }
 }
 
@@ -22,10 +24,9 @@ analyse.rwty <- function(chains, burnin, window.size, gens.per.tree, step=1, ...
 
 
 analyse.single <- function(chains, burnin, window.size, gens.per.tree, step=1, ...){
-    print("Analyzing single chain...")
     
     lnl.plot <- NA
-    if(!any(is.na(chains$ptable))){
+    if(exists("chains$ptable")){
         print("Making LnL plot...")
         lnl.plot <- ggplot(chains$ptable[burnin:length(chains$ptable[,1]),], aes(x=Gen, y=LnL)) + geom_line()
     }
@@ -40,6 +41,7 @@ analyse.single <- function(chains, burnin, window.size, gens.per.tree, step=1, .
     cumulative.plot <- plot.cladeprobs(cumulative.data$cumulative.table, ...)
     
     print("Plotting trees in tree space...")
+    print(step)
     mdstrees <- chains$trees[seq((burnin + 1), length(chains$trees), by = step)]
     treespace <- treespace.single(mdstrees)
     treespace.data <- treespace$mds
@@ -51,6 +53,19 @@ analyse.single <- function(chains, burnin, window.size, gens.per.tree, step=1, .
                    "treespace.plot" = treespace.plot)
 }
 
-analyse.multi <- function(chains, burnin, gens.per.tree){
-    print("Analyzing multiple chains...")
+analyse.multi <- function(chains, burnin, window.size, gens.per.tree, step=1, labels=NA, ...){
+    
+    output <- list()
+    
+    # Name chains by list order if labels aren't supplied
+    if(any(is.na(labels))){labels <- seq(1, length(chains))}
+    
+    # Run analyse single on each chain
+    for(i in 1: length(chains)){
+        output[[labels[i]]] <- c(output, analyse.single(chains[[i]], burnin, window.size, gens.per.tree, step, ... ))
+    }
+    
+    output[["compare.n"]] <- compare.n(chains, setnames=labels, burnin)
+    
+    output
 }
