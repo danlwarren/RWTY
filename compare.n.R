@@ -51,7 +51,12 @@ compare.n <- function(x, setnames=NA, burnin){ # In this case x is a list of tre
   translation.table <- cbind(as.numeric(clade.table[,1]), as.character(clade.table[,1]), parse.clades(clade.table[,1], x[[1]]))
   clade.table[,1] <- as.numeric(clade.table[,1])
   
-  output <- list("cladetable" = clade.table, "dist" = d, "translation" = translation.table)
+  # Make a plot
+  plot <- ggpairs(clade.table, columns=2:(length(x) + 1))
+  
+  output <- list("cladetable" = clade.table, "dist" = d, 
+                 "translation" = translation.table,
+                 "plot" <- plot)
   class(output) = "rwty.comparen"
   output
 }
