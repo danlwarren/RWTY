@@ -1,7 +1,7 @@
 # This function will hopefully be the primary user interface.  
 # It will take one or more tree files, a few necessary arguments,
 # and then automatically run all of the relevant analyses and 
-# generate the plots.
+# generate the plots...
 
 analyse.rwty <- function(chains, burnin, window.size, gens.per.tree, step=1, ...){
     
