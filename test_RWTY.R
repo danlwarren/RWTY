@@ -1,6 +1,8 @@
 setwd("~/Documents/GitHub/RWTY")
 #setwd("~/Documents/Projects_current/RWTY")
 
+# comment
+
 source("RWTY.R")
 
 test1 <- load.trees(file="./testdata/fairywrens/PCFW.nex.run1.t")
