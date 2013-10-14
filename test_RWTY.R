@@ -1,4 +1,4 @@
-setwd("~/Documents/GitHub/RWTY")
+setwd("~/Dropbox/R Projects/RWTY")
 #setwd("~/Documents/Projects_current/RWTY")
 
 # comment
@@ -17,6 +17,7 @@ multitest <- analyse.rwty(chains=list(test1, test2, test3, test4), burnin=100,
 
 
 test5 <- load.trees("./testdata/t_and_p/AllDataProt.nex.run1.t")
+test6 <- load.trees("./testdata/t_and_p/AllDataProt.nex.run1.t")
 cumtest <- cumulative.freq(test1, burnin=100, window=100, gens.per.tree=1000)
 slidetest <- slide.freq(test1, burnin=100, window=100, gens.per.tree=1000)
 #comp2test <- compare.two(test1, test2, burnin=100)

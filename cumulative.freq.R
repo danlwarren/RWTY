@@ -42,7 +42,3 @@ cumulative.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1,
     output
 }
 
-cummean <- function(x){
-    r <- (cumsum(as.numeric(x)))/seq(1:length(x))
-    r
-}

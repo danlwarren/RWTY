@@ -4,20 +4,20 @@
 # difference between clade frequencies, a plot of each chain against the others,
 # and a translation table.
 
-compare.n <- function(x, setnames=NA, burnin){ # In this case x is a list of treefiles
+compare.n <- function(x, setnames=NA, burnin){ # In this case x is a list of rwty.trees objects
   print("Populating table...")
   
   print(paste("Working on set", 1))
   
   # Get a starting table from the first chain
-  clade.table <- clade.freq(x[[1]], start=burnin, end=length(x[[1]]))
+  clade.table <- clade.freq(x[[1]], start=burnin, end=length(x[[1]]$trees))
   if(is.na(setnames[1])){colnames(clade.table)[2] <- paste("set", 1, sep=".")}
   else{colnames(clade.table)[2] <- setnames[1]}
   
   # Populate the rest of the table, one chain at a time
   for(i in 2:length(x)){
     print(paste("Working on set", i))
-    thistable <- clade.freq(x[[i]], start = burnin, end  = length(x[[i]]))
+    thistable <- clade.freq(x[[i]], start = burnin, end  = length(x[[i]]$trees))
     clade.table <- merge(clade.table, thistable, by = "cladenames", all = TRUE) 
     
     # Either name it with the label provided or with the variable name
@@ -52,7 +52,11 @@ compare.n <- function(x, setnames=NA, burnin){ # In this case x is a list of tre
   clade.table[,1] <- as.numeric(clade.table[,1])
   
   # Make a plot
+  # ggpairs isn't working, not sure why
   plot <- ggpairs(clade.table, columns=2:(length(x) + 1))
+  
+  #plot <- pairs(clade.table[,2:(length(x) + 1)])
+  
   
   output <- list("cladetable" = clade.table, "dist" = d, 
                  "translation" = translation.table,
