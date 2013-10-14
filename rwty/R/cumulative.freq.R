@@ -1,0 +1,62 @@
+#' A one sentence description of what your function does
+#' 
+#' A more detailed description of what the function is and how
+#' it works. It may be a paragraph that should not be separated
+#' by any spaces. 
+#'
+#' @param inputParameter1 A description of the input parameter \code{inputParameter1}
+#' @param inputParameter2 A description of the input parameter \code{inputParameter2}
+#'
+#' @return output A description of the object the function outputs 
+#'
+#' @keywords keywords
+#'
+#' @export
+#' 
+#' @examples
+#' R code here showing how your function works
+
+cumulative.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1, slide.freq.table = NULL, ...){ 
+
+    # NB if you pass in a slide.freq.table, all the other stats are ignored.
+    # TODO: need to make this clear to users.
+    
+    # Peel just the trees off of rwty.trees object
+    # so the function can take rwty.trees or multiPhylo
+    if(class(tree.list) == "rwty.trees"){tree.list <- tree.list$trees}
+
+    if(is.null(slide.freq.table)){
+        slide.freq.table = slide.freq(tree.list, burnin, window.size, gens.per.tree, ...) 
+    }
+    
+    # Peel the translation table off for later use
+    translation.table <- slide.freq.table$translation
+    
+    # Strip the frequency data out
+    slide.freq.table <- slide.freq.table$slide.table
+    
+    slide.freq.table <- slide.freq.table[,!(names(slide.freq.table) %in% c("sd", "mean"))]
+    
+    #Get cumulative means for each row
+    cum.freq.table <- apply(slide.freq.table, 1, cummean)
+
+    cum.freq.table <- as.data.frame(t(cum.freq.table))
+
+    colnames(cum.freq.table) <- colnames(slide.freq.table)
+
+    # calculate sd and mean of cumulative frequency and mean
+    thissd <- apply(cum.freq.table, 1, sd)
+    cum.freq.table$sd <- thissd
+
+    thismean <- apply(cum.freq.table, 1, mean) 
+    cum.freq.table$mean <- thismean
+
+    cum.freq.table <- cum.freq.table[order(cum.freq.table$sd, decreasing=TRUE),]
+    
+    rownames(cum.freq.table) <- as.numeric(as.factor(rownames(cum.freq.table)))
+    
+    output <- list("cumulative.table" = cum.freq.table, "translation" = translation.table)
+    class(output) <- "rwty.cumulative"
+    output
+}
+
