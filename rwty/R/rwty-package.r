@@ -1,23 +1,51 @@
-#' A one sentence description of what your function does
+#' R We There Yet?  An R package for visualizing convergence in MCMC phylogenetics.
 #' 
-#' A more detailed description of what the function is and how
-#' it works. It may be a paragraph that should not be separated
-#' by any spaces. 
+#' This package implements various tests, visualizations, and metrics
+#' for diagnosing convergence of MCMC chains in phylogenetics.  It implements
+#' and automates many of the functions of the AWTY package in the R environment.
 #'
-#' @param inputParameter1 A description of the input parameter \code{inputParameter1}
-#' @param inputParameter2 A description of the input parameter \code{inputParameter2}
-#'
-#' @return output A description of the object the function outputs 
-#'
-#' @keywords keywords
+#' @keywords Phylogenetics, mcmc, convergence, awty
 #'
 #' @export
 #' 
 #' @examples
-#' R code here showing how your function works
-
-#' rwty
+#' See documentation for analyze.rwty
 #'
 #' @name rwty
 #' @docType package
-NULL
+
+library(ape)
+library(ggplot2)
+library(reshape2)
+library(phangorn)
+library(MASS)
+library(GGally)
+
+source("analyze.multi.R")
+source("analyze.rwty.R")
+source("analyze.single.R")
+source("clade.freq.R")
+source("compare.n.R")
+source("continuous.distance.R")
+source("continuous.ess.R")
+source("cummean.R")
+source("cumulative.freq.R")
+source("get.sequential.distance.R")
+source("get.sequential.distances.c.R")
+source("load.trees.R")
+source("mds.treespace.R")
+source("p.from.ranked.list.R")
+source("pairwise.RF.R")
+source("parse.clades.R")
+source("plawty.R")
+source("plot.cladeprobs.R")
+source("plot.cladevar.R")
+source("abs.diffs.R")
+source("plot.tree.ess.R")
+source("plot.treespace.R")
+source("slide.freq.R")
+source("tree.distance.R")
+source("tree.dist.matrix.R")
+source("tree.ess.R")
+source("treespace.single.R")
+
