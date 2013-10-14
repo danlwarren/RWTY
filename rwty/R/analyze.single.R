@@ -1,20 +1,24 @@
-#' A one sentence description of what your function does
+#' Function for running rwty analyses on single chains.
 #' 
-#' A more detailed description of what the function is and how
-#' it works. It may be a paragraph that should not be separated
-#' by any spaces. 
+#' This function is automatically called when analyze.rwty is called with one chain.
+#' It runs analyze.single on the chain and returns an object with the appropriate tables
+#' and plots.
 #'
-#' @param inputParameter1 A description of the input parameter \code{inputParameter1}
-#' @param inputParameter2 A description of the input parameter \code{inputParameter2}
+#' @param chains A single rwty.trees object. \code{chains}
+#' @param burnin The number of trees to eliminate as burnin \code{burnin}
+#' @param window.size The length of window (in trees) for the sliding window plot \code{window.size}
+#' @param gens.per.tree The number of generations per tree in the .t file.
+#' @param step The number of trees to skip for each step in the treespace plot.  Step=5 would amount to reading every fifth tree.
+#
+#' @return output A list with tables and plots for LnL (when .p file exists), sliding window,
+#' cumulative, and treespace plots.
 #'
-#' @return output A description of the object the function outputs 
-#'
-#' @keywords keywords
+#' @keywords MCMC, phylogenetics, convergence, plot, awty, rwty
 #'
 #' @export
 #' 
 #' @examples
-#' R code here showing how your function works
+#' analyze.single(mytrees, burnin=100, window.size=100, gens.per.tree=1000, step=5)
 
 analyze.single <- function(chains, burnin, window.size, gens.per.tree, step=1, ...){
     
