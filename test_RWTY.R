@@ -3,14 +3,14 @@ setwd("~/Dropbox/R Projects/RWTY")
 
 # comment
 
-source("RWTY.R")
+source("./rwty/R/rwty-package.R")
 
 test1 <- load.trees(file="./testdata/fairywrens/PCFW.nex.run1.t")
 test2 <- load.trees(file="./testdata/fairywrens/PCFW.nex.run2.t")
 test3 <- load.trees(file="./testdata/fairywrens/PCFW.nex.run1.t")
 test4 <- load.trees(file="./testdata/fairywrens/PCFW.nex.run2.t")
-multitest <- analyse.rwty(chains=list(test1, test2, test3, test4), burnin=100, 
-                          window.size=100, gens.per.tree=100, step=50, 
+multitest <- analyze.rwty(chains=list(test1, test2, test3, test4), burnin=100, 
+                          window.size=100, gens.per.tree=100, step=10, 
                           labels=c("Run1", "Run2", "Run3", "Run4"))
 
 
@@ -26,7 +26,7 @@ compntest <- compare.n(x=list(test1, test2, test3, test4), setnames = c("test1",
 # Same for n chains?
 
 mytrees <- load.trees("./testdata/t_and_p/AllDataProt.nex.run1.t")
-rwtytest <- analyse.rwty(mytrees, burnin=100, window.size=50, gens.per.tree=1000, step=100)
+rwtytest <- analyze.rwty(mytrees, burnin=100, window.size=50, gens.per.tree=1000, step=100)
 
 
 test.hox1 <- read.nexus(file="./testdata/hoxgenes/Dataset2_con.nex.run1.t")

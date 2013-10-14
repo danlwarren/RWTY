@@ -1,20 +1,18 @@
-#' A one sentence description of what your function does
+#' Returns distance between two trees
 #' 
-#' A more detailed description of what the function is and how
-#' it works. It may be a paragraph that should not be separated
-#' by any spaces. 
+#' Takes a list of two trees, returns Robinson-Foulds distance
+#' between them. 
 #'
-#' @param inputParameter1 A description of the input parameter \code{inputParameter1}
-#' @param inputParameter2 A description of the input parameter \code{inputParameter2}
+#' @param two.trees A list containing two trees \code{two.trees}
 #'
-#' @return output A description of the object the function outputs 
+#' @return d A distance measurement
 #'
-#' @keywords keywords
+#' @keywords tree distance, Robinson Foulds
 #'
 #' @export
 #' 
 #' @examples
-#' R code here showing how your function works
+#' tree.distance(list(tree1, tree2))
 
 tree.distance <- function(two.trees){
     # type = 1: RF distance
