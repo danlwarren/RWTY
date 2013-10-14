@@ -1,24 +1,19 @@
-#' A one sentence description of what your function does
+#' Plot chains in treespace.
 #' 
-#' A more detailed description of what the function is and how
-#' it works. It may be a paragraph that should not be separated
-#' by any spaces. 
+#' This function will take an mds.treespace object and produce plots of chains in treespace.
 #'
-#' @param inputParameter1 A description of the input parameter \code{inputParameter1}
-#' @param inputParameter2 A description of the input parameter \code{inputParameter2}
+#' @param points A set of points to plot \code{points}
 #'
-#' @return output A description of the object the function outputs 
+#' @return p A ggplot object
 #'
-#' @keywords keywords
+#' @keywords plot, treespace, rwty
 #'
 #' @export
 #' 
 #' @examples
-#' R code here showing how your function works
+#' plot.treespace(mypoints)
 
 plot.treespace <- function(points){
-    # This fundtion will take an mds.treespace object and produce plots 
-    # of chains in treespace
     
     if(!is.null(points$LnL)){
         p <- ggplot(data=points, aes(x=x,y=y,fill=LnL)) + 
