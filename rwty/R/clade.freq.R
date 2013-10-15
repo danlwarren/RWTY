@@ -1,20 +1,21 @@
-#' A one sentence description of what your function does
+#' Returns clade names and frequencies
 #' 
-#' A more detailed description of what the function is and how
-#' it works. It may be a paragraph that should not be separated
-#' by any spaces. 
+#' Uses ape functionality to get the frequencies and names of clades in an MCMC chain
+#' or subset thereof.
 #'
-#' @param inputParameter1 A description of the input parameter \code{inputParameter1}
-#' @param inputParameter2 A description of the input parameter \code{inputParameter2}
+#' @param x A multiPhylo or rwty.trees object
+#' @param start The index of the first tree to consider in calcuating frequencies
+#' @param end The index of the last tree to consider in calculating frequencies
+#' @param check.labels See documentation for ape function prop.part
+#' 
+#' @return clade.df A data froma containing clade names and frequencies
 #'
-#' @return output A description of the object the function outputs 
-#'
-#' @keywords keywords
+#' @keywords Clade frequencies, consensus, mcmc, phylogenetics
 #'
 #' @export
 #' 
 #' @examples
-#' R code here showing how your function works
+#' clade.freq(mytrees, start=10, end=100)
 
 # Modified from prop.part in APE, returning data in a more useful format
 clade.freq <- function (x, start, end, check.labels = TRUE) {

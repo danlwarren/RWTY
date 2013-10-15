@@ -18,7 +18,8 @@
 
 plot.cladevar <- function(input.table, numclades=nrow(input.table)){ 
     # plot variation in clade frequencies between windows
-    
+    if(class(input.table) == "rwty.cumulative"){input.table = input.table$cumulative.table}
+    if(class(input.table) == "rwty.slide"){input.table = input.table$slide.table}
     x <- input.table[1:numclades,2:length(input.table) - 2] #Stripping off mean and SD
     
     # this is a df of absolute differences in pp variation between windows

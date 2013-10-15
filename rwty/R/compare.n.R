@@ -1,26 +1,23 @@
-#' A one sentence description of what your function does
+#' Compares posterior probability estimates from multiple MCMC chains.
 #' 
-#' A more detailed description of what the function is and how
-#' it works. It may be a paragraph that should not be separated
-#' by any spaces. 
+#' This function takes a set of tree files, an option array of names for those
+#' files, and a burnin argument.  It returns a table with the frequencies of 
+#' each clade in each of those tree files, a distance metric indicating the mean
+#' difference between clade frequencies, a plot of each chain against the others,
+#' and a translation table.
 #'
-#' @param inputParameter1 A description of the input parameter \code{inputParameter1}
-#' @param inputParameter2 A description of the input parameter \code{inputParameter2}
+#' @param x A list of rwty.trees objects.
+#' @param setnames A list of names for the chains.
+#' @param burnin The number of trees to eliminate as burnin \code{burnin}
 #'
-#' @return output A description of the object the function outputs 
+#' @return output A list containing a table of frequencies of each clade in each chain along with mean and sd, a distance matrix measuring consensus between chains, a translation table, and a ggpairs plot.
 #'
-#' @keywords keywords
+#' @keywords MCMC, phylogenetics, consensus, clade frequency, convergence
 #'
 #' @export
 #' 
 #' @examples
-#' R code here showing how your function works
-
-# This function takes a set of tree files, an option array of names for those
-# files, and a burnin argument.  It returns a table with the frequencies of 
-# each clade in each of those tree files, a distance metric indicating the mean
-# difference between clade frequencies, a plot of each chain against the others,
-# and a translation table.
+#' compare.n(mytrees, setnames=c("Chain 1", "Chain 2", "Chain 3"), burnin=100)
 
 compare.n <- function(x, setnames=NA, burnin){ # In this case x is a list of rwty.trees objects
   print("Populating table...")

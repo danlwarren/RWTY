@@ -1,4 +1,4 @@
-#' A one sentence description of what your function does
+#' Custom functions to load tree lists so that rwty can do basic processing on the way in.
 #' 
 #' A more detailed description of what the function is and how
 #' it works. It may be a paragraph that should not be separated
@@ -15,8 +15,6 @@
 #' 
 #' @examples
 #' R code here showing how your function works
-
-#custom functions to load tree lists so that we can do basic processing on the way in
 
 #sample that works
 load.trees <- function(file, type="nexus"){
