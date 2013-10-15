@@ -1,26 +1,35 @@
 \name{tree.ess}
 \alias{tree.ess}
-\title{A one sentence description of what your function does}
+\title{Estimating effective sample size for tree topology}
 \usage{
   tree.ess(tree.list, burnin = 0, N = 20)
 }
 \arguments{
-  \item{inputParameter1}{A description of the input
-  parameter \code{inputParameter1}}
+  \item{tree.list}{A multiPhylo object \code{tree.list}}
 
-  \item{inputParameter2}{A description of the input
-  parameter \code{inputParameter2}}
+  \item{burnin}{The number of trees to eliminate as burnin
+  \code{burnin}}
+
+  \item{N}{the number of windows to attempt}
 }
 \value{
   output A description of the object the function outputs
 }
 \description{
-  A more detailed description of what the function is and
-  how it works. It may be a paragraph that should not be
-  separated by any spaces.
+  This function estimates the effective sample size for
+  trees in a MCMC chain.  It operates by looking at RF
+  distances for trees spaced at different intervals on the
+  chain, and determining what spacing is needed so that
+  adjacent trees are no more correlated than randomly
+  chosen pairs from the whole chain.
 }
 \examples{
-R code here showing how your function works
+tree.ess(mytrees, burnin=100, N=20)
 }
-\keyword{keywords}
+\keyword{autocorrelation,}
+\keyword{effective}
+\keyword{ess,}
+\keyword{phylogeny}
+\keyword{sample}
+\keyword{size,}
 

@@ -5,13 +5,13 @@
   treespace.single(trees, burnin = 0, p.file = NULL)
 }
 \arguments{
-  \item{trees}{A multiphylo object \code{inputParameter1}}
+  \item{trees}{A multiphylo object \code{trees}}
 
   \item{burnin}{The number of trees to eliminate as burnin
-  \code{inputParameter2}}
+  \code{burnin}}
 
   \item{p.file}{a file of probabilities to use for coloring
-  generations \code{inputParameter3}}
+  generations \code{p.file}}
 }
 \value{
   Returns a list containing the mds table and a plot.

@@ -1,20 +1,19 @@
 #' Custom functions to load tree lists so that rwty can do basic processing on the way in.
 #' 
-#' A more detailed description of what the function is and how
-#' it works. It may be a paragraph that should not be separated
-#' by any spaces. 
+#' Loads trees, looks for a .p file of tree likelihoods, returns and rwty.trees object containing both
 #'
-#' @param inputParameter1 A description of the input parameter \code{inputParameter1}
-#' @param inputParameter2 A description of the input parameter \code{inputParameter2}
+#' @param file A path to a .t file containing an MCMC chain of trees
+#' @param type An argument that designates the type of tree file.  If "nexus",
+#' trees are loaded using ape's read.nexus function.  Otherwise, it's read.tree.
 #'
-#' @return output A description of the object the function outputs 
+#' @return output An rwty.trees object containing the multiPhylo and the table of values from the .p file if available.
 #'
-#' @keywords keywords
+#' @keywords Phylogenetics, MCMC, load
 #'
 #' @export
 #' 
 #' @examples
-#' R code here showing how your function works
+#' load.trees(file="mytrees.nex", type="nexus")
 
 #sample that works
 load.trees <- function(file, type="nexus"){

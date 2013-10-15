@@ -9,8 +9,8 @@
   \item{inputParameter1}{A description of the input
   parameter \code{inputParameter1}}
 
-  \item{inputParameter2}{A description of the input
-  parameter \code{inputParameter2}}
+  \item{burnin}{The number of trees to eliminate as burnin
+  \code{burnin}}
 }
 \value{
   output A description of the object the function outputs

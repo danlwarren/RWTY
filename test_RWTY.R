@@ -3,7 +3,7 @@ setwd("~/Dropbox/R Projects/RWTY")
 
 # comment
 
-source("./rwty/R/rwty-package.R")
+source("RWTY.R")
 
 test1 <- load.trees(file="./testdata/fairywrens/PCFW.nex.run1.t")
 test2 <- load.trees(file="./testdata/fairywrens/PCFW.nex.run2.t")
@@ -31,15 +31,15 @@ rwtytest <- analyze.rwty(mytrees, burnin=100, window.size=50, gens.per.tree=1000
 
 test.hox1 <- read.nexus(file="./testdata/hoxgenes/Dataset2_con.nex.run1.t")
 test.hox2 <- read.nexus(file="./testdata/hoxgenes/Dataset2_con.nex.run2.t")
-slidetest <- slide.freq(test.hox1, burnin=100, window=100, gens.per.tree=1000)
-cumtest <- cumulative.freq(test.hox1, burnin=100, window=100, gens.per.tree=1000, slide.freq.table=slidetest)
+slidetest <- slide.freq(test.hox1, burnin=1000, window=1000, gens.per.tree=1000)
+cumtest <- cumulative.freq(test.hox1, burnin=1000, window=1000, gens.per.tree=1000, slide.freq.table=slidetest)
 esstest <- tree.ess(test.hox1, burnin=1000)
 
 
-plot.cladeprobs(cumtest, 20)
-plot.cladeprobs(slidetest, 20)
-plot.cladevar(cumtest, 20)
-plot.cladevar(slidetest, 20)
+plot.cladeprobs(cumtest$cumulative.table, 20)
+plot.cladeprobs(slidetest$slide.table, 20)
+plot.cladevar(cumtest$cumulative.table, 20)
+plot.cladevar(slidetest$slide.table, 20)
 
 
 

@@ -1,26 +1,29 @@
 \name{load.trees}
 \alias{load.trees}
-\title{A one sentence description of what your function does}
+\title{Custom functions to load tree lists so that rwty can do basic processing on the way in.}
 \usage{
   load.trees(file, type = "nexus")
 }
 \arguments{
-  \item{inputParameter1}{A description of the input
-  parameter \code{inputParameter1}}
+  \item{file}{A path to a .t file containing an MCMC chain
+  of trees}
 
-  \item{inputParameter2}{A description of the input
-  parameter \code{inputParameter2}}
+  \item{type}{An argument that designates the type of tree
+  file.  If "nexus", trees are loaded using ape's
+  read.nexus function.  Otherwise, it's read.tree.}
 }
 \value{
-  output A description of the object the function outputs
+  output An rwty.trees object containing the multiPhylo and
+  the table of values from the .p file if available.
 }
 \description{
-  A more detailed description of what the function is and
-  how it works. It may be a paragraph that should not be
-  separated by any spaces.
+  Loads trees, looks for a .p file of tree likelihoods,
+  returns and rwty.trees object containing both
 }
 \examples{
-R code here showing how your function works
+load.trees(file="mytrees.nex", type="nexus")
 }
-\keyword{keywords}
+\keyword{MCMC,}
+\keyword{Phylogenetics,}
+\keyword{load}
 

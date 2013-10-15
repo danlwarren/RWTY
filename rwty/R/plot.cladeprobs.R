@@ -1,20 +1,21 @@
-#' A one sentence description of what your function does
+#' New style plotting of cumulative and slide objects
 #' 
-#' A more detailed description of what the function is and how
-#' it works. It may be a paragraph that should not be separated
-#' by any spaces. 
+#' Takes a table from cumulative.freq or slide.freq as input.  
+#' Numclades gives the number of clades to plot, starting from the
+#' top.  Since cumulative.freq and slide.freq both sort by sd these
+#' will by default be the most variable clades.
 #'
-#' @param inputParameter1 A description of the input parameter \code{inputParameter1}
-#' @param inputParameter2 A description of the input parameter \code{inputParameter2}
+#' @param x An rwty.slide or rwty.cumulative object
+#' @param numclades The number of clades to plot.  The clades with the highest sd in clade frequency are plotted first, so numclades = 10 will be the 10 most variable clades in the chain.
 #'
-#' @return output A description of the object the function outputs 
+#' @return thisplot Returns a ggplot object.
 #'
-#' @keywords keywords
+#' @keywords cumulative, sliding window, mcmc, phylogenetics, plot
 #'
 #' @export
 #' 
 #' @examples
-#' R code here showing how your function works
+#' plawty(input.table = slideresults, numclades=25)
 
 plot.cladeprobs <- function(input.table, numclades=20){ 
     # clade probability plot over generations

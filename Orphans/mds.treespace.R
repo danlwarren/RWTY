@@ -1,11 +1,11 @@
-#' A one sentence description of what your function does
+#' Performs multidimensional scaling of tree space based on MCMC chain
 #' 
-#' A more detailed description of what the function is and how
+#' This function takes an MCMC chain, constructs a distance matrix
 #' it works. It may be a paragraph that should not be separated
 #' by any spaces. 
 #'
 #' @param inputParameter1 A description of the input parameter \code{inputParameter1}
-#' @param inputParameter2 A description of the input parameter \code{inputParameter2}
+#' @param burnin The number of trees to eliminate as burnin \code{burnin}
 #'
 #' @return output A description of the object the function outputs 
 #'

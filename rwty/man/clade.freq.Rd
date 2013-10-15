@@ -1,26 +1,35 @@
 \name{clade.freq}
 \alias{clade.freq}
-\title{A one sentence description of what your function does}
+\title{Returns clade names and frequencies}
 \usage{
   clade.freq(x, start, end, check.labels = TRUE)
 }
 \arguments{
-  \item{inputParameter1}{A description of the input
-  parameter \code{inputParameter1}}
+  \item{x}{A multiPhylo or rwty.trees object}
 
-  \item{inputParameter2}{A description of the input
-  parameter \code{inputParameter2}}
+  \item{start}{The index of the first tree to consider in
+  calcuating frequencies}
+
+  \item{end}{The index of the last tree to consider in
+  calculating frequencies}
+
+  \item{check.labels}{See documentation for ape function
+  prop.part}
 }
 \value{
-  output A description of the object the function outputs
+  clade.df A data froma containing clade names and
+  frequencies
 }
 \description{
-  A more detailed description of what the function is and
-  how it works. It may be a paragraph that should not be
-  separated by any spaces.
+  Uses ape functionality to get the frequencies and names
+  of clades in an MCMC chain or subset thereof.
 }
 \examples{
-R code here showing how your function works
+clade.freq(mytrees, start=10, end=100)
 }
-\keyword{keywords}
+\keyword{Clade}
+\keyword{consensus,}
+\keyword{frequencies,}
+\keyword{mcmc,}
+\keyword{phylogenetics}
 

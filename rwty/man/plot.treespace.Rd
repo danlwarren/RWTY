@@ -1,26 +1,23 @@
 \name{plot.treespace}
 \alias{plot.treespace}
-\title{A one sentence description of what your function does}
+\title{Plot chains in treespace.}
 \usage{
   plot.treespace(points)
 }
 \arguments{
-  \item{inputParameter1}{A description of the input
-  parameter \code{inputParameter1}}
-
-  \item{inputParameter2}{A description of the input
-  parameter \code{inputParameter2}}
+  \item{points}{A set of points to plot \code{points}}
 }
 \value{
-  output A description of the object the function outputs
+  p A ggplot object
 }
 \description{
-  A more detailed description of what the function is and
-  how it works. It may be a paragraph that should not be
-  separated by any spaces.
+  This function will take an mds.treespace object and
+  produce plots of chains in treespace.
 }
 \examples{
-R code here showing how your function works
+plot.treespace(mypoints)
 }
-\keyword{keywords}
+\keyword{plot,}
+\keyword{rwty}
+\keyword{treespace,}
 

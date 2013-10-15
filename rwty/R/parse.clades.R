@@ -1,24 +1,14 @@
-#' A one sentence description of what your function does
+#' Rename clades for easy recall
 #' 
-#' A more detailed description of what the function is and how
-#' it works. It may be a paragraph that should not be separated
-#' by any spaces. 
+#' Converts a list of clades (e.g., "1 2 3 4" as a clade) and
+#' returns a list of parsed clades, converting numbers to names using a set of trees.
+#' Called internally by the slide and cumulative analyses, not user-facing.
 #'
-#' @param inputParameter1 A description of the input parameter \code{inputParameter1}
-#' @param inputParameter2 A description of the input parameter \code{inputParameter2}
+#' @param clades A list of clades, as in the first column of a cladetable in an rwty.slide or rwty.cumulative object
+#' @param treelist A list of trees, used for getting tip names
 #'
-#' @return output A description of the object the function outputs 
-#'
-#' @keywords keywords
-#'
-#' @export
-#' 
-#' @examples
-#' R code here showing how your function works
+#' @return output A list of clades with parsed tip names
 
-# This function takes a vector of clades and a list of trees
-# and uses the TipLabel attribute of the tree list to return
-# clades using tip names instead of numbers.
 
 parse.clades <- function(clades, treelist){
     

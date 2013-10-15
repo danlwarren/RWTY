@@ -1,26 +1,30 @@
 \name{plot.cladevar}
 \alias{plot.cladevar}
-\title{A one sentence description of what your function does}
+\title{Plots distribution of variance in posterior probability estimates across clades.}
 \usage{
   plot.cladevar(input.table, numclades = nrow(input.table))
 }
 \arguments{
-  \item{inputParameter1}{A description of the input
-  parameter \code{inputParameter1}}
+  \item{input.table}{Either a rwty.cumulative or rwty.slide
+  object, or a cumulative or slide table from one of those
+  objects.}
 
-  \item{inputParameter2}{A description of the input
-  parameter \code{inputParameter2}}
+  \item{numclades}{The number of clades to calculate stats
+  for.  Defaults to all clades in the table.}
 }
 \value{
-  output A description of the object the function outputs
+  thisplot A ggplot object
 }
 \description{
-  A more detailed description of what the function is and
-  how it works. It may be a paragraph that should not be
-  separated by any spaces.
+  Plots the distribution of variances in posterior
+  probability estimates across clades in a chain as a
+  function of chain length.
 }
 \examples{
-R code here showing how your function works
+plot.cladevar(slideresults, numclades=100)
 }
-\keyword{keywords}
+\keyword{convergence,}
+\keyword{mcmc,}
+\keyword{phylogenetics,}
+\keyword{uncertainty}
 

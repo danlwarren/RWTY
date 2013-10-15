@@ -1,26 +1,23 @@
 \name{parse.clades}
 \alias{parse.clades}
-\title{A one sentence description of what your function does}
+\title{Rename clades for easy recall}
 \usage{
   parse.clades(clades, treelist)
 }
 \arguments{
-  \item{inputParameter1}{A description of the input
-  parameter \code{inputParameter1}}
+  \item{clades}{A list of clades, as in the first column of
+  a cladetable in an rwty.slide or rwty.cumulative object}
 
-  \item{inputParameter2}{A description of the input
-  parameter \code{inputParameter2}}
+  \item{treelist}{A list of trees, used for getting tip
+  names}
 }
 \value{
-  output A description of the object the function outputs
+  output A list of clades with parsed tip names
 }
 \description{
-  A more detailed description of what the function is and
-  how it works. It may be a paragraph that should not be
-  separated by any spaces.
+  Converts a list of clades (e.g., "1 2 3 4" as a clade)
+  and returns a list of parsed clades, converting numbers
+  to names using a set of trees. Called internally by the
+  slide and cumulative analyses, not user-facing.
 }
-\examples{
-R code here showing how your function works
-}
-\keyword{keywords}
 

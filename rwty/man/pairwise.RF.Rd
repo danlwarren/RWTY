@@ -1,26 +1,28 @@
 \name{pairwise.RF}
 \alias{pairwise.RF}
-\title{A one sentence description of what your function does}
+\title{Sequential RF distances for a list of trees}
 \usage{
   pairwise.RF(trees, n = length(trees) - 1)
 }
 \arguments{
-  \item{inputParameter1}{A description of the input
-  parameter \code{inputParameter1}}
+  \item{trees}{A multiPhylo object}
 
-  \item{inputParameter2}{A description of the input
-  parameter \code{inputParameter2}}
+  \item{n}{Number of comparisons}
 }
 \value{
-  output A description of the object the function outputs
+  output A vector of distances
 }
 \description{
-  A more detailed description of what the function is and
-  how it works. It may be a paragraph that should not be
-  separated by any spaces.
+  input a list of trees, get back a list of sequential RF
+  distances n is the number of comparisons you want to
+  make. Useful for making sure you count the same number of
+  instances. the default is to look at all pairs of trees
+  in the list
 }
 \examples{
-R code here showing how your function works
+pairwise.RF(mytrees)
 }
-\keyword{keywords}
+\keyword{MCMC,}
+\keyword{distance}
+\keyword{phylogenetics,}
 

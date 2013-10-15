@@ -1,26 +1,34 @@
 \name{plawty}
 \alias{plawty}
-\title{A one sentence description of what your function does}
+\title{Old style plotting of cumulative and slide objects}
 \usage{
   plawty(x, numclades = 10)
 }
 \arguments{
-  \item{inputParameter1}{A description of the input
-  parameter \code{inputParameter1}}
+  \item{x}{An rwty.slide or rwty.cumulative object}
 
-  \item{inputParameter2}{A description of the input
-  parameter \code{inputParameter2}}
+  \item{numclades}{The number of clades to plot.  The
+  clades with the highest sd in clade frequency are plotted
+  first, so numclades = 10 will be the 10 most variable
+  clades in the chain.}
 }
 \value{
-  output A description of the object the function outputs
+  thisplot Returns a ggplot object.
 }
 \description{
-  A more detailed description of what the function is and
-  how it works. It may be a paragraph that should not be
-  separated by any spaces.
+  Takes a table from cumulative.freq or slide.freq as
+  input. Numclades gives the number of clades to plot,
+  starting from the top.  Since cumulative.freq and
+  slide.freq both sort by sd these will by default be the
+  most variable clades.
 }
 \examples{
-R code here showing how your function works
+plawty(slideresults, numclades=25)
 }
-\keyword{keywords}
+\keyword{cumulative,}
+\keyword{mcmc,}
+\keyword{phylogenetics,}
+\keyword{plot}
+\keyword{sliding}
+\keyword{window,}
 

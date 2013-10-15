@@ -1,25 +1,23 @@
-#' A one sentence description of what your function does
+#' Sequential RF distances for a list of trees
 #' 
-#' A more detailed description of what the function is and how
-#' it works. It may be a paragraph that should not be separated
-#' by any spaces. 
+#' input a list of trees, get back a list of sequential RF distances
+#' n is the number of comparisons you want to make. Useful for making sure you count the same number of instances.
+#' the default is to look at all pairs of trees in the list
 #'
-#' @param inputParameter1 A description of the input parameter \code{inputParameter1}
-#' @param inputParameter2 A description of the input parameter \code{inputParameter2}
+#' @param trees A multiPhylo object
+#' @param n Number of comparisons
 #'
-#' @return output A description of the object the function outputs 
+#' @return output A vector of distances
 #'
-#' @keywords keywords
+#' @keywords MCMC, phylogenetics, distance
 #'
 #' @export
 #' 
 #' @examples
-#' R code here showing how your function works
+#' pairwise.RF(mytrees)
 
 pairwise.RF <- function(trees, n=length(trees)-1){
-    #input a list of trees, get back a list of sequential RF distances
-    #n is the number of comparisons you want to make. Useful for making sure you count the same number of instances.
-    #the default is to look at all pairs of trees in the list
+    
     
     RFs <- c()	
     for(tree.index in 1:(n)){

@@ -1,26 +1,38 @@
 \name{compare.n}
 \alias{compare.n}
-\title{A one sentence description of what your function does}
+\title{Compares posterior probability estimates from multiple MCMC chains.}
 \usage{
   compare.n(x, setnames = NA, burnin)
 }
 \arguments{
-  \item{inputParameter1}{A description of the input
-  parameter \code{inputParameter1}}
+  \item{x}{A list of rwty.trees objects.}
 
-  \item{inputParameter2}{A description of the input
-  parameter \code{inputParameter2}}
+  \item{setnames}{A list of names for the chains.}
+
+  \item{burnin}{The number of trees to eliminate as burnin
+  \code{burnin}}
 }
 \value{
-  output A description of the object the function outputs
+  output A list containing a table of frequencies of each
+  clade in each chain along with mean and sd, a distance
+  matrix measuring consensus between chains, a translation
+  table, and a ggpairs plot.
 }
 \description{
-  A more detailed description of what the function is and
-  how it works. It may be a paragraph that should not be
-  separated by any spaces.
+  This function takes a set of tree files, an option array
+  of names for those files, and a burnin argument.  It
+  returns a table with the frequencies of each clade in
+  each of those tree files, a distance metric indicating
+  the mean difference between clade frequencies, a plot of
+  each chain against the others, and a translation table.
 }
 \examples{
-R code here showing how your function works
+compare.n(mytrees, setnames=c("Chain 1", "Chain 2", "Chain 3"), burnin=100)
 }
-\keyword{keywords}
+\keyword{MCMC,}
+\keyword{clade}
+\keyword{consensus,}
+\keyword{convergence}
+\keyword{frequency,}
+\keyword{phylogenetics,}
 

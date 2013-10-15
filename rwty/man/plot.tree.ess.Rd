@@ -1,12 +1,11 @@
 \name{plot.tree.ess}
 \alias{plot.tree.ess}
-\title{A one sentence description of what your function does}
+\title{Plotting of tree ESS data}
 \usage{
   plot.tree.ess(tree.ess.object)
 }
 \arguments{
-  \item{inputParameter1}{A description of the input
-  parameter \code{inputParameter1}}
+  \item{tree.ess.object}{}
 
   \item{inputParameter2}{A description of the input
   parameter \code{inputParameter2}}
@@ -15,12 +14,14 @@
   output A description of the object the function outputs
 }
 \description{
-  A more detailed description of what the function is and
-  how it works. It may be a paragraph that should not be
-  separated by any spaces.
+  Plotting of tree ESS data
 }
 \examples{
-R code here showing how your function works
+plot.tree.ess(essresults)
 }
-\keyword{keywords}
+\keyword{effective}
+\keyword{phylogeny,}
+\keyword{sample}
+\keyword{size}
+\keyword{topology,}
 

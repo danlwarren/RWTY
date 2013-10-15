@@ -1,26 +1,28 @@
 \name{tree.dist.matrix}
 \alias{tree.dist.matrix}
-\title{A one sentence description of what your function does}
+\title{Tree distance matrix calculation}
 \usage{
   tree.dist.matrix(trees, treenames = names(trees))
 }
 \arguments{
-  \item{inputParameter1}{A description of the input
-  parameter \code{inputParameter1}}
+  \item{trees}{a multiPhylo object \code{trees}}
 
-  \item{inputParameter2}{A description of the input
-  parameter \code{inputParameter2}}
+  \item{treenames}{A vector of names for the trees
+  \code{treenames}}
 }
 \value{
-  output A description of the object the function outputs
+  RF A distance matrix of RF distances
 }
 \description{
-  A more detailed description of what the function is and
-  how it works. It may be a paragraph that should not be
-  separated by any spaces.
+  This function takes a list of trees and returns a
+  distance matrix populated with Robinsoun-Foulds tree
+  distances between all trees in the list.
 }
 \examples{
-R code here showing how your function works
+tree.dist.matrix(mytrees, treenames=c("tree1", "tree2", "tree3"))
 }
-\keyword{keywords}
+\keyword{distance,}
+\keyword{robinson-foulds}
+\keyword{tree}
+\keyword{treespace,}
 
