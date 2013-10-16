@@ -20,7 +20,6 @@ Depends:
     GGally
 Suggests:
     knitr,
-    BiocStyle
 VignetteBuilder: knitr
 Description: This package implements various tests, visualizations, and metrics
     for diagnosing convergence of MCMC chains in phylogenetics.  It implements
@@ -53,3 +52,4 @@ Collate:
     'tree.ess.R'
     'treespace.single.R'
     'rwty.utility.functions.R'
+    'rwty-package.R'
