@@ -1,0 +1,38 @@
+\name{compare.n}
+\alias{compare.n}
+\title{Compares posterior probability estimates from multiple MCMC chains.}
+\usage{
+  compare.n(x, setnames = NA, burnin)
+}
+\arguments{
+  \item{x}{A list of rwty.trees objects.}
+
+  \item{setnames}{A list of names for the chains.}
+
+  \item{burnin}{The number of trees to eliminate as burnin
+  \code{burnin}}
+}
+\value{
+  output A list containing a table of frequencies of each
+  clade in each chain along with mean and sd, a distance
+  matrix measuring consensus between chains, a translation
+  table, and a ggpairs plot.
+}
+\description{
+  This function takes a set of tree files, an option array
+  of names for those files, and a burnin argument.  It
+  returns a table with the frequencies of each clade in
+  each of those tree files, a distance metric indicating
+  the mean difference between clade frequencies, a plot of
+  each chain against the others, and a translation table.
+}
+\examples{
+compare.n(mytrees, setnames=c("Chain 1", "Chain 2", "Chain 3"), burnin=100)
+}
+\keyword{MCMC,}
+\keyword{clade}
+\keyword{consensus,}
+\keyword{convergence}
+\keyword{frequency,}
+\keyword{phylogenetics,}
+

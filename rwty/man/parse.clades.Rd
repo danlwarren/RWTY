@@ -1,0 +1,23 @@
+\name{parse.clades}
+\alias{parse.clades}
+\title{Rename clades for easy recall}
+\usage{
+  parse.clades(clades, treelist)
+}
+\arguments{
+  \item{clades}{A list of clades, as in the first column of
+  a cladetable in an rwty.slide or rwty.cumulative object}
+
+  \item{treelist}{A list of trees, used for getting tip
+  names}
+}
+\value{
+  output A list of clades with parsed tip names
+}
+\description{
+  Converts a list of clades (e.g., "1 2 3 4" as a clade)
+  and returns a list of parsed clades, converting numbers
+  to names using a set of trees. Called internally by the
+  slide and cumulative analyses, not user-facing.
+}
+
