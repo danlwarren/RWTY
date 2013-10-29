@@ -16,12 +16,18 @@
 #' load.trees(file="mytrees.nex", type="nexus")
 
 #sample that works
-load.trees <- function(file, type="nexus"){
+load.trees <- function(file, type="nexus", gens.per.tree=NA){
     
     # Read in trees
     print("Reading trees...")
     if(type == "nexus") {treelist <- read.nexus(file=file)}
     else {treelist <- read.tree(file=file)}
+    
+    if(is.na(gens.per.tree)){
+        gens.per.tree <- as.numeric(strsplit(x=names(treelist)[3], split="[[:punct:]]")[[1]][-1]) - 
+            as.numeric(strsplit(x=names(treelist)[2], split="[[:punct:]]")[[1]][-1])    
+    }
+    print(paste(gens.per.tree, "generations per tree..."))
     
     # Unroot all trees.  Can't use lapply because it was
     # deleting tip labels.
@@ -47,7 +53,10 @@ load.trees <- function(file, type="nexus"){
         ptable <- read.table(pfile, skip=1, header=TRUE)
     }
     
-    output <- list("trees" = treelist, "ptable" = ptable)
+    output <- list(
+        "trees" = treelist, 
+        "ptable" = ptable, 
+        "gens.per.tree" = gens.per.tree)
     
     class(output) <- "rwty.trees"
     
