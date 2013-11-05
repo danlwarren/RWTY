@@ -17,26 +17,33 @@
 #' R code here showing how your function works
 
 continuous.ess <- function(tree.list, burnin=0, N.thinning=20, N.sample=100){
+
 	# Estimate ESS for a list of trees at various subsamplings
 	tree.list <- tree.list[(burnin + 1):(length(tree.list))]
 
 	# this ensures that we can tell you if your ESS is <200
 	max.thinning <- as.integer(length(tree.list)/200)
+	
 
 	# this ensures that all estimates are taken with equal sample sizes
 	if(N.sample > as.integer(length(tree.list)/max.thinning))
-		N.sample <- as.integer(length(tree.list/max.thinning))
+		N.sample <- as.integer(length(tree.list)/max.thinning)
+		
+	print(paste("This analysis will use ", N.sample, "samples per gap size"))
 
-	# we analyze up to 20 thinnings spread evenly, less if there are non-unique numbers
+	# we analyze up to N.thinning thinnings spread evenly, less if there are non-unique numbers
 	thinnings <- unique(as.integer(seq(from = 1, to = max.thinning, length.out=N.thinning)))
 
 	# first we get the reference set of distances from a shuffled list
 	tree.list.shuffled <- sample(tree.list, length(tree.list), replace=FALSE)
 	samples = as.integer(length(tree.list)/2)
+
 	print(paste("Calculating reference with", samples, "samples"))
 	d.reference <- get.sequential.distances.c(tree.list.shuffled, 1, samples)
+
 	d.reference.average <- median(d.reference)
 	d.reference.boot <- apply(matrix(sample(d.reference,rep=TRUE,10^3*length(d.reference)),nrow=10^3),1,median)
+	#d.reference.lowerCI <- d.reference.average
 	d.reference.lowerCI <- quantile(d.reference.boot,c(0.05,0.95))[1]
 
 	r <- data.frame()
