@@ -1,5 +1,5 @@
-setwd("~/Dropbox/R Projects/RWTY")
-#setwd("~/Documents/Projects_current/RWTY")
+#setwd("~/Dropbox/R Projects/RWTY")
+setwd("~/Documents/Projects_current/RWTY")
 
 # comment
 

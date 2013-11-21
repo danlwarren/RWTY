@@ -20,7 +20,9 @@ plot.tree.ess <- function(tree.ess.object){
         geom_hline(yintercept=tree.ess.object$reference.distance, linetype='dashed') +
         geom_hline(yintercept=tree.ess.object$reference.distance.lowerCI, linetype='dashed', colour="gray") +
         geom_point(size = 2, aes(color=lower)) + 
-        theme(legend.position="none")
+        theme(legend.position="none") +
+        xlab("Gap size") + 
+        ylab("Median distance")
     
     
     t

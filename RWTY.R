@@ -4,7 +4,7 @@ library(ggplot2)
 library(reshape2)
 library(phangorn)
 library(MASS)
-library(GGally)
+#library(GGally)
 
 source("./rwty/R/analyze.multi.R")
 source("./rwty/R/analyze.rwty.R")
