@@ -45,9 +45,10 @@ load.trees <- function(file, type="nexus", gens.per.tree=NA){
     class(treelist) <- "multiPhylo"
     
     ptable <- NA
-    
+    pfile <- NA
     # Check for .p file, read it in if it exists
-    pfile <- sub(".t$", ".p", file, perl=TRUE)
+    if(length(grep(".t$", file, perl=TRUE)) > 0){pfile <- sub(".t$", ".p", file, perl=TRUE)}
+    if(length(grep(".trees$", file, perl=TRUE)) > 0){pfile <- sub(".trees$", ".p", file, perl=TRUE)}
     if(file.exists(pfile)){
         print(paste("Reading p values from", pfile))
         ptable <- read.table(pfile, skip=1, header=TRUE)

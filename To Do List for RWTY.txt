@@ -1,7 +1,7 @@
 To Do List for RWTY:
 
 Hook the plot.cladevar stuff into the single chain analyses
-Parse gens.per.tree automatically from tree file (compare tree 2 and 3)
+
 Multipanel plots for each chain with slide, cumulative, treespace, clade var, LnL, etc
 Drop the multi-chain treespace plots for now - take too long
 Put together some executable examples with data that will be distributed with the package.  Make sure to include .p files.
