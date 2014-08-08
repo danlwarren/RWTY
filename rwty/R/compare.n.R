@@ -75,7 +75,7 @@ compare.n <- function(x, setnames=NA, burnin){ # In this case x is a list of rwt
   
   output <- list("cladetable" = clade.table, "dist" = d, 
                  "translation" = translation.table,
-                 "plot" <- plot)
+                 "compare.plot" = plot)
   class(output) = "rwty.comparen"
   output
 }

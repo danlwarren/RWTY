@@ -13,11 +13,15 @@ multitest <- analyze.rwty(chains=list(test1, test2, test3, test4), burnin=100,
                           window.size=100, gens.per.tree=100, step=10, 
                           labels=c("Run1", "Run2", "Run3", "Run4"))
 
-
+singletest <- analyze.rwty(test1, burnin=100, 
+                          window.size=100, gens.per.tree=100, step=10, filename="test.pdf", labels = "wtf")
 
 
 test5 <- load.trees("./testdata/t_and_p/AllDataProt.nex.run1.t")
 test6 <- load.trees("./testdata/t_and_p/AllDataProt.nex.run1.t")
+
+test7 <- load.trees(file="./testdata/renee/StarBEASTLog.amr_alignment3edited.trees")
+
 cumtest <- cumulative.freq(test1, burnin=100, window=100, gens.per.tree=1000)
 slidetest <- slide.freq(test1, burnin=100, window=100, gens.per.tree=1000)
 #comp2test <- compare.two(test1, test2, burnin=100)

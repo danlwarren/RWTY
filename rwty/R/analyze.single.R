@@ -20,7 +20,7 @@
 #' @examples
 #' analyze.single(mytrees, burnin=100, window.size=100, gens.per.tree=1000, step=5)
 
-analyze.single <- function(chains, burnin, window.size, gens.per.tree, step=1, ...){
+analyze.single <- function(chains, burnin, window.size, gens.per.tree, step=1, filename = NA, labels=NA, ...){
     
     lnl.plot <- NA
     if(exists("chains$ptable")){
@@ -43,6 +43,24 @@ analyze.single <- function(chains, burnin, window.size, gens.per.tree, step=1, .
     treespace <- treespace.single(mdstrees)
     treespace.data <- treespace$mds
     treespace.plot <- treespace$plot
+    
+    if(!is.na(labels)){
+        if(!is.na(lnl.plot)){
+            lnl.plot <- lnl.plot + ggtitle(labels)
+        }
+        slide.plot <- slide.plot + ggtitle(labels)
+        cumulative.plot <- cumulative.plot + ggtitle(labels)
+        treespace.plot <- treespace.plot + ggtitle(labels)
+    }
+    
+    if(!is.na(filename)){
+        pdf(file=filename)
+        print(lnl.plot)
+        print(slide.plot)
+        print(cumulative.plot)
+        print(treespace.plot)
+        dev.off()
+    }
     
     output <- list("LnL.plot" = lnl.plot, "slide.data" = slide.data,
                    "slide.plot" = slide.plot, "cumulative.data" = cumulative.data,
