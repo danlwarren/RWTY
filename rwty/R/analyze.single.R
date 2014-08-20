@@ -20,8 +20,9 @@
 #' @examples
 #' analyze.single(mytrees, burnin=100, window.size=100, gens.per.tree=1000, step=5)
 
-analyze.single <- function(chains, burnin, window.size, gens.per.tree, step=1, filename = NA, labels=NA, ...){
+analyze.single <- function(chains, burnin, window.size, gens.per.tree=NA, step=1, filename = NA, labels=NA, ...){
     
+    if(is.na(gens.per.tree)){gens.per.tree = chains$gens.per.tree}
     lnl.plot <- NA
     if(exists("chains$ptable")){
         print("Making LnL plot...")

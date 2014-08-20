@@ -28,10 +28,10 @@ plot.cladeprobs <- function(input.table, numclades=20){
     colnames(x) <- c("Clade", "Generations", "Posterior.Probability")
     x$Clade <- as.factor(x$Clade)
     
+    print(x)
     thisplot <- ggplot(data=x, aes(x=as.numeric(Generations), y=Posterior.Probability, group=Clade, color=Clade)) + 
         geom_line() +
         theme(legend.position="none") +
         xlab("Generations")
-    
     thisplot
 }

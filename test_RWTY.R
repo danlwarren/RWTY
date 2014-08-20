@@ -10,11 +10,11 @@ test2 <- load.trees(file="./testdata/fairywrens/PCFW.nex.run2.t")
 test3 <- load.trees(file="./testdata/fairywrens/PCFW.nex.run1.t")
 test4 <- load.trees(file="./testdata/fairywrens/PCFW.nex.run2.t")
 multitest <- analyze.rwty(chains=list(test1, test2, test3, test4), burnin=100, 
-                          window.size=100, gens.per.tree=100, step=10, 
-                          labels=c("Run1", "Run2", "Run3", "Run4"))
+                          window.size=100, step=10, labels=c("Run1", "Run2", "Run3", "Run4"), filename="multitest.pdf")
 
-singletest <- analyze.rwty(test1, burnin=100, 
-                          window.size=100, gens.per.tree=100, step=10, filename="test.pdf", labels = "wtf")
+### Ah crap, we've got it auto-detecting gens per tree but are still passing that as an argument
+
+singletest <- analyze.rwty(test1, burnin=100, window.size=100, step=10, filename="test.pdf", labels = "Singletest")
 
 
 test5 <- load.trees("./testdata/t_and_p/AllDataProt.nex.run1.t")
