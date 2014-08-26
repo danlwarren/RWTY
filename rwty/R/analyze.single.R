@@ -20,7 +20,7 @@
 #' @examples
 #' analyze.single(mytrees, burnin=100, window.size=100, gens.per.tree=1000, step=5)
 
-analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, step=1, filename = NA, labels=NA, ...){
+analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, step=1, filename = NA, labels=NA, treespace=TRUE, ...){
     
     if(is.na(gens.per.tree)){gens.per.tree = chains$gens.per.tree}
     lnl.plot <- NA
@@ -38,34 +38,43 @@ analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, step
     
     print("Sliding window analysis...")
     slide.data <- slide.freq(chains, burnin, window.size, gens.per.tree)
-    slide.plot <- plot.cladeprobs(slide.data$slide.table, ...) + ggtitle("Sliding Window")
+    slide.plot <- plot.cladeprobs(slide.data$slide.table, ...) + ggtitle("Sliding Window Posterior Probability")
+    slide.variance.plot <- plot.cladevar(slide.data$slide.table) + ggtitle("Sliding Window Variance")
     
     print("Cumulative analysis...")
     cumulative.data <- cumulative.freq(chains, burnin, window.size, gens.per.tree,
                                        slide.freq.table=slide.data)
-    cumulative.plot <- plot.cladeprobs(cumulative.data$cumulative.table, ...) + ggtitle("Cumulative")
+    cumulative.plot <- plot.cladeprobs(cumulative.data$cumulative.table, ...) + ggtitle("Cumulative Posterior Probability")
+    cumulative.variance.plot <- plot.cladevar(cumulative.data$cumulative.table) + ggtitle("Cumulative Variance")
     
-    print("Plotting trees in tree space...")
+    
     #print(step)
-    mdstrees <- chains$trees[seq((burnin + 1), length(chains$trees), by = step)]
-    mdsptable <- NULL
-    if(!is.null(chains$ptable)){
-        mdsptable <- chains$ptable[seq((burnin + 1), length(chains$trees), by = step),]
+    treespace.data <- NA
+    treespace.plot <- NA
+    if(treespace==TRUE){
+        print("Plotting trees in tree space...")
+        mdstrees <- chains$trees[seq((burnin + 1), length(chains$trees), by = step)]
+        mdsptable <- NULL
+        if(!is.null(chains$ptable)){
+            mdsptable <- chains$ptable[seq((burnin + 1), length(chains$trees), by = step),]
+        }
+        # The following massive ball of shit is intended to get a list of numeric values for the
+        # generation represented by each tree
+        gens <- as.numeric(unlist(regmatches(names(chains$trees), gregexpr('\\(?[0-9]+', names(chains$trees)))))
+        gens <- gens[seq((burnin + 1), length(chains$trees), by = step)]
+        treespace <- treespace.single(mdstrees, gens, mdsptable)
+        treespace.data <- treespace$mds
+        treespace.plot <- treespace$plot + ggtitle("Tree Space")
     }
-    # The following massive ball of shit is intended to get a list of numeric values for the
-    # generation represented by each tree
-    gens <- as.numeric(matrix(unlist(strsplit(x=names(chains$trees), split="[[:punct:]]")), ncol=2, byrow=TRUE)[,2])
-    gens <- gens[seq((burnin + 1), length(chains$trees), by = step)]
-    treespace <- treespace.single(mdstrees, gens, mdsptable)
-    treespace.data <- treespace$mds
-    treespace.plot <- treespace$plot + ggtitle("Tree Space")
     
     if(!is.na(labels)){
         if(!is.na(lnl.plot[1])){
             lnl.plot <- lnl.plot + ggtitle(paste(labels, "Likelihood"))
         }
-        slide.plot <- slide.plot + ggtitle(paste(labels, "Sliding Window"))
-        cumulative.plot <- cumulative.plot + ggtitle(paste(labels, "Cumulative"))
+        slide.plot <- slide.plot + ggtitle(paste(labels, "Sliding Window Posterior Probability"))
+        slide.variance.plot <- slide.variance.plot + ggtitle(paste(labels, "Sliding Window Variance"))
+        cumulative.plot <- cumulative.plot + ggtitle(paste(labels, "Cumulative Posterior Probability"))
+        cumulative.variance.plot <- cumulative.variance.plot + ggtitle(paste(labels, "Cumulative Variance"))
         treespace.plot <- treespace.plot + ggtitle(paste(labels, "Tree Space"))
     }
     
@@ -73,13 +82,16 @@ analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, step
         pdf(file=filename)
         print(lnl.plot)
         print(slide.plot)
+        print(slide.variance.plot)
         print(cumulative.plot)
+        print(cumulative.variance.plot)
         print(treespace.plot)
         dev.off()
     }
     
     output <- list("LnL.plot" = lnl.plot, "slide.data" = slide.data,
-                   "slide.plot" = slide.plot, "cumulative.data" = cumulative.data,
-                   "cumulative.plot" = cumulative.plot, "treespace.data" = treespace.data,
+                   "slide.plot" = slide.plot, "slide.variance.plot" = slide.variance.plot,
+                    "cumulative.data" = cumulative.data,"cumulative.plot" = cumulative.plot, 
+                   "cumulative.variance.plot" = cumulative.variance.plot, "treespace.data" = treespace.data,
                    "treespace.plot" = treespace.plot)
 }

@@ -1,18 +1,24 @@
 To Do List for RWTY:
 
-Hook the plot.cladevar stuff into the single chain analyses
-
-
-Fix point and text sizes for compare plot with lots of comparisons
 Get Anthony working on discordance metric
+
 Add discordance as a function of time and clustering of chains based on discordance - a tree of chains for chains of trees!
-Put together some executable examples with data that will be distributed with the package.  Make sure to include .p files.
+
+Put together some executable examples with data that will be distributed with the package.  
+
+Make sure to include .p files.
+
 Fix alpha on compare.n plots, ditch the grids
+
 Print burnin and other relevant settings on plots
+
 Something’s going wrong with labels.  At some point it’s deparsing label names and a space between words (or is it just a word and a number?) is causing it to fail.  In other words “Run 1” won’t work as a label but “Run1” will.
 UPDATE ON THIS:  Seems unfixable, from what I’m finding on Google.
 
 Store arguments and trees in the output object - perhaps thinning the trees that are stored?
 
 Make sure Dave is working on distance code.
+
 Include option to skip treespace plots, since they take a while and are only kinda informative.
+
+Right now RWTY can’t understand .p files that don’t have a comment in brackets on line 1.  Need to set it up to scan the file for the first line without brackets and skip to that before reading in the table.

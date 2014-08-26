@@ -16,7 +16,7 @@
 #' load.trees(file="mytrees.nex", type="nexus")
 
 #sample that works
-load.trees <- function(file, type="nexus", gens.per.tree=NA, trim=1){
+load.trees <- function(file, type="nexus", gens.per.tree=NA, trim=1, skiplines.p=1){
     
     # Read in trees
     print("Reading trees...")
@@ -24,8 +24,8 @@ load.trees <- function(file, type="nexus", gens.per.tree=NA, trim=1){
     else {treelist <- read.tree(file=file)}
     treelist <- treelist[seq(from=1, to=length(treelist), by=trim)]
     if(is.na(gens.per.tree)){
-        gens.per.tree <- as.numeric(strsplit(x=names(treelist)[3], split="[[:punct:]]")[[1]][-1]) - 
-            as.numeric(strsplit(x=names(treelist)[2], split="[[:punct:]]")[[1]][-1])    
+        gens.per.tree <- as.numeric(tail(strsplit(x=names(treelist)[3], split="[[:punct:]]")[[1]], 1)) - 
+            as.numeric(tail(strsplit(x=names(treelist)[2], split="[[:punct:]]")[[1]], 1))  
     }
     print(paste(gens.per.tree, "generations per tree..."))
     
@@ -51,7 +51,7 @@ load.trees <- function(file, type="nexus", gens.per.tree=NA, trim=1){
     if(length(grep(".trees$", file, perl=TRUE)) > 0){pfile <- sub(".trees$", ".p", file, perl=TRUE)}
     if(file.exists(pfile)){
         print(paste("Reading p values from", pfile))
-        ptable <- read.table(pfile, skip=1, header=TRUE)
+        ptable <- read.table(pfile, skip=skiplines.p, header=TRUE)
         ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
     }
     

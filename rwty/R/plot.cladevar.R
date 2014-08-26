@@ -17,8 +17,7 @@
 
 plot.cladevar <- function(input.table, numclades=nrow(input.table)){ 
     # plot variation in clade frequencies between windows
-    if(class(input.table) == "rwty.cumulative"){input.table = input.table$cumulative.table}
-    if(class(input.table) == "rwty.slide"){input.table = input.table$cumulative.table}
+    
     x <- input.table[1:numclades,2:length(input.table) - 2] #Stripping off mean and SD
     
     # this is a df of absolute differences in pp variation between windows
@@ -30,10 +29,11 @@ plot.cladevar <- function(input.table, numclades=nrow(input.table)){
     colnames(d) <- c("Clade", "Generations", "Variation.in.posterior.probability")
     d$Clade <- as.factor(d$Clade)
     
-    thisplot <- ggplot(data=d, aes(x=as.numeric(Generations), y=Variation.in.posterior.probability, group=Generations)) + 
+    thisplot <- ggplot(data=d, aes(x=as.numeric(as.character(Generations)), y=Variation.in.posterior.probability, group=Generations)) + 
         geom_boxplot() +
         theme(legend.position="none") +
-        xlab("Generations")
+        xlab("Generations") + 
+        ylab("Variation in posterior probability")
     
     thisplot
 }
