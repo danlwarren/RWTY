@@ -16,13 +16,13 @@
 #' load.trees(file="mytrees.nex", type="nexus")
 
 #sample that works
-load.trees <- function(file, type="nexus", gens.per.tree=NA){
+load.trees <- function(file, type="nexus", gens.per.tree=NA, trim=1){
     
     # Read in trees
     print("Reading trees...")
     if(type == "nexus") {treelist <- read.nexus(file=file)}
     else {treelist <- read.tree(file=file)}
-    
+    treelist <- treelist[seq(from=1, to=length(treelist), by=trim)]
     if(is.na(gens.per.tree)){
         gens.per.tree <- as.numeric(strsplit(x=names(treelist)[3], split="[[:punct:]]")[[1]][-1]) - 
             as.numeric(strsplit(x=names(treelist)[2], split="[[:punct:]]")[[1]][-1])    
@@ -44,7 +44,7 @@ load.trees <- function(file, type="nexus", gens.per.tree=NA){
     # Reset class
     class(treelist) <- "multiPhylo"
     
-    ptable <- NA
+    ptable <- NULL
     pfile <- NA
     # Check for .p file, read it in if it exists
     if(length(grep(".t$", file, perl=TRUE)) > 0){pfile <- sub(".t$", ".p", file, perl=TRUE)}
@@ -52,6 +52,7 @@ load.trees <- function(file, type="nexus", gens.per.tree=NA){
     if(file.exists(pfile)){
         print(paste("Reading p values from", pfile))
         ptable <- read.table(pfile, skip=1, header=TRUE)
+        ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
     }
     
     output <- list(

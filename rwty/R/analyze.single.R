@@ -20,38 +20,53 @@
 #' @examples
 #' analyze.single(mytrees, burnin=100, window.size=100, gens.per.tree=1000, step=5)
 
-analyze.single <- function(chains, burnin, window.size, gens.per.tree=NA, step=1, filename = NA, labels=NA, ...){
+analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, step=1, filename = NA, labels=NA, ...){
     
     if(is.na(gens.per.tree)){gens.per.tree = chains$gens.per.tree}
     lnl.plot <- NA
-    if(exists("chains$ptable")){
+    if(!is.null(chains$ptable)){
         print("Making LnL plot...")
-        lnl.plot <- ggplot(chains$ptable[burnin:length(chains$ptable[,1]),], aes(x=Gen, y=LnL)) + geom_line()
+        if(nrow(chains$ptable) > 1000){ #Keeping the number of points plotted reasonable
+            temp.ptable <- chains$ptable[burnin:length(chains$ptable[,1]),]
+            temp.ptable <- temp.ptable[seq(from=1, to=length(temp.ptable[,1]), length.out=1000),]
+            lnl.plot <- ggplot(temp.ptable, aes(x=Gen, y=LnL)) + geom_line() + ggtitle("Likelihood")
+        }
+        else{
+            lnl.plot <- ggplot(chains$ptable[burnin:length(chains$ptable[,1]),], aes(x=Gen, y=LnL)) + geom_line() + ggtitle("Likelihood")
+        }
     }
     
     print("Sliding window analysis...")
     slide.data <- slide.freq(chains, burnin, window.size, gens.per.tree)
-    slide.plot <- plot.cladeprobs(slide.data$slide.table, ...)
+    slide.plot <- plot.cladeprobs(slide.data$slide.table, ...) + ggtitle("Sliding Window")
     
     print("Cumulative analysis...")
     cumulative.data <- cumulative.freq(chains, burnin, window.size, gens.per.tree,
                                        slide.freq.table=slide.data)
-    cumulative.plot <- plot.cladeprobs(cumulative.data$cumulative.table, ...)
+    cumulative.plot <- plot.cladeprobs(cumulative.data$cumulative.table, ...) + ggtitle("Cumulative")
     
     print("Plotting trees in tree space...")
-    print(step)
+    #print(step)
     mdstrees <- chains$trees[seq((burnin + 1), length(chains$trees), by = step)]
-    treespace <- treespace.single(mdstrees)
+    mdsptable <- NULL
+    if(!is.null(chains$ptable)){
+        mdsptable <- chains$ptable[seq((burnin + 1), length(chains$trees), by = step),]
+    }
+    # The following massive ball of shit is intended to get a list of numeric values for the
+    # generation represented by each tree
+    gens <- as.numeric(matrix(unlist(strsplit(x=names(chains$trees), split="[[:punct:]]")), ncol=2, byrow=TRUE)[,2])
+    gens <- gens[seq((burnin + 1), length(chains$trees), by = step)]
+    treespace <- treespace.single(mdstrees, gens, mdsptable)
     treespace.data <- treespace$mds
-    treespace.plot <- treespace$plot
+    treespace.plot <- treespace$plot + ggtitle("Tree Space")
     
     if(!is.na(labels)){
-        if(!is.na(lnl.plot)){
-            lnl.plot <- lnl.plot + ggtitle(labels)
+        if(!is.na(lnl.plot[1])){
+            lnl.plot <- lnl.plot + ggtitle(paste(labels, "Likelihood"))
         }
-        slide.plot <- slide.plot + ggtitle(labels)
-        cumulative.plot <- cumulative.plot + ggtitle(labels)
-        treespace.plot <- treespace.plot + ggtitle(labels)
+        slide.plot <- slide.plot + ggtitle(paste(labels, "Sliding Window"))
+        cumulative.plot <- cumulative.plot + ggtitle(paste(labels, "Cumulative"))
+        treespace.plot <- treespace.plot + ggtitle(paste(labels, "Tree Space"))
     }
     
     if(!is.na(filename)){

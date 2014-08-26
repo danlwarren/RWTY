@@ -5,6 +5,7 @@ library(reshape2)
 library(phangorn)
 library(MASS)
 library(GGally)
+options(scipen = 100)
 
 source("./rwty/R/analyze.multi.R")
 source("./rwty/R/analyze.rwty.R")
