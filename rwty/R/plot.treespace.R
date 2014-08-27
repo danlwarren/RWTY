@@ -14,6 +14,7 @@
 #' plot.treespace(mypoints)
 
 plot.treespace <- function(points){
+
     if(!is.null(points$LnL)){
         p <- ggplot(data=points, aes(x=x,y=y,fill=LnL)) + 
             geom_path(alpha=0.2, linetype='dashed') + 

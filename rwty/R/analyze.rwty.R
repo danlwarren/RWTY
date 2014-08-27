@@ -21,7 +21,7 @@
 #' analyze.rwty(chain1, burnin=100, window.size=100, gens.per.tree=1000, step=5)
 #' analyze.rwty(list(chain1, chain2, chain3), burnin=100, window.size=100, gens.per.tree=1000, step=5, labels=c("Chain 1", "Chain 2", "Chain 3"))
 
-analyze.rwty <- function(chains, burnin, window.size, gens.per.tree=NA, step=1,  ...){
+analyze.rwty <- function(chains, burnin, window.size, gens.per.tree=NA, treespace.points = 100,  ...){
     
     # If a single rwty.trees object is passed, it goes to the analyze.single
     # function.  Otherwise it assumes that multiple rwty.trees objects
@@ -29,11 +29,11 @@ analyze.rwty <- function(chains, burnin, window.size, gens.per.tree=NA, step=1, 
     if(class(chains) == "rwty.trees"){
         print("Analyzing single chain...")
         analyze.single(chains, burnin, window.size,
-                       gens.per.tree, step, ...)
+                       gens.per.tree, treespace.points, ...)
     }
     
     else{
         print("Analyzing multiple chains...")
-        analyze.multi(chains, burnin, window.size, gens.per.tree, step, ...)
+        analyze.multi(chains, burnin, window.size, gens.per.tree, treespace.points, ...)
     }
 }

@@ -22,3 +22,5 @@ Make sure Dave is working on distance code.
 Include option to skip treespace plots, since they take a while and are only kinda informative.
 
 Right now RWTY can’t understand .p files that don’t have a comment in brackets on line 1.  Need to set it up to scan the file for the first line without brackets and skip to that before reading in the table.
+
+Can we default the step variable so that it’s a reasonable number of trees?  Or pass as an argument the number of points to plot and have the chain thinned automatically?

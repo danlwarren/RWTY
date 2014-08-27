@@ -19,7 +19,7 @@
 #' @examples
 #' analyze.multi(list(chain1, chain2, chain3), burnin=100, window.size=100, gens.per.tree=1000, step=5, labels=c("Chain 1", "Chain 2", "Chain 3"))
 
-analyze.multi <- function(chains, burnin, window.size, gens.per.tree=NA, step=1,filename=NA,  labels=NA, ...){
+analyze.multi <- function(chains, burnin, window.size, gens.per.tree=NA, treespace.points=100, filename=NA,  labels=NA, ...){
     
     output <- list()
     
@@ -34,7 +34,7 @@ analyze.multi <- function(chains, burnin, window.size, gens.per.tree=NA, step=1,
         }
         output[[labels[i]]] <- c(output, analyze.single(chains[[i]], burnin, window.size, 
                                 gens.per.tree=chains[[i]]$gens.per.tree, 
-                                step, labels=labels[[i]], filename = thisfilename, ... ))
+                                treespace.points, labels=labels[[i]], filename = thisfilename, ... ))
     }
     
     output[["compare.n"]] <- compare.n(chains, setnames=labels, burnin)

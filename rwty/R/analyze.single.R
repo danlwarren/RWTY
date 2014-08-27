@@ -20,8 +20,8 @@
 #' @examples
 #' analyze.single(mytrees, burnin=100, window.size=100, gens.per.tree=1000, step=5)
 
-analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, step=1, filename = NA, labels=NA, treespace=TRUE, ...){
-    
+analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, treespace.points=100, filename = NA, labels=NA, treespace=TRUE, ...){
+    step = as.integer((length(chains$trees) - burnin)/treespace.points)
     if(is.na(gens.per.tree)){gens.per.tree = chains$gens.per.tree}
     lnl.plot <- NA
     if(!is.null(chains$ptable)){
