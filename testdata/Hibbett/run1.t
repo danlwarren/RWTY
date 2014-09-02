@@ -1,5 +1,5 @@
 #NEXUS
-[R-package APE, Tue Sep  2 09:56:15 2014]
+[R-package APE, Tue Sep  2 13:13:53 2014]
 
 BEGIN TAXA;
 	DIMENSIONS NTAX = 85;
