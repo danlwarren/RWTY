@@ -5,7 +5,11 @@
 #' @param file A path to a .t file containing an MCMC chain of trees
 #' @param type An argument that designates the type of tree file.  If "nexus",
 #' trees are loaded using ape's read.nexus function.  Otherwise, it's read.tree.
-#'
+#' @param gens.per.tree The number of generations separating trees.  If not provided, RWTY will attempt to calculate it automatically.
+#' @param trim Used for thinning the chain.  If a number N is provided, RWTY keeps every Nth tree.
+#' @param skiplines.p The number of lines that must be skipped to get to the header of the p file.  
+#' MrBayes, for instance, prints a comment line at the top of the p file, so MrBayes files should be
+#' read in with a skiplines.p value of 1.
 #' @return output An rwty.trees object containing the multiPhylo and the table of values from the .p file if available.
 #'
 #' @keywords Phylogenetics, MCMC, load

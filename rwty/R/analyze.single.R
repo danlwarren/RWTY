@@ -7,8 +7,11 @@
 #' @param chains A single rwty.trees object. \code{chains}
 #' @param burnin The number of trees to eliminate as burnin \code{burnin}
 #' @param window.size The length of window (in trees) for the sliding window plot \code{window.size}
-#' @param gens.per.tree The number of generations per tree in the .t file.
-#' @param step The number of trees to skip for each step in the treespace plot.  Step=5 would amount to reading every fifth tree.
+#' @param gens.per.tree The number of generations per tree in the .t file. \code{gens.per.tree}
+#' @param treespace.points The number of trees to plot in the treespace plot.  \code{treespace.points}
+#' @param filename A name to be used for generating pdfs of output.  \code{filename}
+#' @param labels The name to use on plots and in generating output files.  \code{labels}
+#' @param treespace Boolean to determine whether or not treespace plots are made. \code{treespace}
 #
 #' @return output A list with tables and plots for LnL (when .p file exists), sliding window,
 #' cumulative, and treespace plots.
@@ -18,7 +21,7 @@
 #' @export
 #' 
 #' @examples
-#' analyze.single(mytrees, burnin=100, window.size=100, gens.per.tree=1000, step=5)
+#' analyze.single(mytrees, burnin=100, window.size=100, gens.per.tree=1000, treespace.points=100, filename="Run1.pdf", labels="Run1", treespace=TRUE)
 
 analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, treespace.points=100, filename = NA, labels=NA, treespace=TRUE, ...){
     step = as.integer((length(chains$trees) - burnin)/treespace.points)

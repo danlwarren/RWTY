@@ -5,8 +5,8 @@
 #' dimensional tree space for plotting.
 #'
 #' @param trees A multiphylo object \code{trees}
-#' @param burnin The number of trees to eliminate as burnin \code{burnin}
-#' @param p.file a file of probabilities to use for coloring generations \code{p.file}
+#' @param gens A list of the generation represented by each tree, for use in plotting \code{}
+#' @param ptable A table of p values to use for plotting likelihoods \code{p.file}
 #'
 #' @return Returns a list containing the mds table and a plot.
 #'
@@ -15,7 +15,7 @@
 #' @export
 #' 
 #' @examples
-#' treespace.single(mytrees, burnin=100, p.file="mytrees.p")
+#' treespace.single(chains$trees, gens=gen.table, ptable=p.table)
 
 treespace.single <- function(trees, gens, ptable=NULL){
     # do MDS on a single list of trees

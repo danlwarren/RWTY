@@ -17,7 +17,7 @@
 #' @examples
 #' plawty(input.table = slideresults, numclades=25)
 
-plot.cladeprobs <- function(input.table, numclades=20, type){ 
+plot.cladeprobs <- function(input.table, numclades=20){ 
     # clade probability plot over generations
     
     # TODO should put a check in here to make sure it only accepts slidetest or cumtest objects

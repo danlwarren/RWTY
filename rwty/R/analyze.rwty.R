@@ -9,7 +9,7 @@
 #' @param burnin The number of trees to eliminate as burnin \code{burnin}
 #' @param window.size The length of window (in trees) for the sliding window plot \code{window.size}
 #' @param gens.per.tree The number of generations per tree in the .t file.
-#' @param step The number of trees to skip for each step in the treespace plot.  Step=5 would amount to reading every fifth tree.
+#' @param treespace.points The number of trees to plot in the treespace plot.  
 #'
 #' @return output A list of outputs from the analyze.single runs on each chain, as well as a compare.n run for all chains.  Eventually we will add more multi-chain analyses.
 #'
@@ -18,8 +18,8 @@
 #' @export
 #' 
 #' @examples
-#' analyze.rwty(chain1, burnin=100, window.size=100, gens.per.tree=1000, step=5)
-#' analyze.rwty(list(chain1, chain2, chain3), burnin=100, window.size=100, gens.per.tree=1000, step=5, labels=c("Chain 1", "Chain 2", "Chain 3"))
+#' analyze.rwty(chain1, burnin=100, window.size=100, gens.per.tree=1000, treespace.points=50, filename="Run1.pdf")
+#' analyze.rwty(list(chain1, chain2, chain3), burnin=100, window.size=100, gens.per.tree=1000, treespace.points=50, labels=c("Chain 1", "Chain 2", "Chain 3"), filename="multi analysis.pdf")
 
 analyze.rwty <- function(chains, burnin, window.size, gens.per.tree=NA, treespace.points = 100,  ...){
     
