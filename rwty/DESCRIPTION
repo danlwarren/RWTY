@@ -52,4 +52,4 @@ Collate:
     'tree.ess.R'
     'treespace.single.R'
     'rwty.utility.functions.R'
-    'rwty-package.R'
+    'rwty-package.r'
