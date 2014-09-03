@@ -67,6 +67,7 @@ compare.n <- function(x, setnames=NA, burnin){ # In this case x is a list of rwt
   clade.table[,1] <- as.numeric(clade.table[,1])
   
   # Make a plot
+  assignInNamespace("ggally_cor", ggally_cor, "GGally")
   plot <- ggpairs(clade.table, columns=2:(length(x) + 1)) 
   
   #plot <- pairs(clade.table[,2:(length(x) + 1)])
