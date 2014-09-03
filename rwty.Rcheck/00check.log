@@ -1,0 +1,27 @@
+* using log directory ‘/Users/danwarren/GitHub/RWTY/rwty.Rcheck’
+* using R version 3.1.0 (2014-04-10)
+* using platform: x86_64-apple-darwin13.1.0 (64-bit)
+* using session charset: UTF-8
+* checking for file ‘rwty/DESCRIPTION’ ... OK
+* checking extension type ... Package
+* this is package ‘rwty’ version ‘0.1.1’
+* checking package namespace information ... OK
+* checking package dependencies ... NOTE
+Depends: includes the non-default packages:
+  ‘ape’ ‘ggplot2’ ‘reshape2’ ‘phangorn’ ‘MASS’ ‘GGally’
+Adding so many packages to the search path is excessive and importing
+selectively is preferable.
+* checking if this is a source package ... OK
+* checking if there is a namespace ... OK
+* checking for executable files ... OK
+* checking for hidden files and directories ... NOTE
+Found the following hidden files and directories:
+  .DS_Store
+  man/.DS_Store
+These were most likely included in error. See section ‘Package
+structure’ in the ‘Writing R Extensions’ manual.
+* checking for portable file names ... OK
+* checking for sufficient/correct file permissions ... OK
+* checking whether package ‘rwty’ can be installed ... ERROR
+Installation failed.
+See ‘/Users/danwarren/GitHub/RWTY/rwty.Rcheck/00install.out’ for details.
