@@ -43,7 +43,7 @@ compare.n <- function(x, setnames=NA, burnin){ # In this case x is a list of rwt
   # Set missing clades from each chain to zero
   clade.table[is.na(clade.table)] <- 0
   
-  # Calculate a distance metric, which is just the average 
+  # Calculate a discordance metric, which is just the average 
   # of the absolte values of the differences in posteriors
   # for each clade across a pair of chains.  Ranges from 0,
   # where posteriors are identical, to 1, where they are
@@ -74,7 +74,7 @@ compare.n <- function(x, setnames=NA, burnin){ # In this case x is a list of rwt
   #plot <- pairs(clade.table[,2:(length(x) + 1)])
   
   
-  output <- list("cladetable" = clade.table, "dist" = d, 
+  output <- list("cladetable" = clade.table, "discordance" = d, 
                  "translation" = translation.table,
                  "compare.plot" = plot)
   class(output) = "rwty.comparen"
