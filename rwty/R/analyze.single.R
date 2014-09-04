@@ -21,7 +21,8 @@
 #' @export
 #' 
 #' @examples
-#' analyze.single(mytrees, burnin=100, window.size=100, gens.per.tree=1000, treespace.points=100, filename="Run1.pdf", labels="Run1", treespace=TRUE)
+#' data(fungus)
+#' analyze.single(run1, burnin=100, window.size=20, treespace.points=100, filename="fungus.pdf", labels="Chain1")
 
 analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, treespace.points=100, filename = NA, labels=NA, treespace=TRUE, ...){
     step = as.integer((length(chains$trees) - burnin)/treespace.points)

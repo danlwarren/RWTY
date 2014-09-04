@@ -18,8 +18,9 @@
 #' @export
 #' 
 #' @examples
-#' analyze.rwty(chain1, burnin=100, window.size=100, gens.per.tree=1000, treespace.points=50, filename="Run1.pdf")
-#' analyze.rwty(list(chain1, chain2, chain3), burnin=100, window.size=100, gens.per.tree=1000, treespace.points=50, labels=c("Chain 1", "Chain 2", "Chain 3"), filename="multi analysis.pdf")
+#' data(fungus)
+#' single <- analyze.rwty(run1, burnin=100, window.size=20, treespace.points=50, filename="Run1.pdf")
+#' multi <- analyze.rwty(list(run1, run2), burnin=100, window.size=20, treespace.points=50, labels=c("Chain1", "Chain2"), filename="multi analysis.pdf")
 
 analyze.rwty <- function(chains, burnin, window.size, gens.per.tree=NA, treespace.points = 100,  ...){
     

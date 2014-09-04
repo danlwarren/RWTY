@@ -17,7 +17,8 @@
 #' @export
 #' 
 #' @examples
-#' compare.n(mytrees, setnames=c("Chain 1", "Chain 2", "Chain 3"), burnin=100)
+#' data(fungus)
+#' compare.n(list(run1, run2), setnames=c("Chain1", "Chain2"), burnin=100)
 
 compare.n <- function(x, setnames=NA, burnin){ # In this case x is a list of rwty.trees objects
   print("Populating table...")

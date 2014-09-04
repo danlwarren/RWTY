@@ -1,10 +1,11 @@
 * installing *source* package ‘rwty’ ...
-Error : Invalid DESCRIPTION file
-
-Unknown encoding
-
-See the information on DESCRIPTION files in section 'Creating R
-packages' of the 'Writing R Extensions' manual.
-
-ERROR: installing package DESCRIPTION failed for package ‘rwty’
-* removing ‘/Users/danwarren/GitHub/RWTY/rwty.Rcheck/rwty’
+** R
+** data
+** preparing package for lazy loading
+Warning: package ‘GGally’ was built under R version 3.1.1
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+Warning: package ‘GGally’ was built under R version 3.1.1
+* DONE (rwty)

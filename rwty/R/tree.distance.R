@@ -12,7 +12,8 @@
 #' @export
 #' 
 #' @examples
-#' tree.distance(list(tree1, tree2))
+#' data(fungus)
+#' tree.distance(list(run1$trees[[1]], run1$trees[[2]]))
 
 tree.distance <- function(two.trees){
     # type = 1: RF distance

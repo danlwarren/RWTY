@@ -17,7 +17,7 @@
 #' @export
 #' 
 #' @examples
-#' load.trees(file="mytrees.nex", type="nexus")
+#' #load.trees(file="mytrees.nex", type="nexus")
 
 #sample that works
 load.trees <- function(file, type="nexus", gens.per.tree=NA, trim=1, skiplines.p=1){

@@ -10,8 +10,6 @@
 #'
 #' @export
 #' 
-#' @examples
-#' plot.treespace(mypoints)
 
 plot.treespace <- function(points){
 
