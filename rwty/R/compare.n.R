@@ -45,7 +45,7 @@ compare.n <- function(x, setnames=NA, burnin){ # In this case x is a list of rwt
   clade.table[is.na(clade.table)] <- 0
   
   # Calculate a discordance metric, which is just the average 
-  # of the absolte values of the differences in posteriors
+  # of the absolute values of the differences in posteriors
   # for each clade across a pair of chains.  Ranges from 0,
   # where posteriors are identical, to 1, where they are
   # as different as can be.
