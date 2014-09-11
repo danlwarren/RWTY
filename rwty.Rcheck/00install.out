@@ -1,0 +1,11 @@
+* installing *source* package ‘rwty’ ...
+** R
+** data
+** preparing package for lazy loading
+Warning: package ‘GGally’ was built under R version 3.1.1
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+Warning: package ‘GGally’ was built under R version 3.1.1
+* DONE (rwty)

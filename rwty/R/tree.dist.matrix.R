@@ -14,7 +14,8 @@
 #' @export
 #' 
 #' @examples
-#' tree.dist.matrix(mytrees, treenames=c("tree1", "tree2", "tree3"))
+#' data(fungus)
+#' tree.dist.matrix(list(run1$trees[[1]], run1$trees[[2]], run1$trees[[3]]), treenames=c("tree1", "tree2", "tree3"))
 
 tree.dist.matrix <- function(trees, treenames=names(trees)){
     N <- length(trees)

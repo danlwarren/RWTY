@@ -9,9 +9,13 @@ Author: Dan Warren <dan.l.warren@gmail.com>,
 Maintainer: Dan Warren <dan.l.warren@gmail.com>,
     Dave Swofford <david.swofford@duke.edu>,
     Rob Lanfear <rob.lanfear@gmail.com>
+Description: This package implements various tests, visualizations, and metrics
+    for diagnosing convergence of MCMC chains in phylogenetics.  It implements
+    and automates many of the functions of the AWTY package in the R
+    environment.
+License: GPL-2
 Depends:
     R (>= 3.0.1),
-    knitr,
     ape,
     ggplot2,
     reshape2,
@@ -21,35 +25,3 @@ Depends:
 Suggests:
     knitr,
 VignetteBuilder: knitr
-Description: This package implements various tests, visualizations, and metrics
-    for diagnosing convergence of MCMC chains in phylogenetics.  It implements
-    and automates many of the functions of the AWTY package in the R
-    environment.
-License: GPL-2
-LazyData: true
-Collate:
-    'analyze.multi.R'
-    'analyze.rwty.R'
-    'analyze.single.R'
-    'clade.freq.R'
-    'compare.n.R'
-    'continuous.ess.R'
-    'cumulative.freq.R'
-    'get.sequential.distance.R'
-    'get.sequential.distances.c.R'
-    'load.trees.R'
-    'p.from.ranked.list.R'
-    'pairwise.RF.R'
-    'parse.clades.R'
-    'plawty.R'
-    'plot.cladeprobs.R'
-    'plot.cladevar.R'
-    'plot.tree.ess.R'
-    'plot.treespace.R'
-    'slide.freq.R'
-    'tree.dist.matrix.R'
-    'tree.distance.R'
-    'tree.ess.R'
-    'treespace.single.R'
-    'rwty.utility.functions.R'
-    'rwty-package.r'

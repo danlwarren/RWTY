@@ -18,7 +18,8 @@
 #' @export
 #' 
 #' @examples
-#' analyze.multi(list(chain1, chain2, chain3), burnin=100, window.size=100, gens.per.tree=1000, treespace.points=100, filename="Run1.pdf", labels=c("Chain 1", "Chain 2", "Chain 3"))
+#' data(fungus)
+#' analyze.multi(list(run1, run2), burnin=100, window.size=20, treespace.points=100, filename="fungus.pdf", labels=c("Chain1", "Chain2"))
 
 analyze.multi <- function(chains, burnin, window.size, gens.per.tree=NA, treespace.points=100, filename=NA,  labels=NA, ...){
     

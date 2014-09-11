@@ -15,7 +15,16 @@
 #' @export
 #' 
 #' @examples
-#' treespace.single(chains$trees, gens=gen.table, ptable=p.table)
+#' data(fungus)
+#' burnin <- 100
+#' #We have to start by trimming the chain and p table down to a reasonable number of trees
+#' mdstrees <- run1$trees[seq((burnin + 1), length(run1$trees), by = 20)]
+#' #Now we're going to get a list of generations matching the trees retained from the chain
+#' gens <- as.numeric(unlist(regmatches(names(run1$trees), gregexpr('\\(?[0-9]+', names(run1$trees)))))
+#' gens <- gens[seq((burnin + 1), length(run1$trees), by = 20)]
+#' #Finally we're going to cut down the p table to just the bits we're going to use
+#' mdsptable <- run1$ptable[seq((burnin + 1), length(run1$trees), by = 20),]
+#' this.treespace <- treespace.single(mdstrees, gens=gens, ptable=mdsptable)
 
 treespace.single <- function(trees, gens, ptable=NULL){
     # do MDS on a single list of trees

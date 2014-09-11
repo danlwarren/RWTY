@@ -1,0 +1,26 @@
+analyze.multi           Function for running rwty analyses on multiple
+                        chains.
+analyze.rwty            Analyze.rwty, the main interface for rwty
+                        analyses and plots.
+analyze.single          Function for running rwty analyses on single
+                        chains.
+clade.freq              Returns clade names and frequencies
+compare.n               Compares posterior probability estimates from
+                        multiple MCMC chains.
+continuous.distance     Various small utility functions
+cumulative.freq         Cumulative frequencies of clades in an MCMC
+                        chain
+load.trees              Custom functions to load tree lists so that
+                        rwty can do basic processing on the way in.
+parse.clades            Rename clades for easy recall
+plot.cladeprobs         New style plotting of cumulative and slide
+                        objects
+plot.cladevar           Plots distribution of variance in posterior
+                        probability estimates across clades.
+plot.treespace          Plot chains in treespace.
+slide.freq              Sliding window measurements of clade posterior
+                        probabilities.
+tree.dist.matrix        Tree distance matrix calculation
+tree.distance           Returns distance between two trees
+treespace.single        MDS scaling of treespace for a single tree
+                        list.
