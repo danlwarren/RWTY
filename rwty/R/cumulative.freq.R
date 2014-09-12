@@ -52,6 +52,7 @@ cumulative.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1,
     cum.freq.table$sd <- thissd
 
     thismean <- apply(cum.freq.table, 1, mean) 
+    cum.freq.table$sd <- thissd
     cum.freq.table$mean <- thismean
 
     cum.freq.table <- cum.freq.table[order(cum.freq.table$sd, decreasing=TRUE),]
