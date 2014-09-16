@@ -28,5 +28,7 @@ source("./rwty/R/slide.freq.R")
 source("./rwty/R/tree.dist.matrix.R")
 #source("./rwty/R/tree.ess.R")
 source("./rwty/R/treespace.single.R")
-source("./Orphans/ggally_cor_modified.R")
+source("./rwty/R/ggally_cor_modified.R")
+source("./rwty/R/discordance.mat.R")
+source("./rwty/R/discordance.n.R")
 
