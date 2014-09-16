@@ -50,10 +50,7 @@ cumulative.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1,
     # calculate sd and mean of cumulative frequency and mean
     thissd <- apply(cum.freq.table, 1, sd)
     thismean <- apply(cum.freq.table, 1, mean) 
-<<<<<<< HEAD
-    
-=======
->>>>>>> 146cb7105e4f6351c12daa18014b9fd16db25051
+
     cum.freq.table$sd <- thissd
     cum.freq.table$mean <- thismean
 
