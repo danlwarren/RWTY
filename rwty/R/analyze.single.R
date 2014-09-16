@@ -52,6 +52,20 @@ analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, tree
     cumulative.variance.plot <- plot.cladevar(cumulative.data$cumulative.table) + ggtitle("Cumulative Variance")
     
     
+    
+    
+    #SINGLE CHAIN DISCORDANCE HERE    
+  #     d <- vector(length=ncol(slide.freq.table)-3)
+  #     for(i in 1:length(d)){
+  #       d[i] <- mean(abs(slide.freq.table[,i] - slide.freq.table[,i+1]))
+  #     }
+  #     x <- as.numeric(as.character(names(clade.freq.list)[2:length(clade.freq.list)]))
+  #     df <- data.frame(cbind(x,d))
+  #     #plot(d~names(clade.freq.list)[2:length(clade.freq.list)], ylim=c(0,1), ylab="Discordance", xlab="Generation")
+  #     plot <- ggplot(df, aes(x = x, y = d, ymin=0, ymax=1)) + geom_line() + geom_line(data = df, aes(y = d)) + xlab("Generation") + ylab("Discordance")
+    
+    
+    
     #print(step)
     treespace.data <- NA
     treespace.plot <- NA

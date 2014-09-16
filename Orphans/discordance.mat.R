@@ -4,15 +4,13 @@
 # of the absolute values of the differences in posteriors
 # for each clade across a pair of chains.  Ranges from 0,
 # where posteriors are identical, to 1, where they are
-# as different as can be. Returns a dist class object of discordance values
+# as different as can be. 
 
-#' @param x A list of rwty.trees objects.
-#' @param setnames A list of names for the chains.
-#' @param burnin The number of trees to eliminate as burnin \code{burnin}
+#' @param x A table of clade frequencies.
+#' 
+#' @return output A dist class object of discordance values
 #'
-#' @return output A list containing a table of frequencies of each clade in each chain along with mean and sd, a distance matrix measuring consensus between chains, a translation table, and a ggpairs plot.
-#'
-#' @keywords MCMC, phylogenetics, discordance, sliding window
+#' @keywords MCMC, phylogenetics, discordance
 #'
 #' @export
 #' 
@@ -29,5 +27,6 @@ discordance.mat <- function(freqTable){
   }
   colnames(d) <- names(freqTable)[2:(N+1)]
   rownames(d) <- names(freqTable)[2:(N+1)]
-  as.dist(d)
+  output <- as.dist(d)
+  output
 }
