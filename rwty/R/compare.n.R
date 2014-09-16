@@ -52,7 +52,7 @@ compare.n <- function(x, setnames=NA, burnin){ # In this case x is a list of rwt
   d <- matrix(nrow=length(x), ncol=length(x))
   for(i in 1:length(x)){
     for(j in i+1:length(x)){
-      if(j <= length(x)){d[i,j] <- mean(abs(clade.table[,i+1] - clade.table[,j+1]))}
+      if(j <= length(x)){d[j,i] <- mean(abs(clade.table[,i+1] - clade.table[,j+1]))}
     }
   }
   

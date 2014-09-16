@@ -1,4 +1,4 @@
-setwd("~/Dropbox/R Projects/RWTY")
+#setwd("~/Dropbox/R Projects/RWTY")
 #setwd("~/Documents/Projects_current/RWTY")
 
 # comment
@@ -10,9 +10,9 @@ test2 <- load.trees(file="./testdata/fairywrens/PCFW.nex.run2.t")
 test3 <- load.trees(file="./testdata/fairywrens/PCFW.nex.run1.t")
 test4 <- load.trees(file="./testdata/fairywrens/PCFW.nex.run2.t")
 multitest <- analyze.rwty(chains=list(test1, test2, test3, test4), burnin=100, 
-                          window.size=100, step=10, labels=c("Run1", "Run2", "Run3", "Run4"), filename="multitest.pdf")
-
-### Ah crap, we've got it auto-detecting gens per tree but are still passing that as an argument
+                          window.size=20, labels=c("Run1", "Run2", "Run3", "Run4"), filename="multitest.pdf")
+# removed step=10
+### Ah crap, we've got it auto-detecting gens per tree but are still passing that as an argumenty
 
 singletest <- analyze.rwty(test1, burnin=100, window.size=100, step=10, filename="test.pdf", labels = "Singletest")
 

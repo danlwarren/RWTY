@@ -40,7 +40,10 @@ analyze.multi <- function(chains, burnin, window.size, gens.per.tree=NA, treespa
     }
     
     output[["compare.n"]] <- compare.n(chains, setnames=labels, burnin)
-    
+    #
+    # DISCORDANCE CAN GO HERE B/C output should contain all slide tables
+    #output[["discordance.n"]] <- discordance.n(output, setnames=labels)
+    #
     pdf(file = paste("Compare", filename))
     print(output$compare.n$compare.plot)
     dev.off()
