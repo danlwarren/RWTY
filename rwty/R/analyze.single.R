@@ -50,20 +50,19 @@ analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, tree
                                        slide.freq.table=slide.data)
     cumulative.plot <- plot.cladeprobs(cumulative.data$cumulative.table, ...) + ggtitle("Cumulative Posterior Probability")
     cumulative.variance.plot <- plot.cladevar(cumulative.data$cumulative.table) + ggtitle("Cumulative Variance")
-    
-    
-    
-    
-    #SINGLE CHAIN DISCORDANCE HERE    
-  #     d <- vector(length=ncol(slide.freq.table)-3)
-  #     for(i in 1:length(d)){
-  #       d[i] <- mean(abs(slide.freq.table[,i] - slide.freq.table[,i+1]))
-  #     }
-  #     x <- as.numeric(as.character(names(clade.freq.list)[2:length(clade.freq.list)]))
-  #     df <- data.frame(cbind(x,d))
-  #     #plot(d~names(clade.freq.list)[2:length(clade.freq.list)], ylim=c(0,1), ylab="Discordance", xlab="Generation")
-  #     plot <- ggplot(df, aes(x = x, y = d, ymin=0, ymax=1)) + geom_line() + geom_line(data = df, aes(y = d)) + xlab("Generation") + ylab("Discordance")
-    
+
+    print("Discordance analysis...")  
+    d <- vector(length=ncol(slide.data$slide.table)-3)
+    for(i in 1:length(d)){
+      d[i] <- mean(abs(slide.data$slide.table[,i] - slide.data$slide.table[,i+1]))
+    }
+    x <- as.numeric(as.character(names(slide.data$slide.table)[1:length(d)]))
+    discordance.table <- data.frame(cbind(x,d))
+    colnames(discordance.table) <- c("window","discordance")
+    #plot(discordance.table, ylim=c(0,1), ylab="Discordance", xlab="Generation", type="b")
+    discordance.plot <- ggplot(discordance.table , aes(x = window, y = discordance)) + 
+      geom_line() + geom_line(data = discordance.table , aes(y = discordance)) + xlab("Generation") +
+      ylab("Discordance") + labs(title=paste(labels, "Sliding Window Discordance")) #aes(x = window, y = discordance, ymin=0, ymax=1)
     
     
     #print(step)
@@ -111,5 +110,5 @@ analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, tree
                    "slide.plot" = slide.plot, "slide.variance.plot" = slide.variance.plot,
                     "cumulative.data" = cumulative.data,"cumulative.plot" = cumulative.plot, 
                    "cumulative.variance.plot" = cumulative.variance.plot, "treespace.data" = treespace.data,
-                   "treespace.plot" = treespace.plot)
+                   "treespace.plot" = treespace.plot, "discordance.data" = discordance.table, "discordance.plot" = discordance.plot)
 }
