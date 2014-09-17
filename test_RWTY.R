@@ -9,13 +9,14 @@ test1 <- load.trees(file="./testdata/fairywrens/PCFW.nex.run1.t")
 test2 <- load.trees(file="./testdata/fairywrens/PCFW.nex.run2.t")
 test3 <- load.trees(file="./testdata/fairywrens/PCFW.nex.run1.t")
 test4 <- load.trees(file="./testdata/fairywrens/PCFW.nex.run2.t")
+anole1 <- load.trees(file="~/Desktop/Missing_Data_Project/96_taxon_dataset/96_Bayes_Max_gens_t0.02/anolis_0.5complete_rep1.nex.run1.t")
 multitest <- analyze.rwty(chains=list(test1, test2, test3, test4), burnin=100, 
                           window.size=20, labels=c("Run1", "Run2", "Run3", "Run4"), filename="multitest.pdf")
 # removed step=10
 ### Ah crap, we've got it auto-detecting gens per tree but are still passing that as an argumenty
 
-singletest <- analyze.rwty(test1, burnin=100, window.size=100, step=10, filename="test.pdf", labels = "Singletest")
-
+singletest <- analyze.rwty(test2, burnin=100, window.size=100, filename="test.pdf", labels = "Singletest") #removed command , step=10
+singletest.anole <- analyze.rwty(anole1, burnin=100, window.size=100, filename="anoletest.pdf", labels = "Singletest") 
 
 test5 <- load.trees("./testdata/t_and_p/AllDataProt.nex.run1.t")
 test6 <- load.trees("./testdata/t_and_p/AllDataProt.nex.run1.t")
