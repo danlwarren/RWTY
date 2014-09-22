@@ -55,6 +55,9 @@ compare.n <- function(x, setnames=NA, burnin){ # In this case x is a list of rwt
       if(j <= length(x)){d[j,i] <- mean(abs(clade.table[,i+1] - clade.table[,j+1]))}
     }
   }
+  colnames(d) <- names(clade.table)[2:(length(x)+1)]
+  rownames(d) <- names(clade.table)[2:(length(x)+1)]
+  d <- as.dist(d)
   
   # Summary stats, sort by SD
   thissd <- apply(clade.table[,2:length(clade.table[1,])], 1, sd)
@@ -70,7 +73,7 @@ compare.n <- function(x, setnames=NA, burnin){ # In this case x is a list of rwt
   # Make a plot
   assignInNamespace("ggally_cor", ggally_cor, "GGally")
 
-  plot <- ggpairs(clade.table, columns=2:(length(x) + 1),axisLabels='show',diag=list(continuous="bar",params=c(colour="black")),upper=list(params=list(Size=10)))
+  plot <- ggpairs(clade.table, columns=2:(length(x) + 1),axisLabels='show',diag=list(continuous="blank",params=c(colour="black")),upper=list(params=list(Size=10)))
   #plot <- ggpairs(clade.table, columns=2:(length(x) + 1)) 
   #plot <- pairs(clade.table[,2:(length(x) + 1)])
   
