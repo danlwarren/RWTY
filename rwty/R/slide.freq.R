@@ -75,9 +75,9 @@ slide.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1, ...)
     
     # calculate sd and mean of cumulative frequency and mean
     thissd <- apply(slide.freq.table, 1, sd)
-    slide.freq.table$sd <- thissd
     
     thismean <- apply(slide.freq.table, 1, mean) 
+    slide.freq.table$sd <- thissd
     slide.freq.table$mean <- thismean
     
     # Sorting by sd, since these are usually the most interesting clades

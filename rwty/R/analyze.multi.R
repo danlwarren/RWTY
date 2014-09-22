@@ -40,7 +40,9 @@ analyze.multi <- function(chains, burnin, window.size, gens.per.tree=NA, treespa
     }
     
     output[["compare.n"]] <- compare.n(chains, setnames=labels, burnin)
-    
+    #
+    output[["discordance.n"]] <- discordance.n(output, setnames=labels)
+    #
     pdf(file = paste("Compare", filename))
     print(output$compare.n$compare.plot)
     dev.off()

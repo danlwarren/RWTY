@@ -44,17 +44,20 @@ compare.n <- function(x, setnames=NA, burnin){ # In this case x is a list of rwt
   # Set missing clades from each chain to zero
   clade.table[is.na(clade.table)] <- 0
   
-  # Calculate a distance metric, which is just the average 
-  # of the absolte values of the differences in posteriors
+  # Calculate a discordance metric, which is just the average 
+  # of the absolute values of the differences in posteriors
   # for each clade across a pair of chains.  Ranges from 0,
   # where posteriors are identical, to 1, where they are
   # as different as can be.
   d <- matrix(nrow=length(x), ncol=length(x))
   for(i in 1:length(x)){
     for(j in i+1:length(x)){
-      if(j <= length(x)){d[i,j] <- mean(abs(clade.table[,i+1] - clade.table[,j+1]))}
+      if(j <= length(x)){d[j,i] <- mean(abs(clade.table[,i+1] - clade.table[,j+1]))}
     }
   }
+  colnames(d) <- names(clade.table)[2:(length(x)+1)]
+  rownames(d) <- names(clade.table)[2:(length(x)+1)]
+  d <- as.dist(d)
   
   # Summary stats, sort by SD
   thissd <- apply(clade.table[,2:length(clade.table[1,])], 1, sd)
@@ -68,12 +71,14 @@ compare.n <- function(x, setnames=NA, burnin){ # In this case x is a list of rwt
   clade.table[,1] <- as.numeric(clade.table[,1])
   
   # Make a plot
-  plot <- ggpairs(clade.table, columns=2:(length(x) + 1)) 
-  
+  assignInNamespace("ggally_cor", ggally_cor, "GGally")
+
+  plot <- ggpairs(clade.table, columns=2:(length(x) + 1),axisLabels='show',diag=list(continuous="blank",params=c(colour="black")),upper=list(params=list(Size=10)))
+  #plot <- ggpairs(clade.table, columns=2:(length(x) + 1)) 
   #plot <- pairs(clade.table[,2:(length(x) + 1)])
   
   
-  output <- list("cladetable" = clade.table, "dist" = d, 
+  output <- list("cladetable" = clade.table, "discordance" = d, 
                  "translation" = translation.table,
                  "compare.plot" = plot)
   class(output) = "rwty.comparen"
