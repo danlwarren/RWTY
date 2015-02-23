@@ -48,10 +48,12 @@ analyze.multi <- function(chains, burnin, window.size, gens.per.tree=NA, treespa
     #
     pdf(file = paste("Compare", filename))
     print(output$compare.n$compare.plot)
-    plot(output$compare.n$discordance)
-    #axisPhylo()
-    #lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
-    #mtext("Discordance", side=1, line=2, at=max(lastPP$xx)/2)
+    discord.tree <- as.phylo(hclust(output$compare.n$discordance))
+    discord.tree$edge.length <- discord.tree$edge.length * 2
+    plot(discord.tree)
+    axisPhylo()
+    lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
+    mtext("Discordance", side=1, line=2, at=max(lastPP$xx)/2)
     dev.off()
     
     output
