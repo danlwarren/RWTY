@@ -14,6 +14,10 @@ run8 <- load.trees("run8.t", skiplines.p=0)
 run9 <- load.trees("run9.t", skiplines.p=0)
 run10 <- load.trees("run10.t", skiplines.p=0)
 
+defaults.single.test <- analyze.rwty(run1)
+defaults.multi.test <- analyze.rwty(chains=list(run1, run2, run3, run4, run5, run6, run7, run8, run9, run10))
+
+
 
 with.p.single.test <- analyze.rwty(run1, burnin=10, window.size=20, treespace.points = 100, filename="with p single.pdf")
 no.treespace.single.test <- analyze.rwty(run1, burnin=10, window.size=20, treespace.points=100, filename="no treespace single.pdf", treespace=FALSE)

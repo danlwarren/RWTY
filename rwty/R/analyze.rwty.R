@@ -22,12 +22,15 @@
 #' single <- analyze.rwty(run1, burnin=100, window.size=20, treespace.points=50, filename="Run1.pdf")
 #' multi <- analyze.rwty(list(run1, run2), burnin=100, window.size=20, treespace.points=50, labels=c("Chain1", "Chain2"), filename="multi analysis.pdf")
 
-analyze.rwty <- function(chains, burnin, window.size, gens.per.tree=NA, treespace.points = 100,  ...){
+analyze.rwty <- function(chains, burnin=0, window.size=NA, gens.per.tree=NA, treespace.points = 100,  ...){
     
     # If a single rwty.trees object is passed, it goes to the analyze.single
     # function.  Otherwise it assumes that multiple rwty.trees objects
     # have been passed as a list.
     if(class(chains) == "rwty.trees"){
+        if(is.na(window.size)){
+            window.size = floor(length(chains[[1]])/20)
+        }
         print("Analyzing single chain...")
         analyze.single(chains, burnin, window.size,
                        gens.per.tree, treespace.points, ...)
@@ -35,6 +38,9 @@ analyze.rwty <- function(chains, burnin, window.size, gens.per.tree=NA, treespac
     
     else{
         print("Analyzing multiple chains...")
+        if(is.na(window.size)){
+            window.size = floor(length(chains[[1]][[1]])/20)
+        }
         analyze.multi(chains, burnin, window.size, gens.per.tree, treespace.points, ...)
     }
 }

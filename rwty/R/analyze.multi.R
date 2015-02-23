@@ -34,6 +34,9 @@ analyze.multi <- function(chains, burnin, window.size, gens.per.tree=NA, treespa
             thisfilename <- paste( labels[i], filename)
             print(thisfilename)
         }
+        else{
+            thisfilename = NA
+        }
         output[[labels[i]]] <- c(output, analyze.single(chains[[i]], burnin, window.size, 
                                 gens.per.tree=chains[[i]]$gens.per.tree, 
                                 treespace.points, labels=labels[[i]], filename = thisfilename, ... ))
@@ -46,9 +49,9 @@ analyze.multi <- function(chains, burnin, window.size, gens.per.tree=NA, treespa
     pdf(file = paste("Compare", filename))
     print(output$compare.n$compare.plot)
     plot(output$compare.n$discordance)
-    axisPhylo()
-    lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
-    mtext("Discordance", side=1, line=2, at=max(lastPP$xx)/2)
+    #axisPhylo()
+    #lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
+    #mtext("Discordance", side=1, line=2, at=max(lastPP$xx)/2)
     dev.off()
     
     output
