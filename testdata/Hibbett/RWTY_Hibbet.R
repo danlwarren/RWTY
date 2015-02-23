@@ -14,7 +14,7 @@ run8 <- load.trees("run8.t", skiplines.p=0)
 run9 <- load.trees("run9.t", skiplines.p=0)
 run10 <- load.trees("run10.t", skiplines.p=0)
 
-defaults.single.test <- analyze.rwty(run1)
+defaults.single.test <- analyze.rwty(run1, window.size=500)
 defaults.multi.test <- analyze.rwty(chains=list(run1, run2, run3, run4, run5, run6, run7, run8, run9, run10))
 
 
