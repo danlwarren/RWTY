@@ -62,8 +62,7 @@ analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, tree
     #plot(discordance.table, ylim=c(0,1), ylab="Discordance", xlab="Generation", type="b")
     discordance.plot <- ggplot(discordance.table , aes(x = window, y = discordance)) + 
       geom_line() + geom_line(data = discordance.table , aes(y = discordance)) + xlab("Generation") +
-      ylab("Discordance") + labs(title=paste(labels, "Sliding Window Discordance")) #aes(x = window, y = discordance, ymin=0, ymax=1)
-    
+      ylab("Discordance") + ggtitle("Sliding Window Discordance")
     
     #print(step)
     treespace.data <- NA
@@ -93,6 +92,8 @@ analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, tree
         cumulative.plot <- cumulative.plot + ggtitle(paste(labels, "Cumulative Posterior Probability"))
         cumulative.variance.plot <- cumulative.variance.plot + ggtitle(paste(labels, "Cumulative Variance"))
         treespace.plot <- treespace.plot + ggtitle(paste(labels, "Tree Space"))
+        discordance.plot <- discordance.plot + ggtitle(paste(labels, "Sliding Window Discordance")) 
+        
     }
     
     if(!is.na(filename)){
