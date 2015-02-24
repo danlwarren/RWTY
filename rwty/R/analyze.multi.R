@@ -25,8 +25,11 @@ analyze.multi <- function(chains, burnin, window.size, gens.per.tree=NA, treespa
     
     output <- list()
     
-    # Name chains by list order if labels aren't supplied
-    if(any(is.na(labels))){labels <- seq(1, length(chains))}
+    # Name chains by variable name if labels aren't supplied for all chains
+    if(any(is.na(labels))){
+        labels <- c(paste("Chain", seq(1:length(chains))), sep=".")
+        print(labels)
+    }
     
     # Run analyze single on each chain
     for(i in 1: length(chains)){
@@ -39,18 +42,18 @@ analyze.multi <- function(chains, burnin, window.size, gens.per.tree=NA, treespa
         }
         output[[labels[i]]] <- c(output, analyze.single(chains[[i]], burnin, window.size, 
                                 gens.per.tree=chains[[i]]$gens.per.tree, 
-                                treespace.points, labels=labels[[i]], filename = thisfilename, ... ))
+                                treespace.points, labels=labels[i], filename = thisfilename, ... ))
     }
     
     output[["compare.n"]] <- compare.n(chains, setnames=labels, burnin)
     #
     output[["discordance.n"]] <- discordance.n(output, setnames=labels)
     #
-    pdf(file = paste("Compare", filename))
+    pdf(file = paste("Compare", filename), height=2*attr(output$compare.n$discordance, "Size"), width=2*attr(output$compare.n$discordance, "Size"))
     print(output$compare.n$compare.plot)
     discord.tree <- as.phylo(hclust(output$compare.n$discordance))
     discord.tree$edge.length <- discord.tree$edge.length * 2
-    plot(discord.tree)
+    plot(discord.tree, main="Chains clustered by discordance")
     axisPhylo()
     lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
     mtext("Discordance", side=1, line=2, at=max(lastPP$xx)/2)
