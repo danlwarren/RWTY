@@ -27,7 +27,7 @@ analyze.multi <- function(chains, burnin, window.size, gens.per.tree=NA, treespa
     
     # Name chains by variable name if labels aren't supplied for all chains
     if(any(is.na(labels))){
-        labels <- c(paste("Chain", seq(1:length(chains))), sep=".")
+        labels <- c(paste("Chain", seq(1:length(chains)), sep="."))
         print(labels)
     }
     

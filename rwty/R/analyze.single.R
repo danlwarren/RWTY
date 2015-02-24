@@ -29,7 +29,7 @@ analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, tree
     if(is.na(gens.per.tree)){gens.per.tree = chains$gens.per.tree}
     lnl.plot <- NA
     if(!is.null(chains$ptable)){
-        print("Making LnL plot...")
+        print("Making LnL and parameter plots...")
         if(nrow(chains$ptable) > 1000){ #Keeping the number of points plotted reasonable
             temp.ptable <- chains$ptable[burnin:length(chains$ptable[,1]),]
             temp.ptable <- temp.ptable[seq(from=1, to=length(temp.ptable[,1]), length.out=1000),]
