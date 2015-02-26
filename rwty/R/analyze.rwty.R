@@ -27,7 +27,8 @@ analyze.rwty <- function(chains, burnin=0, window.size=NA, gens.per.tree=NA, tre
     # If a single rwty.trees object is passed, it goes to the analyze.single
     # function.  Otherwise it assumes that multiple rwty.trees objects
     # have been passed as a list.
-    if(class(chains) == "rwty.trees"){
+    if(class(chains) == "rwty.trees" || length(chains) == 1){ # A single trees object or a list with only one such object
+        if(class(chains) == "list"){chains <- chains[[1]]}
         if(is.na(window.size)){
             window.size = floor(length(chains[[1]])/20)
         }

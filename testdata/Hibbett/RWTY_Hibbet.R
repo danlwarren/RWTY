@@ -15,8 +15,8 @@ run9 <- load.trees("run9.t", skiplines.p=0)
 run10 <- load.trees("run10.t", skiplines.p=0)
 
 defaults.single.test <- analyze.rwty(run1, window.size=20)
-defaults.multi.test <- analyze.rwty(chains=list(run1, run2, run3, run4))
-
+defaults.multi.test <- analyze.rwty(chains=list(run1, run2, run3, run4), filename="Hibbett RWTY.pdf")
+defaults.singlelist.test <- analyze.rwty(chains=list(run1))
 
 
 with.p.single.test <- analyze.rwty(run1, burnin=10, window.size=20, treespace.points = 100, filename="with p single.pdf")
