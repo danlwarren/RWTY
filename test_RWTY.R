@@ -4,10 +4,10 @@
 
 # comment
 
-setwd("~/Github/RWTY")
+setwd("~/Desktop/RWTY")
 source("RWTY.R")
 
-setwd("~/Github/RWTY/testdata/Hibbett/")
+setwd("testdata/Hibbett/")
 treefiles <- list.files(pattern="\\.t")
 run1 <- load.trees(treefiles[1], trim=20, skiplines.p=0)
 run2 <- load.trees(treefiles[2], trim=20, skiplines.p=0)
@@ -23,7 +23,7 @@ run10 <- load.trees(treefiles[10], trim=20, skiplines.p=0)
 
 with.p.single.test <- analyze.rwty(run1, burnin=10, window.size=5, treespace.points = 30, filename="with p single.pdf")
 no.treespace.single.test <- analyze.rwty(run1, burnin=10, window.size=5, treespace.points=30, filename="no treespace single.pdf", treespace=FALSE)
-no.p.single.test <- analyze.rwty(run2, burnin=10, window.size=5, treespace.points=30, filename="without p single.pdf")
+no.p.single.test <- analyze.rwty(run2, burnin=10, window.size=5, treespace.points=30, filename="without p single.pdf", min.freq=90)
 multitest <- analyze.rwty(chains=list(run1, run2, run3, run4, run5, run6, run7, run8, run9, run10), burnin=10, 
                           window.size=5, treespace.points=20, 
                           labels=c("Run1", "Run2", "Run3", "Run4", "Run5", "Run6", "Run7", "Run8", "Run9", "Run10"),
@@ -31,4 +31,4 @@ multitest <- analyze.rwty(chains=list(run1, run2, run3, run4, run5, run6, run7, 
 smaller.multi <- analyze.rwty(chains=list(run2, run3, run4, run5, run6, run10), burnin=10, 
                               window.size=5, treespace.points=20, 
                               labels=c("Run1", "Run2", "Run3", "Run4", "Run5", "Run6"),
-                              filename="Hibbett RWTY.pdf")
+                              filename="Hibbett RWTY.pdf", min.freq=0.1)

@@ -12,6 +12,7 @@
 #' @param filename A name to be used for generating pdfs of output.  \code{filename}
 #' @param labels The name to use on plots and in generating output files.  \code{labels}
 #' @param treespace Boolean to determine whether or not treespace plots are made. \code{treespace}
+#' @param min.freq The minimum frequency for a node to be used for calculating discordance  \code{min.freq}
 #
 #' @return output A list with tables and plots for LnL (when .p file exists), sliding window,
 #' cumulative, and treespace plots.
@@ -24,7 +25,7 @@
 #' data(fungus)
 #' analyze.single(run1, burnin=100, window.size=20, treespace.points=100, filename="fungus.pdf", labels="Chain1")
 
-analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, treespace.points=100, filename = NA, labels=NA, treespace=TRUE, ...){
+analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, treespace.points=100, filename = NA, labels=NA, treespace=TRUE, min.freq=0, ...){
     step = as.integer((length(chains$trees) - burnin)/treespace.points)
     if(is.na(gens.per.tree)){gens.per.tree = chains$gens.per.tree}
     lnl.plot <- NA
@@ -53,10 +54,12 @@ analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, tree
 
     print("Discordance analysis...")  
     d <- vector(length=ncol(slide.data$slide.table)-3)
+    slide.discordance <- slide.data$slide.table[,1:(ncol(slide.data$slide.table)-2)]
+    slide.discordance <- slide.discordance[apply(slide.discordance, MARGIN = 1, function(x) all(x > min.freq)), ]
     for(i in 1:length(d)){
-      d[i] <- mean(abs(slide.data$slide.table[,i] - slide.data$slide.table[,i+1]))
+      d[i] <- mean(abs(slide.discordance[,i] - slide.discordance[,i+1]))
     }
-    x <- as.numeric(as.character(names(slide.data$slide.table)[1:length(d)]))
+    x <- as.numeric(as.character(names(slide.discordance)[1:length(d)]))
     discordance.table <- data.frame(cbind(x,d))
     colnames(discordance.table) <- c("window","discordance")
     #plot(discordance.table, ylim=c(0,1), ylab="Discordance", xlab="Generation", type="b")

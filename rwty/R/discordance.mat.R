@@ -7,6 +7,7 @@
 # as different as can be. 
 
 #' @param x A table of clade frequencies.
+#' @param min.freq The minimum frequency for a node to be used for calculating discordance  \code{min.freq}
 #' 
 #' @return output A dist class object of discordance values
 #'
@@ -17,8 +18,9 @@
 #' @examples
 #' discordance.mat(myfreqTable)
 
-discordance.mat <- function(freqTable){
+discordance.mat <- function(freqTable, min.freq = 0){
   N <- ncol(freqTable)-1
+  freqTable <- freqTable[apply(freqTable, MARGIN = 1, function(x) all(x > min.freq)), ]
   d <- matrix(nrow=N, ncol=N)
   for(i in 1:N){
     for(j in i+1:N){

@@ -8,6 +8,7 @@
 #' @param corAlignPercent right align position of numbers. Default is 60 percent across the horizontal
 #' @param corMethod \code{method} suppied to cor function
 #' @param corUse \code{use} supplied to cor function
+#' @param min.freq The minimum frequency for a node to be used for calculating discordance  \code{min.freq}
 #' @param ... other arguments being supplied to geom_text
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @importFrom stringr str_c
@@ -25,7 +26,7 @@
 #' mapping = ggplot2::aes_string(x = "total_bill", y = "tip", color = "sex"),
 #' size = 5
 #' )
-ggally_cor <- function(data, mapping, corAlignPercent = 0.6, corMethod = "pearson", corUse = "complete.obs", ...){
+ggally_cor <- function(data, mapping, corAlignPercent = 0.6, corMethod = "pearson", corUse = "complete.obs", min.freq = 0,...){
   corMethod <- as.character(substitute(corMethod))
   corUse <- as.character(substitute(corUse))
   useOptions = c("all.obs", "complete.obs", "pairwise.complete.obs", "everything", "na.or.complete")
@@ -171,8 +172,11 @@ ggally_cor <- function(data, mapping, corAlignPercent = 0.6, corMethod = "pearso
     ymin <- min(yVal, na.rm = TRUE)
     ymax <- max(yVal, na.rm = TRUE)
     yrange <- c(ymin-.01*(ymax-ymin),ymax+.01*(ymax-ymin))
+    disc <- data.frame(cbind(xVal, yVal))
+    disc <- disc[apply(disc, MARGIN = 1, function(x) all(x > min.freq)), ]    
+    
     p <- ggally_text(
-      label = paste("Correlation:\n",signif(cor_fn(xVal,yVal),3),"\nDiscordance:\n",signif(mean(abs(xVal-yVal)),3),sep="",collapse=""),
+      label = paste("Correlation:\n",signif(cor_fn(disc$xVal,disc$yVal),3),"\nDiscordance:\n",signif(mean(abs(disc$xVal-disc$yVal)),3),sep="",collapse=""),
       mapping,
       xP=0.5,
       yP=0.5,
