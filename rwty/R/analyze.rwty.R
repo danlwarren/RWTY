@@ -39,7 +39,7 @@ analyze.rwty <- function(chains, burnin=0, window.size=NA, gens.per.tree=NA, tre
         }
         print("Analyzing single chain...")
         analyze.single(chains, burnin, window.size,
-                       gens.per.tree, treespace.points, min.freq, ...)
+                       gens.per.tree, treespace.points, ...)
     }
     
     else{
@@ -50,6 +50,6 @@ analyze.rwty <- function(chains, burnin=0, window.size=NA, gens.per.tree=NA, tre
         if(((length(chains[[1]][[1]]) - burnin)/window.size)  < 3){
             stop("Burnin or window size are too large to leave enough trees for analysis")
         }
-        analyze.multi(chains, burnin, window.size, gens.per.tree, treespace.points, min.freq, ...)
+        analyze.multi(chains, burnin, window.size, gens.per.tree, treespace.points, min.freq=min.freq, ...)
     }
 }

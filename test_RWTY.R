@@ -6,8 +6,9 @@
 
 setwd("~/Desktop/RWTY")
 source("RWTY.R")
-
 setwd("testdata/Hibbett/")
+
+
 treefiles <- list.files(pattern="\\.t")
 run1 <- load.trees(treefiles[1], trim=20, skiplines.p=0)
 run2 <- load.trees(treefiles[2], trim=20, skiplines.p=0)
@@ -27,8 +28,14 @@ no.p.single.test <- analyze.rwty(run2, burnin=10, window.size=5, treespace.point
 multitest <- analyze.rwty(chains=list(run1, run2, run3, run4, run5, run6, run7, run8, run9, run10), burnin=10, 
                           window.size=5, treespace.points=20, 
                           labels=c("Run1", "Run2", "Run3", "Run4", "Run5", "Run6", "Run7", "Run8", "Run9", "Run10"),
-                          filename="Hibbett RWTY.pdf")
+                          filename="Hibbett RWTY 0.1 .pdf", min.freq=0.1)
 smaller.multi <- analyze.rwty(chains=list(run2, run3, run4, run5, run6, run10), burnin=10, 
                               window.size=5, treespace.points=20, 
                               labels=c("Run1", "Run2", "Run3", "Run4", "Run5", "Run6"),
                               filename="Hibbett RWTY.pdf", min.freq=0.1)
+
+
+two.multi <- analyze.rwty(chains=list(run1, run2), burnin=10, 
+                              window.size=5, treespace.points=20, 
+                              labels=c("Run1", "Run2"),
+                              filename="Two Hibbett RWTY.pdf", min.freq=0.1)

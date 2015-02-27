@@ -75,24 +75,13 @@ compare.n <- function(x, setnames=NA, burnin, min.freq=0){ # In this case x is a
   
   # Make a plot
   assignInNamespace("ggally_cor", ggally_cor, "GGally")
-  
-  ########Figure out how to get min.freq passes
-  add_dots <- function(FUN)
-  {
-    f <- match.fun(FUN)
-    formals(f) <- c(formals(f), alist(... = ))
-    return(f)
-  }
-  new.ggpairs <- add_dots(ggpairs)
-  
-  
-  
-  plot <- new.ggpairs(clade.table, columns=2:(length(x) + 1),axisLabels='show',diag=list(continuous="blank",params=c(colour="black")),upper=list(params=list(Size=10)), min.freq = min.freq)
+  assign("disc.min", min.freq, envir=globalenv())
+
+  plot <- ggpairs(clade.table, columns=2:(length(x) + 1),axisLabels='show',diag=list(continuous="blank",params=c(colour="black")),upper=list(params=list(Size=10)))
   #plot <- ggpairs(clade.table, columns=2:(length(x) + 1)) 
   #plot <- pairs(clade.table[,2:(length(x) + 1)])
   
-  
-  output <- list("cladetable" = clade.table, "discordance" = d, 
+  output <- list("cladetable" = clade.table, "discordance" = d, "discordance.min.freq" = min.freq,
                  "translation" = translation.table,
                  "compare.plot" = plot)
   class(output) = "rwty.comparen"
