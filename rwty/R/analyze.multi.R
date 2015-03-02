@@ -57,7 +57,7 @@ analyze.multi <- function(chains, burnin, window.size, gens.per.tree=NA, treespa
     plot.phylo(output$compare.n$discordance.tree, main="Chains clustered by discordance")
     axisPhylo()
     lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
-    mtext(paste("Discordance (minimum clade frequency =",min.freq,")"), side=1, line=2, at=max(lastPP$xx)/2)
+    mtext(paste("Discordance (minimum clade frequency = ",min.freq,")", sep=""), side=1, line=2, at=max(lastPP$xx)/2)
     output$compare.n$discordance.plot <- recordPlot()
     dev.off()
     

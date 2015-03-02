@@ -4,7 +4,7 @@
 
 # comment
 
-setwd("~/Desktop/RWTY")
+setwd("~/RWTY")
 source("RWTY.R")
 setwd("testdata/Hibbett/")
 
@@ -32,10 +32,4 @@ multitest <- analyze.rwty(chains=list(run1, run2, run3, run4, run5, run6, run7, 
 smaller.multi <- analyze.rwty(chains=list(run2, run3, run4, run5, run6, run10), burnin=10, 
                               window.size=5, treespace.points=20, 
                               labels=c("Run1", "Run2", "Run3", "Run4", "Run5", "Run6"),
-                              filename="Hibbett RWTY.pdf", min.freq=0.1)
-
-
-two.multi <- analyze.rwty(chains=list(run1, run2), burnin=10, 
-                              window.size=5, treespace.points=20, 
-                              labels=c("Run1", "Run2"),
-                              filename="Two Hibbett RWTY.pdf", min.freq=0.1)
+                              filename="Hibbett RWTY.pdf", min.freq=0)
