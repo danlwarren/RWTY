@@ -9,6 +9,7 @@
 #' @param x A list of rwty.trees objects.
 #' @param setnames A list of names for the chains.
 #' @param burnin The number of trees to eliminate as burnin \code{burnin}
+#' @param min.freq The minimum frequency for a node to be used for calculating discordance  \code{min.freq}
 #'
 #' @return output A list containing a table of frequencies of each clade in each chain along with mean and sd, a distance matrix measuring consensus between chains, a translation table, and a ggpairs plot.
 #'
@@ -20,7 +21,7 @@
 #' data(fungus)
 #' compare.n(list(run1, run2), setnames=c("Chain1", "Chain2"), burnin=100)
 
-compare.n <- function(x, setnames=NA, burnin){ # In this case x is a list of rwty.trees objects
+compare.n <- function(x, setnames=NA, burnin, min.freq=0){ # In this case x is a list of rwty.trees objects
   print("Populating table...")
   
   print(paste("Working on set", 1))
@@ -46,13 +47,15 @@ compare.n <- function(x, setnames=NA, burnin){ # In this case x is a list of rwt
   
   # Calculate a discordance metric, which is just the average 
   # of the absolute values of the differences in posteriors
-  # for each clade across a pair of chains.  Ranges from 0,
-  # where posteriors are identical, to 1, where they are
-  # as different as can be.
+  # for clades occuring at a minium frequenct of min.freq
+  # across a pair of chains.  Ranges from 0, where posteriors
+  # are identical, to 1, where they are as different as can be.
   d <- matrix(nrow=length(x), ncol=length(x))
+  disc.clade.table <- clade.table
+  disc.clade.table <- disc.clade.table[apply(disc.clade.table, MARGIN = 1, function(x) all(x > min.freq)), ]
   for(i in 1:length(x)){
     for(j in i+1:length(x)){
-      if(j <= length(x)){d[j,i] <- mean(abs(clade.table[,i+1] - clade.table[,j+1]))}
+      if(j <= length(x)){d[j,i] <- mean(abs(disc.clade.table[,i+1] - disc.clade.table[,j+1]))}
     }
   }
   colnames(d) <- names(clade.table)[2:(length(x)+1)]
@@ -72,13 +75,13 @@ compare.n <- function(x, setnames=NA, burnin){ # In this case x is a list of rwt
   
   # Make a plot
   assignInNamespace("ggally_cor", ggally_cor, "GGally")
+  assign("disc.min", min.freq, envir=globalenv())
 
   plot <- ggpairs(clade.table, columns=2:(length(x) + 1),axisLabels='show',diag=list(continuous="blank",params=c(colour="black")),upper=list(params=list(Size=10)))
   #plot <- ggpairs(clade.table, columns=2:(length(x) + 1)) 
   #plot <- pairs(clade.table[,2:(length(x) + 1)])
   
-  
-  output <- list("cladetable" = clade.table, "discordance" = d, 
+  output <- list("cladetable" = clade.table, "discordance" = d, "discordance.min.freq" = min.freq,
                  "translation" = translation.table,
                  "compare.plot" = plot)
   class(output) = "rwty.comparen"

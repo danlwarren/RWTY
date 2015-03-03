@@ -9,7 +9,10 @@
 #' @param burnin The number of trees to eliminate as burnin \code{burnin}
 #' @param window.size The length of window (in trees) for the sliding window plot \code{window.size}
 #' @param gens.per.tree The number of generations per tree in the .t file.
-#' @param treespace.points The number of trees to plot in the treespace plot.  
+#' @param treespace.points The number of trees to plot in the treespace plot.
+#' @param min.freq The minimum frequency for a node to be used for calculating discordance  \code{min.freq}
+
+
 #'
 #' @return output A list of outputs from the analyze.single runs on each chain, as well as a compare.n run for all chains.  Eventually we will add more multi-chain analyses.
 #'
@@ -22,7 +25,7 @@
 #' single <- analyze.rwty(run1, burnin=100, window.size=20, treespace.points=50, filename="Run1.pdf")
 #' multi <- analyze.rwty(list(run1, run2), burnin=100, window.size=20, treespace.points=50, labels=c("Chain1", "Chain2"), filename="multi analysis.pdf")
 
-analyze.rwty <- function(chains, burnin=0, window.size=NA, gens.per.tree=NA, treespace.points = 100,  ...){
+analyze.rwty <- function(chains, burnin=0, window.size=NA, gens.per.tree=NA, treespace.points = 100, min.freq = 0, ...){
     
     # If a single rwty.trees object is passed, it goes to the analyze.single
     # function.  Otherwise it assumes that multiple rwty.trees objects
@@ -48,6 +51,6 @@ analyze.rwty <- function(chains, burnin=0, window.size=NA, gens.per.tree=NA, tre
         if(((length(chains[[1]][[1]]) - burnin)/window.size)  < 3){
             stop("Burnin or window size are too large to leave enough trees for analysis")
         }
-        analyze.multi(chains, burnin, window.size, gens.per.tree, treespace.points, ...)
+        analyze.multi(chains, burnin, window.size, gens.per.tree, treespace.points, min.freq=min.freq, ...)
     }
 }

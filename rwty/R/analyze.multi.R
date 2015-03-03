@@ -10,6 +10,7 @@
 #' @param treespace.points The number of trees to plot in the treespace plot.  
 #' @param filename A name to be used for generating pdfs of output.  \code{filename}
 #' @param labels The name to use on plots and in generating output files.  \code{labels}
+#' @param min.freq The minimum frequency for a node to be used for calculating discordance  \code{min.freq}
 #'
 #' @return output A list of outputs from the analyze.single runs on each chain, as well as a compare.n run for all chains.  Eventually we will add more multi-chain analyses.
 #'
@@ -21,7 +22,7 @@
 #' data(fungus)
 #' analyze.multi(list(run1, run2), burnin=100, window.size=20, treespace.points=100, filename="fungus.pdf", labels=c("Chain1", "Chain2"))
 
-analyze.multi <- function(chains, burnin, window.size, gens.per.tree=NA, treespace.points=100, filename=NA,  labels=NA, ...){
+analyze.multi <- function(chains, burnin, window.size, gens.per.tree=NA, treespace.points=100, filename=NA,  labels=NA, min.freq=0,...){
     
     output <- list()
     
@@ -44,11 +45,11 @@ analyze.multi <- function(chains, burnin, window.size, gens.per.tree=NA, treespa
                                                         gens.per.tree=chains[[i]]$gens.per.tree, 
                                                         treespace.points, labels=labels[i], filename = thisfilename, ... ))
     }
-    
-    output[["compare.n"]] <- compare.n(chains, setnames=labels, burnin)
+
+    output[["compare.n"]] <- compare.n(chains, setnames=labels, burnin, min.freq=min.freq)
     output$compare.n$discordance.tree <- as.phylo(hclust(output$compare.n$discordance))
-    
-    output[["discordance.n"]] <- discordance.n(output, setnames=labels)
+
+    output[["discordance.n"]] <- discordance.n(output, setnames=labels, min.freq=min.freq)
     
     pdf(file = paste("Compare", filename), height=2*attr(output$compare.n$discordance, "Size"), width=2*attr(output$compare.n$discordance, "Size"))
     print(output$compare.n$compare.plot)    
@@ -56,7 +57,7 @@ analyze.multi <- function(chains, burnin, window.size, gens.per.tree=NA, treespa
     plot.phylo(output$compare.n$discordance.tree, main="Chains clustered by discordance")
     axisPhylo()
     lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
-    mtext("Discordance", side=1, line=2, at=max(lastPP$xx)/2)
+    mtext(paste("Discordance (minimum clade frequency = ",min.freq,")", sep=""), side=1, line=2, at=max(lastPP$xx)/2)
     output$compare.n$discordance.plot <- recordPlot()
     dev.off()
     
