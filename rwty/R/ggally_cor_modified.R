@@ -40,23 +40,7 @@ ggally_cor <- function(data, mapping, corAlignPercent = 0.6, corMethod = "pearso
     # also do ddply below if fn is altered
     cor(x,y, method = corMethod, use = corUse)
   }
-  # xVar <- data[,as.character(mapping$x)]
-  # yVar <- data[,as.character(mapping$y)]
-  # x_bad_rows <- is.na(xVar)
-  # y_bad_rows <- is.na(yVar)
-  # bad_rows <- x_bad_rows | y_bad_rows
-  # if (any(bad_rows)) {
-  # total <- sum(bad_rows)
-  # if (total > 1) {
-  # warning("Removed ", total, " rows containing missing values")
-  # } else if (total == 1) {
-  # warning("Removing 1 row that contained a missing value")
-  # }
-  #
-  # xVar <- xVar[!bad_rows]
-  # yVar <- yVar[!bad_rows]
-  # }
-  # mapping$x <- mapping$y <- NULL
+ 
   xCol <- as.character(mapping$x)
   yCol <- as.character(mapping$y)
   colorCol <- as.character(mapping$colour)
@@ -94,8 +78,7 @@ ggally_cor <- function(data, mapping, corAlignPercent = 0.6, corMethod = "pearso
       }
     }
   }
-  # splits <- str_c(as.character(mapping$group), as.character(mapping$colour), sep = ", ", collapse = ", ")
-  # splits <- str_c(colorCol, sep = ", ", collapse = ", ")
+
   final_text <- ""
   if(length(colorCol) < 1)
     colorCol <- "ggally_NO_EXIST"
@@ -117,8 +100,7 @@ ggally_cor <- function(data, mapping, corAlignPercent = 0.6, corMethod = "pearso
         }
       }
     }
-    # print(order(ord[ord >= 0]))
-    # print(lev)
+
     cord <- cord[order(ord[ord >= 0]), ]
     cord$label <- str_c(cord[[colorCol]], ": ", cord$ggally_cor)
     # calculate variable ranges so the gridlines line up
@@ -128,7 +110,7 @@ ggally_cor <- function(data, mapping, corAlignPercent = 0.6, corMethod = "pearso
     ymin <- min(yVal, na.rm = TRUE)
     ymax <- max(yVal, na.rm = TRUE)
     yrange <- c(ymin-.01*(ymax-ymin),ymax+.01*(ymax-ymin))
-    # print(cord)
+
     p <- ggally_text(
       label = str_c("Cor : ", signif(cor_fn(xVal,yVal),3)),
       mapping = mapping,
@@ -144,12 +126,10 @@ ggally_cor <- function(data, mapping, corAlignPercent = 0.6, corMethod = "pearso
     xPos <- rep(corAlignPercent, nrow(cord)) * diff(xrange) + min(xrange, na.rm = TRUE)
     yPos <- seq(from = 0.9, to = 0.2, length.out = nrow(cord) + 1) * diff(yrange) + min(yrange, na.rm = TRUE)
     yPos <- yPos[-1]
-    # print(range(yVal))
-    # print(yPos)
+    
     cordf <- data.frame(xPos = xPos, yPos = yPos, labelp = cord$label)
     cordf$labelp <- factor(cordf$labelp, levels = cordf$labelp)
-    # print(cordf)
-    # print(str(cordf))
+    
     p <- p + geom_text(
       data = cordf,
       aes(

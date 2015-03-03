@@ -78,8 +78,6 @@ compare.n <- function(x, setnames=NA, burnin, min.freq=0){ # In this case x is a
   assign("disc.min", min.freq, envir=globalenv())
 
   plot <- ggpairs(clade.table, columns=2:(length(x) + 1),axisLabels='show',diag=list(continuous="blank",params=c(colour="black")),upper=list(params=list(Size=10)))
-  #plot <- ggpairs(clade.table, columns=2:(length(x) + 1)) 
-  #plot <- pairs(clade.table[,2:(length(x) + 1)])
   
   output <- list("cladetable" = clade.table, "discordance" = d, "discordance.min.freq" = min.freq,
                  "translation" = translation.table,

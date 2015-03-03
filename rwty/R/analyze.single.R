@@ -51,22 +51,6 @@ analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, tree
     cumulative.plot <- plot.cladeprobs(cumulative.data$cumulative.table, ...) + ggtitle("Cumulative Posterior Probability")
     cumulative.variance.plot <- plot.cladevar(cumulative.data$cumulative.table) + ggtitle("Cumulative Variance")
 
-#     print("Discordance analysis...")  
-#     d <- vector(length=ncol(slide.data$slide.table)-3)
-#     slide.discordance <- slide.data$slide.table[,1:(ncol(slide.data$slide.table)-2)]
-#     slide.discordance <- slide.discordance[apply(slide.discordance, MARGIN = 1, function(x) all(x > min.freq)), ]
-#     for(i in 1:length(d)){
-#       d[i] <- mean(abs(slide.discordance[,i] - slide.discordance[,i+1]))
-#     }
-#     x <- as.numeric(as.character(names(slide.discordance)[1:length(d)]))
-#     discordance.table <- data.frame(cbind(x,d))
-#     colnames(discordance.table) <- c("window","discordance")
-#     #plot(discordance.table, ylim=c(0,1), ylab="Discordance", xlab="Generation", type="b")
-#     discordance.plot <- ggplot(discordance.table , aes(x = window, y = discordance)) + 
-#       geom_line() + geom_line(data = discordance.table , aes(y = discordance)) + xlab("Generation") +
-#       ylab("Discordance") + ggtitle("Sliding Window Discordance")
-    
-    #print(step)
     treespace.data <- NA
     treespace.plot <- NA
     if(treespace==TRUE){
@@ -106,7 +90,6 @@ analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, tree
         print(cumulative.plot)
         print(cumulative.variance.plot)
         print(treespace.plot)
-#       print(discordance.plot)
         dev.off()
     }
     
@@ -115,5 +98,4 @@ analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, tree
                     "cumulative.data" = cumulative.data,"cumulative.plot" = cumulative.plot, 
                    "cumulative.variance.plot" = cumulative.variance.plot, "treespace.data" = treespace.data,
                    "treespace.plot" = treespace.plot) 
-#                 ,"discordance.data" = discordance.table, "discordance.plot" = discordance.plot)
 }
