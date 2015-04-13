@@ -5,10 +5,10 @@
 #' and plots.
 #'
 #' @param chains A single rwty.trees object. \code{chains}
-#' @param burnin The number of trees to eliminate as burnin \code{burnin}
-#' @param window.size The length of window (in trees) for the sliding window plot \code{window.size}
-#' @param gens.per.tree The number of generations per tree in the .t file. \code{gens.per.tree}
-#' @param treespace.points The number of trees to plot in the treespace plot.  \code{treespace.points}
+#' @param burnin The number of trees to eliminate as burnin. Default is zero. \code{burnin}
+#' @param window.size The length of window (in trees) for the sliding window plot.  Default is 20.   \code{window.size}
+#' @param gens.per.tree The number of generations per tree in the .t file. If no value is provided, RWTY will try to figure it out from the tree names. \code{gens.per.tree}
+#' @param treespace.points The number of trees to plot in the treespace plot. Default is 100. \code{treespace.points}
 #' @param filename A name to be used for generating pdfs of output.  \code{filename}
 #' @param labels The name to use on plots and in generating output files.  \code{labels}
 #' @param treespace Boolean to determine whether or not treespace plots are made. \code{treespace}

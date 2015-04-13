@@ -4,10 +4,10 @@
 #' as a function of chain length.
 #'
 #' @param tree.list A single rwty.trees or multiPhylo object. \code{chains}
-#' @param burnin The number of trees to eliminate as burnin \code{burnin}
+#' @param burnin The number of trees to eliminate as burnin.  Defaults to zero. \code{burnin}
 #' @param window.size The length of window (in trees) for the sliding window plot \code{window.size}
-#' @param gens.per.tree The number of generations per tree in the .t file.
-#' @param slide.freq.table A table from slide.freq.  If a table is not provided, it will be built.
+#' @param gens.per.tree The number of generations per tree in the .t file. \code{gens.per.tree}
+#' @param slide.freq.table A table from slide.freq.  If a table is not provided, it will be built. \code{slide.freq.table}
 #
 #' @return output A list containing a table of cumulative frequencies and a clade translation table
 #'

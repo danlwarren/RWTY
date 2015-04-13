@@ -4,8 +4,8 @@
 #' returns a list of parsed clades, converting numbers to names using a set of trees.
 #' Called internally by the slide and cumulative analyses, not user-facing.
 #'
-#' @param clades A list of clades, as in the first column of a cladetable in an rwty.slide or rwty.cumulative object
-#' @param treelist A list of trees, used for getting tip names
+#' @param clades A list of clades, as in the first column of a cladetable in an rwty.slide or rwty.cumulative object. \code{clades}
+#' @param treelist A list of trees, used for getting tip names. \code{treelist}
 #'
 #' @return output A list of clades with parsed tip names
 

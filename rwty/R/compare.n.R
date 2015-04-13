@@ -9,7 +9,7 @@
 #' @param x A list of rwty.trees objects.
 #' @param setnames A list of names for the chains.
 #' @param burnin The number of trees to eliminate as burnin \code{burnin}
-#' @param min.freq The minimum frequency for a node to be used for calculating discordance  \code{min.freq}
+#' @param min.freq The minimum frequency for a node to be used for calculating discordance.  Default value is zero.  \code{min.freq}
 #'
 #' @return output A list containing a table of frequencies of each clade in each chain along with mean and sd, a distance matrix measuring consensus between chains, a translation table, and a ggpairs plot.
 #'

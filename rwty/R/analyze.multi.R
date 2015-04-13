@@ -4,15 +4,15 @@
 #' It runs analyze.single for each chain, and then does multi-chain analyses as well. 
 #'
 #' @param chains A list of rwty.trees objects. \code{chains}
-#' @param burnin The number of trees to eliminate as burnin \code{burnin}
+#' @param burnin The number of trees to eliminate as burnin.  Default is zero. \code{burnin}
 #' @param window.size The length of window (in trees) for the sliding window plot \code{window.size}
-#' @param gens.per.tree The number of generations per tree in the .t file.
-#' @param treespace.points The number of trees to plot in the treespace plot.  
-#' @param filename A name to be used for generating pdfs of output.  \code{filename}
-#' @param labels The name to use on plots and in generating output files.  \code{labels}
-#' @param min.freq The minimum frequency for a node to be used for calculating discordance  \code{min.freq}
+#' @param gens.per.tree The number of generations per tree in the .t file.  If no value is provided, RWTY tries to figure it out from the tree names. \code{gens.per.tree}
+#' @param treespace.points The number of trees to plot in the treespace plot.  Default is 100. \code{treespace.points} 
+#' @param filename A name to be used for generating pdfs of output.  If a name is not provided, one will be automatically generated from the labels.  \code{filename}
+#' @param labels The name to use on plots and in generating output files.  If none are provided, defaults are created using Chain 1, Chain 2, etc.  \code{labels}
+#' @param min.freq The minimum frequency for a node to be used for calculating discordance.  \code{min.freq}
 #'
-#' @return output A list of outputs from the analyze.single runs on each chain, as well as a compare.n run for all chains.  Eventually we will add more multi-chain analyses.
+#' @return output A list of outputs from the analyze.single runs on each chain, as well as a compare.n run and discordance data for all chains. 
 #'
 #' @keywords MCMC, phylogenetics, convergence, plot, awty, rwty
 #'

@@ -5,9 +5,9 @@
 #' allows users to see whether the chain is visiting different areas of treespace.
 #'
 #' @param tree.list A rwty trees object or multiPhylo \code{tree.list}
-#' @param burnin The number of trees to eliminate as burnin \code{burnin}
+#' @param burnin The number of trees to eliminate as burnin. Defaults to zero. \code{burnin}
 #' @param window.size The number of trees to include in each window \code{window.size}
-#' @param gens.per.tree The number of steps in the MCMC chain corresponding to a tree in the tree list. \code{gens.per.tree}
+#' @param gens.per.tree The number of steps in the MCMC chain corresponding to a tree in the tree list. Defaults to 1. \code{gens.per.tree}
 #'
 #' @return rwty.slide An object containing the frequencies of clades in the sliding
 #' windows, a translation table that converts clade groupings to factors, and a plot.
