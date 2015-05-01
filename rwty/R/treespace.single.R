@@ -4,9 +4,9 @@
 #' and uses multi-dimensional scaling to collapse it to a two-
 #' dimensional tree space for plotting.
 #'
-#' @param trees A multiphylo object \code{trees}
-#' @param gens A list of the generation represented by each tree, for use in plotting \code{}
-#' @param ptable A table of p values to use for plotting likelihoods \code{p.file}
+#' @param chain A single rwty.trees object.
+#' @param burnin The number of trees to eliminate as burnin. Default is zero. \code{burnin}
+#' @param n.points The minimum number of points you want in your plot.
 #'
 #' @return Returns a list containing the mds table and a plot.
 #'
@@ -26,12 +26,20 @@
 #' mdsptable <- run1$ptable[seq((burnin + 1), length(run1$trees), by = 20),]
 #' this.treespace <- treespace.single(mdstrees, gens=gens, ptable=mdsptable)
 
-treespace.single <- function(trees, gens, ptable=NULL){
+treespace.single <- function(chain, n.points, burnin=0){
     # do MDS on a single list of trees
     # p.file is a list of likelihoods...
+
+    # subsample down to minimum n.points or thereabouts
+    step = as.integer((length(chain$trees) - burnin)/n.points)
+    indices = seq(from = burnin+1, to = length(chain$trees), by = step)   
+
+    trees = chain$trees[indices]
+    ptable = chain$ptable[indices,]
+    gens = chain$gens.per.tree
     
     # for now this is hard-coded, who wants a 3D plot anyway, right?
-    dimensions=2
+    dimensions = 2
     
     d <- tree.dist.matrix(trees[1:length(trees)])
     
@@ -39,15 +47,12 @@ treespace.single <- function(trees, gens, ptable=NULL){
     
     points <- as.data.frame(mds$points)
     names(points) <- c("x", "y")
-    points$Generation <- gens
-    mds$points <- points
     
     if(!is.null(ptable)){
-        mds$points <- cbind(mds$points, ptable$LnL)
-        colnames(mds$points)[length(mds$points)] <- "LnL"
+        points <- cbind(points, lnL = ptable$LnL, Generation = ptable$Gen)
     }
     
-    p <- plot.treespace(mds$points)
+    p <- plot.treespace(points)
     
     r <- list("mds" = mds, "plot" = p)
     
