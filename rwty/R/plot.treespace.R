@@ -39,7 +39,7 @@ plot.treespace <- function(points){
             stat_density2d(geom="tile", aes(fill = ..density..), contour = FALSE) + 
             theme(panel.background = element_blank(), axis.line = element_line(color='grey')) +
             facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain))))) + 
-            scale_fill_gradient(low='black', high='red')
+            scale_fill_gradient(low='white', high='black')
     }
 
     return(list('plot' = points.plot, 'heatmap' = heatmap))
