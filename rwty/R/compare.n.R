@@ -22,9 +22,9 @@
 #' compare.n(list(run1, run2), setnames=c("Chain1", "Chain2"), burnin=100)
 
 compare.n <- function(x, setnames=NA, burnin, min.freq=0){ # In this case x is a list of rwty.trees objects
-  print("Populating table...")
+  print("Calculating clade posterior probabilities from all runs...")
   
-  print(paste("Working on set", 1))
+  print(paste("Working on chain", 1))
   
   # Get a starting table from the first chain
   clade.table <- clade.freq(x[[1]], start=burnin, end=length(x[[1]]$trees))
@@ -33,7 +33,7 @@ compare.n <- function(x, setnames=NA, burnin, min.freq=0){ # In this case x is a
   
   # Populate the rest of the table, one chain at a time
   for(i in 2:length(x)){
-    print(paste("Working on set", i))
+    print(paste("Working on chain", i))
     thistable <- clade.freq(x[[i]], start = burnin, end  = length(x[[i]]$trees))
     clade.table <- merge(clade.table, thistable, by = "cladenames", all = TRUE) 
     
