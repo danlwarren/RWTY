@@ -5,7 +5,6 @@
 #' in the list.
 #'
 #' @param trees a multiPhylo object \code{trees}
-#' @param treenames A vector of names for the trees \code{treenames}
 #'
 #' @return RF A distance matrix of RF distances 
 #'
@@ -15,14 +14,15 @@
 #' 
 #' @examples
 #' data(fungus)
-#' tree.dist.matrix(list(run1$trees[[1]], run1$trees[[2]], run1$trees[[3]]), treenames=c("tree1", "tree2", "tree3"))
+#' tree.dist.matrix(list(run1$trees[[1]], run1$trees[[2]], run1$trees[[3]]))
 
-tree.dist.matrix <- function(trees, treenames=names(trees)){
+tree.dist.matrix <- function(trees){
+    if (class(trees) != "multiPhylo") 
+        stop("trees should be an object of class \"multiPhylo\"")
+
     N <- length(trees)
 
-    if(N != length(treenames)){
-        stop("Names and tree list must be the same length")
-    }
+    treenames <- 1:N
     
     #Create an empty matrix for results
     RF <- matrix(0, N, N)
@@ -31,7 +31,6 @@ tree.dist.matrix <- function(trees, treenames=names(trees)){
         #print(paste("Tree", i, "of", N))        
         for(j in (i+1):N){
             RFd <- RF.dist(trees[[i]],trees[[j]])
-            if(RFd==0) RFd = 0.000000001
             RF[i,j]<-RF[j,i]<-RFd
         }
     }
