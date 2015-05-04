@@ -32,7 +32,7 @@ analyze.multi <- function(chains, burnin, window.size, gens.per.tree=NA, treespa
         print(labels)
     }
     
-    # Run analyze single on each chain
+    # Run analyze single on each chain, without treespace plots (these come in the multi analysis)
     for(i in 1: length(chains)){
         if(!is.na(filename)){
             thisfilename <- paste( labels[i], filename)
@@ -43,13 +43,13 @@ analyze.multi <- function(chains, burnin, window.size, gens.per.tree=NA, treespa
         }
         output[[labels[i]]] <- c(output, analyze.single(chains[[i]], burnin, window.size, 
                                                         gens.per.tree=chains[[i]]$gens.per.tree, 
-                                                        treespace.points, labels=labels[i], filename = thisfilename, ... ))
+                                                        treespace = FALSE, labels=labels[i], filename = thisfilename, ... ))
     }
 
     output[["compare.n"]] <- compare.n(chains, setnames=labels, burnin, min.freq=min.freq)
     output$compare.n$discordance.tree <- as.phylo(hclust(output$compare.n$discordance))
-
     output[["discordance.n"]] <- discordance.n(output, setnames=labels, min.freq=min.freq)
+    output[["treespace"]] <- treespace(chains, n.points=treespace.points, burnin=burnin)
     
     pdf(file = paste("Compare", filename), height=2*attr(output$compare.n$discordance, "Size"), width=2*attr(output$compare.n$discordance, "Size"))
     print(output$compare.n$compare.plot)    
