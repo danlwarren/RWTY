@@ -15,16 +15,16 @@ plot.treespace <- function(points){
 
     if(!is.null(points$lnL)){
         p <- ggplot(data=points, aes(x=x,y=y,fill=lnL)) + 
-            geom_path(alpha=0.3, aes(colour=Generation)) + 
-            geom_point(shape=21, size=4, alpha=0.75, colour='white') + 
-            scale_fill_gradient() + 
+            geom_path(alpha=0.25, aes(colour=Generation), size=0.75) + 
+            geom_point(shape=21, size=4, colour='white') + 
+            scale_fill_gradient(low='black', high='light blue') + 
             scale_colour_gradient(low='red', high='yellow') + 
             theme(panel.background = element_blank(), axis.line = element_line(color='grey'))
-    }
+        }
     else{
         p <- ggplot(data=points, aes(x=x,y=y)) + 
-            geom_path(alpha=0.3, aes(colour=Generation)) + 
-            geom_point(size=4, alpha=0.75) + 
+            geom_path(alpha=0.25, aes(colour=Generation), size=0.75) + 
+            geom_point(shape=21, size=4, colour='white') + 
             scale_colour_gradient(low='red', high='yellow') +
             theme(panel.background = element_blank(), axis.line = element_line(color='grey'))
     }

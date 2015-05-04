@@ -8,7 +8,7 @@
 #' @param burnin The number of trees to eliminate as burnin. Default is zero. \code{burnin}
 #' @param n.points The minimum number of points you want in your plot.
 #'
-#' @return Returns a list containing the mds table and a plot.
+#' @return Returns a list containing the points and a plot.
 #'
 #' @keywords treespace, mds, multi-dimensional scaling
 #'
@@ -33,7 +33,7 @@ treespace.single <- function(chain, n.points, burnin=0){
     # for now this is hard-coded, who wants a 3D plot anyway, right?
     dimensions = 2
     
-    d <- tree.dist.matrix(trees[1:length(trees)])
+    d <- tree.dist.matrix(trees)
     
     mds <- isoMDS(d, k=dimensions)
     
@@ -46,7 +46,7 @@ treespace.single <- function(chain, n.points, burnin=0){
     
     p <- plot.treespace(points)
     
-    r <- list("mds" = mds, "plot" = p)
+    r <- list("points" = points, "plot" = p)
     
 }
 
