@@ -40,13 +40,17 @@ treespace <- function(chains, n.points, burnin=0, labels=NA){
 
     # let's organise the data into lists of lists
     trees = lapply(chains, function(x) x[['trees']][indices])
-    ptable = lapply(chains, function(x) x[['ptable']][indices,])
 
+    if(!is.null(chain$ptable)){
+        ptable = lapply(chains, function(x) x[['ptable']][indices,])
+    }else{
+        ptable = NULL
+    }
     
     # for now this is hard-coded, who wants a 3D plot anyway, right?
     dimensions = 2
 
-    # combine all the trees and get a monster distance matrix
+    # combine all the trees and get a distance matrix
     alltrees = trees[[1]]
     if(length(trees)>1){
         for(i in 2:length(trees)){
@@ -71,6 +75,7 @@ treespace <- function(chains, n.points, burnin=0, labels=NA){
     row.names(points) <- seq(nrow(points))
     names(points) <- c("x", "y")
     points$chain = unlist(lapply(labels, function(x) rep(x, length(indices))))
+    points$TreeNum = as.numeric(rep(1:length(indices), length(chains)))
 
 
     if(!is.null(ptable)){
