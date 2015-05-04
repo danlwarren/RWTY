@@ -55,10 +55,12 @@ analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, tree
     treespace.plot <- NA
     if(treespace==TRUE){
         print("Plotting trees in tree space...")
-        treespace <- treespace(chains, n.points=treespace.points, burnin=burnin)
+        treespace <- treespace(list(chains), n.points=treespace.points, burnin=burnin)
         treespace.data <- treespace$points
-        treespace.plot <- treespace$plot + ggtitle("Tree Space")
-    }
+        treespace.plot <- treespace$plot + ggtitle("Treespace plot")
+        treespace.heatmap <- treespace$heatmap + ggtitle("Treespace heatmap")
+    }else{ treespace.data <- treespace.plot <- treespace.heatmap <- NA }
+
     
     if(!is.na(labels)){
         if(!is.na(lnl.plot[1])){
@@ -68,9 +70,11 @@ analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, tree
         slide.variance.plot <- slide.variance.plot + ggtitle(paste(labels, "Sliding Window Variance"))
         cumulative.plot <- cumulative.plot + ggtitle(paste(labels, "Cumulative Posterior Probability"))
         cumulative.variance.plot <- cumulative.variance.plot + ggtitle(paste(labels, "Cumulative Variance"))
-        treespace.plot <- treespace.plot + ggtitle(paste(labels, "Tree Space"))
-        #discordance.plot <- discordance.plot + ggtitle(paste(labels, "Sliding Window Discordance")) 
-        
+        if(treespace==TRUE){
+            treespace.plot <- treespace$plot + ggtitle(paste(labels, "Treespace plot"))
+            treespace.heatmap <- treespace$heatmap + ggtitle(paste(labels, "Treespace heatmap"))
+        }
+        #discordance.plot <- discordance.plot + ggtitle(paste(labels, "Sliding Window Discordance"))         
     }
     
     if(!is.na(filename)){
@@ -80,7 +84,10 @@ analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, tree
         print(slide.variance.plot)
         print(cumulative.plot)
         print(cumulative.variance.plot)
-        print(treespace.plot)
+        if(treespace==TRUE){
+            print(treespace.plot)
+            print(treespace.heatmap)
+        }
         dev.off()
     }
     
@@ -88,5 +95,5 @@ analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, tree
                    "slide.plot" = slide.plot, "slide.variance.plot" = slide.variance.plot,
                     "cumulative.data" = cumulative.data,"cumulative.plot" = cumulative.plot, 
                    "cumulative.variance.plot" = cumulative.variance.plot, "treespace.data" = treespace.data,
-                   "treespace.plot" = treespace.plot) 
+                   "treespace.plot" = treespace.plot, "treespace.heatmap" = treespace.heatmap) 
 }
