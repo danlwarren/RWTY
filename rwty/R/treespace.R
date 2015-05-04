@@ -4,7 +4,7 @@
 #' and uses multi-dimensional scaling to collapse it to a two-
 #' dimensional tree space for plotting.
 #'
-#' @param chains A list of >1 rwty.trees objects.
+#' @param chains A list of 1 or more rwty.trees objects.
 #' @param burnin The number of trees to eliminate as burnin. Default is zero. \code{burnin}
 #' @param n.points The minimum number of points you want in your plot.
 #'
