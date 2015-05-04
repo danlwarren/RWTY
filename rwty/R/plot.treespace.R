@@ -11,10 +11,10 @@
 #' @export
 #' 
 
-plot.treespace.multi <- function(points){
+plot.treespace <- function(points){
 
     if(!is.null(points$lnL)){
-        p <- ggplot(data=points, aes(x=x,y=y,fill=lnL)) + 
+        points.plot <- ggplot(data=points, aes(x=x,y=y,fill=lnL)) + 
             geom_path(alpha=0.25, aes(colour=Generation), size=0.75) + 
             geom_point(shape=21, size=4, colour='white') + 
             scale_fill_gradient(low='black', high='light blue') + 
@@ -23,12 +23,19 @@ plot.treespace.multi <- function(points){
             facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain)))))    
         }
     else{
-        p <- ggplot(data=points, aes(x=x,y=y)) + 
+        points.plot <- ggplot(data=points, aes(x=x,y=y)) + 
             geom_path(alpha=0.25, aes(colour=Generation), size=0.75) + 
             geom_point(shape=21, size=4, colour='white') + 
             scale_colour_gradient(low='red', high='yellow') +
             theme(panel.background = element_blank(), axis.line = element_line(color='grey')) +
             facet_wrap(~chain)
     }
-    p
+
+    heatmap <- ggplot(data=points, aes(x=x,y=y)) + 
+        stat_density2d(geom="tile", aes(fill = ..density..), contour = FALSE) + 
+        theme(panel.background = element_blank(), axis.line = element_line(color='grey')) +
+        facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain))))) + 
+        scale_fill_gradient(low='black', high='red')
+
+    return(list('plot' = points.plot, 'heatmap' = heatmap))
 }
