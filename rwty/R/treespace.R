@@ -18,7 +18,7 @@
 #' data(fungus)
 #' burnin <- 100
 
-treespace.multi <- function(chains, n.points, burnin=0, labels=NA){
+treespace <- function(chains, n.points, burnin=0, labels=NA){
     # do MDS on a >1 lists of trees
 
     # TO DO: some checks, should be outsourced to a different private function, since they
@@ -52,6 +52,7 @@ treespace.multi <- function(chains, n.points, burnin=0, labels=NA){
             alltrees = c(alltrees, trees[[i]])
         }
     }
+
     d <- tree.dist.matrix(alltrees)
 
     mds <- cmdscale(d, k=dimensions)

@@ -11,7 +11,7 @@
 #' @export
 #' 
 
-plot.treespace <- function(points){
+plot.treespace.multi <- function(points){
 
     if(!is.null(points$lnL)){
         p <- ggplot(data=points, aes(x=x,y=y,fill=lnL)) + 
@@ -19,14 +19,16 @@ plot.treespace <- function(points){
             geom_point(shape=21, size=4, colour='white') + 
             scale_fill_gradient(low='black', high='light blue') + 
             scale_colour_gradient(low='red', high='yellow') + 
-            theme(panel.background = element_blank(), axis.line = element_line(color='grey'))
+            theme(panel.background = element_blank(), axis.line = element_line(color='grey')) +
+            facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain)))))    
         }
     else{
         p <- ggplot(data=points, aes(x=x,y=y)) + 
             geom_path(alpha=0.25, aes(colour=Generation), size=0.75) + 
             geom_point(shape=21, size=4, colour='white') + 
             scale_colour_gradient(low='red', high='yellow') +
-            theme(panel.background = element_blank(), axis.line = element_line(color='grey'))
+            theme(panel.background = element_blank(), axis.line = element_line(color='grey')) +
+            facet_wrap(~chain)
     }
     p
 }
