@@ -37,6 +37,7 @@ treespace <- function(chains, n.points, burnin=0, labels=NA){
     step = as.integer((length(chain$trees) - burnin)/n.points)
     indices = seq(from = burnin+1, to = length(chain$trees), by = step)   
 
+
     # let's organise the data into lists of lists
     trees = lapply(chains, function(x) x[['trees']][indices])
     ptable = lapply(chains, function(x) x[['ptable']][indices,])
@@ -55,8 +56,17 @@ treespace <- function(chains, n.points, burnin=0, labels=NA){
 
     d <- tree.dist.matrix(alltrees)
 
-    mds <- cmdscale(d, k=dimensions)
-    
+    # here's a catch in case all trees are identical, in which case all of d==0
+    if(sum(d)==0){
+        # all trees are the same, so all points should just sit on 0,0
+        x <- rep(0, length(alltrees))
+        y <- rep(0, length(alltrees))
+        mds <- data.frame(x=x, y=y)
+    }else{
+        mds <- cmdscale(d, k=dimensions)
+    }
+
+
     points <- as.data.frame(mds)
     row.names(points) <- seq(nrow(points))
     names(points) <- c("x", "y")
@@ -69,9 +79,9 @@ treespace <- function(chains, n.points, burnin=0, labels=NA){
         points <- cbind(points, lnL, Generation)
     }
     
-    p <- plot.treespace.multi(points)
+    p <- plot.treespace(points)
     
-    r <- list("points" = points, "plot" = p)
+    r <- list("points" = points, "plot" = p$plot, "heatmap" = p$heatmap)
     
 }
 
