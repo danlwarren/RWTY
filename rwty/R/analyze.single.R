@@ -55,17 +55,8 @@ analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, tree
     treespace.plot <- NA
     if(treespace==TRUE){
         print("Plotting trees in tree space...")
-        mdstrees <- chains$trees[seq((burnin + 1), length(chains$trees), by = step)]
-        mdsptable <- NULL
-        if(!is.null(chains$ptable)){
-            mdsptable <- chains$ptable[seq((burnin + 1), length(chains$trees), by = step),]
-        }
-        # The following massive ball of shit is intended to get a list of numeric values for the
-        # generation represented by each tree
-        gens <- as.numeric(unlist(regmatches(names(chains$trees), gregexpr('\\(?[0-9]+', names(chains$trees)))))
-        gens <- gens[seq((burnin + 1), length(chains$trees), by = step)]
-        treespace <- treespace.single(mdstrees, gens, mdsptable)
-        treespace.data <- treespace$mds
+        treespace <- treespace(chains, n.points=treespace.points, burnin=burnin)
+        treespace.data <- treespace$points
         treespace.plot <- treespace$plot + ggtitle("Tree Space")
     }
     
