@@ -28,7 +28,7 @@ plot.treespace <- function(points){
             geom_point(size=4) + 
             scale_colour_gradient(low='red', high='yellow') +
             theme(panel.background = element_blank(), axis.line = element_line(color='grey')) +
-            facet_wrap(~chain)
+            facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain)))))    
     }
 
     # only make a heatmap if we have > 1 point to look at
