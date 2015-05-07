@@ -26,11 +26,14 @@ load.trees <- function(file, type="nexus", gens.per.tree=NA, trim=1, skiplines.p
     print("Reading trees...")
     if(type == "nexus") {treelist <- read.nexus(file=file)}
     else {treelist <- read.tree(file=file)}
+
     treelist <- treelist[seq(from=1, to=length(treelist), by=trim)]
+
     if(is.na(gens.per.tree)){
         gens.per.tree <- as.numeric(tail(strsplit(x=names(treelist)[3], split="[[:punct:]]")[[1]], 1)) - 
             as.numeric(tail(strsplit(x=names(treelist)[2], split="[[:punct:]]")[[1]], 1))  
     }
+
     print(paste(gens.per.tree, "generations per tree..."))
     
     # Unroot all trees.  Can't use lapply because it was
@@ -50,6 +53,7 @@ load.trees <- function(file, type="nexus", gens.per.tree=NA, trim=1, skiplines.p
     
     ptable <- NULL
     pfile <- NA
+
     # Check for .p file, read it in if it exists
     if(length(grep(".t$", file, perl=TRUE)) > 0){pfile <- sub(".t$", ".p", file, perl=TRUE)}
     if(length(grep(".trees$", file, perl=TRUE)) > 0){pfile <- sub(".trees$", ".p", file, perl=TRUE)}
