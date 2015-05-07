@@ -21,22 +21,13 @@
 treespace <- function(chains, n.points, burnin=0, labels=NA){
     # do MDS on a >1 lists of trees
 
-    # TO DO: some checks, should be outsourced to a different private function, since they
-    # will be useful for any user-facing function that uses multiple chains
-    # 1. Check that chains is a list of rwty.trees functions
-    # 2. Check that all chains in there are the same length, with same generations labels.
-
-    # make sure all chains are labelled
-    if(any(is.na(labels))){
-        labels <- c(paste("Chain", seq(1:length(chains)), sep="."))
-    }
+    if(chains$checked == NULL){ labels = check.chains(chains) }
 
     chain = chains[[1]]
 
     # subsample down to minimum n.points or thereabouts
     step = as.integer((length(chain$trees) - burnin)/n.points)
     indices = seq(from = burnin+1, to = length(chain$trees), by = step)   
-
 
     # let's organise the data into lists of lists
     trees = lapply(chains, function(x) x[['trees']][indices])
