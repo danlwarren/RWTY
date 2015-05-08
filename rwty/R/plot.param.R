@@ -19,16 +19,20 @@
 #' slide.data <- slide.freq(run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
 #' cpplot <- plot.cladeprobs(input.table = slide.data$slide.table, numclades=25)
 
-plot.param <- function(chains, burnin = 0, parameter = "lnL"){ 
+plot.param <- function(chains, burnin = 0, parameter = "lnL", facet=TRUE){ 
 
     ptable = merge.ptables(chains, burnin)
+    b = 'black'
+
+    if(facet) colour = 'b' else colour = 'chain'
 
     if(parameter %in% names(ptable)){
 
         param.plot =  ggplot(ptable, aes_string(x="generation", y=parameter)) + 
-                      geom_line() + 
-                      facet_wrap(~chain, ncol=1) +
-                      ggtitle(parameter)
+                        geom_line(aes_string(colour = colour)) + 
+                        ggtitle(parameter)
+
+        if(facet) param.plot = param.plot + facet_wrap(~chain, ncol=1)
 
         return(param.plot)
 
