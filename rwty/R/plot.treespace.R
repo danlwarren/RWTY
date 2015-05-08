@@ -30,7 +30,7 @@ plot.treespace <- function(chains, n.points = 100, burnin = 0, likelihood = NA){
 
 
     # Pre - compute checks. Since the calculations can take a while...
-    comparisons = (n.points * length(chains)) * (n.points * length(chains))
+    comparisons = ((n.points * length(chains)) * (n.points * length(chains)) / 2.0) - (n.points * length(chains))
 
     print(sprintf("Creating treespace plot"))
     print(sprintf("This will require the calculation of %s pairwise tree distances", comparisons))
@@ -39,7 +39,7 @@ plot.treespace <- function(chains, n.points = 100, burnin = 0, likelihood = NA){
         stop("The number of trees (after removing burnin) is smaller than the number of points you have specified")
     }
 
-    if(comparisons > 1000000){
+    if(comparisons > 100000){
         print(sprintf("WARNING: Calculating %s pairwise tree distances may take a long time, consider plotting fewer points.", comparisons))
     }
 
