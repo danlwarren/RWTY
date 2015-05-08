@@ -22,17 +22,14 @@
 plot.param <- function(chains, burnin = 0, parameter = "lnL", facet=TRUE){ 
 
     ptable = merge.ptables(chains, burnin)
-    b = 'black'
-
-    if(facet) colour = 'b' else colour = 'chain'
 
     if(parameter %in% names(ptable)){
 
         param.plot =  ggplot(ptable, aes_string(x="generation", y=parameter)) + 
-                        geom_line(aes_string(colour = colour)) + 
+                        geom_line(aes(colour = chain)) + 
                         ggtitle(parameter)
 
-        if(facet) param.plot = param.plot + facet_wrap(~chain, ncol=1)
+        if(facet) param.plot = param.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
 
         return(param.plot)
 
