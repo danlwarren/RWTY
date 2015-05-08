@@ -37,5 +37,5 @@ plot.cladevar <- function(input.table, numclades=nrow(input.table)){
         xlab("Generations") + 
         ylab("Variation in posterior probability")
     
-    thisplot
+    return(thisplot)
 }
