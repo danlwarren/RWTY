@@ -18,27 +18,31 @@
 #' data(fungus)
 #' burnin <- 100
 
-treespace <- function(chains, n.points, burnin=0, labels=NA){
-    # do MDS on a >1 lists of trees
+treespace <- function(chains, n.points, burnin=0, likelihood=NA){
 
-    if(chains$checked == NULL){ labels = check.chains(chains) }
+    chains = check.chains(chains)
+    labels = names(chains)
+    ptable = merge.ptables(chains, burnin=0) # we deal with burnin later for this 
+
+    # check that the user-supplied likelihood variable exists
+    if(!is.na(likelihood)){
+        if(likelihood %in% names(ptable)){} else
+        stop(sprintf("The variable you supplied for the likelihood column of your parameter table ('%s') wasn't found", likelihood))
+    }
 
     chain = chains[[1]]
 
-    # subsample down to minimum n.points or thereabouts
-    step = as.integer((length(chain$trees) - burnin)/n.points)
-    indices = seq(from = burnin+1, to = length(chain$trees), by = step)   
+    # subsample down to minimum n.points
+    step = as.integer((length(chain$trees) - burnin) / n.points)
+    indices = seq(from = burnin + 1, to = length(chain$trees), by = step)   
 
-    # let's organise the data into lists of lists
+    # subsample trees and parameters by indices
     trees = lapply(chains, function(x) x[['trees']][indices])
 
-    if(!is.null(chain$ptable)){
-        ptable = lapply(chains, function(x) x[['ptable']][indices,])
-    }else{
-        ptable = NULL
-    }
+    additional = unlist(lapply(length(chain$trees) * (0:(length(chains) - 1)), function(x) rep(x, length(indices))))
+    ptable = ptable[(indices + additional),]
     
-    # for now this is hard-coded, who wants a 3D plot anyway, right?
+    # for now this is hard-coded
     dimensions = 2
 
     # combine all the trees and get a distance matrix
@@ -61,23 +65,17 @@ treespace <- function(chains, n.points, burnin=0, labels=NA){
         mds <- cmdscale(d, k=dimensions)
     }
 
-
     points <- as.data.frame(mds)
     row.names(points) <- seq(nrow(points))
     names(points) <- c("x", "y")
-    points$chain = unlist(lapply(labels, function(x) rep(x, length(indices))))
-    points$TreeNum = as.numeric(rep(1:length(indices), length(chains)))
 
+    points$chain = ptable$chain
+    points$sample = ptable$sample
+    points$generation = ptable$generation
 
-    if(!is.null(ptable)){
-        Generation = unlist(lapply(ptable, function(x) x[['Gen']]))
-        lnL = unlist(lapply(ptable, function(x) x[['LnL']]))
-        points <- cbind(points, lnL, Generation)
-    }
-    
-    p <- plot.treespace(points)
-    
-    r <- list("points" = points, "plot" = p$plot, "heatmap" = p$heatmap)
-    
+    if(!is.na(likelihood)) points$lnL = as.numeric(ptable[[likelihood]])
+
+    return(points)
+        
 }
 
