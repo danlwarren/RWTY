@@ -2,16 +2,31 @@
 #' 
 #' This function will take an mds.treespace object and produce plots of chains in treespace.
 #'
-#' @param points A set of points to plot \code{points}
+#' @param chains A list of one or more rwty.trees objects
+#' @param n.points The number of points on each plot
+#' @param burnin The number of samples to remove from the start of the chain as burnin
+#' @param likelihood The name of the column that describes the likelihood in your parameter file, if present
 #'
-#' @return p A ggplot object
+#' @return A list of two ggplot objects: one plots the points in treespace, the other shows a heatmap of the same points
 #'
 #' @keywords plot, treespace, rwty
 #'
 #' @export
 #' 
+#' @examples
+#' data(fungus)
+#' 
+#' p = plot.treespace(chains = list(run1, run2), burnin = 100, likelihood = 'LnL')
+#' 
+#' # NB: these data indicate significant problems: the two chains are sampling very different parts of tree space
+#' # View the points plotted in treespace (these data indicate significant problems)
+#' p$points.plot
+#' 
+#' # View the heatmap of the same data
+#' p$heatmap
 
-plot.treespace <- function(chains, n.points, burnin = 0, likelihood = NA){
+
+plot.treespace <- function(chains, n.points = 100, burnin = 0, likelihood = NA){
 
 
     # Pre - compute checks. Since the calculations can take a while...
@@ -57,5 +72,5 @@ plot.treespace <- function(chains, n.points, burnin = 0, likelihood = NA){
             scale_fill_gradient(low='white', high='black')
     }
 
-    return(list('plot' = points.plot, 'heatmap' = heatmap))
+    return(list('points.plot' = points.plot, 'heatmap' = heatmap))
 }
