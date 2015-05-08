@@ -21,9 +21,17 @@
 
 plot.param <- function(chains, burnin = 0, parameter = "lnL", facet=TRUE){ 
 
+    chains = check.chains(chains)
     ptable = merge.ptables(chains, burnin)
 
     if(parameter %in% names(ptable)){
+
+        # get ESS values
+        ess <- unlist(lapply(chains, FUN = function(x) effectiveSize( mcmc(x$ptable[parameter][(burnin+1):length(x$ptable[[parameter]]),]) )))
+        ess <- round(ess, digits = 0)
+        labels = paste(names(chains), " (ESS=", ess, ")", sep="")
+        chains = check.chains(chains, labels = labels)
+        ptable = merge.ptables(chains, burnin)
 
         param.plot =  ggplot(ptable, aes_string(x="generation", y=parameter)) + 
                         geom_line(aes(colour = chain)) + 

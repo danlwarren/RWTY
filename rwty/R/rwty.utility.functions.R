@@ -48,7 +48,7 @@ check.chains <- function(chains, labels = NA){
     }
 
     # label the chains, and check user-supplied labels
-    if((is.na(labels))){
+    if(any((is.na(labels)))){
         labels <- c(paste("Chain", seq(1:length(chains)), sep="."))
     }
 
@@ -64,7 +64,6 @@ check.chains <- function(chains, labels = NA){
 
 merge.ptables <- function(chains, burnin){
 
-    chains = check.chains(chains)
     N = length(chains[[1]]$trees)
 
     if((N - burnin) < 1 | burnin < 0){
@@ -87,5 +86,13 @@ merge.ptables <- function(chains, burnin){
     }
 
     return(ptable)
+
+}
+
+get.ess <- function(chains, parameter){
+
+    # return a list of ESS values, the length of the chain
+
+
 
 }
