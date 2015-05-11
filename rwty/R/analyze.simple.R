@@ -28,7 +28,7 @@ analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 1
     N = length(chains[[1]]$trees)
 
     # Now merge the ptables into one large data frame, keeping only what we want 
-    ptable = merge.ptables(chains)
+    ptable = merge.ptables(chains, burnin = burnin)
 
     # plot parameters for all chains
     parameter.plots = plot.all.params(chains, burnin = burnin, facet=TRUE, strip = 1)
