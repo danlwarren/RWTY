@@ -51,15 +51,12 @@ analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, tree
     cumulative.plot <- plot.cladeprobs(cumulative.data$cumulative.table, ...) + ggtitle("Cumulative Posterior Probability")
     cumulative.variance.plot <- plot.cladevar(cumulative.data$cumulative.table) + ggtitle("Cumulative Variance")
 
-    treespace.data <- NA
-    treespace.plot <- NA
     if(treespace==TRUE){
         print("Plotting trees in tree space...")
-        treespace <- treespace(list(chains), n.points=treespace.points, burnin=burnin)
-        treespace.data <- treespace$points
-        treespace.plot <- treespace$plot + ggtitle("Treespace plot")
-        treespace.heatmap <- treespace$heatmap + ggtitle("Treespace heatmap")
-    }else{ treespace.data <- treespace.plot <- treespace.heatmap <- NA }
+        ts <- plot.treespace(list(chains), n.points=treespace.points, burnin=burnin)
+        treespace.plot <- ts$points.plot + ggtitle("Treespace plot")
+        treespace.heatmap <- ts$heatmap + ggtitle("Treespace heatmap")
+    }else{ treespace.plot <- treespace.heatmap <- NA }
 
     
     if(!is.na(labels)){
@@ -94,6 +91,6 @@ analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, tree
     output <- list("LnL.plot" = lnl.plot, "slide.data" = slide.data,
                    "slide.plot" = slide.plot, "slide.variance.plot" = slide.variance.plot,
                     "cumulative.data" = cumulative.data,"cumulative.plot" = cumulative.plot, 
-                   "cumulative.variance.plot" = cumulative.variance.plot, "treespace.data" = treespace.data,
+                   "cumulative.variance.plot" = cumulative.variance.plot,
                    "treespace.plot" = treespace.plot, "treespace.heatmap" = treespace.heatmap) 
 }
