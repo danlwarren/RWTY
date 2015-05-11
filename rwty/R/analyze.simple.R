@@ -21,7 +21,7 @@
 #' @examples
 #' data(fungus)
 
-analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 100, min.freq = 0, labels=NA, likelihood.param = NA ...){
+analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 100, min.freq = 0, labels=NA, likelihood.param = NA, ...){
     
     chains = check.chains(chains, labels)
 
