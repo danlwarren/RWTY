@@ -21,7 +21,7 @@ Depends:
     reshape2,
     phangorn,
     MASS,
-    GGally
+    GGally,
     coda
 Suggests:
     knitr,
