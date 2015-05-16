@@ -22,7 +22,7 @@ Depends:
     phangorn,
     MASS,
     GGally,
-    coda
+    coda,
 Suggests:
     knitr,
 VignetteBuilder: knitr

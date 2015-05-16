@@ -37,9 +37,9 @@ check.chains <- function(chains, labels = NA){
     }
 
     # check all chains are the same length
-    if(length(unique(unlist(lapply(chains, FUN = function(x) length(x$trees))))) != 1){
-        stop("The length of all of the MCMC chains in the 'chains' object must be equal")
-    }
+    #if(length(unique(unlist(lapply(chains, FUN = function(x) length(x$trees))))) != 1){
+    #    stop("The length of all of the MCMC chains in the 'chains' object must be equal")
+    #}
 
     # check all points sampled from the same points in the mcmc
     gens = unique(unlist(lapply(chains, FUN = function(x) x$gens.per.tree)))
@@ -68,19 +68,20 @@ check.chains <- function(chains, labels = NA){
 merge.ptables <- function(chains, burnin){
 
     chains = check.chains(chains)
-    N = length(chains[[1]]$trees)
+    # N is a vector of chain lengths
+    N <- unlist(lapply(chains, function(x) length(x$trees)))
 
-    if((N - burnin) < 1 | burnin < 0){
+    if(any((N - burnin) < 1 | burnin < 0)){
         stop(sprintf('Burnin must be between 0 and the length of your chains (%s)', N))
     }
 
     # merge p tables    
-    chain = unlist(lapply(names(chains), function(x) rep(x, (N - burnin))))
-    sample = as.numeric(rep((burnin + 1):N), length(chains))
-    generation = (sample - 1) * chains[[1]]$gens.per.tree
+    chain <- rep(names(chains), N - (burnin))
+    sample <- as.vector(unlist(sapply(N, function(x) seq(burnin + 1, x))))
+    generation <- (sample - 1) * chains[[1]]$gens.per.tree
 
     if(!is.null(chains[[1]]$ptable)){
-        ptables = lapply(chains, function(x) x[['ptable']][(burnin + 1):N,])
+        ptables <- lapply(seq_along(chains), function(i) chains[[i]][['ptable']][(burnin+1):N[i],])
         ptable = do.call("rbind", ptables)
         ptable$chain = chain
         ptable$sample = sample
