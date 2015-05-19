@@ -1,7 +1,9 @@
 setwd("~/GitHub/RWTY/testdata/Hibbett")
 
-install.packages("~/GitHub/RWTY/rwty",repos=NULL, type="source")
-library(rwty)
+rfiles <- list.files(path = "~/GitHub/RWTY/rwty/R/", pattern="*.R", full.names=TRUE)
+sapply(rfiles, source)
+#install.packages("~/GitHub/RWTY/rwty",repos=NULL, type="source")
+#library(rwty)
 data(fungus)
 burnin <- 10
 test.chains <- list(run1, run2)

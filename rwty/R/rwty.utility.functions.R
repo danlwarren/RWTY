@@ -37,9 +37,21 @@ check.chains <- function(chains, labels = NA){
     }
 
     # check all chains are the same length
-    #if(length(unique(unlist(lapply(chains, FUN = function(x) length(x$trees))))) != 1){
-    #    stop("The length of all of the MCMC chains in the 'chains' object must be equal")
-    #}
+    if(length(unique(unlist(lapply(chains, FUN = function(x) length(x$trees))))) != 1){
+      print("Chains of unequal length, pruning longer chains")
+      ptable.min <- min(unlist(lapply(test.chains, function(x) length(x$ptable[,1]))))
+      trees.min <- min(unlist(lapply(test.chains, function(x) length(x$trees))))
+      for(i in 1:length(chains)){ # May be a way to lapply this, but for right now this works
+        chains[[i]]$ptable <- chains[[i]]$ptable[1:ptable.min,]
+        chains[[i]]$trees <- chains[[i]]$trees[1:trees.min]
+      }
+    }
+    
+    # check to see if ptable and trees are the same length
+    if(any(unlist(lapply(test.chains, function(x) length(x$trees))) != 
+             unlist(lapply(test.chains, function(x) length(x$ptable[,1]))))){
+      stop("All MCMC chains must be the same length as their associated p tables")
+    }
 
     # check all points sampled from the same points in the mcmc
     gens = unique(unlist(lapply(chains, FUN = function(x) x$gens.per.tree)))
