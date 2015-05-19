@@ -30,7 +30,7 @@ plot.param <- function(chains, burnin = 0, parameter = "lnL", facet=TRUE){
         ess <- unlist(lapply(chains, FUN = function(x) effectiveSize( mcmc(x$ptable[parameter][(burnin+1):length(x$ptable[[parameter]]),]) )))
         ess <- round(ess, digits = 0)
         labels = paste(names(chains), " (ESS=", ess, ")", sep="")
-        chains = check.chains(chains, labels = labels)
+        names(chains) = labels
         ptable = merge.ptables(chains, burnin)
 
         param.plot =  ggplot(ptable, aes_string(x="generation", y=parameter)) + 

@@ -38,7 +38,19 @@ check.chains <- function(chains, labels = NA){
 
     # check all chains are the same length
     if(length(unique(unlist(lapply(chains, FUN = function(x) length(x$trees))))) != 1){
-        stop("The length of all of the MCMC chains in the 'chains' object must be equal")
+      print("Chains of unequal length, pruning longer chains")
+      ptable.min <- min(unlist(lapply(test.chains, function(x) length(x$ptable[,1]))))
+      trees.min <- min(unlist(lapply(test.chains, function(x) length(x$trees))))
+      for(i in 1:length(chains)){ # May be a way to lapply this, but for right now this works
+        chains[[i]]$ptable <- chains[[i]]$ptable[1:ptable.min,]
+        chains[[i]]$trees <- chains[[i]]$trees[1:trees.min]
+      }
+    }
+    
+    # check to see if ptable and trees are the same length
+    if(any(unlist(lapply(test.chains, function(x) length(x$trees))) != 
+             unlist(lapply(test.chains, function(x) length(x$ptable[,1]))))){
+      stop("All MCMC chains must be the same length as their associated p tables")
     }
 
     # check all points sampled from the same points in the mcmc
@@ -48,7 +60,7 @@ check.chains <- function(chains, labels = NA){
     }
 
     # label the chains, and check user-supplied labels
-    if(any((is.na(labels)))){
+    if(any((is.na(labels))) | is.null(labels)){
         labels <- c(paste("Chain", seq(1:length(chains)), sep="."))
     }
 
@@ -56,7 +68,10 @@ check.chains <- function(chains, labels = NA){
         stop("The length of the 'labels' list must be equal to the number of chains you have supplied")
     }
 
-    names(chains) = labels
+    # replace labels with auto-generated ones if there are not enough unique ones
+    if(is.null(names(chains)) | length(unique(names(chains))) != length(chains)){
+        names(chains) = labels
+    }
 
     return(chains)
 
@@ -64,19 +79,21 @@ check.chains <- function(chains, labels = NA){
 
 merge.ptables <- function(chains, burnin){
 
-    N = length(chains[[1]]$trees)
+    chains = check.chains(chains)
+    # N is a vector of chain lengths
+    N <- unlist(lapply(chains, function(x) length(x$trees)))
 
-    if((N - burnin) < 1 | burnin < 0){
+    if(any((N - burnin) < 1 | burnin < 0)){
         stop(sprintf('Burnin must be between 0 and the length of your chains (%s)', N))
     }
 
     # merge p tables    
-    chain = unlist(lapply(names(chains), function(x) rep(x, (N - burnin))))
-    sample = as.numeric(rep((burnin + 1):N), length(chains))
-    generation = (sample - 1) * chains[[1]]$gens.per.tree
+    chain <- rep(names(chains), N - (burnin))
+    sample <- as.vector(unlist(sapply(N, function(x) seq(burnin + 1, x))))
+    generation <- (sample - 1) * chains[[1]]$gens.per.tree
 
     if(!is.null(chains[[1]]$ptable)){
-        ptables = lapply(chains, function(x) x[['ptable']][(burnin + 1):N,])
+        ptables <- lapply(seq_along(chains), function(i) chains[[i]][['ptable']][(burnin+1):N[i],])
         ptable = do.call("rbind", ptables)
         ptable$chain = chain
         ptable$sample = sample
@@ -86,13 +103,5 @@ merge.ptables <- function(chains, burnin){
     }
 
     return(ptable)
-
-}
-
-get.ess <- function(chains, parameter){
-
-    # return a list of ESS values, the length of the chain
-
-
 
 }
