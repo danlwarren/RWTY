@@ -1,0 +1,1 @@
+plot.posteriors <- function(chains, burnin)

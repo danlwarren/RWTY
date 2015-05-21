@@ -23,18 +23,21 @@
 
 analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 100, min.freq = 0, labels=NA, likelihood.param = NA, ...){
     
-    chains = check.chains(chains, labels)
+    chains <- check.chains(chains, labels)
 
-    N = length(chains[[1]]$trees)
+    N <- length(chains[[1]]$trees)
 
     # Now merge the ptables into one large data frame, keeping only what we want 
-    ptable = merge.ptables(chains, burnin = burnin)
+    ptable <- merge.ptables(chains, burnin = burnin)
 
     # plot parameters for all chains
-    parameter.plots = plot.all.params(chains, burnin = burnin, facet=TRUE, strip = 1)
+    parameter.plots <- plot.all.params(chains, burnin = burnin, facet=TRUE, strip = 1)
 
     # plot treespace for all chains
-    treespace.plots = plot.treespace(chains, n.points = treespace.points, burnin = burnin, likelihood = likelihood.param)
+    treespace.plots <- plot.treespace(chains, n.points = treespace.points, burnin = burnin, likelihood = likelihood.param)
+    
+    # plot posterior probabilities for all chains
+    posterior.plots <- plot.posteriors(chains, burnin=burnin)
 
 
     plots = c(parameter.plots, treespace.plots)
