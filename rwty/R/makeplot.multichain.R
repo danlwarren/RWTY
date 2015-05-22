@@ -28,9 +28,7 @@ makeplot.multichain <- function(chains, burnin, min.freq = 0 ,...){
   compn <- compare.n(chains, setnames=names(chains), burnin, min.freq=min.freq)
   dtree <- as.phylo(hclust(compn$discordance))
   output[["compare.plot"]] <- compn$compare.plot
-  #output[["discordance.plot"]] <- compn$discordance.plot
-  #output[["discordance.n"]] <- discordance.n(output, setnames=names(chains), min.freq=min.freq)
-  
+  # output[["discordance.n"]] <- discordance.n(compn, setnames=names(chains), min.freq=min.freq)
   
   plot.phylo(dtree, main="Chains clustered by discordance")
   axisPhylo()
