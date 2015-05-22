@@ -4,15 +4,14 @@
 \alias{makeplot.multichain}
 \title{Function for running rwty analyses on multiple chains.}
 \usage{
-makeplot.multichain(chains, burnin, window.size, gens.per.tree = NA,
-  treespace.points = 100, filename = NA, labels = NA, min.freq = 0, ...)
+makeplot.multichain(chains, burnin, min.freq = 0, ...)
 }
 \arguments{
 \item{chains}{A list of rwty.trees objects. \code{chains}}
 
 \item{burnin}{The number of trees to eliminate as burnin.  Default is zero. \code{burnin}}
 
-\item{window.size}{The length of window (in trees) for the sliding window plot \code{window.size}}
+\item{min.freq}{The minimum frequency for a node to be used for calculating discordance.  \code{min.freq}}
 
 \item{gens.per.tree}{The number of generations per tree in the .t file.  If no value is provided, RWTY tries to figure it out from the tree names. \code{gens.per.tree}}
 
@@ -21,8 +20,6 @@ makeplot.multichain(chains, burnin, window.size, gens.per.tree = NA,
 \item{filename}{A name to be used for generating pdfs of output.  If a name is not provided, one will be automatically generated from the labels.  \code{filename}}
 
 \item{labels}{The name to use on plots and in generating output files.  If none are provided, defaults are created using Chain 1, Chain 2, etc.  \code{labels}}
-
-\item{min.freq}{The minimum frequency for a node to be used for calculating discordance.  \code{min.freq}}
 }
 \value{
 output A list of outputs from the analyze.single runs on each chain, as well as a compare.n run and discordance data for all chains.
@@ -33,7 +30,7 @@ It runs analyze.single for each chain, and then does multi-chain analyses as wel
 }
 \examples{
 data(fungus)
-makeplot.multichain(list(run1, run2), burnin=100, window.size=20, treespace.points=100, filename="fungus.pdf", labels=c("Chain1", "Chain2"))
+makeplot.multichain(list(run1, run2), burnin=100, )
 }
 \keyword{MCMC,}
 \keyword{awty,}

@@ -20,7 +20,8 @@
 #' 
 #' @examples
 #' data(fungus)
-#' analyze.simple(list(run1, run2), burnin = 50, window.num = 50)
+#' p <- analyze.simple(list(run1, run2), burnin = 50, window.num = 50)
+#' p
 
 analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 100, min.freq = 0, labels=NA, likelihood.param = NA, filename = NA, ...){
     
@@ -40,10 +41,14 @@ analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 1
     # plot posterior probabilities for all chains
     posterior.plots <- makeplot.posteriors(chains, burnin=burnin, window.num = window.num)
     
-    # plot multichain plots when appropriate
-    #multichain.plots <- makeplot.multichain()
-
-    plots <- c(parameter.plots, treespace.plots, posterior.plots)
+    # plot multichain plots when appropriate, populate plots list
+    if(length(chains) > 1){
+      multichain.plots <- makeplot.multichain(chains, burnin, min.freq, ...)
+      plots <- c(parameter.plots, treespace.plots, posterior.plots, multichain.plots)
+    }
+    else{
+      plots <- c(parameter.plots, treespace.plots, posterior.plots)
+    }
     
     # Print all to pdf if filename provided
     if(!is.na(filename)){
