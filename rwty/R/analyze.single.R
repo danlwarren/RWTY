@@ -24,21 +24,7 @@
 #' data(fungus)
 #' analyze.single(run1, burnin=100, window.size=20, treespace.points=100, filename="fungus.pdf", labels="Chain1")
 
-analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, treespace.points=100, filename = NA, labels=NA, treespace=TRUE, ...){
-    step = as.integer((length(chains$trees) - burnin)/treespace.points)
-    if(is.na(gens.per.tree)){gens.per.tree = chains$gens.per.tree}
-    lnl.plot <- NA
-    if(!is.null(chains$ptable)){
-        print("Making LnL and parameter plots...")
-        if(nrow(chains$ptable) > 1000){ #Keeping the number of points plotted reasonable
-            temp.ptable <- chains$ptable[burnin:length(chains$ptable[,1]),]
-            temp.ptable <- temp.ptable[seq(from=1, to=length(temp.ptable[,1]), length.out=1000),]
-            lnl.plot <- ggplot(temp.ptable, aes(x=Gen, y=LnL)) + geom_line() + ggtitle("Likelihood")
-        }
-        else{
-            lnl.plot <- ggplot(chains$ptable[burnin:length(chains$ptable[,1]),], aes(x=Gen, y=LnL)) + geom_line() + ggtitle("Likelihood")
-        }
-    }
+analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, chain.name, ...){
     
     print("Sliding window analysis...")
     slide.data <- slide.freq(chains, burnin, window.size, gens.per.tree)
@@ -50,47 +36,12 @@ analyze.single <- function(chains, burnin=0, window.size, gens.per.tree=NA, tree
                                        slide.freq.table=slide.data)
     cumulative.plot <- plot.cladeprobs(cumulative.data$cumulative.table, ...) + ggtitle("Cumulative Posterior Probability")
     cumulative.variance.plot <- plot.cladevar(cumulative.data$cumulative.table) + ggtitle("Cumulative Variance")
+    
+    slide.plot <- slide.plot + ggtitle(paste(chain.name, "Sliding Window Posterior Probability"))
+    slide.variance.plot <- slide.variance.plot + ggtitle(paste(chain.name, "Sliding Window Variance"))
+    cumulative.plot <- cumulative.plot + ggtitle(paste(chain.name, "Cumulative Posterior Probability"))
+    cumulative.variance.plot <- cumulative.variance.plot + ggtitle(paste(chain.name, "Cumulative Variance"))
 
-    if(treespace==TRUE){
-        print("Plotting trees in tree space...")
-        ts <- plot.treespace(list(chains), n.points=treespace.points, burnin=burnin)
-        treespace.plot <- ts$points.plot + ggtitle("Treespace plot")
-        treespace.heatmap <- ts$heatmap + ggtitle("Treespace heatmap")
-    }else{ treespace.plot <- treespace.heatmap <- NA }
-
-    
-    if(!is.na(labels)){
-        if(!is.na(lnl.plot[1])){
-            lnl.plot <- lnl.plot + ggtitle(paste(labels, "Likelihood"))
-        }
-        slide.plot <- slide.plot + ggtitle(paste(labels, "Sliding Window Posterior Probability"))
-        slide.variance.plot <- slide.variance.plot + ggtitle(paste(labels, "Sliding Window Variance"))
-        cumulative.plot <- cumulative.plot + ggtitle(paste(labels, "Cumulative Posterior Probability"))
-        cumulative.variance.plot <- cumulative.variance.plot + ggtitle(paste(labels, "Cumulative Variance"))
-        if(treespace==TRUE){
-            treespace.plot <- treespace$plot + ggtitle(paste(labels, "Treespace plot"))
-            treespace.heatmap <- treespace$heatmap + ggtitle(paste(labels, "Treespace heatmap"))
-        }
-        #discordance.plot <- discordance.plot + ggtitle(paste(labels, "Sliding Window Discordance"))         
-    }
-    
-    if(!is.na(filename)){
-        pdf(file=filename)
-        print(lnl.plot)
-        print(slide.plot)
-        print(slide.variance.plot)
-        print(cumulative.plot)
-        print(cumulative.variance.plot)
-        if(treespace==TRUE){
-            print(treespace.plot)
-            print(treespace.heatmap)
-        }
-        dev.off()
-    }
-    
-    output <- list("LnL.plot" = lnl.plot, "slide.data" = slide.data,
-                   "slide.plot" = slide.plot, "slide.variance.plot" = slide.variance.plot,
-                    "cumulative.data" = cumulative.data,"cumulative.plot" = cumulative.plot, 
-                   "cumulative.variance.plot" = cumulative.variance.plot,
-                   "treespace.plot" = treespace.plot, "treespace.heatmap" = treespace.heatmap) 
+    output <- list("slide.data" = slide.data, "slide.plot" = slide.plot, "slide.variance.plot" = slide.variance.plot,
+                    "cumulative.data" = cumulative.data,"cumulative.plot" = cumulative.plot, "cumulative.variance.plot" = cumulative.variance.plot) 
 }

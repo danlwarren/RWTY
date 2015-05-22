@@ -21,7 +21,7 @@
 #' @examples
 #' data(fungus)
 
-analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 100, min.freq = 0, labels=NA, likelihood.param = NA, ...){
+analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 100, min.freq = 0, labels=NA, likelihood.param = NA, filename = NA, ...){
     
     chains <- check.chains(chains, labels)
 
@@ -37,10 +37,17 @@ analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 1
     treespace.plots <- plot.treespace(chains, n.points = treespace.points, burnin = burnin, likelihood = likelihood.param)
     
     # plot posterior probabilities for all chains
-    posterior.plots <- plot.posteriors(chains, burnin=burnin)
+    posterior.plots <- plot.posteriors(chains, burnin=burnin, window.num = window.num)
 
 
-    plots = c(parameter.plots, treespace.plots)
+    plots <- c(parameter.plots, treespace.plots, posterior.plots)
+    
+    # Print all to pdf if filename provided
+    if(!is.na(filename)){
+      pdf(file=filename)
+      print(plots)
+      dev.off()
+    }
 
     return(plots)
 
