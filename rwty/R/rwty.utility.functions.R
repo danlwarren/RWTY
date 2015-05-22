@@ -48,8 +48,8 @@ check.chains <- function(chains, labels = NA){
     }
     
     # check to see if ptable and trees are the same length
-    if(any(unlist(lapply(test.chains, function(x) length(x$trees))) != 
-             unlist(lapply(test.chains, function(x) length(x$ptable[,1]))))){
+    if(any(unlist(lapply(chains, function(x) length(x$trees))) != 
+             unlist(lapply(chains, function(x) length(x$ptable[,1]))))){
       stop("All MCMC chains must be the same length as their associated p tables")
     }
 

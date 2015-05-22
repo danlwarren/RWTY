@@ -1,4 +1,4 @@
-#' Analyze.rwty, the main interface for rwty analyses and plots.
+#' analyze.rwty, the main interface for rwty analyses and plots.
 #' 
 #' This is the main user interface to rwty.  It allows users to chuck in arguments for
 #' chains, burnin, window size, gens per tree, and "step", and returns an object that
@@ -20,6 +20,7 @@
 #' 
 #' @examples
 #' data(fungus)
+#' analyze.simple(list(run1, run2), burnin = 50, window.num = 50)
 
 analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 100, min.freq = 0, labels=NA, likelihood.param = NA, filename = NA, ...){
     
@@ -31,14 +32,16 @@ analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 1
     ptable <- merge.ptables(chains, burnin = burnin)
 
     # plot parameters for all chains
-    parameter.plots <- plot.all.params(chains, burnin = burnin, facet=TRUE, strip = 1)
+    parameter.plots <- makeplot.all.params(chains, burnin = burnin, facet=TRUE, strip = 1)
 
     # plot treespace for all chains
-    treespace.plots <- plot.treespace(chains, n.points = treespace.points, burnin = burnin, likelihood = likelihood.param)
+    treespace.plots <- makeplot.treespace(chains, n.points = treespace.points, burnin = burnin, likelihood = likelihood.param)
     
     # plot posterior probabilities for all chains
-    posterior.plots <- plot.posteriors(chains, burnin=burnin, window.num = window.num)
-
+    posterior.plots <- makeplot.posteriors(chains, burnin=burnin, window.num = window.num)
+    
+    # plot multichain plots when appropriate
+    #multichain.plots <- makeplot.multichain()
 
     plots <- c(parameter.plots, treespace.plots, posterior.plots)
     

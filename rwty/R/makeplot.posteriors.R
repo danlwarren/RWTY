@@ -16,14 +16,14 @@
 #' data(fungus)
 #' test.chains <- list(run1, run2)
 #' test.chains <- check.chains(test.chains)
-#' p <- plot.posteriors(chains = test.chains, burnin = 100, window.num = 20)
+#' p <- makeplot.posteriors(chains = test.chains, burnin = 100, window.num = 20)
 #' 
 #' # NB: these data indicate significant problems: the two chains are sampling very different parts of tree space
 #'
 
 
 
-plot.posteriors <- function(chains, burnin, window.num, ...){
+makeplot.posteriors <- function(chains, burnin, window.num, ...){
   
   output <- list()
   labels <- names(chains)
@@ -49,14 +49,14 @@ analyze.posteriors <- function(chains, burnin=0, window.size, gens.per.tree=NA, 
   
   print("Sliding window analysis...")
   slide.data <- slide.freq(chains, burnin, window.size, gens.per.tree)
-  slide.plot <- plot.cladeprobs(slide.data$slide.table, ...) + ggtitle("Sliding Window Posterior Probability")
-  slide.variance.plot <- plot.cladevar(slide.data$slide.table) + ggtitle("Sliding Window Variance")
+  slide.plot <- makeplot.cladeprobs(slide.data$slide.table, ...) + ggtitle("Sliding Window Posterior Probability")
+  slide.variance.plot <- makeplot.cladevar(slide.data$slide.table) + ggtitle("Sliding Window Variance")
   
   print("Cumulative analysis...")
   cumulative.data <- cumulative.freq(chains, burnin, window.size, gens.per.tree,
                                      slide.freq.table=slide.data)
-  cumulative.plot <- plot.cladeprobs(cumulative.data$cumulative.table, ...) + ggtitle("Cumulative Posterior Probability")
-  cumulative.variance.plot <- plot.cladevar(cumulative.data$cumulative.table) + ggtitle("Cumulative Variance")
+  cumulative.plot <- makeplot.cladeprobs(cumulative.data$cumulative.table, ...) + ggtitle("Cumulative Posterior Probability")
+  cumulative.variance.plot <- makeplot.cladevar(cumulative.data$cumulative.table) + ggtitle("Cumulative Variance")
   
   slide.plot <- slide.plot + ggtitle(paste(chain.name, "Sliding Window Posterior Probability"))
   slide.variance.plot <- slide.variance.plot + ggtitle(paste(chain.name, "Sliding Window Variance"))

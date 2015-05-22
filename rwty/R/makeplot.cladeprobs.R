@@ -17,9 +17,9 @@
 #' @examples
 #' data(fungus)
 #' slide.data <- slide.freq(run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
-#' cpplot <- plot.cladeprobs(input.table = slide.data$slide.table, numclades=25)
+#' cpplot <- makeplot.cladeprobs(input.table = slide.data$slide.table, numclades=25)
 
-plot.cladeprobs <- function(input.table, numclades=20){ 
+makeplot.cladeprobs <- function(input.table, numclades=20){ 
     # clade probability plot over generations
     
     # TODO should put a check in here to make sure it only accepts slidetest or cumtest objects

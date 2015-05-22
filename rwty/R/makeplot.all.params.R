@@ -2,7 +2,7 @@
 
 
 
-plot.all.params <- function(chains, burnin = 0, facet=TRUE, strip = 1){
+makeplot.all.params <- function(chains, burnin = 0, facet=TRUE, strip = 1){
 
     chains = check.chains(chains)
     chain = chains[[1]]
@@ -10,7 +10,7 @@ plot.all.params <- function(chains, burnin = 0, facet=TRUE, strip = 1){
 
     params <- names(chain$ptable)[-strip]
 
-    param.plots <- lapply(params, FUN = function(x) plot.param(param = x, burnin = burnin, chains = chains, facet = facet))
+    param.plots <- lapply(params, FUN = function(x) makeplot.param(param = x, burnin = burnin, chains = chains, facet = facet))
 
     names(param.plots) <- params
 

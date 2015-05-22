@@ -15,9 +15,9 @@
 #' @examples
 #' data(fungus)
 #' slide.data <- slide.freq(run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
-#' cvplot <- plot.cladevar(slide.data$slide.table, numclades=100)
+#' cvplot <- makeplot.cladevar(slide.data$slide.table, numclades=100)
 
-plot.cladevar <- function(input.table, numclades=nrow(input.table)){ 
+makeplot.cladevar <- function(input.table, numclades=nrow(input.table)){ 
     # plot variation in clade frequencies between windows
     
     x <- input.table[1:numclades,2:length(input.table) - 2] #Stripping off mean and SD

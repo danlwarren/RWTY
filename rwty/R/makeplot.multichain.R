@@ -1,6 +1,6 @@
 #' Function for running rwty analyses on multiple chains.
 #' 
-#' This function is automatically called when analyze.rwty is called with multple chains.
+#' This function is automatically called when analyze.simple is called with multple chains.
 #' It runs analyze.single for each chain, and then does multi-chain analyses as well. 
 #'
 #' @param chains A list of rwty.trees objects. \code{chains}
@@ -20,9 +20,9 @@
 #' 
 #' @examples
 #' data(fungus)
-#' analyze.multi(list(run1, run2), burnin=100, window.size=20, treespace.points=100, filename="fungus.pdf", labels=c("Chain1", "Chain2"))
+#' makeplot.multichain(list(run1, run2), burnin=100, window.size=20, treespace.points=100, filename="fungus.pdf", labels=c("Chain1", "Chain2"))
 
-analyze.multi <- function(chains, burnin, window.size, gens.per.tree=NA, treespace.points=100, filename=NA,  labels=NA, min.freq=0,...){
+makeplot.multichain <- function(chains, burnin, window.size, gens.per.tree=NA, treespace.points=100, filename=NA,  labels=NA, min.freq=0,...){
   
   output <- list()
   

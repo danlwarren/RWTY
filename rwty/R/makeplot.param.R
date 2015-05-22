@@ -17,9 +17,9 @@
 #' @examples
 #' data(fungus)
 #' slide.data <- slide.freq(run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
-#' cpplot <- plot.cladeprobs(input.table = slide.data$slide.table, numclades=25)
+#' cpplot <- makeplot.cladeprobs(input.table = slide.data$slide.table, numclades=25)
 
-plot.param <- function(chains, burnin = 0, parameter = "lnL", facet=TRUE){ 
+makeplot.param <- function(chains, burnin = 0, parameter = "lnL", facet=TRUE){ 
 
     chains = check.chains(chains)
     ptable = merge.ptables(chains, burnin)
