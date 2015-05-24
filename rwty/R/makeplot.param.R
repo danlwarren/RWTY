@@ -1,25 +1,23 @@
-#' New style plotting of cumulative and slide objects
+#' Plotting parameters
 #' 
-#' Takes a table from cumulative.freq or slide.freq as input.  
-#' Numclades gives the number of clades to plot, starting from the
-#' top.  Since cumulative.freq and slide.freq both sort by sd these
-#' will by default be the most variable clades.
+#' Plots parameter values over the length of the MCMC chain
 #'
-#' @param x An rwty.slide or rwty.cumulative object \code{x}
-#' @param numclades The number of clades to plot.  The clades with the highest sd in clade frequency are plotted first, so numclades = 10 will be the 10 most variable clades in the chain. \code{numclades}
+#' @param chains A set of rwty.trees objects \code{chains}
+#' @param burnin The number of trees to omit as burnin. \code{burnin}
+#' @param parameter The column name of the parameter to plot \code{parameter}
+#' @param facet Boolean denoting whether to make a facet plot \code{facet}
 #'
-#' @return thisplot Returns a ggplot object.
+#' @return param.plot Returns a ggplot object.
 #'
-#' @keywords cumulative, sliding window, mcmc, phylogenetics, plot
+#' @keywords parameter, plot, convergence, mcmc, phylogenetics
 #'
 #' @export
 #' 
 #' @examples
 #' data(fungus)
-#' slide.data <- slide.freq(run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
-#' cpplot <- makeplot.cladeprobs(input.table = slide.data$slide.table, numclades=25)
+#' makeplot.param(list(run1, run2), burnin=100, parameter="pi.A.")
 
-makeplot.param <- function(chains, burnin = 0, parameter = "lnL", facet=TRUE){ 
+makeplot.param <- function(chains, burnin = 0, parameter = "LnL", facet=TRUE){ 
 
     chains = check.chains(chains)
     ptable = merge.ptables(chains, burnin)

@@ -1,0 +1,75 @@
+#' Function for checking suitability of chains for rwty analyses, auto-generating labels, etc
+#' 
+#' This function is automatically called by many other functions, but can be run manually as well.
+#' It performs a number of tests of chain format, labels, lengths, etc.
+#'
+#' @param chains A list of rwty.trees objects. \code{chains}
+#' @param labels The name to use on plots and in generating output files.  If none are provided, defaults are created using Chain 1, Chain 2, etc.  \code{labels}
+#'
+#' @return chains A list of rwty.trees objects
+#'
+#' @keywords MCMC, phylogenetics, convergence, awty, rwty
+#'
+#' @export
+#' 
+#' @examples
+#' data(fungus)
+#' check.chains(list(run1, run2), labels=c("Tree 1", "Tree 2"))
+
+check.chains <- function(chains, labels = NA){
+  
+  # check chains is a list
+  if(class(chains)!='list'){
+    stop("'chains' must be a list of rwty.trees objects")        
+  }
+  
+  # check all chains are rwty.trees objects
+  if(all(unlist(lapply(chains, FUN = class))!='rwty.trees')){
+    stop("Each chain in the list 'chains' must be a rwty.trees object")
+  }
+  
+  # check all chains have the same tips using first tree in each chain
+  if(!all(unlist(lapply(tlist, FUN = function (x) setequal(tlist[[1]]$trees$tip.label, x$trees$tip.label))))){
+    stop("All trees must have the same tip labels")
+  }
+  
+  # check all chains are the same length
+  if(length(unique(unlist(lapply(chains, FUN = function(x) length(x$trees))))) != 1){
+    print("Chains of unequal length, pruning longer chains")
+    ptable.min <- min(unlist(lapply(test.chains, function(x) length(x$ptable[,1]))))
+    trees.min <- min(unlist(lapply(test.chains, function(x) length(x$trees))))
+    for(i in 1:length(chains)){ # May be a way to lapply this, but for right now this works
+      chains[[i]]$ptable <- chains[[i]]$ptable[1:ptable.min,]
+      chains[[i]]$trees <- chains[[i]]$trees[1:trees.min]
+    }
+  }
+  
+  # check to see if ptable and trees are the same length
+  if(any(unlist(lapply(chains, function(x) length(x$trees))) != 
+           unlist(lapply(chains, function(x) length(x$ptable[,1]))))){
+    stop("All MCMC chains must be the same length as their associated p tables")
+  }
+  
+  # check all points sampled from the same points in the mcmc
+  gens = unique(unlist(lapply(chains, FUN = function(x) x$gens.per.tree)))
+  if(length(gens) != 1){
+    stop("All MCMC chains in the 'chains' list must be sampled at the same intervals")
+  }
+  
+  # label the chains, and check user-supplied labels
+  if(any((is.na(labels))) | is.null(labels)){
+    labels <- c(paste("Chain", seq(1:length(chains)), sep="."))
+  }
+  
+  if(length(labels) != length(chains)){
+    stop("The length of the 'labels' list must be equal to the number of chains you have supplied")
+  }
+  
+  # replace labels with auto-generated ones if there are not enough unique ones
+  if(is.null(names(chains)) | length(unique(names(chains))) != length(chains)){
+    names(chains) = labels
+  }
+  
+  return(chains)
+  
+}

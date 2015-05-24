@@ -35,6 +35,10 @@ makeplot.treespace <- function(chains, n.points = 100, burnin = 0, likelihood = 
     print(sprintf("Creating treespace plot"))
     print(sprintf("This will require the calculation of %s pairwise tree distances", comparisons))
 
+    if(n.points < 2) {
+      stop("You need at least two points to make a meaningful treespace plot")
+    }
+    
     if(n.points > (length(chains[[1]]$trees) - burnin)) {
         stop("The number of trees (after removing burnin) is smaller than the number of points you have specified")
     }

@@ -26,15 +26,20 @@ makeplot.multichain <- function(chains, burnin, min.freq = 0 ,...){
   output <- list()
   
   compn <- compare.n(chains, setnames=names(chains), burnin, min.freq=min.freq)
-  dtree <- as.phylo(hclust(compn$discordance))
   output[["compare.plot"]] <- compn$compare.plot
   # output[["discordance.n"]] <- discordance.n(compn, setnames=names(chains), min.freq=min.freq)
   
-  plot.phylo(dtree, main="Chains clustered by discordance")
-  axisPhylo()
-  lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
-  mtext(paste("Discordance (minimum clade frequency = ",min.freq,")", sep=""), side=1, line=2, at=max(lastPP$xx)/2)
-  output[["discordance.tree"]] <- recordPlot()
+  if(all(compn$discordance  == 0)){
+    print("No non-zero discordance values, skipping discordance tree")  
+  }
+  else{
+    dtree <- as.phylo(hclust(compn$discordance))
+    plot.phylo(dtree, main="Chains clustered by discordance")
+    axisPhylo()
+    lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
+    mtext(paste("Discordance (minimum clade frequency = ",min.freq,")", sep=""), side=1, line=2, at=max(lastPP$xx)/2)
+    output[["discordance.tree"]] <- recordPlot()
+  }
   
   output
 }

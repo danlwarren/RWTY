@@ -19,3 +19,5 @@ test.chains <- check.chains(test.chains)
 test.ptable <- merge.ptables(test.chains, burnin = burnin)
 p <- analyze.simple(chains = list(run1, run3), burnin = 100,treespace.points = 50)
 
+run1$trees <- lapply(run1$trees,drop.tip,tip="Typhula_phacorhiza")
+test <- check.chains(list(run1, run2))
