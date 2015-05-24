@@ -3,8 +3,8 @@
 #' This function is automatically called by many other functions, but can be run manually as well.
 #' It performs a number of tests of chain format, labels, lengths, etc.
 #'
-#' @param chains A list of rwty.trees objects. \code{chains}
-#' @param labels The name to use on plots and in generating output files.  If none are provided, defaults are created using Chain 1, Chain 2, etc.  \code{labels}
+#' @param chains A list of rwty.trees objects. 
+#' @param labels The name to use on plots and in generating output files.  If none are provided, defaults are created using Chain 1, Chain 2, etc.  
 #'
 #' @return chains A list of rwty.trees objects
 #'

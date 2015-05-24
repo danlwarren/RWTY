@@ -7,9 +7,9 @@
 parse.clades(clades, treelist)
 }
 \arguments{
-\item{clades}{A list of clades, as in the first column of a cladetable in an rwty.slide or rwty.cumulative object. \code{clades}}
+\item{clades}{A list of clades, as in the first column of a cladetable in an rwty.slide or rwty.cumulative object.}
 
-\item{treelist}{A list of trees, used for getting tip names. \code{treelist}}
+\item{treelist}{A list of trees, used for getting tip names.}
 }
 \value{
 output A list of clades with parsed tip names

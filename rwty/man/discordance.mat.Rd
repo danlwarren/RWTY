@@ -7,7 +7,7 @@
 discordance.mat(freqTable, min.freq = 0)
 }
 \arguments{
-\item{min.freq}{The minimum frequency for a node to be used for calculating discordance  \code{min.freq}}
+\item{min.freq}{The minimum frequency for a node to be used for calculating discordance}
 
 \item{x}{A table of clade frequencies.}
 }

@@ -3,13 +3,13 @@
 #' This function is automatically called when analyze.simple is called with multple chains.
 #' It runs analyze.single for each chain, and then does multi-chain analyses as well. 
 #'
-#' @param chains A list of rwty.trees objects. \code{chains}
-#' @param burnin The number of trees to eliminate as burnin.  Default is zero. \code{burnin}
-#' @param gens.per.tree The number of generations per tree in the .t file.  If no value is provided, RWTY tries to figure it out from the tree names. \code{gens.per.tree}
-#' @param treespace.points The number of trees to plot in the treespace plot.  Default is 100. \code{treespace.points} 
-#' @param filename A name to be used for generating pdfs of output.  If a name is not provided, one will be automatically generated from the labels.  \code{filename}
-#' @param labels The name to use on plots and in generating output files.  If none are provided, defaults are created using Chain 1, Chain 2, etc.  \code{labels}
-#' @param min.freq The minimum frequency for a node to be used for calculating discordance.  \code{min.freq}
+#' @param chains A list of rwty.trees objects. 
+#' @param burnin The number of trees to eliminate as burnin.  Default is zero. 
+#' @param gens.per.tree The number of generations per tree in the .t file.  If no value is provided, RWTY tries to figure it out from the tree names. 
+#' @param treespace.points The number of trees to plot in the treespace plot.  Default is 100.
+#' @param filename A name to be used for generating pdfs of output.  If a name is not provided, one will be automatically generated from the labels.
+#' @param labels The name to use on plots and in generating output files.  If none are provided, defaults are created using Chain 1, Chain 2, etc.
+#' @param min.freq The minimum frequency for a node to be used for calculating discordance. 
 #'
 #' @return output A list of outputs from the analyze.single runs on each chain, as well as a compare.n run and discordance data for all chains. 
 #'

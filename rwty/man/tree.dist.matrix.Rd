@@ -7,7 +7,7 @@
 tree.dist.matrix(trees)
 }
 \arguments{
-\item{trees}{a multiPhylo object \code{trees}}
+\item{trees}{a multiPhylo object}
 }
 \value{
 RF A distance matrix of RF distances

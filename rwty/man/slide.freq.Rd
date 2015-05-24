@@ -7,13 +7,13 @@
 slide.freq(tree.list, burnin = 0, window.size, gens.per.tree = 1, ...)
 }
 \arguments{
-\item{tree.list}{A rwty trees object or multiPhylo \code{tree.list}}
+\item{tree.list}{A rwty trees object or multiPhylo.}
 
-\item{burnin}{The number of trees to eliminate as burnin. Defaults to zero. \code{burnin}}
+\item{burnin}{The number of trees to eliminate as burnin. Defaults to zero.}
 
-\item{window.size}{The number of trees to include in each window \code{window.size}}
+\item{window.size}{The number of trees to include in each window.}
 
-\item{gens.per.tree}{The number of steps in the MCMC chain corresponding to a tree in the tree list. Defaults to 1. \code{gens.per.tree}}
+\item{gens.per.tree}{The number of steps in the MCMC chain corresponding to a tree in the tree list. Defaults to 1.}
 }
 \value{
 rwty.slide An object containing the frequencies of clades in the sliding

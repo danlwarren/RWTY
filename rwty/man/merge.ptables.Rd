@@ -7,9 +7,9 @@
 \method{merge}{ptables}(chains, burnin)
 }
 \arguments{
-\item{chains}{A list of rwty.trees objects. \code{chains}}
+\item{chains}{A list of rwty.trees objects.}
 
-\item{burnin}{The number of trees to eliminate as burnin \code{burnin}}
+\item{burnin}{The number of trees to eliminate as burnin}
 }
 \value{
 ptable A data frame of likelihood values and model parameters for the supplied rwty.trees objects

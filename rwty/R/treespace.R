@@ -5,7 +5,7 @@
 #' dimensional tree space for plotting.
 #'
 #' @param chains A list of 1 or more rwty.trees objects.
-#' @param burnin The number of trees to eliminate as burnin. Default is zero. \code{burnin}
+#' @param burnin The number of trees to eliminate as burnin. Default is zero. 
 #' @param n.points The minimum number of points you want in your plot.
 #'
 #' @return Returns a list containing the points and a plot.

@@ -11,7 +11,7 @@ discordance.n(x, setnames = NA, min.freq = 0)
 
 \item{setnames}{A list of names for the chains.}
 
-\item{min.freq}{The minimum frequency for a node to be used for calculating discordance  \code{min.freq}}
+\item{min.freq}{The minimum frequency for a node to be used for calculating discordance}
 }
 \value{
 output A list containing for each window: a table of frequencies of each clade in each chain, a distance matrix measuring discordance, and an hclust plot.

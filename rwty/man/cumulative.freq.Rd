@@ -8,15 +8,15 @@ cumulative.freq(tree.list, burnin = 0, window.size, gens.per.tree = 1,
   slide.freq.table = NULL, ...)
 }
 \arguments{
-\item{tree.list}{A single rwty.trees or multiPhylo object. \code{chains}}
+\item{tree.list}{A single rwty.trees or multiPhylo object.}
 
-\item{burnin}{The number of trees to eliminate as burnin.  Defaults to zero. \code{burnin}}
+\item{burnin}{The number of trees to eliminate as burnin.  Defaults to zero.}
 
-\item{window.size}{The length of window (in trees) for the sliding window plot \code{window.size}}
+\item{window.size}{The length of window (in trees) for the sliding window plot}
 
-\item{gens.per.tree}{The number of generations per tree in the .t file. \code{gens.per.tree}}
+\item{gens.per.tree}{The number of generations per tree in the .t file.}
 
-\item{slide.freq.table}{A table from slide.freq.  If a table is not provided, it will be built. \code{slide.freq.table}}
+\item{slide.freq.table}{A table from slide.freq.  If a table is not provided, it will be built.}
 }
 \value{
 output A list containing a table of cumulative frequencies and a clade translation table

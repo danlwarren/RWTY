@@ -11,9 +11,9 @@ compare.n(x, setnames = NA, burnin, min.freq = 0)
 
 \item{setnames}{A list of names for the chains.}
 
-\item{burnin}{The number of trees to eliminate as burnin \code{burnin}}
+\item{burnin}{The number of trees to eliminate as burnin}
 
-\item{min.freq}{The minimum frequency for a node to be used for calculating discordance.  Default value is zero.  \code{min.freq}}
+\item{min.freq}{The minimum frequency for a node to be used for calculating discordance.  Default value is zero.}
 }
 \value{
 output A list containing a table of frequencies of each clade in each chain along with mean and sd, a distance matrix measuring consensus between chains, a translation table, and a ggpairs plot.

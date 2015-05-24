@@ -7,9 +7,9 @@
 check.chains(chains, labels = NA)
 }
 \arguments{
-\item{chains}{A list of rwty.trees objects. \code{chains}}
+\item{chains}{A list of rwty.trees objects.}
 
-\item{labels}{The name to use on plots and in generating output files.  If none are provided, defaults are created using Chain 1, Chain 2, etc.  \code{labels}}
+\item{labels}{The name to use on plots and in generating output files.  If none are provided, defaults are created using Chain 1, Chain 2, etc.}
 }
 \value{
 chains A list of rwty.trees objects

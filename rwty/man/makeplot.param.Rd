@@ -2,33 +2,32 @@
 % Please edit documentation in R/makeplot.param.R
 \name{makeplot.param}
 \alias{makeplot.param}
-\title{New style plotting of cumulative and slide objects}
+\title{Plotting parameters}
 \usage{
-makeplot.param(chains, burnin = 0, parameter = "lnL", facet = TRUE)
+makeplot.param(chains, burnin = 0, parameter = "LnL", facet = TRUE)
 }
 \arguments{
-\item{x}{An rwty.slide or rwty.cumulative object \code{x}}
+\item{chains}{A set of rwty.trees objects.}
 
-\item{numclades}{The number of clades to plot.  The clades with the highest sd in clade frequency are plotted first, so numclades = 10 will be the 10 most variable clades in the chain. \code{numclades}}
+\item{burnin}{The number of trees to omit as burnin.}
+
+\item{parameter}{The column name of the parameter to plot.}
+
+\item{facet}{Boolean denoting whether to make a facet plot.}
 }
 \value{
-thisplot Returns a ggplot object.
+param.plot Returns a ggplot object.
 }
 \description{
-Takes a table from cumulative.freq or slide.freq as input.
-Numclades gives the number of clades to plot, starting from the
-top.  Since cumulative.freq and slide.freq both sort by sd these
-will by default be the most variable clades.
+Plots parameter values over the length of the MCMC chain
 }
 \examples{
 data(fungus)
-slide.data <- slide.freq(run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
-cpplot <- makeplot.cladeprobs(input.table = slide.data$slide.table, numclades=25)
+makeplot.param(list(run1, run2), burnin=100, parameter="pi.A.")
 }
-\keyword{cumulative,}
+\keyword{convergence,}
 \keyword{mcmc,}
-\keyword{phylogenetics,}
-\keyword{plot}
-\keyword{sliding}
-\keyword{window,}
+\keyword{parameter,}
+\keyword{phylogenetics}
+\keyword{plot,}
 

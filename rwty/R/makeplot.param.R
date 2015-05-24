@@ -2,10 +2,10 @@
 #' 
 #' Plots parameter values over the length of the MCMC chain
 #'
-#' @param chains A set of rwty.trees objects \code{chains}
-#' @param burnin The number of trees to omit as burnin. \code{burnin}
-#' @param parameter The column name of the parameter to plot \code{parameter}
-#' @param facet Boolean denoting whether to make a facet plot \code{facet}
+#' @param chains A set of rwty.trees objects.
+#' @param burnin The number of trees to omit as burnin. 
+#' @param parameter The column name of the parameter to plot.
+#' @param facet Boolean denoting whether to make a facet plot.
 #'
 #' @return param.plot Returns a ggplot object.
 #'

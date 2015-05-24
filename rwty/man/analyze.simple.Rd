@@ -9,17 +9,17 @@ analyze.simple(chains, burnin = 0, window.num = 50,
   likelihood.param = NA, filename = NA, ...)
 }
 \arguments{
-\item{chains}{A list of rwty.trees objects. \code{chains}}
+\item{chains}{A list of rwty.trees objects.}
 
-\item{burnin}{The number of trees to eliminate as burnin.  Default value is zero. \code{burnin}}
+\item{burnin}{The number of trees to eliminate as burnin.  Default value is zero.}
 
-\item{treespace.points}{The number of trees to plot in the treespace plot. Default is 100 \code{treespace.points}}
+\item{treespace.points}{The number of trees to plot in the treespace plot. Default is 100}
 
-\item{min.freq}{The minimum frequency for a node to be used for calculating discordance. Default is zero.  \code{min.freq}}
+\item{min.freq}{The minimum frequency for a node to be used for calculating discordance. Default is zero.}
 
-\item{window.size}{The length of window (in trees) for the sliding window plot.  If no value is provided, RWTY selects a number so that 20 windows are analyzed over the chain. \code{window.size}}
+\item{window.size}{The length of window (in trees) for the sliding window plot.  If no value is provided, RWTY selects a number so that 20 windows are analyzed over the chain.}
 
-\item{gens.per.tree}{The number of generations per tree in the .t file.  If no value is provided, RWTY will attempt to determine the number of generations from the tree names.  \code{gens.per.tree}}
+\item{gens.per.tree}{The number of generations per tree in the .t file.  If no value is provided, RWTY will attempt to determine the number of generations from the tree names.}
 }
 \value{
 output A list of outputs from the analyze.single runs on each chain, as well as a compare.n run for all chains.  Eventually we will add more multi-chain analyses.
