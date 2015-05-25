@@ -22,7 +22,7 @@ makeplot.multichain(chains, burnin, min.freq = 0, ...)
 \item{labels}{The name to use on plots and in generating output files.  If none are provided, defaults are created using Chain 1, Chain 2, etc.}
 }
 \value{
-output A list of outputs from the analyze.single runs on each chain, as well as a compare.n run and discordance data for all chains.
+output A list of plots illustrating agreement between chains.
 }
 \description{
 This function is automatically called when analyze.simple is called with multple chains.

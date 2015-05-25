@@ -17,6 +17,10 @@ analyze.simple(chains, burnin = 0, window.num = 50,
 
 \item{min.freq}{The minimum frequency for a node to be used for calculating discordance. Default is zero.}
 
+\item{filename}{Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not print outputs to file.}
+
+\item{overwrite}{Boolean variable saying whether output file should be overwritten, if it exists.}
+
 \item{window.size}{The length of window (in trees) for the sliding window plot.  If no value is provided, RWTY selects a number so that 20 windows are analyzed over the chain.}
 
 \item{gens.per.tree}{The number of generations per tree in the .t file.  If no value is provided, RWTY will attempt to determine the number of generations from the tree names.}

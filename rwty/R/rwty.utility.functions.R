@@ -1,7 +1,7 @@
 #' Various small utility functions
 #' 
 #' A bunch of tiny utility functions that we need off and on.  Not intended for user interaction.
-#'
+
 
 continuous.distance <- function(two.trees){
     # type = 1: RF distance
@@ -21,7 +21,6 @@ abs.diffs <- function(x){
     d <- abs(diff(as.numeric(x)))
     d
 }
-
 
 
 

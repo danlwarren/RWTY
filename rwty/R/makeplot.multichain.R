@@ -11,7 +11,7 @@
 #' @param labels The name to use on plots and in generating output files.  If none are provided, defaults are created using Chain 1, Chain 2, etc.
 #' @param min.freq The minimum frequency for a node to be used for calculating discordance. 
 #'
-#' @return output A list of outputs from the analyze.single runs on each chain, as well as a compare.n run and discordance data for all chains. 
+#' @return output A list of plots illustrating agreement between chains.
 #'
 #' @keywords MCMC, phylogenetics, convergence, plot, awty, rwty
 #'
