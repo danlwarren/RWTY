@@ -26,8 +26,10 @@
 analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 100, min.freq = 0, labels=NA, likelihood.param = NA, filename = NA, ...){
     
     chains <- check.chains(chains, labels)
-
+    
     N <- length(chains[[1]]$trees)
+    
+    rwty.params.check(chains, N, burnin, window.num, treespace.points)
 
     # Now merge the ptables into one large data frame, keeping only what we want 
     ptable <- merge.ptables(chains, burnin = burnin)
@@ -59,4 +61,39 @@ analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 1
 
     return(plots)
 
+}
+
+rwty.params.check <- function(chains, N, burnin, window.num, treespace.points){
+  # Checks for reasonable burnin
+  if(!is.numeric(burnin)){
+    stop("burnin must be numeric")
+  }
+  if(burnin < 0){
+    stop("burnin must be zero or greater")
+  }
+  if(burnin > N){
+    stop("burnin must be smaller than the number of trees in the chain")
+  }
+  
+  # Checks for reasonable window.num
+  if(!is.numeric(window.num)){
+    stop("window.num must be numeric")
+  }
+  if(window.num < 2){
+    stop("window.num must be 2 or greater")
+  }
+  if((N - burnin)/window.num < 2){
+    stop("window.num cannot be more than half the number of post-burnin trees")
+  }
+  
+  # Checks for reasonable treespace.points
+  if(!is.numeric(treespace.points)){
+    stop("treespace.points must be numeric")
+  }
+  if(treespace.points < 2){
+    stop("treespace.points must be 2 or greater")
+  }
+  if((N - burnin) < treespace.points){
+    stop("treespace.points cannot be more than the number of post-burnin trees")
+  }
 }
