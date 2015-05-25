@@ -7,7 +7,8 @@
 #' by calculating the Robinson Foulds distance of each tree in the chain
 #' from the focal tree, and calculating the ESS of the resulting vector
 #' of phylogenetic distances using the effectiveSize function from the 
-#' coda package.
+#' coda package. NB this function requires the calculation of many many
+#' tree distances, so can take some time.
 #'
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin 
@@ -23,7 +24,7 @@
 #' 
 #' @examples
 #' data(fungus)
-#' topological.ess(chains = list(run1, run2), burnin = 100)
+#' topological.ess(chains = list(run1, run2), burnin = 250, n = 10)
 
 
 tree.ess <- function(tree.list){  
