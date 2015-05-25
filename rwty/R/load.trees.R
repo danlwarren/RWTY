@@ -20,7 +20,6 @@
 #' @examples
 #' #load.trees(file="mytrees.nex", type="nexus")
 
-#sample that works
 load.trees <- function(file, type="nexus", gens.per.tree=NA, trim=1, logfile=NA, skip=1){
     
     # Read in trees

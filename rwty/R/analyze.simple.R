@@ -108,8 +108,10 @@ rwty.params.check <- function(chains, N, burnin, window.num, treespace.points, m
   }
   
   # Checks for output file
-  if(file.exists(filename) && overwrite==FALSE){
-    stop("Output file exists and overwrite is set to FALSE")
+  if(!is.na(filename)){
+    if(file.exists(filename) && overwrite==FALSE){
+      stop("Output file exists and overwrite is set to FALSE")
+    }
   }
   
 }
