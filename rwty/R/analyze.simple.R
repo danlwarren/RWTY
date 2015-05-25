@@ -11,6 +11,8 @@
 #' @param gens.per.tree The number of generations per tree in the .t file.  If no value is provided, RWTY will attempt to determine the number of generations from the tree names.  
 #' @param treespace.points The number of trees to plot in the treespace plot. Default is 100 
 #' @param min.freq The minimum frequency for a node to be used for calculating discordance. Default is zero.  
+#' @param filename Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not print outputs to file.
+#' @param overwrite Boolean variable saying whether output file should be overwritten, if it exists.
 #'
 #' @return output A list of outputs from the analyze.single runs on each chain, as well as a compare.n run for all chains.  Eventually we will add more multi-chain analyses.
 #'
@@ -23,13 +25,13 @@
 #' p <- analyze.simple(list(run1, run2), burnin = 50, window.num = 50)
 #' p
 
-analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 100, min.freq = 0, labels=NA, likelihood.param = NA, filename = NA, ...){
+analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 100, min.freq = 0, labels=NA, likelihood.param = NA, filename = NA, overwrite=FALSE, ...){
     
     chains <- check.chains(chains, labels)
     
     N <- length(chains[[1]]$trees)
     
-    rwty.params.check(chains, N, burnin, window.num, treespace.points)
+    rwty.params.check(chains, N, burnin, window.num, treespace.points, min.freq, filename, overwrite)
 
     # Now merge the ptables into one large data frame, keeping only what we want 
     ptable <- merge.ptables(chains, burnin = burnin)
@@ -63,7 +65,7 @@ analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 1
 
 }
 
-rwty.params.check <- function(chains, N, burnin, window.num, treespace.points){
+rwty.params.check <- function(chains, N, burnin, window.num, treespace.points, min.freq, filename, overwrite){
   # Checks for reasonable burnin
   if(!is.numeric(burnin)){
     stop("burnin must be numeric")
@@ -96,4 +98,18 @@ rwty.params.check <- function(chains, N, burnin, window.num, treespace.points){
   if((N - burnin) < treespace.points){
     stop("treespace.points cannot be more than the number of post-burnin trees")
   }
+  
+  # Checks for reasonable min.freq
+  if(!is.numeric(min.freq)){
+    stop("min.freq must be numeric")
+  }
+  if(min.freq < 0 || min.freq > 1){
+    stop("min.freq must be between 0 and 1")
+  }
+  
+  # Checks for output file
+  if(file.exists(filename) && overwrite==FALSE){
+    stop("Output file exists and overwrite is set to FALSE")
+  }
+  
 }

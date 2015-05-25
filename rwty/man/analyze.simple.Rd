@@ -6,7 +6,7 @@
 \usage{
 analyze.simple(chains, burnin = 0, window.num = 50,
   treespace.points = 100, min.freq = 0, labels = NA,
-  likelihood.param = NA, filename = NA, ...)
+  likelihood.param = NA, filename = NA, overwrite = FALSE, ...)
 }
 \arguments{
 \item{chains}{A list of rwty.trees objects.}
