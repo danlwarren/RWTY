@@ -7,7 +7,7 @@
 # as different as can be. 
 
 #' @param x A table of clade frequencies.
-#' @param min.freq The minimum frequency for a node to be used for calculating discordance  \code{min.freq}
+#' @param min.freq The minimum frequency for a node to be used for calculating discordance  
 #' 
 #' @return output A dist class object of discordance values
 #'

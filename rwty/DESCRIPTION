@@ -4,6 +4,8 @@ Title: R We There Yet? A package for visualizing MCMC convergence in
     phylogenetics.
 Version: 0.1.1
 Author: Dan Warren <dan.l.warren@gmail.com>,
+    Anthony Geneva,
+    Jim Wilgenbusch,
     Dave Swofford <david.swofford@duke.edu>,
     Rob Lanfear <rob.lanfear@gmail.com>
 Maintainer: Dan Warren <dan.l.warren@gmail.com>,

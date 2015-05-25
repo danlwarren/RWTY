@@ -4,7 +4,7 @@
 #' populated with Robinsoun-Foulds tree distances between all trees
 #' in the list.
 #'
-#' @param trees a multiPhylo object \code{trees}
+#' @param trees a multiPhylo object 
 #'
 #' @return RF A distance matrix of RF distances 
 #'
