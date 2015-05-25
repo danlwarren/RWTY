@@ -1,10 +1,5 @@
 setwd("~/GitHub/RWTY/testdata/Hibbett")
 
-<<<<<<< HEAD
-rfiles <- list.files(path = "~/GitHub/RWTY/rwty/R/", pattern="*.R", full.names=TRUE)
-sapply(rfiles, source)
-=======
->>>>>>> develop
 install.packages("~/GitHub/RWTY/rwty",repos=NULL, type="source")
 library(rwty)
 data(fungus)

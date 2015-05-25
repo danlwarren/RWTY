@@ -1,9 +1,9 @@
 #' analyze.rwty, the main interface for rwty analyses and plots.
 #' 
-#' This is the main user interface to rwty.  It allows users to chuck in arguments for
-#' chains, burnin, window size, gens per tree, and "step", and returns an object that
-#' contains sliding window and cumulative posterior probability plots, treespace plots,
-#' and multi-chain diagnostic plots when multiple chains are provided.
+#' This is the main user interface to rwty.  It allows users to conduct simple
+#' visualizations of MCMC chain performance with  very few arguments.
+#' 
+
 #'
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin.  Default value is zero.
@@ -14,7 +14,30 @@
 #' @param filename Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not print outputs to file.
 #' @param overwrite Boolean variable saying whether output file should be overwritten, if it exists.
 #'
-#' @return output A list of outputs from the analyze.single runs on each chain, as well as a compare.n run for all chains.  Eventually we will add more multi-chain analyses.
+#' @return output The output is a list containing the following plots:
+#' 
+#' Plots of likelihood and model parameters as a function of chain length (when p table is available).
+#' 
+#' Point and heatmap depictions of chains in treespace (points.plot and heatmap).
+#' 
+#' Sliding window posterior probability, depicting posterior probabilities of the most variable clades
+#' over a series of non-overlapping windows along the MCMC chain.
+#' 
+#' Cumulative posterior probability, depicting the posterior probabilities of the most variable clades
+#' as a function of chain length.
+#' 
+#' Sliding window variance, depicting the distribution of variances of clade posterior probability estimates
+#' over a series of non-overlapping windows along the MCMC chain.
+#' 
+#' Cumulative variance, depicting the distribution of variances in posterior probability estimates as a function of 
+#' chain length.
+#' 
+#' Compare plot (when multiple rwty.trees objects are passed): an xy plot (or several) of the correlation between posterior
+#' estimates from multiple chains.
+#' 
+#' Discordance tree (when multiple rwty.trees objects are passed): a tree that depicts the similarity in posterior support 
+#' values obtained by multiple chains.  Chains that produce similar posterior estimates will appear grouped, while those that 
+#' support very different topologies (or posterior support values) will be more distant from each other.  
 #'
 #' @keywords keywords
 #'
@@ -108,8 +131,9 @@ rwty.params.check <- function(chains, N, burnin, window.num, treespace.points, m
   }
   
   # Checks for output file
-  if(file.exists(filename) && overwrite==FALSE){
-    stop("Output file exists and overwrite is set to FALSE")
-  }
-  
+  if(!is.na(filename)){
+    if(file.exists(filename) && overwrite==FALSE){
+      stop("Output file exists and overwrite is set to FALSE")
+    }
+  } 
 }
