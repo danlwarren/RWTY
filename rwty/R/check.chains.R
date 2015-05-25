@@ -29,9 +29,9 @@ check.chains <- function(chains, labels = NA){
   }
   
   # check all chains have the same tips using first tree in each chain
-  if(!all(unlist(lapply(tlist, FUN = function (x) setequal(tlist[[1]]$trees$tip.label, x$trees$tip.label))))){
-    stop("All trees must have the same tip labels")
-  }
+  #if(!all(unlist(lapply(tlist, FUN = function (x) setequal(tlist[[1]]$trees$tip.label, x$trees$tip.label))))){
+  #  stop("All trees must have the same tip labels")
+  #}
   
   # check all chains are the same length
   if(length(unique(unlist(lapply(chains, FUN = function(x) length(x$trees))))) != 1){
