@@ -1,3 +1,31 @@
+#' Calculate the approximate Effective Sample Size (ESS) of tree topologies
+#' 
+#' This function takes a list of rwty.trees objects, and calculates the
+#' approximate ESS of the trees from each chain, after removing burnin. 
+#' Each caulcation is repeated n times, where in each replicate a random
+#' tree from the chain is chosen as a 'focal' tree. The calculation works
+#' by calculating the Robinson Foulds distance of each tree in the chain
+#' from the focal tree, and calculating the ESS of the resulting vector
+#' of phylogenetic distances using the effectiveSize function from the 
+#' coda package.
+#'
+#' @param chains A list of rwty.trees objects. 
+#' @param burnin The number of trees to eliminate as burnin 
+#' @param n The number of replicate analyses to do 
+#'
+#' @return A data frame with one row per chain, and columns describing the
+#' median ESS, the upper and lower 95% confidence intervals based on the
+#' replicates performed, and the name of the chain. 
+#'
+#' @keywords treespace, tree distance, robinson-foulds
+#'
+#' @export
+#' 
+#' @examples
+#' data(fungus)
+#' topological.ess(chains = list(run1, run2), burnin = 100)
+
+
 tree.ess <- function(tree.list){  
   
   i <- sample(1:length(tree.list), 1)
@@ -35,6 +63,8 @@ topological.ess <- function(chains, burnin = 0, n = 50){
   names(final.ess) = names(raw.ess[[1]])
   
   final.ess$chain = names(chains)
+
+  return(final.ess)
   
   
 }
