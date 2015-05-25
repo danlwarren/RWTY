@@ -1,5 +1,7 @@
 setwd("~/GitHub/RWTY/testdata/Hibbett")
 
+run4 <- load.trees(file="run4.t")
+
 install.packages("~/GitHub/RWTY/rwty",repos=NULL, type="source")
 library(rwty)
 data(fungus)

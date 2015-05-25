@@ -7,10 +7,11 @@
 #' trees are loaded using ape's read.nexus function.  Otherwise, it's read.tree.
 #' @param gens.per.tree The number of generations separating trees.  If not provided, RWTY will attempt to calculate it automatically.
 #' @param trim Used for thinning the chain.  If a number N is provided, RWTY keeps every Nth tree.
-#' @param skiplines.p The number of lines that must be skipped to get to the header of the p file.  
-#' MrBayes, for instance, prints a comment line at the top of the p file, so MrBayes files should be
-#' read in with a skiplines.p value of 1.
-#' @return output An rwty.trees object containing the multiPhylo and the table of values from the .p file if available.
+#' @param logfile A path to a file containing model parameters and likelihoods
+#' @param skip The number of lines that must be skipped to get to the header of the log file.  
+#' MrBayes, for instance, prints a comment line at the top of the log file, so MrBayes files should be
+#' read in with a skip value of 1.
+#' @return output An rwty.trees object containing the multiPhylo and the table of values from the log file if available.
 #'
 #' @keywords Phylogenetics, MCMC, load
 #'
@@ -20,7 +21,7 @@
 #' #load.trees(file="mytrees.nex", type="nexus")
 
 #sample that works
-load.trees <- function(file, type="nexus", gens.per.tree=NA, trim=1, skiplines.p=1){
+load.trees <- function(file, type="nexus", gens.per.tree=NA, trim=1, logfile=NA, skip=1){
     
     # Read in trees
     print("Reading trees...")
@@ -52,16 +53,28 @@ load.trees <- function(file, type="nexus", gens.per.tree=NA, trim=1, skiplines.p
     class(treelist) <- "multiPhylo"
     
     ptable <- NULL
-    pfile <- NA
 
-    # Check for .p file, read it in if it exists
-    if(length(grep(".t$", file, perl=TRUE)) > 0){pfile <- sub(".t$", ".p", file, perl=TRUE)}
-    if(length(grep(".trees$", file, perl=TRUE)) > 0){pfile <- sub(".trees$", ".p", file, perl=TRUE)}
-    if(file.exists(pfile)){
-        print(paste("Reading p values from", pfile))
-        ptable <- read.table(pfile, skip=skiplines.p, header=TRUE)
-        ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
+    # Check whether log file path has been supplied and doesn't exist
+    if(!is.na(logfile) && !file.exists(logfile)){
+      stop(paste("Logfile not found at", logfile))
     }
+    # logfile path has been supplied and file exists
+    if(!is.na(logfile) && file.exists(logfile)){
+      print(paste("Reading parameter values from", logfile))
+      ptable <- read.table(logfile, skip=skip, header=TRUE)
+      ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
+    }
+    # If logfile hasn't been supplied try to find it by searching
+    if(is.na(logfile)){
+      if(length(grep(".t$", file, perl=TRUE)) > 0){logfile <- sub(".t$", ".p", file, perl=TRUE)}
+      if(length(grep(".trees$", file, perl=TRUE)) > 0){logfile <- sub(".trees$", ".p", file, perl=TRUE)}
+      if(file.exists(logfile)){
+          print(paste("Reading parameter values from", logfile))
+          ptable <- read.table(logfile, skip=skip, header=TRUE)
+          ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
+      }
+    }
+    
     
     output <- list(
         "trees" = treelist, 
@@ -71,4 +84,8 @@ load.trees <- function(file, type="nexus", gens.per.tree=NA, trim=1, skiplines.p
     class(output) <- "rwty.trees"
     
     output
+}
+
+read.ptable <- function(logfile){
+  
 }

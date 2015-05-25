@@ -5,7 +5,7 @@
 \title{Custom functions to load tree lists so that rwty can do basic processing on the way in.}
 \usage{
 load.trees(file, type = "nexus", gens.per.tree = NA, trim = 1,
-  skiplines.p = 1)
+  logfile = NA, skip = 1)
 }
 \arguments{
 \item{file}{A path to a .t file containing an MCMC chain of trees}
@@ -17,12 +17,14 @@ trees are loaded using ape's read.nexus function.  Otherwise, it's read.tree.}
 
 \item{trim}{Used for thinning the chain.  If a number N is provided, RWTY keeps every Nth tree.}
 
-\item{skiplines.p}{The number of lines that must be skipped to get to the header of the p file.
-MrBayes, for instance, prints a comment line at the top of the p file, so MrBayes files should be
-read in with a skiplines.p value of 1.}
+\item{logfile}{A path to a file containing model parameters and likelihoods}
+
+\item{skip}{The number of lines that must be skipped to get to the header of the log file.
+MrBayes, for instance, prints a comment line at the top of the log file, so MrBayes files should be
+read in with a skip value of 1.}
 }
 \value{
-output An rwty.trees object containing the multiPhylo and the table of values from the .p file if available.
+output An rwty.trees object containing the multiPhylo and the table of values from the log file if available.
 }
 \description{
 Loads trees, looks for a .p file of tree likelihoods, returns and rwty.trees object containing both
