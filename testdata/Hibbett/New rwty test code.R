@@ -17,6 +17,16 @@ test.chains <- check.chains(test.chains)
 test.ptable <- merge.ptables(test.chains, burnin = burnin)
 p <- analyze.simple(chains = list(run1, run3), burnin = 100,treespace.points = 50)
 
+# HUGE analysis
+alltrees <- load.multi(path="/Users/danwarren/Downloads/AP_DRYAD/MrBayes nexus Files", trim=20, skip=1)
+alltrees <- check.chains(alltrees)
+p <- analyze.simple(alltrees, burnin=20, treespace.points=20, file="alltrees.pdf", overwrite=TRUE, facet=FALSE)
+
+# Smaller multilocus
+data(demo)
+p <- analyze.simple(demo, burnin=20, treespace.points=50, file="demo.pdf", overwrite=TRUE, facet=TRUE)
+
+
 #Let's set off some errors
 
 # Should say all trees must have same tips
