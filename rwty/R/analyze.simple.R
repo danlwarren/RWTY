@@ -48,7 +48,7 @@
 #' p <- analyze.simple(list(run1, run2), burnin = 50, window.num = 50)
 #' p
 
-analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 100, min.freq = 0, labels=NA, likelihood.param = NA, filename = NA, overwrite=FALSE, ...){
+analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 100, min.freq = 0, labels=NA, likelihood.param = NA, filename = NA, overwrite=FALSE, facet=TRUE, ...){
     
     chains <- check.chains(chains, labels)
     
@@ -60,7 +60,7 @@ analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 1
     ptable <- merge.ptables(chains, burnin = burnin)
 
     # plot parameters for all chains
-    parameter.plots <- makeplot.all.params(chains, burnin = burnin, facet=TRUE, strip = 1)
+    parameter.plots <- makeplot.all.params(chains, burnin = burnin, facet=facet, strip = 1)
 
     # plot treespace for all chains
     treespace.plots <- makeplot.treespace(chains, n.points = treespace.points, burnin = burnin, likelihood = likelihood.param)
@@ -135,5 +135,5 @@ rwty.params.check <- function(chains, N, burnin, window.num, treespace.points, m
     if(file.exists(filename) && overwrite==FALSE){
       stop("Output file exists and overwrite is set to FALSE")
     }
-  } 
+  }
 }
