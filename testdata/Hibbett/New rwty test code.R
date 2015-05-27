@@ -24,7 +24,7 @@ p <- analyze.simple(alltrees, burnin=20, treespace.points=20, file="alltrees.pdf
 
 # Smaller multilocus
 data(demo)
-p <- analyze.simple(demo, burnin=20, treespace.points=50, file="demo.pdf", overwrite=TRUE, facet=TRUE)
+p <- analyze.simple(demo, burnin=20, treespace.points=50, file="demo.pdf", overwrite=TRUE, facet=TRUE, likelihood="LnL")
 
 
 #Let's set off some errors
