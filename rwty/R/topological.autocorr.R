@@ -1,6 +1,29 @@
-
-
-
+#' Calculate data for autocorrelation plots of tree topologies from MCMC analyses
+#' 
+#' This function takes a list of rwty.trees objects, and calculates the
+#' median phylogenetic distance at a series of roughly even sampling intervals.
+#' In really well behaved MCMC analyses, the median distance will stay constant
+#' as the sampling interval increases. If there is autocorrelation, it will 
+#' increase as the sampling interval increases, and is expected to level
+#' off when the autocorrelation decreases to zero. The function calculates
+#' path distances, though other distances could also be employed.
+#'
+#' @param chains A list of rwty.trees objects. 
+#' @param burnin The number of trees to eliminate as burnin 
+#' @param max.intervals The maximum number of sampling intervals to use 
+#'
+#' @return A data frame with one row per sampling interval, per chain. 
+#' The first column is the sampling interval. The second column is the median 
+#' path distance between pairs of trees from that sampling interval. The third
+#' column is the chain ID.
+#'
+#' @keywords autocorrelation, path distance
+#'
+#' @export
+#' 
+#' @examples
+#' data(fungus)
+#' topological.autocorr(chains = list(run1, run2), burnin = 100)
 
 
 topological.autocorr <- function(chains, burnin = 0, max.intervals = 100){
