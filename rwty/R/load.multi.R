@@ -24,7 +24,7 @@ load.multi <- function(path = ".", ext.tree = "t", ext.p = "p", labels=NA, ...){
   ext.p <- paste0(".", ext.p)
   
   # Find t and p files
-  tfiles <- list.files(path, ext.tree)
+  tfiles <- list.files(path, pattern=ext.tree, full.names=TRUE)
   pfiles <- unlist(lapply(tfiles, FUN = function(x) sub(ext.tree, ext.p, x)))
   
   if(length(tfiles) == 0){
@@ -33,7 +33,7 @@ load.multi <- function(path = ".", ext.tree = "t", ext.p = "p", labels=NA, ...){
   
   # Step through tfiles, find log files if available, load chains
   for(i in 1:length(tfiles)){
-    print(tfiles[i])
+    print(basename(tfiles[i]))
     if(file.exists(pfiles[i])){
       output[[i]] <- load.trees(tfiles[i], logfile = pfiles[i], ...)
     }
@@ -44,7 +44,7 @@ load.multi <- function(path = ".", ext.tree = "t", ext.p = "p", labels=NA, ...){
   
   # Add names to chains
   if(is.na(labels)){
-    names(output) <- tfiles  
+    names(output) <- lapply(tfiles, FUN = function(x) basename (x))  
   }
   else{
     names(output) <- labels

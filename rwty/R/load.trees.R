@@ -59,7 +59,7 @@ load.trees <- function(file, type="nexus", gens.per.tree=NA, trim=1, logfile=NA,
     }
     # logfile path has been supplied and file exists
     if(!is.na(logfile) && file.exists(logfile)){
-      print(paste("Reading parameter values from", logfile))
+      print(paste("Reading parameter values from", basename(logfile)))
       ptable <- read.table(logfile, skip=skip, header=TRUE)
       ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
     }
@@ -68,7 +68,7 @@ load.trees <- function(file, type="nexus", gens.per.tree=NA, trim=1, logfile=NA,
       if(length(grep(".t$", file, perl=TRUE)) > 0){logfile <- sub(".t$", ".p", file, perl=TRUE)}
       if(length(grep(".trees$", file, perl=TRUE)) > 0){logfile <- sub(".trees$", ".p", file, perl=TRUE)}
       if(file.exists(logfile)){
-          print(paste("Reading parameter values from", logfile))
+          print(paste("Reading parameter values from", basename(logfile)))
           ptable <- read.table(logfile, skip=skip, header=TRUE)
           ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
       }
