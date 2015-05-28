@@ -53,20 +53,22 @@ topological.ess <- function(chains, burnin = 0, n = 50){
 
 tree.ess <- function(tree.list){  
   
-  i <- sample(1:length(tree.list), 1)
+    i <- sample(1:length(tree.list), 1)
 
-  distances <- data.frame(matrix(unlist(lapply(tree.list, RF.dist, tree.list[[i]])), nrow=length(tree.list), byrow=T))    
-  
-  ESS <- apply(distances, 2, effectiveSize)
-  return(as.numeric(ESS))
+    distances <- data.frame(matrix(unlist(lapply(tree.list, RF.dist, tree.list[[i]])), nrow=length(tree.list), byrow=T))    
+
+    ESS <- apply(distances, 2, effectiveSize)
+    return(as.numeric(ESS))
 }
 
 
 tree.ess.multi <- function(tree.list, n=20){  
-  
-  data <- replicate(n, tree.ess(tree.list))
-  
-  return(list(median.ess = median(data), ci.upper = quantile(data, probs=c(0.975)), ci.lower = quantile(data, probs=c(0.025))))
+        
+    print(sprintf("Calculating approximate ESS for %s trees and %s replicates, please be patient", length(tree.list), n))
+
+    data <- replicate(n, tree.ess(tree.list))
+
+    return(list(median.ess = median(data), ci.upper = quantile(data, probs=c(0.975)), ci.lower = quantile(data, probs=c(0.025))))
   
 }
 
