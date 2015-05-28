@@ -1,14 +1,12 @@
 
-plot.tree.autocorr <- function(tree.list){
+makeplot.topological.autocorr.R <- function(chains, burnin = 0, max.intervals = 100, facet = FALSE){
 
-    dat <- tree.autocorr(tree.list)
+    dat <- topological.autocorr(chains, burnin, max.intervals)
 
-    tree.list.shuffled <- sample(tree.list, length(tree.list), replace=FALSE)   
-    random.interval <- get.sequential.distances(thinning=1, tree.list.shuffled)
+    autocorr.plot = ggplot(data=dat, aes(x=sampling.interval, y=Path.distance)) + 
+            geom_line(alpha=0.2, aes(colour = chain)) + geom_point(size = 2, aes(colour = chain))
 
-    p <- ggplot(data=dat, aes(x=sampling.interval, y=distance)) + 
-            geom_line(alpha=0.2) + geom_point(size = 2) + 
-            geom_hline(aes(yintercept = distance), random.interval, alpha = 0.5, linetype='dashed')
+    if(facet) autocorr.plot = autocorr.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
 
     return(list('plot'=p, 'distances'=dat, 'random distance' = random.interval))
     
