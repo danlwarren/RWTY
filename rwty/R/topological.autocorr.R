@@ -1,0 +1,135 @@
+
+
+
+
+
+topological.autocorr <- function(chains, burnin = 0, max.intervals = 100){
+
+    chains = check.chains(chains)
+
+    chain = chains[[1]]
+
+    indices = seq(from = burnin + 1, to = length(chain$trees), by = 1)   
+
+    trees = lapply(chains, function(x) x[['trees']][indices])
+
+    raw.autocorr = lapply(trees, tree.autocorr, max.intervals)
+
+    final.autocorr = do.call("rbind", raw.autocorr)
+
+    final.autocorr$chain = unlist(lapply(names(chains), rep, nrow(raw.autocorr[[1]])))
+
+    rownames(final.autocorr) = NULL
+
+    return(final.autocorr)
+
+
+}
+
+tree.autocorr <- function(tree.list, max.intervals = 100){
+
+    if(!is.numeric(max.intervals)) stop("max.intervals must be a positive integer")
+    if(max.intervals<1 | max.intervals%%1!=0) stop("max.intervals must be a positive integer")
+
+    # this ensures that we can tell you if your ESS is < some threshold
+    max.thinning <- as.integer(length(tree.list)/21)
+
+    # we analyze up to max.intervals thinnings spread evenly, less if there are non-unique numbers
+    thinnings <- unique(as.integer(seq(from = 1, to = max.thinning, length.out=max.intervals)))
+
+    r <- lapply(as.list(thinnings), get.sequential.distances, tree.list) 
+    r <- data.frame(matrix(unlist(r), ncol=2, byrow=T))
+    names(r) = c("Path.distance", "sampling.interval")
+
+    return(r)
+}
+
+path.dist <- function (tree1, tree2, check.labels = TRUE) 
+{
+    # a trimmed down version of the phangorn tree.dist function
+    tree1 = unroot(tree1)
+    tree2 = unroot(tree2)
+    if (check.labels) {
+        ind <- match(tree1$tip.label, tree2$tip.label)
+        if (any(is.na(ind)) | length(tree1$tip.label) != length(tree2$tip.label)) 
+            stop("trees have different labels")
+        tree2$tip.label <- tree2$tip.label[ind]
+        ind2 <- match(1:length(ind), tree2$edge[, 2])
+        tree2$edge[ind2, 2] <- order(ind)
+    }
+    tree1 = reorder(tree1, "postorder")
+    tree2 = reorder(tree2, "postorder")
+    path.difference = NULL
+    if (!is.binary.tree(tree1) | !is.binary.tree(tree2)) 
+        warning("Trees are not binary!")
+
+    tree1$edge.length = rep(1, nrow(tree1$edge))
+    tree2$edge.length = rep(1, nrow(tree2$edge))
+
+    dt1 = coph(tree1)
+    dt2 = coph(tree2)
+
+    path.difference = sqrt(sum((dt1 - dt2)^2))
+
+    return(path.difference)
+}
+
+
+get.sequential.distances <- function(thinning, tree.list, N=100){
+    
+    # now thin out the input list
+    keep <- seq(from=1, to=length(tree.list), by=thinning)
+    
+    # first we cut off any trailing trees from the input list
+    if(length(keep)%%2 != 0) keep <- keep[1:(length(keep)-1)]
+    
+    # now we get the indices of the odd elements of keep
+    # we will use these to make a pairwise list of sequential samples
+    odds <- seq(from=1, to=length(keep), by=2)
+    
+    # we only look at N samples, allows for variation in effciency    
+    if((length(odds))>N){
+        odds <- sample(odds[1:(length(odds))], N, replace=FALSE)
+        evens <- odds + 1 # indices of the tree2 trees in keep
+        indices <- sort(c(odds, evens))
+        keep <- keep[indices]
+    }
+    
+    tree.list <- tree.list[keep]
+    tree.index <- seq_along(tree.list)
+    
+    # turn the tree list into a list of sequential pairs
+    # e.g. c(a, b, c, d, e) -> c(a,b), c(c,d)
+    tree.pairs <- split(tree.list, ceiling(tree.index/2))
+        
+    distances <- lapply(tree.pairs, path.distance)
+    distances <- as.numeric(unlist(distances))
+    distances <- as.data.frame(distances)
+    names(distances) <- c("RF distance")
+    result <- apply(distances, 2, median)
+    result <- data.frame('distance' = t(t(result)))
+    result$sampling.interval <- thinning
+    return(result)
+}
+
+
+coph <- function(x){ 
+    #from Phangorn here: https://github.com/KlausVigo/phangorn
+    if (is.null(attr(x, "order")) || attr(x, "order") == "cladewise") 
+        x <- reorder(x, "postorder")
+    nTips = as.integer(length(x$tip.label))   
+    parents = as.integer(x$edge[,1]) 
+    kids = as.integer(x$edge[,2])
+    lp= as.integer(length(parents))
+    nNode = as.integer(x$Nnode)
+    m = as.integer(max(x$edge))
+    el = double(m)
+    el[kids] = x$edge.length
+    dm <- .C("C_cophenetic", kids, parents, as.double(el), lp, m, nTips, nNode, double(nTips*(nTips-1L)/2L))[[8]]
+    attr(dm, "Size") <- nTips
+    attr(dm, "Labels") <- x$tip.label
+    attr(dm, "Diag") <- FALSE
+    attr(dm, "Upper") <- FALSE
+    class(dm) <- "dist"
+    dm
+} 
