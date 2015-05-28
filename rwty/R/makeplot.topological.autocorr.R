@@ -1,5 +1,5 @@
 
-makeplot.topological.autocorr <- function(chains, burnin = 0, max.intervals = 100, facet = FALSE){
+makeplot.autocorr <- function(chains, burnin = 0, max.intervals = 100, facet = FALSE){
 
     chains = check.chains(chains)
 
