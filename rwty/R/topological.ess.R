@@ -4,7 +4,7 @@
 #' approximate ESS of the trees from each chain, after removing burnin. 
 #' Each caulcation is repeated n times, where in each replicate a random
 #' tree from the chain is chosen as a 'focal' tree. The calculation works
-#' by calculating the Robinson Foulds distance of each tree in the chain
+#' by calculating the path distance of each tree in the chain
 #' from the focal tree, and calculating the ESS of the resulting vector
 #' of phylogenetic distances using the effectiveSize function from the 
 #' coda package. NB this function requires the calculation of many many
@@ -18,7 +18,7 @@
 #' median ESS, the upper and lower 95% confidence intervals based on the
 #' replicates performed, and the name of the chain. 
 #'
-#' @keywords treespace, tree distance, robinson-foulds
+#' @keywords treespace, tree distance, path distance
 #'
 #' @export
 #' 
@@ -55,7 +55,7 @@ tree.ess <- function(tree.list){
   
     i <- sample(1:length(tree.list), 1)
 
-    distances <- data.frame(matrix(unlist(lapply(tree.list, RF.dist, tree.list[[i]])), nrow=length(tree.list), byrow=T))    
+    distances <- data.frame(matrix(unlist(lapply(tree.list, path.dist, tree.list[[i]])), nrow=length(tree.list), byrow=T))    
 
     ESS <- apply(distances, 2, effectiveSize)
     return(as.numeric(ESS))
