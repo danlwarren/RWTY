@@ -67,9 +67,18 @@ tree.autocorr <- function(tree.list, max.intervals = 100){
     return(r)
 }
 
-path.dist <- function (tree1, tree2, check.labels = TRUE) 
+path.distance <- function(tree1, tree2){
+    d <- treedist(tree1, tree2)[3]  
+    return(d)
+}
+
+
+path.dist <- function (trees, check.labels = TRUE) 
 {
     # a trimmed down version of the phangorn tree.dist function
+    tree1 = trees[[1]]
+    tree2 = trees[[2]]
+
     tree1 = unroot(tree1)
     tree2 = unroot(tree2)
     if (check.labels) {
@@ -89,8 +98,8 @@ path.dist <- function (tree1, tree2, check.labels = TRUE)
     tree1$edge.length = rep(1, nrow(tree1$edge))
     tree2$edge.length = rep(1, nrow(tree2$edge))
 
-    dt1 = coph(tree1)
-    dt2 = coph(tree2)
+    dt1 = phangorn:::coph(tree1)
+    dt2 = phangorn:::coph(tree2)
 
     path.difference = sqrt(sum((dt1 - dt2)^2))
 
@@ -125,10 +134,9 @@ get.sequential.distances <- function(thinning, tree.list, N=100){
     # e.g. c(a, b, c, d, e) -> c(a,b), c(c,d)
     tree.pairs <- split(tree.list, ceiling(tree.index/2))
         
-    distances <- lapply(tree.pairs, path.distance)
+    distances <- lapply(tree.pairs, path.dist)
     distances <- as.numeric(unlist(distances))
     distances <- as.data.frame(distances)
-    names(distances) <- c("RF distance")
     result <- apply(distances, 2, median)
     result <- data.frame('distance' = t(t(result)))
     result$sampling.interval <- thinning
@@ -136,23 +144,3 @@ get.sequential.distances <- function(thinning, tree.list, N=100){
 }
 
 
-coph <- function(x){ 
-    #from Phangorn here: https://github.com/KlausVigo/phangorn
-    if (is.null(attr(x, "order")) || attr(x, "order") == "cladewise") 
-        x <- reorder(x, "postorder")
-    nTips = as.integer(length(x$tip.label))   
-    parents = as.integer(x$edge[,1]) 
-    kids = as.integer(x$edge[,2])
-    lp= as.integer(length(parents))
-    nNode = as.integer(x$Nnode)
-    m = as.integer(max(x$edge))
-    el = double(m)
-    el[kids] = x$edge.length
-    dm <- .C("C_cophenetic", kids, parents, as.double(el), lp, m, nTips, nNode, double(nTips*(nTips-1L)/2L))[[8]]
-    attr(dm, "Size") <- nTips
-    attr(dm, "Labels") <- x$tip.label
-    attr(dm, "Diag") <- FALSE
-    attr(dm, "Upper") <- FALSE
-    class(dm) <- "dist"
-    dm
-} 
