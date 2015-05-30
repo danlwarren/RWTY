@@ -68,8 +68,9 @@ tree.autocorr <- function(tree.list, max.intervals = 100){
 }
 
 path.distance <- function(tree1, tree2){
-    d <- treedist(tree1, tree2)[3]  
-    return(d)
+
+    return(path.dist(list(tree1, tree2)))
+
 }
 
 

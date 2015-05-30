@@ -55,7 +55,7 @@ tree.ess <- function(tree.list){
   
     i <- sample(1:length(tree.list), 1)
 
-    distances <- data.frame(matrix(unlist(lapply(tree.list, path.dist, tree.list[[i]])), nrow=length(tree.list), byrow=T))    
+    distances <- data.frame(matrix(unlist(lapply(tree.list, path.distance, tree.list[[i]])), nrow=length(tree.list), byrow=T))    
 
     ESS <- apply(distances, 2, effectiveSize)
     return(as.numeric(ESS))
