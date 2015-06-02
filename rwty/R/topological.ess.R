@@ -31,15 +31,15 @@
 topological.ess <- function(chains, burnin = 0, n = 50){
   
     chains = check.chains(chains)
-
+    
     chain = chains[[1]]
 
     indices = seq(from = burnin + 1, to = length(chain$trees), by = 1)   
-
+    
     trees = lapply(chains, function(x) x[['trees']][indices])
-
+    
     raw.ess = lapply(trees, tree.ess.multi, n)
-
+    
     final.ess = data.frame(matrix(unlist(raw.ess), nrow = length(chains), byrow = T))
 
     names(final.ess) = names(raw.ess[[1]])
@@ -52,7 +52,7 @@ topological.ess <- function(chains, burnin = 0, n = 50){
 }
 
 tree.ess <- function(tree.list){  
-  
+    
     i <- sample(1:length(tree.list), 1)
 
     distances <- data.frame(matrix(unlist(lapply(tree.list, path.distance, tree.list[[i]])), nrow=length(tree.list), byrow=T))    
@@ -63,7 +63,7 @@ tree.ess <- function(tree.list){
 
 
 tree.ess.multi <- function(tree.list, n=20){  
-        
+    
     print(sprintf("Calculating approximate ESS for %s trees and %s replicates, please be patient", length(tree.list), n))
 
     data <- replicate(n, tree.ess(tree.list))

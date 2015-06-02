@@ -39,6 +39,8 @@ makeplot.ess <- function(chains, burnin = 0, n = 50){
             xlab("chain") +
             ylab("approximate ESS") +
             expand_limits(y=0)
+    
+    ess.plot <- list(ess.plot = ess.plot)
 
     return(ess.plot)
     

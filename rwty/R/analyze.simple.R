@@ -25,7 +25,9 @@
 #' p <- analyze.simple(list(run1, run2), burnin = 50, window.num = 50)
 #' p
 
-analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 100, min.freq = 0, labels=NA, likelihood.param = NA, filename = NA, overwrite=FALSE, facet=TRUE, ...){
+analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 100, 
+                           min.freq = 0, labels=NA, likelihood.param = NA, filename = NA, 
+                           overwrite=FALSE, facet=TRUE, ess.reps=50, autocorr.intervals=100, ...){
     
     chains <- check.chains(chains, labels)
     
@@ -45,13 +47,19 @@ analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 1
     # plot posterior probabilities for all chains
     posterior.plots <- makeplot.posteriors(chains, burnin=burnin, window.num = window.num)
     
+    # plot ESS and confidence intervals
+    ess.plots <- makeplot.ess(chains, burnin, ess.reps)
+    
+    # plot autocorrelation
+    autocorr.plots <- makeplot.autocorr(chains, burnin, autocorr.intervals, facet)
+    
     # plot multichain plots when appropriate, populate plots list
     if(length(chains) > 1){
       multichain.plots <- makeplot.multichain(chains, burnin, min.freq, ...)
-      plots <- c(parameter.plots, treespace.plots, posterior.plots, multichain.plots)
+      plots <- c(parameter.plots, treespace.plots, posterior.plots, ess.plots, autocorr.plots, multichain.plots)
     }
     else{
-      plots <- c(parameter.plots, treespace.plots, posterior.plots)
+      plots <- c(parameter.plots, treespace.plots, posterior.plots, ess.plots, autocorr.plots)
     }
     
     # Print all to pdf if filename provided

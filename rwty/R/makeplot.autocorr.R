@@ -12,7 +12,7 @@
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin 
 #' @param max.intervals The maximum number of sampling intervals to use 
-#' @facet TRUE/FALSE to turn facetting of the plot on or off (default)
+#' @param facet TRUE/FALSE to turn facetting of the plot on or off (default)
 #'
 #' @return A ggplot2 plot object, with one line (facetting off) or facet
 #' (facetting on) per rwty.trees object.
@@ -37,6 +37,8 @@ makeplot.autocorr <- function(chains, burnin = 0, max.intervals = 100, facet = F
 
     if(facet) autocorr.plot = autocorr.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
 
+    autocorr.plot <- list(autocorr.plot = autocorr.plot)
+    
     return(autocorr.plot)
     
 }
