@@ -155,10 +155,12 @@ ggally_cor <- function(data, mapping, corAlignPercent = 0.6, corMethod = "pearso
     
     disc.min <- get("disc.min", envir = globalenv())
     disc <- data.frame(cbind(xVal, yVal))
-    disc <- disc[apply(disc, MARGIN = 1, function(x) all(x > disc.min)), ]    
+    disc <- disc[apply(disc, MARGIN = 1, function(x) all(x > disc.min)), ]
+    disc <- transform(disc, SD=apply(disc,1, sd, na.rm = TRUE))
     
     p <- ggally_text(
-      label = paste("Correlation:\n",signif(cor_fn(disc$xVal,disc$yVal),3),"\nDiscordance:\n",signif(mean(abs(disc$xVal-disc$yVal)),3),sep="",collapse=""),
+      label = paste("Correlation:\n",signif(cor_fn(disc$xVal,disc$yVal),3),"\nASDSF:\n",signif(mean(disc$SD),3),sep="",collapse=""),
+      #label = paste("Correlation:\n",signif(cor_fn(disc$xVal,disc$yVal),3),"\nDiscordance:\n",signif(mean(abs(disc$xVal-disc$yVal)),3),sep="",collapse=""),
       mapping,
       xP=0.5,
       yP=0.5,
