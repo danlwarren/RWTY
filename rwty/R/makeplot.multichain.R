@@ -19,18 +19,18 @@
 #' 
 #' @examples
 #' data(fungus)
-#' makeplot.multichain(list(run1, run2), burnin=100, )
+#' makeplot.multichain(list(run1, run2), burnin=100,  window.num = 20, min.freq = 0.1 )
 
-makeplot.multichain <- function(chains, burnin, min.freq = 0.1 ,...){
+makeplot.multichain <- function(chains, burnin, window.num, min.freq = 0.1 ,...){
   
   output <- list()
   
   compn <- compare.n(chains, setnames=names(chains), burnin, min.freq=min.freq)
+  output[["sliding.asdsf"]] <- makeplot.asdsf(chains, burnin, window.num, min.freq)
   output[["compare.plot"]] <- compn$compare.plot
-  # output[["discordance.n"]] <- discordance.n(compn, setnames=names(chains), min.freq=min.freq)
   
   if(all(compn$asdsf  == 0)){
-    print("No non-zero ASFSF values, skipping ASDSF tree")  
+    print("No non-zero ASDSF values, skipping ASDSF tree")  
   }
   else{
     dtree <- as.phylo(hclust(compn$asdsf))

@@ -55,7 +55,7 @@ analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 1
     
     # plot multichain plots when appropriate, populate plots list
     if(length(chains) > 1){
-      multichain.plots <- makeplot.multichain(chains, burnin, min.freq, ...)
+      multichain.plots <- makeplot.multichain(chains, burnin, window.num, min.freq, ...)
       plots <- c(parameter.plots, treespace.plots, posterior.plots, ess.plots, autocorr.plots, multichain.plots)
     }
     else{

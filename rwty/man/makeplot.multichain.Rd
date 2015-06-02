@@ -4,14 +4,14 @@
 \alias{makeplot.multichain}
 \title{Function for running rwty analyses on multiple chains.}
 \usage{
-makeplot.multichain(chains, burnin, min.freq = 0, ...)
+makeplot.multichain(chains, burnin, window.num, min.freq = 0.1, ...)
 }
 \arguments{
 \item{chains}{A list of rwty.trees objects.}
 
 \item{burnin}{The number of trees to eliminate as burnin.  Default is zero.}
 
-\item{min.freq}{The minimum frequency for a node to be used for calculating discordance.}
+\item{min.freq}{The minimum frequency for a node to be used for calculating ASDSF.}
 
 \item{gens.per.tree}{The number of generations per tree in the .t file.  If no value is provided, RWTY tries to figure it out from the tree names.}
 
@@ -30,7 +30,7 @@ It runs analyze.single for each chain, and then does multi-chain analyses as wel
 }
 \examples{
 data(fungus)
-makeplot.multichain(list(run1, run2), burnin=100, )
+makeplot.multichain(list(run1, run2), burnin=100,  window.num = 20, min.freq = 0.1 )
 }
 \keyword{MCMC,}
 \keyword{awty,}

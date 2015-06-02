@@ -44,7 +44,7 @@ compare.n <- function(x, setnames=NA, burnin, min.freq=0){ # In this case x is a
   # Set missing clades from each chain to zero
   clade.table[is.na(clade.table)] <- 0
   
-  # Calculate the average standard deviation of split frequencies
+  # Calculate the pairwise average standard deviation of split frequencies
   # (ASDSF) for clades occuring at a minimum frequency of min.freq
   # across a pair of chains.  
   d <- matrix(nrow=length(x), ncol=length(x))
