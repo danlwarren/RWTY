@@ -2,14 +2,13 @@
 #' 
 #' This function takes a set of tree files, an option array of names for those
 #' files, and a burnin argument.  It returns a table with the frequencies of 
-#' each clade in each of those tree files, a distance metric indicating the mean
-#' difference between clade frequencies, a plot of each chain against the others,
+#' each clade in each of those tree files, the pairwise and grand mean average
 #' and a translation table.
 #'
 #' @param x A list of rwty.trees objects.
 #' @param setnames A list of names for the chains.
 #' @param burnin The number of trees to eliminate as burnin 
-#' @param min.freq The minimum frequency for a node to be used for calculating discordance.  Default value is zero.  
+#' @param min.freq The minimum frequency for a node to be used for calculating Average Standard Deviation of Split Frequncies (ASDSF).  Default value is 0.1.  
 #'
 #' @return output A list containing a table of frequencies of each clade in each chain along with mean and sd, a distance matrix measuring consensus between chains, a translation table, and a ggpairs plot.
 #'
@@ -45,17 +44,20 @@ compare.n <- function(x, setnames=NA, burnin, min.freq=0){ # In this case x is a
   # Set missing clades from each chain to zero
   clade.table[is.na(clade.table)] <- 0
   
-  # Calculate a discordance metric, which is just the average 
-  # of the absolute values of the differences in posteriors
-  # for clades occuring at a minium frequenct of min.freq
-  # across a pair of chains.  Ranges from 0, where posteriors
-  # are identical, to 1, where they are as different as can be.
+  # Calculate the average standard deviation of split frequencies
+  # (ASDSF) for clades occuring at a minimum frequency of min.freq
+  # across a pair of chains.  
   d <- matrix(nrow=length(x), ncol=length(x))
-  disc.clade.table <- clade.table
-  disc.clade.table <- disc.clade.table[apply(disc.clade.table, MARGIN = 1, function(x) all(x > min.freq)), ]
+  asdsf.clade.table <- clade.table
+  asdsf.clade.table <- asdsf.clade.table[apply(asdsf.clade.table, MARGIN = 1, function(x) all(x > min.freq)), ]
   for(i in 1:length(x)){
     for(j in i+1:length(x)){
-      if(j <= length(x)){d[j,i] <- mean(abs(disc.clade.table[,i+1] - disc.clade.table[,j+1]))}
+      if(j <= length(x)){
+        temp.pair <- NULL
+        temp.pair <- data.frame(cbind(asdsf.clade.table[,i+1],asdsf.clade.table[,j+1]))
+        temp.pair <- transform(temp.pair, SD=apply(temp.pair,1, sd, na.rm = TRUE))
+        d[j,i] <- mean(temp.pair$SD)
+      }
     }
   }
   colnames(d) <- names(clade.table)[2:(length(x)+1)]
@@ -75,11 +77,11 @@ compare.n <- function(x, setnames=NA, burnin, min.freq=0){ # In this case x is a
   
   # Make a plot
   assignInNamespace("ggally_cor", ggally_cor, "GGally")
-  assign("disc.min", min.freq, envir=globalenv())
+  assign("asdsf.min", min.freq, envir=globalenv())
 
   plot <- ggpairs(clade.table, columns=2:(length(x) + 1),axisLabels='show',diag=list(continuous="blank",params=c(colour="black")),upper=list(params=list(Size=10)))
   
-  output <- list("cladetable" = clade.table, "discordance" = d, "discordance.min.freq" = min.freq,
+  output <- list("cladetable" = clade.table, "asdsf" = d, "asdsf.min.freq" = min.freq,
                  "translation" = translation.table,
                  "compare.plot" = plot)
   class(output) = "rwty.comparen"
