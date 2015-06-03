@@ -2,7 +2,7 @@
 
 S3method(merge,ptables)
 S3method(print,rwty.trees)
-export(analyze.simple)
+export(analyze.rwty)
 export(check.chains)
 export(clade.freq)
 export(compare.n)
