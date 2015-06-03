@@ -1,7 +1,7 @@
 #' Correlation from the Scatter Plot
 #'
 #' Estimate correlation from the given data. 
-#' Modified to include discordance metric
+#' Modified to include pairwise Average Standard Deviation of Split Frequencies (ASDSF)
 #'
 #' @param data data set using
 #' @param mapping aesthetics being used
@@ -153,12 +153,14 @@ ggally_cor <- function(data, mapping, corAlignPercent = 0.6, corMethod = "pearso
     ymax <- max(yVal, na.rm = TRUE)
     yrange <- c(ymin-.01*(ymax-ymin),ymax+.01*(ymax-ymin))
     
-    disc.min <- get("disc.min", envir = globalenv())
-    disc <- data.frame(cbind(xVal, yVal))
-    disc <- disc[apply(disc, MARGIN = 1, function(x) all(x > disc.min)), ]    
+    asdsf.min <- get("asdsf.min", envir = globalenv())
+    asdsf <- data.frame(cbind(xVal, yVal))
+    asdsf <- asdsf[apply(asdsf, MARGIN = 1, function(x) all(x > asdsf.min)), ]
+    asdsf <- transform(asdsf, SD=apply(asdsf,1, sd, na.rm = TRUE))
     
     p <- ggally_text(
-      label = paste("Correlation:\n",signif(cor_fn(disc$xVal,disc$yVal),3),"\nDiscordance:\n",signif(mean(abs(disc$xVal-disc$yVal)),3),sep="",collapse=""),
+      label = paste("Correlation:\n",signif(cor_fn(asdsf$xVal,asdsf$yVal),3),"\nASDSF:\n",signif(mean(asdsf$SD),3),sep="",collapse=""),
+      #label = paste("Correlation:\n",signif(cor_fn(asdsf$xVal,asdsf$yVal),3),"\nDiscordance:\n",signif(mean(abs(asdsf$xVal-asdsf$yVal)),3),sep="",collapse=""), # report discordance instead of ASDSF
       mapping,
       xP=0.5,
       yP=0.5,

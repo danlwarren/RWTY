@@ -10,7 +10,7 @@
 #' @param window.size The length of window (in trees) for the sliding window plot.  If no value is provided, RWTY selects a number so that 20 windows are analyzed over the chain. 
 #' @param gens.per.tree The number of generations per tree in the .t file.  If no value is provided, RWTY will attempt to determine the number of generations from the tree names.  
 #' @param treespace.points The number of trees to plot in the treespace plot. Default is 100 
-#' @param min.freq The minimum frequency for a node to be used for calculating discordance. Default is zero.  
+#' @param min.freq The minimum frequency for a node to be used for calculating ASDSF. Default is 0.1  
 #' @param filename Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not print outputs to file.
 #' @param overwrite Boolean variable saying whether output file should be overwritten, if it exists.
 #'
@@ -26,7 +26,7 @@
 #' p
 
 analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 100, 
-                           min.freq = 0, labels=NA, likelihood.param = NA, filename = NA, 
+                           min.freq = 0.1, labels=NA, likelihood.param = NA, filename = NA, 
                            overwrite=FALSE, facet=TRUE, ess.reps=50, autocorr.intervals=100, ...){
     
     chains <- check.chains(chains, labels)
@@ -55,7 +55,7 @@ analyze.simple <- function(chains, burnin=0, window.num=50, treespace.points = 1
     
     # plot multichain plots when appropriate, populate plots list
     if(length(chains) > 1){
-      multichain.plots <- makeplot.multichain(chains, burnin, min.freq, ...)
+      multichain.plots <- makeplot.multichain(chains, burnin, window.num, min.freq, ...)
       plots <- c(parameter.plots, treespace.plots, posterior.plots, ess.plots, autocorr.plots, multichain.plots)
     }
     else{

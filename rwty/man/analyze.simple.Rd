@@ -5,7 +5,7 @@
 \title{analyze.rwty, the main interface for rwty analyses and plots.}
 \usage{
 analyze.simple(chains, burnin = 0, window.num = 50,
-  treespace.points = 100, min.freq = 0, labels = NA,
+  treespace.points = 100, min.freq = 0.1, labels = NA,
   likelihood.param = NA, filename = NA, overwrite = FALSE, facet = TRUE,
   ess.reps = 50, autocorr.intervals = 100, ...)
 }
@@ -16,7 +16,7 @@ analyze.simple(chains, burnin = 0, window.num = 50,
 
 \item{treespace.points}{The number of trees to plot in the treespace plot. Default is 100}
 
-\item{min.freq}{The minimum frequency for a node to be used for calculating discordance. Default is zero.}
+\item{min.freq}{The minimum frequency for a node to be used for calculating ASDSF. Default is 0.1}
 
 \item{filename}{Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not print outputs to file.}
 
