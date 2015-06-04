@@ -69,13 +69,13 @@ load.trees <- function(file, type="nexus", gens.per.tree=NA, trim=1, logfile=NA,
     if(is.na(logfile)){
       
       # try mrbayes style log file name
-      if(grepl("\\.t$", file)){
-        logfile <- sub("\\.t$", ".p", file)
+      if(file.exists(sub("[.][^.]*$", ".p", file, perl=TRUE))){
+        logfile <- sub("[.][^.]*$", ".p", file, perl=TRUE)
       }
       
       # try beast style log file name
-      if(grepl("\\.trees$", file)){
-        logfile <- sub("\\.trees$", ".log", file)
+      if(file.exists(sub("[.][^.]*$", ".log", file, perl=TRUE))){
+        logfile <- sub("[.][^.]*$", ".log", file, perl=TRUE)
       }
 
       if(file.exists(logfile)){
