@@ -29,13 +29,14 @@
 
 makeplot.ess <- function(chains, burnin = 0, n = 50){
 
-    chains = check.chains(chains)
+    chains <- check.chains(chains)
 
     dat <- topological.ess(chains, burnin, n)
 
-    ess.plot = ggplot(dat, aes(x = chain, fill=chain, colour=chain,
+    ess.plot <- ggplot(dat, aes(x = chain,  
       ymin = ci.95.lower, lower = ci.50.lower, middle = median.ess, upper = ci.50.upper, ymax = ci.95.upper)) + 
-      geom_boxplot(stat="identity") +
+      geom_boxplot(stat="identity", colour=rainbow(length(dat$chain), s=1, v=0.5), 
+                   fill=rainbow(length(dat$chain), s=0.5, v=0.9)) +
       xlab("Chain") +
       ylab("Approximate ESS") +
       expand_limits(y=0)
