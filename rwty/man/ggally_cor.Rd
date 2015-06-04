@@ -22,7 +22,7 @@ ggally_cor(data, mapping, corAlignPercent = 0.6, corMethod = "pearson",
 }
 \description{
 Estimate correlation from the given data.
-Modified to include discordance metric
+Modified to include pairwise Average Standard Deviation of Split Frequencies (ASDSF)
 }
 \examples{
 data(tips, package = "reshape")

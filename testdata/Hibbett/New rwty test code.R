@@ -19,7 +19,11 @@ p <- analyze.simple(chains = list(run1, run3), burnin = 100,treespace.points = 5
 
 # HUGE analysis
 alltrees <- load.multi(path="/Users/danwarren/Downloads/AP_DRYAD/MrBayes nexus Files", trim=20, skip=1)
-alltrees <- check.chains(alltrees)
+t <- names(alltrees)
+t <- lapply(t, FUN=function(x) gsub("AP_", "", x))
+t <- lapply(t, FUN=function(x) gsub("\\.t", "", x))
+t <- lapply(t, FUN=function(x) gsub("\\.nex", "", x))
+names(alltrees) <- t
 p <- analyze.simple(alltrees, burnin=20, treespace.points=20, file="alltrees.pdf", overwrite=TRUE, facet=FALSE)
 
 # Smaller multilocus

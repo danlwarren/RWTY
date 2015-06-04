@@ -18,6 +18,7 @@
 merge.ptables <- function(chains, burnin){
   
   chains = check.chains(chains)
+
   # N is a vector of chain lengths
   N <- unlist(lapply(chains, function(x) length(x$trees)))
   

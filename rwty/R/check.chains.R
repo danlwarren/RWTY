@@ -44,23 +44,27 @@ check.chains <- function(chains, labels = NA){
     }
   }
   
-  # check to see if ptable and trees are the same length
-  if(any(unlist(lapply(chains, function(x) length(x$trees))) != 
-           unlist(lapply(chains, function(x) length(x$ptable[,1]))))){
-    stop("All MCMC chains must be the same length as their associated p tables")
-  }
-  
-  # reduce ptables to the set of shared columns
-  keepcols <- Reduce(intersect,lapply(chains, FUN = function(x) colnames(x$ptable)))
-  # need to set up the following so it only prints when columns are removed
-  col.flag <- FALSE
-  for(i in 1:length(chains)){
-    if(!setequal(colnames(chains[[i]]$ptable), keepcols)){col.flag <- TRUE}
-    chains[[i]]$ptable <- chains[[i]]$ptable[,keepcols]
-  }
-  if(col.flag){
-    print("Some non-shared columns found.  Keeping the following columns:")
-    print(paste(keepcols))
+  # checks to be run if ptables are supplied
+  if(any(unlist(lapply(chains, function(x) length(x$ptable[,1])))) > 0){
+    
+    # check to see if ptable and trees are the same length
+    if(any(unlist(lapply(chains, function(x) length(x$trees))) != 
+             unlist(lapply(chains, function(x) length(x$ptable[,1]))))){
+      stop("All MCMC chains must be the same length as their associated p tables")
+    }
+    
+    # reduce ptables to the set of shared columns
+    keepcols <- Reduce(intersect,lapply(chains, FUN = function(x) colnames(x$ptable)))
+    # need to set up the following so it only prints when columns are removed
+    col.flag <- FALSE
+    for(i in 1:length(chains)){
+      if(!setequal(colnames(chains[[i]]$ptable), keepcols)){col.flag <- TRUE}
+      chains[[i]]$ptable <- chains[[i]]$ptable[,keepcols]
+    }
+    if(col.flag){
+      print("Some non-shared columns found.  Keeping the following columns:")
+      print(paste(keepcols))
+    }
   }
   
   # check all points sampled from the same points in the mcmc

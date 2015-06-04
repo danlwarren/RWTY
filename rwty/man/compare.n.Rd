@@ -13,7 +13,7 @@ compare.n(x, setnames = NA, burnin, min.freq = 0)
 
 \item{burnin}{The number of trees to eliminate as burnin}
 
-\item{min.freq}{The minimum frequency for a node to be used for calculating discordance.  Default value is zero.}
+\item{min.freq}{The minimum frequency for a node to be used for calculating Average Standard Deviation of Split Frequncies (ASDSF).  Default value is 0.1.}
 }
 \value{
 output A list containing a table of frequencies of each clade in each chain along with mean and sd, a distance matrix measuring consensus between chains, a translation table, and a ggpairs plot.
@@ -21,8 +21,7 @@ output A list containing a table of frequencies of each clade in each chain alon
 \description{
 This function takes a set of tree files, an option array of names for those
 files, and a burnin argument.  It returns a table with the frequencies of
-each clade in each of those tree files, a distance metric indicating the mean
-difference between clade frequencies, a plot of each chain against the others,
+each clade in each of those tree files, the pairwise and grand mean average
 and a translation table.
 }
 \examples{

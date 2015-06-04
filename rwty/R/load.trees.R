@@ -57,18 +57,29 @@ load.trees <- function(file, type="nexus", gens.per.tree=NA, trim=1, logfile=NA,
     if(!is.na(logfile) && !file.exists(logfile)){
       stop(paste("Logfile not found at", logfile))
     }
+    
     # logfile path has been supplied and file exists
     if(!is.na(logfile) && file.exists(logfile)){
-      print(paste("Reading parameter values from", logfile))
+      print(paste("Reading parameter values from", basename(logfile)))
       ptable <- read.table(logfile, skip=skip, header=TRUE)
       ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
     }
+    
     # If logfile hasn't been supplied try to find it by searching
     if(is.na(logfile)){
-      if(length(grep(".t$", file, perl=TRUE)) > 0){logfile <- sub(".t$", ".p", file, perl=TRUE)}
-      if(length(grep(".trees$", file, perl=TRUE)) > 0){logfile <- sub(".trees$", ".p", file, perl=TRUE)}
+      
+      # try mrbayes style log file name
+      if(file.exists(sub("[.][^.]*$", ".p", file, perl=TRUE))){
+        logfile <- sub("[.][^.]*$", ".p", file, perl=TRUE)
+      }
+      
+      # try beast style log file name
+      if(file.exists(sub("[.][^.]*$", ".log", file, perl=TRUE))){
+        logfile <- sub("[.][^.]*$", ".log", file, perl=TRUE)
+      }
+
       if(file.exists(logfile)){
-          print(paste("Reading parameter values from", logfile))
+          print(paste("Reading parameter values from", basename(logfile)))
           ptable <- read.table(logfile, skip=skip, header=TRUE)
           ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
       }
