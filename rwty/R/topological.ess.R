@@ -68,7 +68,7 @@ tree.ess.multi <- function(tree.list, n=20){
 
     data <- replicate(n, tree.ess(tree.list))
 
-    return(list(median.ess = median(data), ci.upper = quantile(data, probs=c(0.975)), ci.lower = quantile(data, probs=c(0.025))))
+    return(list(median.ess = median(data), ci.95.upper = quantile(data, probs=c(0.975)), ci.50.upper = quantile(data, probs=c(0.75)), ci.50.lower = quantile(data, probs=c(0.25)), ci.95.lower = quantile(data, probs=c(0.025))))
   
 }
 

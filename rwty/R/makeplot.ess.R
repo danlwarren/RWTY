@@ -33,13 +33,15 @@ makeplot.ess <- function(chains, burnin = 0, n = 50){
 
     dat <- topological.ess(chains, burnin, n)
 
-    ess.plot = ggplot(dat, aes(x=chain, y=median.ess, colour = chain)) + 
-            geom_errorbar(aes(ymin=ci.lower, ymax=ci.upper), width=.1) +
-            geom_point() +
-            xlab("chain") +
-            ylab("approximate ESS") +
-            expand_limits(y=0)
+    ess.plot = ggplot(dat, aes(x = chain, fill=chain, colour=chain,
+      ymin = ci.95.lower, lower = ci.50.lower, middle = median.ess, upper = ci.50.upper, ymax = ci.95.upper)) + 
+      geom_boxplot(stat="identity") +
+      xlab("Chain") +
+      ylab("Approximate ESS") +
+      expand_limits(y=0)
     
+    # for some reason these plots need to be returned as lists, or analyze.simple flattens them and puts
+    # the plot components, rather than the plot itself, into the final object
     ess.plot <- list(ess.plot = ess.plot)
 
     return(ess.plot)
