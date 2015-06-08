@@ -49,12 +49,13 @@ compare.n <- function(x, setnames=NA, burnin, min.freq=0){ # In this case x is a
   # across a pair of chains.  
   d <- matrix(nrow=length(x), ncol=length(x))
   asdsf.clade.table <- clade.table
-  asdsf.clade.table <- asdsf.clade.table[apply(asdsf.clade.table, MARGIN = 1, function(x) any(x > min.freq)), ]
+  #asdsf.clade.table <- asdsf.clade.table[apply(asdsf.clade.table, MARGIN = 1, function(x) any(x > min.freq)), ]
   for(i in 1:length(x)){
     for(j in i+1:length(x)){
       if(j <= length(x)){
         temp.pair <- NULL
         temp.pair <- data.frame(cbind(asdsf.clade.table[,i+1],asdsf.clade.table[,j+1]))
+        temp.pair <- temp.pair[apply(temp.pair, MARGIN = 1, function(x) any(x > min.freq)), ]
         temp.pair <- transform(temp.pair, SD=apply(temp.pair,1, sd, na.rm = TRUE))
         d[j,i] <- mean(temp.pair$SD)
       }
