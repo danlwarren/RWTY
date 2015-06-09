@@ -23,7 +23,7 @@
 #' 
 #' @examples
 #' data(fungus)
-#' makeplot.autocorr(chains = list(run1, run2), burnin = 100)
+#' makeplot.autocorr(fungus, burnin = 100)
 
 makeplot.autocorr <- function(chains, burnin = 0, max.intervals = 100, facet = FALSE){
 

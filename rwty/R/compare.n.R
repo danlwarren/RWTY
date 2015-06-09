@@ -18,7 +18,7 @@
 #' 
 #' @examples
 #' data(fungus)
-#' compare.n(list(run1, run2), setnames=c("Chain1", "Chain2"), burnin=100)
+#' compare.n(fungus, burnin=100)
 
 compare.n <- function(x, setnames=NA, burnin, min.freq=0){ # In this case x is a list of rwty.trees objects
   print("Calculating clade posterior probabilities from all runs...")

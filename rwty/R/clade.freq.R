@@ -16,7 +16,7 @@
 #' 
 #' @examples
 #' data(fungus)
-#' cfreq <- clade.freq(run1, start=10, end=100)
+#' clade.freq(fungus$Fungus.Run1, start=10, end=100)
 
 # Modified from prop.part in APE, returning data in a more useful format
 clade.freq <- function (x, start, end, check.labels = TRUE) {

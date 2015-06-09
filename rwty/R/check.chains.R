@@ -14,7 +14,7 @@
 #' 
 #' @examples
 #' data(fungus)
-#' check.chains(list(run1, run2), labels=c("Tree 1", "Tree 2"))
+#' check.chains(fungus)
 
 check.chains <- function(chains, labels = NA){
   

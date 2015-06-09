@@ -16,7 +16,7 @@
 #' @examples
 #' data(fungus)
 #' 
-#' p = makeplot.treespace(chains = list(run1, run2), burnin = 100, likelihood = 'LnL')
+#' p <- makeplot.treespace(fungus, burnin = 100, likelihood = 'LnL')
 #' 
 #' # NB: these data indicate significant problems: the two chains are sampling very different parts of tree space
 #' # View the points plotted in treespace (these data indicate significant problems)

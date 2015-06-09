@@ -14,8 +14,7 @@
 #' 
 #' @examples
 #' data(fungus)
-#' test.chains <- check.chains(fungus)
-#' p <- makeplot.posteriors(chains = test.chains, burnin = 100, window.num = 20)
+#' makeplot.posteriors(fungus, burnin = 100, window.num = 20)
 #' 
 #' # NB: these data indicate significant problems: the two chains are sampling very different parts of tree space
 #'
