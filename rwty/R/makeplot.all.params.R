@@ -16,7 +16,7 @@
 #' 
 #' @examples
 #' data(fungus)
-#' makeplot.all.params(list(run1, run2), burnin=100)
+#' makeplot.all.params(fungus, burnin=100)
 
 makeplot.all.params <- function(chains, burnin = 0, facet=TRUE, strip = 1){
 

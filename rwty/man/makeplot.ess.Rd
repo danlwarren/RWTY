@@ -31,7 +31,7 @@ tree distances, so can take some time.
 }
 \examples{
 data(fungus)
-makeplot.ess(chains = list(run1, run2), burnin = 250, n = 10)
+makeplot.ess(fungus, burnin = 250, n = 10)
 # demostrates severe issues with run1!
 }
 \keyword{ESS,}

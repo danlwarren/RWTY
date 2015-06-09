@@ -22,7 +22,7 @@
 #' 
 #' @examples
 #' data(fungus)
-#' p <- analyze.rwty(list(run1, run2), burnin = 50, window.num = 50)
+#' p <- analyze.rwty(fungus, burnin = 50, window.num = 50)
 #' p
 
 analyze.rwty <- function(chains, burnin=0, window.num=50, treespace.points = 100, 
@@ -70,7 +70,7 @@ analyze.rwty <- function(chains, burnin=0, window.num=50, treespace.points = 100
     
     # Print all to pdf if filename provided
     if(!is.na(filename)){
-      pdf(file=filename)
+      pdf(file=filename, ...)
       print(plots)
       dev.off()
     }

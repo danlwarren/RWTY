@@ -23,8 +23,7 @@ This function takes two or more rwty.trees ojects and returns a cumulative plot 
 }
 \examples{
 data(fungus)
-test.chains <- list(run1, run2)
-test.chains <- check.chains(test.chains)
+test.chains <- check.chains(fungus)
 p <- makeplot.asdsf(chains = test.chains, burnin = 100, window.num = 20)
 p
 }

@@ -33,7 +33,8 @@ makeplot.param <- function(chains, burnin = 0, parameter = "LnL", facet=TRUE){
 
         param.plot =  ggplot(ptable, aes_string(x="generation", y=parameter)) + 
                         geom_line(aes(colour = chain)) + 
-                        ggtitle(parameter)
+                        ggtitle(parameter) +
+                        theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
 
         if(facet) param.plot = param.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
 

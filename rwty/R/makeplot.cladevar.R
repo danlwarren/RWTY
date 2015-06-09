@@ -35,7 +35,8 @@ makeplot.cladevar <- function(input.table, numclades=nrow(input.table)){
         geom_boxplot() +
         theme(legend.position="none") +
         xlab("Generations") + 
-        ylab("Variation in posterior probability")
+        ylab("Variation in posterior probability") +
+        theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
     
     return(thisplot)
 }

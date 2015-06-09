@@ -15,8 +15,7 @@
 #' 
 #' @examples
 #' data(fungus)
-#' test.chains <- list(run1, run2)
-#' test.chains <- check.chains(test.chains)
+#' test.chains <- check.chains(fungus)
 #' p <- makeplot.asdsf(chains = test.chains, burnin = 100, window.num = 20)
 #' p
 
@@ -93,7 +92,8 @@ ggplot(d,aes(x = grp, y = x, group=grp)) + geom_boxplot()
     geom_boxplot() +
     theme(legend.position="none") +
     xlab("Generations") + 
-    ylab("Standard Deviation of Split Frequencies") + ggtitle("Cumulative SDSF (all chains)")
+    ylab("Standard Deviation of Split Frequencies") + ggtitle("Cumulative SDSF (all chains)") +
+    theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
   
   
   

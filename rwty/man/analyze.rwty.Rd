@@ -37,7 +37,7 @@ and multi-chain diagnostic plots when multiple chains are provided.
 }
 \examples{
 data(fungus)
-p <- analyze.rwty(list(run1, run2), burnin = 50, window.num = 50)
+p <- analyze.rwty(fungus, burnin = 50, window.num = 50)
 p
 }
 \keyword{keywords}

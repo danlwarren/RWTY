@@ -54,6 +54,7 @@ makeplot.treespace <- function(chains, n.points = 100, burnin = 0, likelihood = 
                     geom_path(alpha=0.25, aes(colour = generation), size=0.75) + 
                     scale_colour_gradient(low='red', high='yellow') +
                     theme(panel.background = element_blank(), axis.line = element_line(color='grey')) +
+                    theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5)) +
                     facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain)))))    
 
 

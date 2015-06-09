@@ -35,6 +35,7 @@ makeplot.cladeprobs <- function(input.table, numclades=20){
     thisplot <- ggplot(data=x, aes(x=as.numeric(as.character(Generations)), y=Posterior.Probability, group=Clade, color=Clade)) + 
         geom_line() +
         theme(legend.position="none") +
-        xlab("Generations")
+        xlab("Generations") +
+        theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
     thisplot
 }
