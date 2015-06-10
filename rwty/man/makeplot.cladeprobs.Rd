@@ -22,8 +22,8 @@ will by default be the most variable clades.
 }
 \examples{
 data(fungus)
-slide.data <- slide.freq(run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
-cpplot <- makeplot.cladeprobs(input.table = slide.data$slide.table, numclades=25)
+slide.data <- slide.freq(fungus$Fungus.Run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
+makeplot.cladeprobs(input.table = slide.data$slide.table, numclades=25)
 }
 \keyword{cumulative,}
 \keyword{mcmc,}

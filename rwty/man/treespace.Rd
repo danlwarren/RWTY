@@ -23,7 +23,7 @@ dimensional tree space for plotting.
 }
 \examples{
 data(fungus)
-burnin <- 100
+treespace(fungus, n.points=50, burnin=100, likelihood="LnL")
 }
 \keyword{mds,}
 \keyword{multi-dimensional}

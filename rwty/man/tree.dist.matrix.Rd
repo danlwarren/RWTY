@@ -19,7 +19,7 @@ in the list.
 }
 \examples{
 data(fungus)
-tree.dist.matrix(list(run1$trees[[1]], run1$trees[[2]], run1$trees[[3]]))
+tree.dist.matrix(fungus$Fungus.Run1$trees)
 }
 \keyword{distance,}
 \keyword{robinson-foulds}
