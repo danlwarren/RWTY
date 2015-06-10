@@ -33,19 +33,14 @@ makeplot.ess <- function(chains, burnin = 0, n = 50){
 
     dat <- topological.ess(chains, burnin, n)
     
-    # Attaching color information to the table of ESS so we can plot the geom_segments in color
-    dat <- cbind(dat, rep(rainbow(length(chains)), each = n))
+    dat <- data.frame(median.ess = apply(dat, 2, FUN = median), 
+                      ci.lower = apply(dat, 2, FUN = function(x) quantile(x, .025)), 
+                      ci.upper = apply(dat, 2, FUN = function(x) quantile(x, .975)),
+                      chain = names(chains))
     
-    colnames(dat) <- c("ESS", "chain", "color")
-    
-    ess.plot <- ggplot(data=dat)+
-      geom_violin(aes(x=chain,y=ESS,fill=chain, s=0.5, v=0.9), trim=F, scale="width") +
-      geom_segment(aes(
-        x=match(chain,levels(chain))-0.05,
-        xend=match(chain,levels(chain))+0.05,
-        y=ESS,yend=ESS),
-        colour=dat$color
-      ) +
+    ess.plot = ggplot(dat, aes(x=chain, y=median.ess, colour = chain)) + 
+      geom_errorbar(aes(ymin=ci.lower, ymax=ci.upper), width=.1) +
+      geom_point() +
       xlab("Chain") +
       ylab("Approximate ESS") +
       theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5)) +

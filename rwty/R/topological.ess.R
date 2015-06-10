@@ -40,9 +40,9 @@ topological.ess <- function(chains, burnin = 0, n = 50){
     
     raw.ess <- lapply(trees, tree.ess.multi, n)
     
-    final.ess <- cbind(data.frame(matrix(unlist(raw.ess), ncol=1)), rep(names(chains), each = n))
+    final.ess <- data.frame(t(matrix(unlist(raw.ess), nrow = length(chains), byrow = T)))
 
-    colnames(final.ess) <- c("ESS", "chain")
+    colnames(final.ess) <- names(chains)
 
     return(final.ess)
   
