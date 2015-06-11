@@ -38,7 +38,7 @@ makeplot.ess <- function(chains, burnin = 0, n = 50){
                       ci.upper = apply(dat, 2, FUN = function(x) quantile(x, .975)),
                       chain = names(chains))
     
-    ess.plot <- ggplot(test2, aes(x=chain, y=median.ess, colour = chain)) + 
+    ess.plot <- ggplot(dat, aes(x=chain, y=median.ess, colour = chain)) + 
       geom_errorbar(aes(ymin=ci.lower, ymax=ci.upper), size=1, width=.3) +
       geom_point(size=3) +
       xlab("Chain") +
