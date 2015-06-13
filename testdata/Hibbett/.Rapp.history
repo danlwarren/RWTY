@@ -1,4 +1,0 @@
-setwd("~/GitHub/RWTY/testdata/Hibbett")
-install.packages("~/GitHub/RWTY/rwty",repos=NULL, type="source")
-library(rwty)
-plot.posteriors()
