@@ -16,7 +16,7 @@
 #' @examples
 #' data(fungus)
 #' 
-#' p = makeplot.treespace(chains = list(run1, run2), burnin = 100, likelihood = 'LnL')
+#' p <- makeplot.treespace(fungus, burnin = 100, likelihood = 'LnL')
 #' 
 #' # NB: these data indicate significant problems: the two chains are sampling very different parts of tree space
 #' # View the points plotted in treespace (these data indicate significant problems)
@@ -54,6 +54,7 @@ makeplot.treespace <- function(chains, n.points = 100, burnin = 0, likelihood = 
                     geom_path(alpha=0.25, aes(colour = generation), size=0.75) + 
                     scale_colour_gradient(low='red', high='yellow') +
                     theme(panel.background = element_blank(), axis.line = element_line(color='grey')) +
+                    theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5)) +
                     facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain)))))    
 
 

@@ -20,7 +20,7 @@ It performs a number of tests of chain format, labels, lengths, etc.
 }
 \examples{
 data(fungus)
-check.chains(list(run1, run2), labels=c("Tree 1", "Tree 2"))
+check.chains(fungus)
 }
 \keyword{MCMC,}
 \keyword{awty,}

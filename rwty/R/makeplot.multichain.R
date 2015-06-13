@@ -19,14 +19,14 @@
 #' 
 #' @examples
 #' data(fungus)
-#' makeplot.multichain(list(run1, run2), burnin=100,  window.num = 20, min.freq = 0.1 )
+#' makeplot.multichain(fungus, burnin=100,  window.num = 20, min.freq = 0.1 )
 
 makeplot.multichain <- function(chains, burnin, window.num, min.freq = 0.1 ,...){
   
   output <- list()
   
   compn <- compare.n(chains, setnames=names(chains), burnin, min.freq=min.freq)
-  output[["sliding.asdsf"]] <- makeplot.asdsf(chains, burnin, window.num, min.freq)
+  output[["cumulative.asdsf"]] <- makeplot.cumulative.asdsf(chains, burnin, window.num, min.freq)
   output[["compare.plot"]] <- compn$compare.plot
   
   if(all(compn$asdsf  == 0)){

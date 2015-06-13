@@ -23,7 +23,7 @@
 #' 
 #' @examples
 #' data(fungus)
-#' topological.autocorr(chains = list(run1, run2), burnin = 100)
+#' topological.autocorr(fungus, burnin = 100)
 
 
 topological.autocorr <- function(chains, burnin = 0, max.intervals = 100){

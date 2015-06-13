@@ -17,7 +17,7 @@
 #' 
 #' @examples
 #' data(fungus)
-#' cumulative.data <- cumulative.freq(run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
+#' cumulative.freq(fungus$Fungus.Run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
 
 cumulative.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1, slide.freq.table = NULL, ...){ 
 

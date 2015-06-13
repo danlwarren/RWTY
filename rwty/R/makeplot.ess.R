@@ -24,7 +24,7 @@
 #' 
 #' @examples
 #' data(fungus)
-#' makeplot.ess(chains = list(run1, run2), burnin = 250, n = 10)
+#' makeplot.ess(fungus, burnin = 250, n = 10)
 #' # demostrates severe issues with run1!
 
 makeplot.ess <- function(chains, burnin = 0, n = 50){
@@ -32,13 +32,18 @@ makeplot.ess <- function(chains, burnin = 0, n = 50){
     chains <- check.chains(chains)
 
     dat <- topological.ess(chains, burnin, n)
-
-    ess.plot <- ggplot(dat, aes(x = chain,  
-      ymin = ci.95.lower, lower = ci.50.lower, middle = median.ess, upper = ci.50.upper, ymax = ci.95.upper)) + 
-      geom_boxplot(stat="identity", colour=rainbow(length(dat$chain), s=1, v=0.5), 
-                   fill=rainbow(length(dat$chain), s=0.5, v=0.9)) +
+    
+    dat <- data.frame(median.ess = apply(dat, 2, FUN = median), 
+                      ci.lower = apply(dat, 2, FUN = function(x) quantile(x, .025)), 
+                      ci.upper = apply(dat, 2, FUN = function(x) quantile(x, .975)),
+                      chain = names(chains))
+    
+    ess.plot <- ggplot(dat, aes(x=chain, y=median.ess, colour = chain)) + 
+      geom_errorbar(aes(ymin=ci.lower, ymax=ci.upper), size=1, width=.3) +
+      geom_point(size=3) +
       xlab("Chain") +
       ylab("Approximate ESS") +
+      theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5)) +
       expand_limits(y=0)
     
     # for some reason these plots need to be returned as lists, or analyze.simple flattens them and puts

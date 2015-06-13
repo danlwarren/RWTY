@@ -16,8 +16,8 @@
 #' 
 #' @examples
 #' data(fungus)
-#' slide.data <- slide.freq(run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
-#' cpplot <- makeplot.cladeprobs(input.table = slide.data$slide.table, numclades=25)
+#' slide.data <- slide.freq(fungus$Fungus.Run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
+#' makeplot.cladeprobs(input.table = slide.data$slide.table, numclades=25)
 
 makeplot.cladeprobs <- function(input.table, numclades=20){ 
     # clade probability plot over generations
@@ -35,6 +35,7 @@ makeplot.cladeprobs <- function(input.table, numclades=20){
     thisplot <- ggplot(data=x, aes(x=as.numeric(as.character(Generations)), y=Posterior.Probability, group=Clade, color=Clade)) + 
         geom_line() +
         theme(legend.position="none") +
-        xlab("Generations")
+        xlab("Generations") +
+        theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
     thisplot
 }

@@ -13,7 +13,7 @@
 #' 
 #' @examples
 #' data(fungus)
-#' run1
+#' fungus$Fungus.Run1
 
 print.rwty.trees <- function(x){
   print(summary(x))

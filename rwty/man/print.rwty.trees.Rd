@@ -17,7 +17,7 @@ This function is automatically called when printing a rwty.trees object
 }
 \examples{
 data(fungus)
-run1
+fungus$Fungus.Run1
 }
 \keyword{MCMC,}
 \keyword{awty,}

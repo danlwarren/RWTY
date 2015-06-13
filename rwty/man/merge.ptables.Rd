@@ -19,7 +19,7 @@ This function is automatically called by some of the plot functions.
 }
 \examples{
 data(fungus)
-merge.ptables(list(run1, run2), burnin=100)
+merge.ptables(fungus, burnin=100)
 }
 \keyword{MCMC,}
 \keyword{awty,}

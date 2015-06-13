@@ -18,7 +18,7 @@
 #' 
 #' @examples
 #' data(fungus)
-#' slide.data <- slide.freq(run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
+#' slide.data <- slide.freq(fungus$Fungus.Run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
 
 slide.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1, ...){ 
     #Specify burnin in TREES, not GENERATIONS

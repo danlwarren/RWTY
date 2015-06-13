@@ -16,7 +16,7 @@
 #' 
 #' @examples
 #' data(fungus)
-#' burnin <- 100
+#' treespace(fungus, n.points=50, burnin=100, likelihood="LnL")
 
 treespace <- function(chains, n.points, burnin=0, likelihood=NA){
 

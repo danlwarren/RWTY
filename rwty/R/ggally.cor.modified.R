@@ -155,7 +155,7 @@ ggally_cor <- function(data, mapping, corAlignPercent = 0.6, corMethod = "pearso
     
     asdsf.min <- get("asdsf.min", envir = globalenv())
     asdsf <- data.frame(cbind(xVal, yVal))
-    asdsf <- asdsf[apply(asdsf, MARGIN = 1, function(x) all(x > asdsf.min)), ]
+    asdsf <- asdsf[apply(asdsf, MARGIN = 1, function(x) any(x > asdsf.min)), ]
     asdsf <- transform(asdsf, SD=apply(asdsf,1, sd, na.rm = TRUE))
     
     p <- ggally_text(

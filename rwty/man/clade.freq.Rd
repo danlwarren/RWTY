@@ -24,7 +24,7 @@ or subset thereof.
 }
 \examples{
 data(fungus)
-cfreq <- clade.freq(run1, start=10, end=100)
+clade.freq(fungus$Fungus.Run1, start=10, end=100)
 }
 \keyword{Clade}
 \keyword{consensus,}

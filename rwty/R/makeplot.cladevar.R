@@ -14,8 +14,8 @@
 #' 
 #' @examples
 #' data(fungus)
-#' slide.data <- slide.freq(run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
-#' cvplot <- makeplot.cladevar(slide.data$slide.table, numclades=100)
+#' slide.data <- slide.freq(fungus$Fungus.Run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
+#' makeplot.cladevar(slide.data$slide.table, numclades=100)
 
 makeplot.cladevar <- function(input.table, numclades=nrow(input.table)){ 
     # plot variation in clade frequencies between windows
@@ -35,7 +35,8 @@ makeplot.cladevar <- function(input.table, numclades=nrow(input.table)){
         geom_boxplot() +
         theme(legend.position="none") +
         xlab("Generations") + 
-        ylab("Variation in posterior probability")
+        ylab("Variation in posterior probability") +
+        theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
     
     return(thisplot)
 }

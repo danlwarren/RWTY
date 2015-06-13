@@ -24,7 +24,7 @@ Plots all parameter values over the length of the MCMC chain
 }
 \examples{
 data(fungus)
-makeplot.all.params(list(run1, run2), burnin=100)
+makeplot.all.params(fungus, burnin=100)
 }
 \keyword{convergence,}
 \keyword{mcmc,}

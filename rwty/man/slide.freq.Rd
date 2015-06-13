@@ -26,7 +26,7 @@ allows users to see whether the chain is visiting different areas of treespace.
 }
 \examples{
 data(fungus)
-slide.data <- slide.freq(run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
+slide.data <- slide.freq(fungus$Fungus.Run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
 }
 \keyword{MCMC,}
 \keyword{convergence}

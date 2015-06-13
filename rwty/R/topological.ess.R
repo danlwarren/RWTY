@@ -24,27 +24,25 @@
 #' 
 #' @examples
 #' data(fungus)
-#' topological.ess(chains = list(run1, run2), burnin = 250, n = 10)
+#' topological.ess(fungus, burnin = 250, n = 10)
 
 
 
 topological.ess <- function(chains, burnin = 0, n = 50){
   
-    chains = check.chains(chains)
+    chains <- check.chains(chains)
     
-    chain = chains[[1]]
+    chain <- chains[[1]]
 
-    indices = seq(from = burnin + 1, to = length(chain$trees), by = 1)   
+    indices <- seq(from = burnin + 1, to = length(chain$trees), by = 1)   
     
-    trees = lapply(chains, function(x) x[['trees']][indices])
+    trees <- lapply(chains, function(x) x[['trees']][indices])
     
-    raw.ess = lapply(trees, tree.ess.multi, n)
+    raw.ess <- lapply(trees, tree.ess.multi, n)
     
-    final.ess = data.frame(matrix(unlist(raw.ess), nrow = length(chains), byrow = T))
+    final.ess <- data.frame(t(matrix(unlist(raw.ess), nrow = length(chains), byrow = T)))
 
-    names(final.ess) = names(raw.ess[[1]])
-
-    final.ess$chain = names(chains)
+    colnames(final.ess) <- names(chains)
 
     return(final.ess)
   
@@ -68,7 +66,7 @@ tree.ess.multi <- function(tree.list, n=20){
 
     data <- replicate(n, tree.ess(tree.list))
 
-    return(list(median.ess = median(data), ci.95.upper = quantile(data, probs=c(0.975)), ci.50.upper = quantile(data, probs=c(0.75)), ci.50.lower = quantile(data, probs=c(0.25)), ci.95.lower = quantile(data, probs=c(0.025))))
+    return(data)
   
 }
 
