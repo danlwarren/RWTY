@@ -4,7 +4,7 @@
 \alias{slide.freq}
 \title{Sliding window measurements of clade posterior probabilities.}
 \usage{
-slide.freq(tree.list, burnin = 0, window.size, gens.per.tree = 1, ...)
+slide.freq(tree.list, burnin = 0, window.size, gens.per.tree = 1)
 }
 \arguments{
 \item{tree.list}{A rwty trees object or multiPhylo.}

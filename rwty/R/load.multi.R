@@ -5,7 +5,9 @@
 #' @param path The path to the directory containing tree and log files
 #' @param ext.tree The extension to be used in finding tree files.  Usually should be "t" or "trees", or something of that sort.
 #' @param ext.p The extension to be used in finding log files.  
-#' Basically the function is going to chop ext.tree off of each file name and glue ext.p onto it, so "myfile.t" will look for a logfile "myfile.p", if ext.tree = "t" and ext.p = "p".  
+#' Basically the function is going to chop ext.tree off of each file name and glue ext.p onto it, so "myfile.t" will look for a logfile "myfile.p", if ext.tree = "t" and ext.p = "p".
+#' @param labels A vector of names to assign to chains as they are read in.  
+#' @param ... Further arguments to be passed to load.trees.
 #' @return output A list of rwty.trees objects containing the multiPhylos and the tables of values from the log files if available.
 #'
 #' @keywords Phylogenetics, MCMC, load, trees

@@ -4,7 +4,7 @@
 \alias{makeplot.cumulative.asdsf}
 \title{Plot the variance and cumulative Average Standard Deviation of Split Frequencies.}
 \usage{
-makeplot.cumulative.asdsf(chains, burnin, window.num, min.freq = 0.1, ...)
+makeplot.cumulative.asdsf(chains, burnin, window.num, min.freq = 0.1)
 }
 \arguments{
 \item{chains}{A list of two or more rwty.trees objects}

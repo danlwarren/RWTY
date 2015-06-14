@@ -7,12 +7,17 @@
 #'
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin.  Default value is zero.
-#' @param window.size The length of window (in trees) for the sliding window plot.  If no value is provided, RWTY selects a number so that 20 windows are analyzed over the chain. 
-#' @param gens.per.tree The number of generations per tree in the .t file.  If no value is provided, RWTY will attempt to determine the number of generations from the tree names.  
+#' @param window.num The number of windows for the posterior plots.
+#' @param labels A vector of names to apply to a list of chains.
+#' @param likelihood.param The name of the likelihood column in the log file.
+#' @param facet A Boolean expression indicating whether multiple chains should be plotted as facet plots.
+#' @param ess.reps The number of replicate trees to use as the focal tree for estimating confidence in topological ESS estimates.
+#' @param autocorr.intervals The number of intervals to use for autocorrelation plots.
 #' @param treespace.points The number of trees to plot in the treespace plot. Default is 100 
 #' @param min.freq The minimum frequency for a node to be used for calculating ASDSF. Default is 0.1  
 #' @param filename Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not print outputs to file.
 #' @param overwrite Boolean variable saying whether output file should be overwritten, if it exists.
+#' @param ... Extra arguments to be passed to plotting and analysis functions.
 #'
 #' @return output The output is a list containing the following plots:
 #' 

@@ -17,6 +17,8 @@ cumulative.freq(tree.list, burnin = 0, window.size, gens.per.tree = 1,
 \item{gens.per.tree}{The number of generations per tree in the .t file.}
 
 \item{slide.freq.table}{A table from slide.freq.  If a table is not provided, it will be built.}
+
+\item{...}{Further arguments to be passed to slide.freq}
 }
 \value{
 output A list containing a table of cumulative frequencies and a clade translation table

@@ -7,9 +7,9 @@
 makeplot.cladeprobs(input.table, numclades = 20)
 }
 \arguments{
-\item{numclades}{The number of clades to plot.  The clades with the highest sd in clade frequency are plotted first, so numclades = 10 will be the 10 most variable clades in the chain.}
+\item{input.table}{An rwty.slide or rwty.cumulative object}
 
-\item{x}{An rwty.slide or rwty.cumulative object}
+\item{numclades}{The number of clades to plot.  The clades with the highest sd in clade frequency are plotted first, so numclades = 10 will be the 10 most variable clades in the chain.}
 }
 \value{
 thisplot Returns a ggplot object.

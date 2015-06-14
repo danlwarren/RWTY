@@ -5,6 +5,7 @@
 #' @param chains A list of one or more rwty.trees objects
 #' @param burnin The number of samples to remove from the start of the chain as burnin
 #' @param window.num The number of windows to use for generating plots
+#' @param ... Extra arguments to be passed to plotting functions.
 #' 
 #' @return A list of cumulative and sliding window plots
 #'

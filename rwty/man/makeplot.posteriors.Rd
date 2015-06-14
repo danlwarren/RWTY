@@ -12,6 +12,8 @@ makeplot.posteriors(chains, burnin, window.num, ...)
 \item{burnin}{The number of samples to remove from the start of the chain as burnin}
 
 \item{window.num}{The number of windows to use for generating plots}
+
+\item{...}{Extra arguments to be passed to plotting functions.}
 }
 \value{
 A list of cumulative and sliding window plots

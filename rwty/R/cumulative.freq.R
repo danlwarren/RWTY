@@ -8,6 +8,7 @@
 #' @param window.size The length of window (in trees) for the sliding window plot 
 #' @param gens.per.tree The number of generations per tree in the .t file. 
 #' @param slide.freq.table A table from slide.freq.  If a table is not provided, it will be built.
+#' @param ... Further arguments to be passed to slide.freq
 #
 #' @return output A list containing a table of cumulative frequencies and a clade translation table
 #'

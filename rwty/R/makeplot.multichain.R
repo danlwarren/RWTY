@@ -5,10 +5,7 @@
 #'
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin.  Default is zero. 
-#' @param gens.per.tree The number of generations per tree in the .t file.  If no value is provided, RWTY tries to figure it out from the tree names. 
-#' @param treespace.points The number of trees to plot in the treespace plot.  Default is 100.
-#' @param filename A name to be used for generating pdfs of output.  If a name is not provided, one will be automatically generated from the labels.
-#' @param labels The name to use on plots and in generating output files.  If none are provided, defaults are created using Chain 1, Chain 2, etc.
+#' @param window.num The number of windows along the chain to use for analyses.
 #' @param min.freq The minimum frequency for a node to be used for calculating ASDSF. 
 #'
 #' @return output A list of plots illustrating agreement between chains.
@@ -21,7 +18,7 @@
 #' data(fungus)
 #' makeplot.multichain(fungus, burnin=100,  window.num = 20, min.freq = 0.1 )
 
-makeplot.multichain <- function(chains, burnin, window.num, min.freq = 0.1 ,...){
+makeplot.multichain <- function(chains, burnin, window.num, min.freq = 0.1){
   
   output <- list()
   

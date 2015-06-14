@@ -13,6 +13,10 @@ load.multi(path = ".", ext.tree = "t", ext.p = "p", labels = NA, ...)
 
 \item{ext.p}{The extension to be used in finding log files.
 Basically the function is going to chop ext.tree off of each file name and glue ext.p onto it, so "myfile.t" will look for a logfile "myfile.p", if ext.tree = "t" and ext.p = "p".}
+
+\item{labels}{A vector of names to assign to chains as they are read in.}
+
+\item{...}{Further arguments to be passed to load.trees.}
 }
 \value{
 output A list of rwty.trees objects containing the multiPhylos and the tables of values from the log files if available.

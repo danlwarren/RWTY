@@ -4,22 +4,16 @@
 \alias{makeplot.multichain}
 \title{Function for running rwty analyses on multiple chains.}
 \usage{
-makeplot.multichain(chains, burnin, window.num, min.freq = 0.1, ...)
+makeplot.multichain(chains, burnin, window.num, min.freq = 0.1)
 }
 \arguments{
 \item{chains}{A list of rwty.trees objects.}
 
 \item{burnin}{The number of trees to eliminate as burnin.  Default is zero.}
 
+\item{window.num}{The number of windows along the chain to use for analyses.}
+
 \item{min.freq}{The minimum frequency for a node to be used for calculating ASDSF.}
-
-\item{gens.per.tree}{The number of generations per tree in the .t file.  If no value is provided, RWTY tries to figure it out from the tree names.}
-
-\item{treespace.points}{The number of trees to plot in the treespace plot.  Default is 100.}
-
-\item{filename}{A name to be used for generating pdfs of output.  If a name is not provided, one will be automatically generated from the labels.}
-
-\item{labels}{The name to use on plots and in generating output files.  If none are provided, defaults are created using Chain 1, Chain 2, etc.}
 }
 \value{
 output A list of plots illustrating agreement between chains.

@@ -7,6 +7,7 @@
 #' @param chains A list of 1 or more rwty.trees objects.
 #' @param burnin The number of trees to eliminate as burnin. Default is zero. 
 #' @param n.points The minimum number of points you want in your plot.
+#' @param likelihood The name of the column from the log table that contains likelihood values for trees.
 #'
 #' @return Returns a list containing the points and a plot.
 #'

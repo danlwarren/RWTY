@@ -1,15 +1,15 @@
 Package: rwty
 Type: Package
 Title: R We There Yet? A package for visualizing MCMC convergence in
-    phylogenetics.
+    phylogenetics
 Version: 0.1.1
 Author: Dan Warren <dan.l.warren@gmail.com>,
-    Anthony Geneva,
-    Jim Wilgenbusch,
+    Anthony Geneva <anthony.geneva@gmail.com>,
     Dave Swofford <david.swofford@duke.edu>,
     Rob Lanfear <rob.lanfear@gmail.com>
 Maintainer: Dan Warren <dan.l.warren@gmail.com>,
     Dave Swofford <david.swofford@duke.edu>,
+    Anthony Geneva <anthony.geneva@gmail.com>,
     Rob Lanfear <rob.lanfear@gmail.com>
 Description: This package implements various tests, visualizations, and metrics
     for diagnosing convergence of MCMC chains in phylogenetics.  It implements
@@ -25,6 +25,7 @@ Depends:
     MASS,
     GGally,
     coda,
+    stringr,
 Suggests:
     knitr,
 VignetteBuilder: knitr

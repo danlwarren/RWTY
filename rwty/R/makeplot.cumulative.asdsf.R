@@ -19,7 +19,7 @@
 #' p <- makeplot.asdsf(chains = test.chains, burnin = 100, window.num = 20)
 #' p
 
-makeplot.cumulative.asdsf <- function(chains, burnin, window.num, min.freq=0.1, ...){
+makeplot.cumulative.asdsf <- function(chains, burnin, window.num, min.freq=0.1){
   
   chains <- check.chains(chains)
   labels <- names(chains)

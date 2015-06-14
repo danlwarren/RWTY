@@ -12,6 +12,8 @@ treespace(chains, n.points, burnin = 0, likelihood = NA)
 \item{n.points}{The minimum number of points you want in your plot.}
 
 \item{burnin}{The number of trees to eliminate as burnin. Default is zero.}
+
+\item{likelihood}{The name of the column from the log table that contains likelihood values for trees.}
 }
 \value{
 Returns a list containing the points and a plot.

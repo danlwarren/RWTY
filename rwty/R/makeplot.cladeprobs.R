@@ -5,7 +5,7 @@
 #' top.  Since cumulative.freq and slide.freq both sort by sd these
 #' will by default be the most variable clades.
 #'
-#' @param x An rwty.slide or rwty.cumulative object 
+#' @param input.table An rwty.slide or rwty.cumulative object 
 #' @param numclades The number of clades to plot.  The clades with the highest sd in clade frequency are plotted first, so numclades = 10 will be the 10 most variable clades in the chain. 
 #'
 #' @return thisplot Returns a ggplot object.

@@ -7,7 +7,7 @@
 #' @param tree.list A rwty trees object or multiPhylo.
 #' @param burnin The number of trees to eliminate as burnin. Defaults to zero. 
 #' @param window.size The number of trees to include in each window.
-#' @param gens.per.tree The number of steps in the MCMC chain corresponding to a tree in the tree list. Defaults to 1. 
+#' @param gens.per.tree The number of steps in the MCMC chain corresponding to a tree in the tree list. Defaults to 1.
 #'
 #' @return rwty.slide An object containing the frequencies of clades in the sliding
 #' windows, a translation table that converts clade groupings to factors, and a plot.
@@ -20,7 +20,7 @@
 #' data(fungus)
 #' slide.data <- slide.freq(fungus$Fungus.Run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
 
-slide.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1, ...){ 
+slide.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1){ 
     #Specify burnin in TREES, not GENERATIONS
     
     # Peel just the trees off of rwty.trees object

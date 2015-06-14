@@ -14,17 +14,27 @@ analyze.rwty(chains, burnin = 0, window.num = 50, treespace.points = 100,
 
 \item{burnin}{The number of trees to eliminate as burnin.  Default value is zero.}
 
+\item{window.num}{The number of windows for the posterior plots.}
+
 \item{treespace.points}{The number of trees to plot in the treespace plot. Default is 100}
 
 \item{min.freq}{The minimum frequency for a node to be used for calculating ASDSF. Default is 0.1}
+
+\item{labels}{A vector of names to apply to a list of chains.}
+
+\item{likelihood.param}{The name of the likelihood column in the log file.}
 
 \item{filename}{Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not print outputs to file.}
 
 \item{overwrite}{Boolean variable saying whether output file should be overwritten, if it exists.}
 
-\item{window.size}{The length of window (in trees) for the sliding window plot.  If no value is provided, RWTY selects a number so that 20 windows are analyzed over the chain.}
+\item{facet}{A Boolean expression indicating whether multiple chains should be plotted as facet plots.}
 
-\item{gens.per.tree}{The number of generations per tree in the .t file.  If no value is provided, RWTY will attempt to determine the number of generations from the tree names.}
+\item{ess.reps}{The number of replicate trees to use as the focal tree for estimating confidence in topological ESS estimates.}
+
+\item{autocorr.intervals}{The number of intervals to use for autocorrelation plots.}
+
+\item{...}{Extra arguments to be passed to plotting and analysis functions.}
 }
 \value{
 output The output is a list containing the following plots:
