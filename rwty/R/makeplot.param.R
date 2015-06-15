@@ -20,7 +20,7 @@
 makeplot.param <- function(chains, burnin = 0, parameter = "LnL", facet=TRUE){ 
 
     chains = check.chains(chains)
-    ptable = merge.ptables(chains, burnin)
+    ptable = combine.ptables(chains, burnin)
 
     if(parameter %in% names(ptable)){
 
@@ -29,7 +29,7 @@ makeplot.param <- function(chains, burnin = 0, parameter = "LnL", facet=TRUE){
         ess <- round(ess, digits = 0)
         labels = paste(names(chains), " (ESS=", ess, ")", sep="")
         names(chains) = labels
-        ptable = merge.ptables(chains, burnin)
+        ptable = combine.ptables(chains, burnin)
 
         param.plot =  ggplot(ptable, aes_string(x="generation", y=parameter)) + 
                         geom_line(aes(colour = chain)) + 

@@ -13,9 +13,9 @@
 #' 
 #' @examples
 #' data(fungus)
-#' merge.ptables(fungus, burnin=100)
+#' combine.ptables(fungus, burnin=100)
 
-merge.ptables <- function(chains, burnin){
+combine.ptables <- function(chains, burnin){
   
   chains = check.chains(chains)
 

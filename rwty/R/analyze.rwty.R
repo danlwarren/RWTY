@@ -66,7 +66,7 @@ analyze.rwty <- function(chains, burnin=0, window.num=50, treespace.points = 100
     # check to see if ptables exist, make related plots
     if(all(unlist(lapply(chains, function(x) length(x$ptable[,1])))) > 0){
       # Now merge the ptables into one large data frame, keeping only what we want 
-      ptable <- merge.ptables(chains, burnin = burnin)
+      ptable <- combine.ptables(chains, burnin = burnin)
   
       # plot parameters for all chains
       parameter.plots <- makeplot.all.params(chains, burnin = burnin, facet=facet, strip = 1)

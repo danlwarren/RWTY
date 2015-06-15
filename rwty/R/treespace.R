@@ -23,7 +23,7 @@ treespace <- function(chains, n.points, burnin=0, likelihood=NA){
 
     chains = check.chains(chains)
     labels = names(chains)
-    ptable = merge.ptables(chains, burnin=0) # we deal with burnin later for this 
+    ptable = combine.ptables(chains, burnin=0) # we deal with burnin later for this 
 
     # check that the user-supplied likelihood variable exists
     if(!is.na(likelihood)){
