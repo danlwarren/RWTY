@@ -99,8 +99,16 @@ path.dist <- function (trees, check.labels = TRUE)
     tree1$edge.length = rep(1, nrow(tree1$edge))
     tree2$edge.length = rep(1, nrow(tree2$edge))
 
-    dt1 = phangorn:::coph(tree1)
-    dt2 = phangorn:::coph(tree2)
+    # the commented code uses phangorn, which is faster
+    # but the coph function is not exported, so we use
+    # ape instead.
+    #dt1 = phangorn:::coph(tree1)
+    #dt2 = phangorn:::coph(tree2)
+
+    dt1 = cophenetic.phylo(tree1)
+    dt2 = cophenetic.phylo(tree2)
+    dt1[upper.tri(dt1)] = 0
+    dt2[upper.tri(dt2)] = 0
 
     path.difference = sqrt(sum((dt1 - dt2)^2))
 
