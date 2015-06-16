@@ -13,7 +13,7 @@ This is the output from a MrBayes run of 25,000,000 generations using the analys
 Sampling is one tree per 50,000 generations.  Data is from alignments of three separate sequences, two chains per alignment, each with its associated log file.
 }
 \references{
-Study reference: Williams JS, Niedzwiecki JH, Weisrock DW (2013) Species tree reconstruction of a poorly resolved clade of salamanders (Ambystomatidae) using multiple nuclear loci. Molecular Phylogenetics and Evolution 68(3): 671–682. http://dx.doi.org/10.1016/j.ympev.2013.04.013
+Study reference: Williams JS, Niedzwiecki JH, Weisrock DW (2013) Species tree reconstruction of a poorly resolved clade of salamanders (Ambystomatidae) using multiple nuclear loci. Molecular Phylogenetics and Evolution 68(3): 671-682. http://dx.doi.org/10.1016/j.ympev.2013.04.013
 
 Dryad reference: Williams JS, Niedzwiecki JH, Weisrock DW (2013) Data from: Species tree reconstruction of a poorly resolved clade of salamanders (Ambystomatidae) using multiple nuclear loci. Dryad Digital Repository. http://dx.doi.org/10.5061/dryad.2gq14
 
