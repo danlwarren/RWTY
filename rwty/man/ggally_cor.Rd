@@ -25,7 +25,7 @@ Estimate correlation from the given data.
 Modified to include pairwise Average Standard Deviation of Split Frequencies (ASDSF)
 }
 \examples{
-data(tips, package = "reshape")
+data(tips, package = "reshape2")
 ggally_cor(tips, mapping = ggplot2::aes_string(x = "total_bill", y = "tip"))
 ggally_cor(
 tips,
