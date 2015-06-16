@@ -4,6 +4,7 @@
 #' 
 #'
 #' @param x A rwty.trees object
+#' @param ... Other arguments to be passed on to next function
 #' 
 #' @return A summary of the contents of the chain
 #'
@@ -15,6 +16,6 @@
 #' data(fungus)
 #' fungus$Fungus.Run1
 
-print.rwty.trees <- function(x){
+print.rwty.trees <- function(x, ...){
   print(summary(x))
 }

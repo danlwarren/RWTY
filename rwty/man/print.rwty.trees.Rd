@@ -4,10 +4,12 @@
 \alias{print.rwty.trees}
 \title{Function for printing rwty.trees objects}
 \usage{
-\method{print}{rwty.trees}(x)
+\method{print}{rwty.trees}(x, ...)
 }
 \arguments{
 \item{x}{A rwty.trees object}
+
+\item{...}{Other arguments to be passed on to next function}
 }
 \value{
 A summary of the contents of the chain
