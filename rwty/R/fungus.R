@@ -1,7 +1,7 @@
 #' MrBayes output from analysis of Hibbett et al. data
 #' 
 #' This is the output from a MrBayes run of 10,000,000 generations using the analysis settings from the original .nex file.  
-#' Sampling is one tree per 10,000 generations.  Four chains are included, each with its associated log file.
+#' Sampling is one tree per 40,000 generations.  Four chains are included, each with its associated log file.
 #'
 #' @references Study reference: Hibbett D., Pine E., Langer E., Langer G., & Donoghue M. 1997. Evolution of gilled
 #' mushrooms and puffballs inferred from ribosomal DNA sequences. Proceedings of
@@ -13,7 +13,7 @@
 #' @keywords datasets
 #' @name fungus
 #' @usage data(fungus)
-#' @format A data frame with four chains of 1001 phylogenetic trees and associated likelihood and parameter values.
+#' @format A data frame with four chains of 251 phylogenetic trees and associated likelihood and parameter values.
 
 NULL
 

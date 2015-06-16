@@ -15,7 +15,7 @@
 #' 
 #' @examples
 #' data(fungus)
-#' makeplot.param(fungus, burnin=100, parameter="pi.A.")
+#' makeplot.param(fungus, burnin=20, parameter="pi.A.")
 
 makeplot.param <- function(chains, burnin = 0, parameter = "LnL", facet=TRUE){ 
 

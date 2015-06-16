@@ -13,7 +13,7 @@
 #' 
 #' @examples
 #' data(fungus)
-#' combine.ptables(fungus, burnin=100)
+#' combine.ptables(fungus, burnin=20)
 
 combine.ptables <- function(chains, burnin){
   

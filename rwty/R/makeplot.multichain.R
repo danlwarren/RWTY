@@ -16,7 +16,7 @@
 #' 
 #' @examples
 #' data(fungus)
-#' makeplot.multichain(fungus, burnin=100,  window.num = 20, min.freq = 0.1 )
+#' makeplot.multichain(fungus, burnin=20,  window.num = 20, min.freq = 0.1 )
 
 makeplot.multichain <- function(chains, burnin, window.num, min.freq = 0.1){
   

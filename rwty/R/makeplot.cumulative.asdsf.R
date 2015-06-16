@@ -16,7 +16,7 @@
 #' @examples
 #' data(fungus)
 #' test.chains <- check.chains(fungus)
-#' p <- makeplot.asdsf(chains = test.chains, burnin = 100, window.num = 20)
+#' p <- makeplot.asdsf(chains = test.chains, burnin = 20, window.num = 20)
 #' p
 
 makeplot.cumulative.asdsf <- function(chains, burnin, window.num, min.freq=0.1){

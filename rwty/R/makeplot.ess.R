@@ -24,7 +24,7 @@
 #' 
 #' @examples
 #' data(fungus)
-#' makeplot.ess(fungus, burnin = 250, n = 10)
+#' makeplot.ess(fungus, burnin = 20, n = 10)
 #' # demostrates severe issues with run1!
 
 makeplot.ess <- function(chains, burnin = 0, n = 50){

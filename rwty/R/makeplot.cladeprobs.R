@@ -16,7 +16,7 @@
 #' 
 #' @examples
 #' data(fungus)
-#' slide.data <- slide.freq(fungus$Fungus.Run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
+#' slide.data <- slide.freq(fungus$Fungus.Run1$trees, burnin=20, window.size=20, gens.per.tree=10000)
 #' makeplot.cladeprobs(input.table = slide.data$slide.table, numclades=25)
 
 makeplot.cladeprobs <- function(input.table, numclades=20){ 
