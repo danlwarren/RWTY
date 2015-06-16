@@ -19,7 +19,7 @@ This function is automatically called by some of the plot functions.
 }
 \examples{
 data(fungus)
-combine.ptables(fungus, burnin=100)
+combine.ptables(fungus, burnin=20)
 }
 \keyword{MCMC,}
 \keyword{awty,}

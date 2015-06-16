@@ -31,7 +31,7 @@ tree distances, so can take some time.
 }
 \examples{
 data(fungus)
-topological.ess(fungus, burnin = 250, n = 10)
+topological.ess(fungus, burnin = 20, n = 10)
 }
 \keyword{distance}
 \keyword{distance,}

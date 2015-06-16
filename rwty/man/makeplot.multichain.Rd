@@ -24,7 +24,7 @@ It runs analyze.single for each chain, and then does multi-chain analyses as wel
 }
 \examples{
 data(fungus)
-makeplot.multichain(fungus, burnin=100,  window.num = 20, min.freq = 0.1 )
+makeplot.multichain(fungus, burnin=20,  window.num = 20, min.freq = 0.1 )
 }
 \keyword{MCMC,}
 \keyword{awty,}

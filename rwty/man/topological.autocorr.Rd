@@ -30,7 +30,7 @@ path distances, though other distances could also be employed.
 }
 \examples{
 data(fungus)
-topological.autocorr(fungus, burnin = 100)
+topological.autocorr(fungus, burnin = 20)
 }
 \keyword{autocorrelation,}
 \keyword{distance}

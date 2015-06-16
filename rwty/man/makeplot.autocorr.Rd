@@ -31,7 +31,7 @@ path distances, though other distances could also be employed.
 }
 \examples{
 data(fungus)
-makeplot.autocorr(fungus, burnin = 100)
+makeplot.autocorr(fungus, burnin = 20)
 }
 \keyword{autocorrelation,}
 \keyword{distance}

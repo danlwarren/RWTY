@@ -20,7 +20,7 @@ across clades in a chain as a function of chain length.
 }
 \examples{
 data(fungus)
-slide.data <- slide.freq(fungus$Fungus.Run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
+slide.data <- slide.freq(fungus$Fungus.Run1$trees, burnin=20, window.size=20, gens.per.tree=40000)
 makeplot.cladevar(slide.data$slide.table, numclades=100)
 }
 \keyword{convergence,}

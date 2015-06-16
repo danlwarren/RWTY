@@ -29,7 +29,7 @@ as a function of chain length.
 }
 \examples{
 data(fungus)
-cumulative.freq(fungus$Fungus.Run1$trees, burnin=100, window.size=20, gens.per.tree=10000)
+cumulative.freq(fungus$Fungus.Run1$trees, burnin=20, window.size=20, gens.per.tree=10000)
 }
 \keyword{MCMC,}
 \keyword{convergence}

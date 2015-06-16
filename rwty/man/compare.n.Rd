@@ -26,7 +26,7 @@ and a translation table.
 }
 \examples{
 data(fungus)
-compare.n(fungus, burnin=100)
+compare.n(fungus, burnin=20)
 }
 \keyword{MCMC,}
 \keyword{clade}
