@@ -24,16 +24,10 @@ tree.dist.matrix <- function(trees){
 
     treenames <- 1:N
     
-    #Create an empty matrix for results
-    RF <- matrix(0, N, N)
-        
-    for(i in 1:(N-1)){
-        #print(paste("Tree", i, "of", N))        
-        for(j in (i+1):N){
-            RFd <- RF.dist(trees[[i]],trees[[j]])
-            RF[i,j]<-RF[j,i]<-RFd
-        }
-    }
+    # use the RF.dist function from Phangorn. Thanks to Klaus Vigo for pointing
+    # out that we were doing this all wrong before!
+    # https://github.com/danlwarren/RWTY/issues/47
+    RF <- as.matrix(RF.dist(trees))
 
     #Row and column names
     rownames(RF) <- treenames
