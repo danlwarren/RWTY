@@ -1,11 +1,11 @@
 #' Plot chains in treespace.
 #' 
-#' This function will take an mds.treespace object and produce plots of chains in treespace.
+#' This function will take list of rwty.chains objects and produce plots of chains in treespace.
 #'
 #' @param chains A list of one or more rwty.trees objects
 #' @param n.points The number of points on each plot
 #' @param burnin The number of samples to remove from the start of the chain as burnin
-#' @param parameter The name of any column in your parameter file that you would like to plot on the treespace plot
+#' @param fill.colour The name of any column in your parameter file that you would like to use as a fill colour for the points of the plot
 #'
 #' @return A list of two ggplot objects: one plots the points in treespace, the other shows a heatmap of the same points
 #'
@@ -17,7 +17,7 @@
 #' data(fungus)
 #' 
 #' # Treespace plot for all the fungus data
-#' p <- makeplot.treespace(fungus, burnin = 100, parameter = 'LnL')
+#' p <- makeplot.treespace(fungus, burnin = 100, fill.colour = 'LnL')
 #' 
 #' # NB: these data indicate significant problems: the chains are sampling very different parts of tree space
 #' # View the points plotted in treespace (these data indicate significant problems)
@@ -30,17 +30,17 @@
 #' 
 #' # we can also plot different parameters as the fill colour.
 #' # e.g. we can plot the first two fungus chains with likelihood as the fill
-#' makeplot.treespace(fungus[1:2], burnin = 100, parameter = 'LnL')
+#' makeplot.treespace(fungus[1:2], burnin = 100, fill.colour = 'LnL')
 #' 
 #' # or with tree length as the fill
-#' makeplot.treespace(fungus[1:2], burnin = 100, parameter = 'TL')
+#' makeplot.treespace(fungus[1:2], burnin = 100, fill.colour = 'TL')
 #'
 #' # you can colour the plot with any parameter in your ptable
 #' # to see which parameters you have you can simply do this:
 #' head(fungus[[1]]$ptable)
 
 
-makeplot.treespace <- function(chains, n.points = 100, burnin = 0, parameter = NA){
+makeplot.treespace <- function(chains, n.points = 100, burnin = 0, fill.colour = NA){
 
 
     # Pre - compute checks. Since the calculations can take a while...
@@ -57,12 +57,12 @@ makeplot.treespace <- function(chains, n.points = 100, burnin = 0, parameter = N
         stop("The number of trees (after removing burnin) is smaller than the number of points you have specified")
     }
 
-    if(comparisons > 100000){
+    if(comparisons > 1000000){
         print(sprintf("WARNING: Calculating %s pairwise tree distances may take a long time, consider plotting fewer points.", comparisons))
     }
 
     # now go and get the x,y coordinates from the trees
-    points = treespace(chains, n.points, burnin, parameter)
+    points = treespace(chains, n.points, burnin, fill.colour)
 
     points.plot <- ggplot(data=points, aes(x=x, y=y)) + 
                     geom_path(alpha=0.25, aes(colour = generation), size=0.75) + 
@@ -72,9 +72,9 @@ makeplot.treespace <- function(chains, n.points = 100, burnin = 0, parameter = N
                     facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain)))))    
 
 
-    if(!is.na(parameter)){
+    if(!is.na(fill.colour)){
         points.plot <- points.plot + 
-                    geom_point(shape = 21, size=4, colour = 'white', aes_string(fill = parameter)) + 
+                    geom_point(shape = 21, size=4, colour = 'white', aes_string(fill = fill.colour)) + 
                     scale_fill_gradient(low='black', high='light blue')
     } else {
         points.plot <- points.plot + geom_point(size=4) 
