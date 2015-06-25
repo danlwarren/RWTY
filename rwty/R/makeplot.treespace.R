@@ -5,7 +5,7 @@
 #' @param chains A list of one or more rwty.trees objects
 #' @param n.points The number of points on each plot
 #' @param burnin The number of samples to remove from the start of the chain as burnin
-#' @param likelihood The name of the column that describes the likelihood in your parameter file, if present
+#' @param parameter The name of any column in your parameter file that you would like to plot on the treespace plot
 #'
 #' @return A list of two ggplot objects: one plots the points in treespace, the other shows a heatmap of the same points
 #'
@@ -16,9 +16,10 @@
 #' @examples
 #' data(fungus)
 #' 
-#' p <- makeplot.treespace(fungus, burnin = 100, likelihood = 'LnL')
+#' # Treespace plot for all the fungus data
+#' p <- makeplot.treespace(fungus, burnin = 100, parameter = 'LnL')
 #' 
-#' # NB: these data indicate significant problems: the two chains are sampling very different parts of tree space
+#' # NB: these data indicate significant problems: the chains are sampling very different parts of tree space
 #' # View the points plotted in treespace (these data indicate significant problems)
 #' p$points.plot
 #' 
@@ -26,9 +27,20 @@
 #' # Note that this data is so pathologically bad that the heatmap is not
 #' # very useful. It is more useful on better behaved datasets
 #' p$heatmap
+#' 
+#' # we can also plot different parameters as the fill colour.
+#' # e.g. we can plot the first two fungus chains with likelihood as the fill
+#' makeplot.treespace(fungus[1:2], burnin = 100, parameter = 'LnL')
+#' 
+#' # or with tree length as the fill
+#' makeplot.treespace(fungus[1:2], burnin = 100, parameter = 'TL')
+#'
+#' # you can colour the plot with any parameter in your ptable
+#' # to see which parameters you have you can simply do this:
+#' head(fungus[[1]]$ptable)
 
 
-makeplot.treespace <- function(chains, n.points = 100, burnin = 0, likelihood = NA){
+makeplot.treespace <- function(chains, n.points = 100, burnin = 0, parameter = NA){
 
 
     # Pre - compute checks. Since the calculations can take a while...
@@ -50,7 +62,7 @@ makeplot.treespace <- function(chains, n.points = 100, burnin = 0, likelihood = 
     }
 
     # now go and get the x,y coordinates from the trees
-    points = treespace(chains, n.points, burnin, likelihood)
+    points = treespace(chains, n.points, burnin, parameter)
 
     points.plot <- ggplot(data=points, aes(x=x, y=y)) + 
                     geom_path(alpha=0.25, aes(colour = generation), size=0.75) + 
@@ -60,9 +72,9 @@ makeplot.treespace <- function(chains, n.points = 100, burnin = 0, likelihood = 
                     facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain)))))    
 
 
-    if(!is.na(likelihood)){
+    if(!is.na(parameter)){
         points.plot <- points.plot + 
-                    geom_point(shape = 21, size=4, colour = 'white', aes(fill = lnL)) + 
+                    geom_point(shape = 21, size=4, colour = 'white', aes_string(fill = parameter)) + 
                     scale_fill_gradient(low='black', high='light blue')
     } else {
         points.plot <- points.plot + geom_point(size=4) 
@@ -79,5 +91,5 @@ makeplot.treespace <- function(chains, n.points = 100, burnin = 0, likelihood = 
             scale_fill_gradient(low='white', high='black')
     }
 
-    return(list('points.plot' = points.plot, 'heatmap' = heatmap))
+    return(list('heatmap' = heatmap, 'points.plot' = points.plot))
 }
