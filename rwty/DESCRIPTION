@@ -25,6 +25,8 @@ Depends:
     MASS,
     GGally,
     coda,
+    viridis,
+    grid,
 Suggests:
     knitr,
 VignetteBuilder: knitr

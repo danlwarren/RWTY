@@ -65,19 +65,19 @@ makeplot.treespace <- function(chains, n.points = 100, burnin = 0, fill.colour =
     points = treespace(chains, n.points, burnin, fill.colour)
 
     points.plot <- ggplot(data=points, aes(x=x, y=y)) + 
-                    geom_path(alpha=0.25, aes(colour = generation), size=0.75) + 
-                    scale_colour_gradient(low='red', high='yellow') +
-                    theme(panel.background = element_blank(), axis.line = element_line(color='grey')) +
-                    theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5)) +
-                    facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain)))))    
+      geom_path(alpha=0.25, aes(colour = generation), size=0.75) + 
+      scale_colour_gradient(low='red', high='yellow') +
+      theme(panel.background = element_blank(), axis.line = element_line(color='grey'), panel.margin = unit(0.1, "lines")) +
+      theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5)) +
+      facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain)))))    
 
 
     if(!is.na(fill.colour)){
-        points.plot <- points.plot + 
-                    geom_point(shape = 21, size=4, colour = 'white', aes_string(fill = fill.colour)) + 
-                    scale_fill_gradient(low='black', high='light blue')
+      points.plot <- points.plot + 
+        geom_point(shape = 21, size=4, colour = 'white', aes_string(fill = fill.colour)) + 
+        scale_fill_gradientn(colours = viridis(256))
     } else {
-        points.plot <- points.plot + geom_point(size=4) 
+      points.plot <- points.plot + geom_point(size=4) 
     }
 
     # only make a heatmap if we have > 1 unique point to look at
@@ -85,10 +85,13 @@ makeplot.treespace <- function(chains, n.points = 100, burnin = 0, fill.colour =
         heatmap = NA
     }else{
         heatmap <- ggplot(data=points, aes(x=x,y=y)) + 
-            stat_density2d(geom="tile", aes(fill = ..density..), contour = FALSE) + 
-            theme(panel.background = element_blank(), axis.line = element_line(color='grey')) +
-            facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain))))) + 
-            scale_fill_gradient(low='white', high='black')
+          stat_density2d(geom="tile", aes(fill = ..density..), contour = FALSE) + 
+          theme(panel.background = element_blank(), axis.line = element_line(color='grey'), panel.margin = unit(0.1, "lines")) +
+          facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain))))) + 
+          scale_x_continuous(expand = c(0, 0)) +
+          scale_y_continuous(expand = c(0, 0)) +
+          scale_fill_gradientn(colours = viridis(256))
+
     }
 
     return(list('heatmap' = heatmap, 'points.plot' = points.plot))
