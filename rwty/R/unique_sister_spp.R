@@ -1,6 +1,10 @@
 
 unique_sister_spp <- function(spp, multi.phy){
 
+if((is.rooted(multi.phy[[1]])) == FALSE){
+stop("Trees are unrooted, please root before proceeding")
+}
+
 require(phytools)
 require(vegan)
 
