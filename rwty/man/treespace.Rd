@@ -4,7 +4,7 @@
 \alias{treespace}
 \title{MDS scaling of treespace for a single tree list.}
 \usage{
-treespace(chains, n.points, burnin = 0, likelihood = NA)
+treespace(chains, n.points, burnin = 0, parameter = NA)
 }
 \arguments{
 \item{chains}{A list of 1 or more rwty.trees objects.}
@@ -23,7 +23,7 @@ dimensional tree space for plotting.
 }
 \examples{
 data(fungus)
-treespace(fungus, n.points=50, burnin=100, likelihood="LnL")
+treespace(fungus, n.points=50, burnin=100, parameter="LnL")
 }
 \keyword{mds,}
 \keyword{multi-dimensional}
