@@ -31,6 +31,8 @@ p <- makeplot.treespace(fungus, burnin = 20, likelihood = 'LnL')
 p$points.plot
 
 # View the heatmap of the same data
+# Note that this data is so pathologically bad that the heatmap is not
+# very useful. It is more useful on better behaved datasets
 p$heatmap
 }
 \keyword{plot,}
