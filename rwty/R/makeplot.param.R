@@ -11,8 +11,7 @@
 #'
 #' @keywords parameter, plot, convergence, mcmc, phylogenetics
 #'
-#' @export
-#' 
+#' @export makeplot.param
 #' @examples
 #' data(fungus)
 #' makeplot.param(fungus, burnin=20, parameter="pi.A.")

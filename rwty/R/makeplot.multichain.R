@@ -12,8 +12,7 @@
 #'
 #' @keywords MCMC, phylogenetics, convergence, plot, awty, rwty
 #'
-#' @export
-#' 
+#' @export makeplot.multichain
 #' @examples
 #' data(fungus)
 #' makeplot.multichain(fungus, burnin=20,  window.num = 20, min.freq = 0.1 )

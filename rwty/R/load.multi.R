@@ -12,8 +12,7 @@
 #'
 #' @keywords Phylogenetics, MCMC, load, trees
 #'
-#' @export
-#' 
+#' @export load.multi
 #' @examples
 #' #load.multi(path = "~/my trees/", ext.tree = "t", ext.p = "log")
 

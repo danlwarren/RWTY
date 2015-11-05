@@ -11,7 +11,7 @@
 #' @param ... other arguments being supplied to geom_text
 #' @author Barret Schloerke \email{schloerke@@gmail.com}
 #' @importFrom stringr str_c
-#' @export
+#' @export ggally.cor.modified
 #' @keywords hplot
 #' @examples
 #' data(tips, package = "reshape2")

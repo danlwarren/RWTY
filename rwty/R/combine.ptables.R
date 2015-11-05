@@ -9,8 +9,7 @@
 #'
 #' @keywords MCMC, phylogenetics, convergence, awty, rwty
 #'
-#' @export
-#' 
+#' @export combine.ptables
 #' @examples
 #' data(fungus)
 #' combine.ptables(fungus, burnin=20)

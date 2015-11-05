@@ -12,8 +12,7 @@
 #'
 #' @keywords Clade frequencies, consensus, mcmc, phylogenetics
 #'
-#' @export
-#' 
+#' @export clade.freq
 #' @examples
 #' data(fungus)
 #' clade.freq(fungus$Fungus.Run1, start=10, end=100)

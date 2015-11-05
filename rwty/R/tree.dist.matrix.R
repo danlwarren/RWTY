@@ -10,8 +10,7 @@
 #'
 #' @keywords treespace, tree distance, robinson-foulds
 #'
-#' @export
-#' 
+#' @export tree.dist.matrix
 #' @examples
 #' data(fungus)
 #' tree.dist.matrix(fungus$Fungus.Run1$trees)

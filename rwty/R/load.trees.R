@@ -15,8 +15,7 @@
 #'
 #' @keywords Phylogenetics, MCMC, load
 #'
-#' @export
-#' 
+#' @export load.trees
 #' @examples
 #' #load.trees(file="mytrees.nex", type="nexus")
 

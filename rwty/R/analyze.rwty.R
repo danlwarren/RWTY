@@ -46,8 +46,7 @@
 #'
 #' @keywords keywords
 #'
-#' @export
-#' 
+#' @export analyze.rwty
 #' @examples
 #' data(fungus)
 #' p <- analyze.rwty(fungus, burnin = 50, window.num = 50)

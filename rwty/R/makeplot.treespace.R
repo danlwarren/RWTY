@@ -11,8 +11,7 @@
 #'
 #' @keywords plot, treespace, rwty
 #'
-#' @export
-#' 
+#' @export makeplot.treespace
 #' @examples
 #' data(fungus)
 #' 

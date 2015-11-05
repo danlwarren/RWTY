@@ -14,8 +14,7 @@
 #'
 #' @keywords MCMC, posterior probability, convergence
 #'
-#' @export
-#' 
+#' @export slide.freq
 #' @examples
 #' data(fungus)
 #' slide.data <- slide.freq(fungus$Fungus.Run1$trees, burnin=20, window.size=20, gens.per.tree=10000)

@@ -11,7 +11,6 @@
 #' @keywords MCMC, phylogenetics, convergence, plot, awty, rwty
 #'
 #' @export
-#' 
 #' @examples
 #' data(fungus)
 #' fungus$Fungus.Run1

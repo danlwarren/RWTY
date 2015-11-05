@@ -14,8 +14,7 @@
 #'
 #' @keywords MCMC, phylogenetics, consensus, clade frequency, convergence
 #'
-#' @export
-#' 
+#' @export compare.n
 #' @examples
 #' data(fungus)
 #' compare.n(fungus, burnin=20)

@@ -11,8 +11,7 @@
 #'
 #' @keywords plot, posterior probabilities, rwty
 #'
-#' @export
-#' 
+#' @export makeplot.posteriors
 #' @examples
 #' data(fungus)
 #' makeplot.posteriors(fungus, burnin = 20, window.num = 20)

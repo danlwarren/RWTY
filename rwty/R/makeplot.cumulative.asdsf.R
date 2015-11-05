@@ -11,8 +11,7 @@
 #'
 #' @keywords MCMC, phylogenetics, ASDSF, cumulative
 #'
-#' @export
-#' 
+#' @export makeplot.cumulative.asdsf
 #' @examples
 #' data(fungus)
 #' test.chains <- check.chains(fungus)

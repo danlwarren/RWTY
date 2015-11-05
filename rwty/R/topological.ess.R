@@ -20,8 +20,7 @@
 #'
 #' @keywords treespace, tree distance, path distance
 #'
-#' @export
-#' 
+#' @export topological.ess
 #' @examples
 #' data(fungus)
 #' topological.ess(fungus, burnin = 20, n = 10)

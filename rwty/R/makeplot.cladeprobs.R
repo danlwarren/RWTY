@@ -12,8 +12,7 @@
 #'
 #' @keywords cumulative, sliding window, mcmc, phylogenetics, plot
 #'
-#' @export
-#' 
+#' @export makeplot.cladeprobs
 #' @examples
 #' data(fungus)
 #' slide.data <- slide.freq(fungus$Fungus.Run1$trees, burnin=20, window.size=20, gens.per.tree=10000)

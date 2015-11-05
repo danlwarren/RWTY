@@ -20,8 +20,7 @@
 #'
 #' @keywords ESS, path distance
 #'
-#' @export
-#' 
+#' @export makeplot.ess
 #' @examples
 #' data(fungus)
 #' makeplot.ess(fungus, burnin = 20, n = 10)

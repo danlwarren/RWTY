@@ -14,8 +14,7 @@
 #'
 #' @keywords MCMC, phylogenetics, posterior probabilities, convergence
 #'
-#' @export
-#' 
+#' @export cumulative.freq
 #' @examples
 #' data(fungus)
 #' cumulative.freq(fungus$Fungus.Run1$trees, burnin=20, window.size=20, gens.per.tree=10000)

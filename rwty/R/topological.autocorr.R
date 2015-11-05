@@ -19,8 +19,7 @@
 #'
 #' @keywords autocorrelation, path distance
 #'
-#' @export
-#' 
+#' @export topological.autocorr
 #' @examples
 #' data(fungus)
 #' topological.autocorr(fungus, burnin = 20)

@@ -10,8 +10,7 @@
 #'
 #' @keywords mcmc, phylogenetics, convergence, uncertainty
 #'
-#' @export
-#' 
+#' @export makeplot.cladevar
 #' @examples
 #' data(fungus)
 #' slide.data <- slide.freq(fungus$Fungus.Run1$trees, burnin=20, window.size=20, gens.per.tree=40000)

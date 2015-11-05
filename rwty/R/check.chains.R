@@ -10,8 +10,7 @@
 #'
 #' @keywords MCMC, phylogenetics, convergence, awty, rwty
 #'
-#' @export
-#' 
+#' @export check.chains
 #' @examples
 #' data(fungus)
 #' check.chains(fungus)

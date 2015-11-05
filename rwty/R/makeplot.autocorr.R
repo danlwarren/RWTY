@@ -19,8 +19,7 @@
 #'
 #' @keywords autocorrelation, path distance
 #'
-#' @export
-#' 
+#' @export makeplot.autocorr
 #' @examples
 #' data(fungus)
 #' makeplot.autocorr(fungus, burnin = 20)
