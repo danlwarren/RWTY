@@ -75,7 +75,7 @@ analyze.rwty <- function(chains, burnin=0, window.num=50, treespace.points = 100
     }
 
     # plot treespace for all chains
-    treespace.plots <- makeplot.treespace(chains, n.points = treespace.points, burnin = burnin, likelihood = likelihood.param)
+    treespace.plots <- makeplot.treespace(chains, n.points = treespace.points, burnin = burnin)
     
     # plot posterior probabilities for all chains
     posterior.plots <- makeplot.posteriors(chains, burnin=burnin, window.num = window.num)

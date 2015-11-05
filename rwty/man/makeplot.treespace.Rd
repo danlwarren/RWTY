@@ -25,6 +25,7 @@ This function will take list of rwty.chains objects and produce plots of chains 
 data(fungus)
 
 p <- makeplot.treespace(fungus, burnin = 20, likelihood = 'LnL')
+# Treespace plot for all the fungus data
 
 # NB: these data indicate significant problems: the chains are sampling very different parts of tree space
 # View the points plotted in treespace (these data indicate significant problems)
