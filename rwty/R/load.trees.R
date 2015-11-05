@@ -67,7 +67,6 @@ load.trees <- function(file, type="nexus", gens.per.tree=NA, trim=1, logfile=NA,
     
     # If logfile hasn't been supplied try to find it by searching
     if(is.na(logfile)){
-      
       # try mrbayes style log file name
       if(file.exists(sub("[.][^.]*$", ".p", file, perl=TRUE))){
         logfile <- sub("[.][^.]*$", ".p", file, perl=TRUE)
@@ -77,8 +76,8 @@ load.trees <- function(file, type="nexus", gens.per.tree=NA, trim=1, logfile=NA,
       if(file.exists(sub("[.][^.]*$", ".log", file, perl=TRUE))){
         logfile <- sub("[.][^.]*$", ".log", file, perl=TRUE)
       }
-
-      if(file.exists(logfile)){
+      
+      if(!is.na(logfile) && file.exists(logfile)){
           print(paste("Reading parameter values from", basename(logfile)))
           ptable <- read.table(logfile, skip=skip, header=TRUE)
           ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
