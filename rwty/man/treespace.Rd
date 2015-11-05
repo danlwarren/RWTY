@@ -4,7 +4,7 @@
 \alias{treespace}
 \title{MDS scaling of treespace for a single tree list.}
 \usage{
-treespace(chains, n.points, burnin = 0, likelihood = NA)
+treespace(chains, n.points, burnin = 0, parameter = NA)
 }
 \arguments{
 \item{chains}{A list of 1 or more rwty.trees objects.}

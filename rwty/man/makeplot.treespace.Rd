@@ -4,7 +4,7 @@
 \alias{makeplot.treespace}
 \title{Plot chains in treespace.}
 \usage{
-makeplot.treespace(chains, n.points = 100, burnin = 0, likelihood = NA)
+makeplot.treespace(chains, n.points = 100, burnin = 0, fill.colour = NA)
 }
 \arguments{
 \item{chains}{A list of one or more rwty.trees objects}
@@ -13,20 +13,20 @@ makeplot.treespace(chains, n.points = 100, burnin = 0, likelihood = NA)
 
 \item{burnin}{The number of samples to remove from the start of the chain as burnin}
 
-\item{likelihood}{The name of the column that describes the likelihood in your parameter file, if present}
+\item{fill.colour}{The name of any column in your parameter file that you would like to use as a fill colour for the points of the plot}
 }
 \value{
 A list of two ggplot objects: one plots the points in treespace, the other shows a heatmap of the same points
 }
 \description{
-This function will take an mds.treespace object and produce plots of chains in treespace.
+This function will take list of rwty.chains objects and produce plots of chains in treespace.
 }
 \examples{
 data(fungus)
 
 p <- makeplot.treespace(fungus, burnin = 20, likelihood = 'LnL')
 
-# NB: these data indicate significant problems: the two chains are sampling very different parts of tree space
+# NB: these data indicate significant problems: the chains are sampling very different parts of tree space
 # View the points plotted in treespace (these data indicate significant problems)
 p$points.plot
 
@@ -34,6 +34,17 @@ p$points.plot
 # Note that this data is so pathologically bad that the heatmap is not
 # very useful. It is more useful on better behaved datasets
 p$heatmap
+
+# we can also plot different parameters as the fill colour.
+# e.g. we can plot the first two fungus chains with likelihood as the fill
+makeplot.treespace(fungus[1:2], burnin = 100, fill.colour = 'LnL')
+
+# or with tree length as the fill
+makeplot.treespace(fungus[1:2], burnin = 100, fill.colour = 'TL')
+
+# you can colour the plot with any parameter in your ptable
+# to see which parameters you have you can simply do this:
+head(fungus[[1]]$ptable)
 }
 \keyword{plot,}
 \keyword{rwty}

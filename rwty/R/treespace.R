@@ -18,16 +18,18 @@
 #' data(fungus)
 #' treespace(fungus, n.points=50, burnin=20, likelihood="LnL")
 
-treespace <- function(chains, n.points, burnin=0, likelihood=NA){
+
+
+treespace <- function(chains, n.points, burnin=0, parameter=NA){
 
     chains = check.chains(chains)
     labels = names(chains)
     ptable = combine.ptables(chains, burnin=0) # we deal with burnin later for this 
 
-    # check that the user-supplied likelihood variable exists
-    if(!is.na(likelihood)){
-        if(likelihood %in% names(ptable)){} else
-        stop(sprintf("The variable you supplied for the likelihood column of your parameter table ('%s') wasn't found", likelihood))
+    # check that the user-supplied parameter variable exists
+    if(!is.na(parameter)){
+        if(parameter %in% names(ptable)){} else
+        stop(sprintf("The parameter name you supplied ('%s') wasn't found in your parameter table", parameter))
     }
 
     chain = chains[[1]]
@@ -73,7 +75,7 @@ treespace <- function(chains, n.points, burnin=0, likelihood=NA){
     points$sample = ptable$sample
     points$generation = ptable$generation
 
-    if(!is.na(likelihood)) points$lnL = as.numeric(ptable[[likelihood]])
+    if(!is.na(parameter)) points[,parameter] = as.numeric(ptable[[parameter]])
 
     return(points)
         

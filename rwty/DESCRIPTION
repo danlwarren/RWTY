@@ -26,6 +26,8 @@ Depends:
     GGally,
     coda,
     stringr,
+    viridis,
+    grid,
 Suggests:
     knitr,
 VignetteBuilder: knitr
