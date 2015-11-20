@@ -1,7 +1,7 @@
-#' Plot the approximate ESS of tree topologies from MCMC chains.
+#' Plot the pseudo ESS of tree topologies from MCMC chains.
 #'
 #' This function takes a list of rwty.trees objects, and plots the
-#' approximate ESS of the trees from each chain, after removing burnin. 
+#' pseudo ESS of the trees from each chain, after removing burnin. 
 #' Each caulcation is repeated n times, where in each replicate a random
 #' tree from the chain is chosen as a 'focal' tree. The calculation works
 #' by calculating the path distance of each tree in the chain
@@ -15,7 +15,7 @@
 #' @param n The number of replicate analyses to do 
 #'
 #' @return A ggplot2 plot object, in which each chain is represented by a point
-#' which represents the median approximate ESS from the n replicates, and
+#' which represents the median pseudo ESS from the n replicates, and
 #' whiskers representing the upper and lower 95% intervals of the n replicates. 
 #'
 #' @keywords ESS, path distance

@@ -1,7 +1,7 @@
-#' Calculate the approximate Effective Sample Size (ESS) of tree topologies
+#' Calculate the pseudo Effective Sample Size (ESS) of tree topologies
 #' 
 #' This function takes a list of rwty.trees objects, and calculates the
-#' approximate ESS of the trees from each chain, after removing burnin. 
+#' pseudo ESS of the trees from each chain, after removing burnin. 
 #' Each caulcation is repeated n times, where in each replicate a random
 #' tree from the chain is chosen as a 'focal' tree. The calculation works
 #' by calculating the path distance of each tree in the chain
@@ -61,7 +61,7 @@ tree.ess <- function(tree.list){
 
 tree.ess.multi <- function(tree.list, n=20){  
     
-    print(sprintf("Calculating approximate ESS for %s trees and %s replicates, please be patient", length(tree.list), n))
+    print(sprintf("Calculating pseudo ESS for %s trees and %s replicates, please be patient", length(tree.list), n))
 
     data <- replicate(n, tree.ess(tree.list))
 
