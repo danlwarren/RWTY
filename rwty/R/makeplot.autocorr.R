@@ -49,7 +49,7 @@ makeplot.autocorr <- function(chains, burnin = 0, max.intervals = 100, ac.cutoff
                               function(data, par){sum((par[1] * (1 - exp(-(data$sampling.interval/par[2]))) - data$Path.distance)^2)}, 
                               data = thisdata)
       if(any(thisdata$Path.distance/this.ac.result$par[1] > ac.cutoff)){
-        autocorr.interval[i,1] <- min(which(thisdata$Path.distance/this.ac.result$par[1] > ac.cutoff))
+        autocorr.interval[i,1] <- thisdata$sampling.interval[min(which(thisdata$Path.distance/this.ac.result$par[1] > ac.cutoff))]
       } else {
         autocorr.interval[i,1] <- "> Max"
       }
