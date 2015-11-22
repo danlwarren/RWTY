@@ -25,12 +25,21 @@ estimate.autocorr.k <- function(dat, ac.cutoff = 0.95){
   
   # Build an empty data frame
   autocorr.k <- data.frame(autocorr.time = rep(NA, length(unique(dat$chain))), row.names = unique(dat$chain))
+  
+  # Loop over chains, calculate k
   for(i in 1:nrow(autocorr.k)){
+    
+    # Break out a copy of the data table for model fitting
     thischain <- rownames(autocorr.k)[i]
     thisdata <- dat[dat$chain == thischain,]
+    
+    # Fit an exponential variogram
     this.ac.result <- optim(par = c(1, 1), 
                             function(data, par){sum((par[1] * (1 - exp(-(data$sampling.interval/par[2]))) - data$Path.distance)^2)}, 
                             data = thisdata)
+    
+    # If the cutoff is exceeded within the set of sampling intervals, return the interval
+    # Else return "> Max"
     if(any(thisdata$Path.distance/this.ac.result$par[1] > ac.cutoff)){
       autocorr.k[i,1] <- thisdata$sampling.interval[min(which(thisdata$Path.distance/this.ac.result$par[1] > ac.cutoff))]
     } else {
