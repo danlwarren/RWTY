@@ -41,21 +41,21 @@ makeplot.autocorr <- function(chains, burnin = 0, max.intervals = 100, ac.cutoff
     #' This bit uses an exponential semivariogram model to estimate the asymptotic path distance, and
     #' uses that to estimate the sampling interval at which path distances have reached some fixed
     #' proportion of that value (default 0.95).
-    autocorr.interval <- data.frame(autocorr.time = rep(NA, length(unique(dat$chain))), row.names = unique(dat$chain))
-    for(i in 1:nrow(autocorr.interval)){
-      thischain <- rownames(autocorr.interval)[i]
+    autocorr.k <- data.frame(autocorr.time = rep(NA, length(unique(dat$chain))), row.names = unique(dat$chain))
+    for(i in 1:nrow(autocorr.k)){
+      thischain <- rownames(autocorr.k)[i]
       thisdata <- dat[dat$chain == thischain,]
       this.ac.result <- optim(par = c(1, 1), 
                               function(data, par){sum((par[1] * (1 - exp(-(data$sampling.interval/par[2]))) - data$Path.distance)^2)}, 
                               data = thisdata)
       if(any(thisdata$Path.distance/this.ac.result$par[1] > ac.cutoff)){
-        autocorr.interval[i,1] <- thisdata$sampling.interval[min(which(thisdata$Path.distance/this.ac.result$par[1] > ac.cutoff))]
+        autocorr.k[i,1] <- thisdata$sampling.interval[min(which(thisdata$Path.distance/this.ac.result$par[1] > ac.cutoff))]
       } else {
-        autocorr.interval[i,1] <- "> Max"
+        autocorr.k[i,1] <- "> Max"
       }
     }
 
-    autocorr.plot <- list(autocorr.plot = autocorr.plot, autocorr.interval = autocorr.interval)
+    autocorr.plot <- list(autocorr.plot = autocorr.plot, autocorr.k = autocorr.k)
     
     return(autocorr.plot)
     
