@@ -48,6 +48,7 @@ topological.autocorr <- function(chains, burnin = 0, max.intervals = 100){
 
 }
 
+
 tree.autocorr <- function(tree.list, max.intervals = 100){
 
     if(!is.numeric(max.intervals)) stop("max.intervals must be a positive integer")
@@ -61,7 +62,7 @@ tree.autocorr <- function(tree.list, max.intervals = 100){
 
     r <- lapply(as.list(thinnings), get.sequential.distances, tree.list) 
     r <- data.frame(matrix(unlist(r), ncol=2, byrow=T))
-    names(r) = c("Path.distance", "sampling.interval")
+    names(r) = c("topo.distance", "sampling.interval")
 
     return(r)
 }
@@ -69,6 +70,15 @@ tree.autocorr <- function(tree.list, max.intervals = 100){
 path.distance <- function(tree1, tree2){
 
     return(path.dist(list(tree1, tree2)))
+
+}
+
+
+path.dist.squared <- function (trees, check.labels = TRUE){
+
+    pd = path.dist(trees, check.labels)
+
+    return(pd*pd)
 
 }
 
@@ -115,7 +125,7 @@ path.dist <- function (trees, check.labels = TRUE)
 }
 
 
-get.sequential.distances <- function(thinning, tree.list, N=100){
+get.sequential.distances <- function(thinning, tree.list, N=100, squared = FALSE){
     
     # now thin out the input list
     keep <- seq(from=1, to=length(tree.list), by=thinning)
@@ -142,7 +152,12 @@ get.sequential.distances <- function(thinning, tree.list, N=100){
     # e.g. c(a, b, c, d, e) -> c(a,b), c(c,d)
     tree.pairs <- split(tree.list, ceiling(tree.index/2))
         
-    distances <- lapply(tree.pairs, path.dist)
+    if(squared == TRUE){
+        distances <- lapply(tree.pairs, path.dist.squared)        
+    }else{
+        distances <- lapply(tree.pairs, path.dist)
+    }
+
     distances <- as.numeric(unlist(distances))
     distances <- as.data.frame(distances)
     result <- apply(distances, 2, median)
