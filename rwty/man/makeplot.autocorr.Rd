@@ -20,7 +20,7 @@ makeplot.autocorr(chains, burnin = 0, max.intervals = 100,
 }
 \value{
 A ggplot2 plot object, with one line (facetting off) or facet
-(facetting on) per rwty.trees object, and a data frame containing estimated minimum sampling intervals for each chain.
+(facetting on) per rwty.trees object.
 }
 \description{
 This function takes a list of rwty.trees objects, and makes an
@@ -35,9 +35,6 @@ path distances, though other distances could also be employed.
 \examples{
 data(fungus)
 makeplot.autocorr(fungus, burnin = 20)
-This bit uses an exponential semivariogram model to estimate the asymptotic path distance, and
-uses that to estimate the sampling interval at which path distances have reached some fixed
-proportion of that value (default 0.95).
 }
 \keyword{autocorrelation,}
 \keyword{distance}
