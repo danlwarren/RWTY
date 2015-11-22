@@ -52,14 +52,14 @@ as a function of chain length.
 Sliding window variance, depicting the distribution of variances of clade posterior probability estimates
 over a series of non-overlapping windows along the MCMC chain.
 
-Cumulative variance, depicting the distribution of variances in posterior probability estimates as a function of
+Cumulative variance, depicting the distribution of variances in posterior probability estimates as a function of 
 chain length.
 
 Compare plot (when multiple rwty.trees objects are passed): an xy plot (or several) of the correlation between posterior
 estimates from multiple chains.
 
-Discordance tree (when multiple rwty.trees objects are passed): a tree that depicts the similarity in posterior support
-values obtained by multiple chains.  Chains that produce similar posterior estimates will appear grouped, while those that
+Discordance tree (when multiple rwty.trees objects are passed): a tree that depicts the similarity in posterior support 
+values obtained by multiple chains.  Chains that produce similar posterior estimates will appear grouped, while those that 
 support very different topologies (or posterior support values) will be more distant from each other.
 }
 \description{

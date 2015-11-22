@@ -34,14 +34,10 @@ path distances, though other distances could also be employed.
 }
 \examples{
 data(fungus)
-<<<<<<< HEAD
 makeplot.autocorr(fungus, burnin = 20)
-=======
-makeplot.autocorr(fungus, burnin = 100)
 This bit uses an exponential semivariogram model to estimate the asymptotic path distance, and
 uses that to estimate the sampling interval at which path distances have reached some fixed
 proportion of that value (default 0.95).
->>>>>>> develop
 }
 \keyword{autocorrelation,}
 \keyword{distance}

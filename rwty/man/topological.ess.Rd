@@ -20,11 +20,7 @@ replicates performed, and the name of the chain.
 }
 \description{
 This function takes a list of rwty.trees objects, and calculates the
-<<<<<<< HEAD
-pseudo ESS of the trees from each chain, after removing burnin.
-=======
-approximate ESS of the trees from each chain, after removing burnin. 
->>>>>>> develop
+pseudo ESS of the trees from each chain, after removing burnin. 
 Each caulcation is repeated n times, where in each replicate a random
 tree from the chain is chosen as a 'focal' tree. The calculation works
 by calculating the path distance of each tree in the chain
