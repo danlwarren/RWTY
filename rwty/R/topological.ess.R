@@ -20,14 +20,14 @@
 #'
 #' @keywords treespace, tree distance, path distance
 #'
-#' @export topological.ess
+#' @export topological.pseudo.ess
 #' @examples
 #' data(fungus)
-#' topological.ess(fungus, burnin = 20, n = 10)
+#' topological.pseudo.ess(fungus, burnin = 20, n = 10)
 
 
 
-topological.ess <- function(chains, burnin = 0, n = 50){
+topological.pseudo.ess <- function(chains, burnin = 0, n = 50){
   
     chains <- check.chains(chains)
     

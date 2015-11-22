@@ -30,7 +30,7 @@ makeplot.ess <- function(chains, burnin = 0, n = 50){
 
     chains <- check.chains(chains)
 
-    dat <- topological.ess(chains, burnin, n)
+    dat <- topological.pseudo.ess(chains, burnin, n)
     
     dat <- data.frame(median.ess = apply(dat, 2, FUN = median), 
                       ci.lower = apply(dat, 2, FUN = function(x) quantile(x, .025)), 
