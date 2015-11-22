@@ -31,9 +31,9 @@ makeplot.autocorr <- function(chains, burnin = 0, max.intervals = 100, ac.cutoff
 
     dat <- topological.autocorr(chains, burnin, max.intervals)
 
-    autocorr.plot = ggplot(data=dat, aes(x=sampling.interval, y=Path.distance)) + 
+    autocorr.plot = ggplot(data=dat, aes(x=sampling.interval, y=topo.distance)) + 
             geom_line(alpha=0.2, aes(colour = chain)) + geom_point(size = 2, aes(colour = chain)) + 
-            xlab("sampling interval") + ylab("median path distance") + 
+            xlab("sampling interval") + ylab("median topological distance") + 
             theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
 
     if(facet) autocorr.plot = autocorr.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
