@@ -29,7 +29,7 @@ estimate.autocorr.k <- function(dat, ac.cutoff = 0.95){
   # Loop over chains, calculate k
   for(i in 1:nrow(autocorr.k)){
     
-    # Break out a copy of the data table for model fitting
+    # Break out a single-chain copy of the data table for model fitting
     thischain <- rownames(autocorr.k)[i]
     thisdata <- dat[dat$chain == thischain,]
     
