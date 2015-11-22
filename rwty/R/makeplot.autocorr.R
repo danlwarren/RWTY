@@ -54,8 +54,9 @@ makeplot.autocorr <- function(chains, burnin = 0, max.intervals = 100, ac.cutoff
         autocorr.k[i,1] <- "> Max"
       }
     }
+    autocorr.plot$autocorr.k <- autocorr.k
 
-    autocorr.plot <- list(autocorr.plot = autocorr.plot, autocorr.k = autocorr.k)
+    autocorr.plot <- list(autocorr.plot = autocorr.plot)
     
     return(autocorr.plot)
     
