@@ -4,7 +4,8 @@
 \alias{topological.autocorr}
 \title{Calculate data for autocorrelation plots of tree topologies from MCMC analyses}
 \usage{
-topological.autocorr(chains, burnin = 0, max.intervals = 100)
+topological.autocorr(chains, burnin = 0, max.intervals = 100,
+  squared = FALSE)
 }
 \arguments{
 \item{chains}{A list of rwty.trees objects.}
@@ -12,6 +13,8 @@ topological.autocorr(chains, burnin = 0, max.intervals = 100)
 \item{burnin}{The number of trees to eliminate as burnin}
 
 \item{max.intervals}{The maximum number of sampling intervals to use}
+
+\item{squared}{TRUE/FALSE use squared tree distances (necessary to calculate approximate ESS)}
 }
 \value{
 A data frame with one row per sampling interval, per chain.

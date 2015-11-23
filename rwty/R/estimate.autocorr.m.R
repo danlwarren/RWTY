@@ -14,23 +14,25 @@
 #' 
 #' @keywords autocorrelation, path distance
 #'
-#' @export estimate.autocorr.k
+#' @export estimate.autocorr.m
 #' @examples
 #' data(fungus)
-#' sampling.table <- topological.autocorr(fungus, burnin = 20, max.intervals = 40)
-#' autocorr.k(sampling.table, ac.cutoff = 0.9)
+#' # To get a good estimate we need all sampling intervals
+#' max.intervals = as.integer(length(fungus[[1]]$trees)/21)
+#' sampling.table <- topological.autocorr(fungus, burnin = 20, max.intervals = max.intervals)
+#' estimate.autocorr.m(sampling.table, ac.cutoff = 0.9)
 
 
-estimate.autocorr.k <- function(dat, ac.cutoff = 0.95){
+estimate.autocorr.m <- function(dat, ac.cutoff = 0.95){
   
   # Build an empty data frame
-  autocorr.k <- data.frame(autocorr.time = rep(NA, length(unique(dat$chain))), row.names = unique(dat$chain))
+  autocorr.m <- data.frame(autocorr.time = rep(NA, length(unique(dat$chain))), row.names = unique(dat$chain))
   
   # Loop over chains, calculate k
-  for(i in 1:nrow(autocorr.k)){
+  for(i in 1:nrow(autocorr.m)){
     
     # Break out a single-chain copy of the data table for model fitting
-    thischain <- rownames(autocorr.k)[i]
+    thischain <- rownames(autocorr.m)[i]
     thisdata <- dat[dat$chain == thischain,]
     
     # Fit an exponential variogram
@@ -41,14 +43,14 @@ estimate.autocorr.k <- function(dat, ac.cutoff = 0.95){
     # If the cutoff is exceeded within the set of sampling intervals, return the interval
     # Else return "> Max"
     if(any(thisdata$topo.distance/this.ac.result$par[1] > ac.cutoff)){
-      autocorr.k[i,1] <- thisdata$sampling.interval[min(which(thisdata$topo.distance/this.ac.result$par[1] > ac.cutoff))]
+      autocorr.m[i,1] <- thisdata$sampling.interval[min(which(thisdata$topo.distance/this.ac.result$par[1] > ac.cutoff))]
     } else {
-      autocorr.k[i,1] <- "> Max"
+      autocorr.m[i,1] <- "> Max"
     }
   }
 
-  autocorr.k$chains = rownames(autocorr.k)
-  rownames(autocorr.k) = NULL
+  autocorr.m$chains = rownames(autocorr.m)
+  rownames(autocorr.m) = NULL
 
-  return(autocorr.k)
+  return(autocorr.m)
 }

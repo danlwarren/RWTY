@@ -23,8 +23,10 @@ proportion of that value (default 0.95).  It expects as input a data table outpu
 }
 \examples{
 data(fungus)
-sampling.table <- topological.autocorr(fungus, burnin = 20, max.intervals = 40)
-autocorr.k(sampling.table, ac.cutoff = 0.9)
+# To get a good estimate we need all sampling intervals
+max.intervals = as.integer(length(fungus[[1]]$trees)/21)
+sampling.table <- topological.autocorr(fungus, burnin = 20, max.intervals = max.intervals)
+estimate.autocorr.m(sampling.table, ac.cutoff = 0.9)
 }
 \keyword{autocorrelation,}
 \keyword{distance}

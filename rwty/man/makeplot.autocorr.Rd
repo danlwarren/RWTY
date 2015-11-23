@@ -5,7 +5,7 @@
 \title{Make autocorrelation plots of tree topologies from MCMC analyses}
 \usage{
 makeplot.autocorr(chains, burnin = 0, max.intervals = 100,
-  ac.cutoff = 0.95, facet = FALSE)
+  squared = FALSE, ac.cutoff = 0.95, facet = FALSE)
 }
 \arguments{
 \item{chains}{A list of rwty.trees objects.}
@@ -14,9 +14,11 @@ makeplot.autocorr(chains, burnin = 0, max.intervals = 100,
 
 \item{max.intervals}{The maximum number of sampling intervals to use.}
 
+\item{squared}{TRUE/FALSE use squared tree distances (necessary to calculate approximate ESS; default FALSE)}
+
 \item{ac.cutoff}{The proportion of the estimated asymptotic path distance to use as a cutoff for estimating minimum sampling interval.  For instance, if ac.cutoff = 0.9, the sampling interval returned will be the minimum sampling interval necessary to achieve a path distance of 0.9 times the estimated asymptotic value.}
 
-\item{facet}{TRUE/FALSE to turn facetting of the plot on or off (default)}
+\item{facet}{TRUE/FALSE to turn facetting of the plot on or off (default FALSE)}
 }
 \value{
 A ggplot2 plot object, with one line (facetting off) or facet
