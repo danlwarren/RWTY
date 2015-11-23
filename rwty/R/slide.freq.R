@@ -41,19 +41,19 @@ slide.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1){
 
     #print("a")
 
-
     # first we slice up our tree list into smaller lists
     tree.index <- seq_along(tree.list)
     tree.windows <- split(tree.list, ceiling(tree.index/window.size))[1:n.windows]
 
     #print("b")
-
+    
+    
 
     # now we calculate clade frequencies on each of the lists of trees
     clade.freq.list <- lapply(tree.windows, clade.freq, start=1, end=window.size)
-
+    
     # and rename the list to the first tree of each window
-    names(clade.freq.list) = prettyNum(seq(1:length(clade.freq.list))*window.size*gens.per.tree, sci=TRUE)
+    names(clade.freq.list) <- prettyNum(seq((burnin + 1),(burnin + length(clade.freq.list) * window.size), by=window.size)*gens.per.tree, sci=TRUE)
 
     # this is the table of frequencies in each window
     #print("Working on window 1")
