@@ -4,6 +4,12 @@ library(testthat)
 library(rwty)
 
 
+#############################################################
+#
+#     Single chain analysis
+#
+#############################################################
+
 # Load in test trees
 test.trees <- load.trees("~/GitHub/RWTY/test/testchain.t", skip=0)
 
@@ -94,10 +100,63 @@ expect_equal(names(cumulative.variance.plot), c("data", "layers", "scales", "map
 # Test attributes of ess plot
 ess.plot <- test.output$ess.plot
 expect_equal(names(ess.plot), c("data", "layers", "scales", "mapping", "theme", 
-                                                "coordinates", "facet","plot_env", "labels" ))
+                                "coordinates", "facet","plot_env", "labels" ))
 
 
 # Test attributes of autocorr plot
 autocorr.plot <- test.output$autocorr.plot
 expect_equal(names(autocorr.plot), c("data", "layers", "scales", "mapping", "theme", 
-                                                "coordinates", "facet","plot_env", "labels", "autocorr.k" ))
+                                      "coordinates", "facet","plot_env", "labels", "autocorr.k" ))
+
+
+
+
+#############################################################
+#
+#     Multi-chain analysis
+#
+#############################################################
+
+
+# Re-run test.trees with multiple tree files from load.multi
+test.trees <- load.multi("~/GitHub/RWTY/test/", ext.tree = "t", skip=0)
+
+# Evaluate the trees object
+expect_equal(names(test.trees), c("testchain.t", "testchain2.t"))
+
+
+# Evaluate contents of first chain
+expect_equal(names(test.trees$testchain.t), c("trees", "ptable", "gens.per.tree"))
+expect_equal(length(names(test.trees$testchain.t$trees)), 16)
+expect_equal(names(test.trees$testchain.t$trees), c("tree_0", "tree_100", "tree_200", "tree_300", 
+                                        "tree_400", "tree_500", "tree_600", "tree_700", 
+                                        "tree_800", "tree_900", "tree_1000", "tree_1100", 
+                                        "tree_1200", "tree_1300", "tree_1400", "tree_1500"))
+expect_equal(test.trees$testchain.t$gens.per.tree, 100)
+
+# Evaluate contents of second chain
+expect_equal(names(test.trees$testchain2.t), c("trees", "ptable", "gens.per.tree"))
+expect_equal(length(names(test.trees$testchain2.t$trees)), 16)
+expect_equal(names(test.trees$testchain2.t$trees), c("tree_0", "tree_100", "tree_200", "tree_300", 
+                                                    "tree_400", "tree_500", "tree_600", "tree_700", 
+                                                    "tree_800", "tree_900", "tree_1000", "tree_1100", 
+                                                    "tree_1200", "tree_1300", "tree_1400", "tree_1500"))
+expect_equal(test.trees$testchain2.t$gens.per.tree, 100)
+
+
+# Get output from RWTY for test trees object
+test.output <- analyze.rwty(test.trees, window.num=4, treespace.points=4, autocorr.intervals = 4, burnin=0)
+
+# Show plots
+test.output
+
+# Test attributes of RWTY object
+expect_equal(names(test.output), c("LnL", "Param1", "Param2", "heatmap", "points.plot", 
+                                   "testchain.t Sliding Window Posterior Probability",
+                                   "testchain.t Cumulative Posterior Probability",     
+                                   "testchain.t Sliding Window Variance", "testchain.t Cumulative Variance",
+                                   "testchain2.t Sliding Window Posterior Probability",
+                                   "testchain2.t Cumulative Posterior Probability",     
+                                   "testchain2.t Sliding Window Variance", "testchain2.t Cumulative Variance",
+                                   "ess.plot",  "autocorr.plot", "cumulative.asdsf", "compare.plot", "asdsf.tree"))
+
