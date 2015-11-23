@@ -14,14 +14,14 @@
 #' 
 #' @keywords autocorrelation, path distance
 #'
-#' @export estimate.autocorr.m
+#' @export estimate.autocorr.k
 #' @examples
 #' data(fungus)
 #' sampling.table <- topological.autocorr(fungus, burnin = 20, max.intervals = 40)
 #' autocorr.k(sampling.table, ac.cutoff = 0.9)
 
 
-estimate.autocorr.m <- function(dat, ac.cutoff = 0.95){
+estimate.autocorr.k <- function(dat, ac.cutoff = 0.95){
   
   # Build an empty data frame
   autocorr.k <- data.frame(autocorr.time = rep(NA, length(unique(dat$chain))), row.names = unique(dat$chain))
