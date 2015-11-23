@@ -14,7 +14,7 @@
 #' 
 #' @keywords autocorrelation, path distance
 #'
-#' @export autocorr.k
+#' @export estimate.autocorr.k
 #' @examples
 #' data(fungus)
 #' sampling.table <- topological.autocorr(fungus, burnin = 20, max.intervals = 40)
@@ -46,5 +46,9 @@ estimate.autocorr.k <- function(dat, ac.cutoff = 0.95){
       autocorr.k[i,1] <- "> Max"
     }
   }
+
+  autocorr.k$chains = rownames(autocorr.k)
+  rownames(autocorr.k) = NULL
+
   return(autocorr.k)
 }
