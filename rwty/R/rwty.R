@@ -1,4 +1,4 @@
-#' @title R We There Yet?  An R package for visualizing convergence in MCMC phylogenetics.
+#' R We There Yet?  An R package for visualizing convergence in MCMC phylogenetics.
 #' 
 #' This package implements various tests, visualizations, and metrics
 #' for diagnosing convergence of MCMC chains in phylogenetics.  It implements
@@ -10,7 +10,10 @@
 #' @export rwty
 #' 
 #' @examples
-#' See documentation for analyze.simple
+#' \dontrun{
+#' data(fungus)
+#' analyze.rwty(fungus, burnin=50)
+#' }
 #'
 #' @name rwty
 #' @docType package
