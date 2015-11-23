@@ -13,6 +13,8 @@ library(rwty)
 # Load in test trees
 test.trees <- load.trees("~/GitHub/RWTY/test/testchain.t", skip=0)
 
+topological.approx.ess(test.trees)
+
 # Evaluate the trees object
 expect_equal(names(test.trees), c("trees", "ptable", "gens.per.tree"))
 expect_equal(length(names(test.trees$trees)), 16)

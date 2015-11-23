@@ -24,8 +24,8 @@ proportion of that value (default 0.95).  It expects as input a data table outpu
 \examples{
 data(fungus)
 # To get a good estimate we need all sampling intervals
-max.intervals = as.integer(length(fungus[[1]]$trees)/21)
-sampling.table <- topological.autocorr(fungus, burnin = 20, max.intervals = max.intervals)
+autocorr.intervals = as.integer(length(fungus[[1]]$trees)/21)
+sampling.table <- topological.autocorr(fungus, burnin = 20, autocorr.intervals = autocorr.intervals)
 estimate.autocorr.m(sampling.table)
 }
 \keyword{autocorrelation,}

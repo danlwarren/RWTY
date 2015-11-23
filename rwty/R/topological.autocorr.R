@@ -50,17 +50,17 @@ topological.autocorr <- function(chains, burnin = 0, autocorr.intervals = 100, s
 }
 
 
-tree.autocorr <- function(tree.list, max.intervals = 100, squared = FALSE){
+tree.autocorr <- function(tree.list, autocorr.intervals = 100, squared = FALSE){
 
-    if(!is.numeric(max.intervals)) stop("max.intervals must be a positive integer")
-    if(max.intervals<1 | max.intervals%%1!=0) stop("max.intervals must be a positive integer")
+    if(!is.numeric(autocorr.intervals)) stop("autocorr.intervals must be a positive integer")
+    if(autocorr.intervals<1 | autocorr.intervals%%1!=0) stop("autocorr.intervals must be a positive integer")
 
     # this ensures that we can tell you if your ESS is < some threshold
     # the max(,2) bit is a fallback for extremely short tree lists
     max.thinning <- max(as.integer(length(tree.list)/21), 2)
 
-    # we analyze up to max.intervals thinnings spread evenly, less if there are non-unique numbers
-    thinnings <- unique(as.integer(seq(from = 1, to = max.thinning, length.out=max.intervals)))
+    # we analyze up to autocorr.intervals thinnings spread evenly, less if there are non-unique numbers
+    thinnings <- unique(as.integer(seq(from = 1, to = max.thinning, length.out=autocorr.intervals)))
     r <- lapply(as.list(thinnings), get.sequential.distances, tree.list, squared = squared) 
     r <- data.frame(matrix(unlist(r), ncol=2, byrow=T))
     names(r) = c("topo.distance", "sampling.interval")

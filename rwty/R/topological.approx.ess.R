@@ -22,7 +22,7 @@
 
 
 
-topological.approx.ess <- function(chains, burnin = 0){
+topological.approx.ess <- function(chains, burnin = 0, autocorr.intervals = NA){
 
     chains = check.chains(chains)
 
@@ -30,9 +30,11 @@ topological.approx.ess <- function(chains, burnin = 0){
     # this interval means the minimum number of samples is 20
     N = length(chains[[1]]$trees)
 
-    max.interval = as.integer(N/21)
+    if(is.na(autocorr.intervals)){
+      autocorr.intervals = as.integer(N/21)
+    } 
 
-    autocorr.df = topological.autocorr(chains, burnin, max.interval, squared = TRUE)
+    autocorr.df = topological.autocorr(chains, burnin, autocorr.intervals, squared = TRUE)
 
     autocorr.m = estimate.autocorr.m(autocorr.df)
 
