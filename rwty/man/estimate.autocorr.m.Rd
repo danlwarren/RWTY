@@ -12,9 +12,9 @@ estimate.autocorr.m(dat, ac.cutoff = 0.95)
 \item{ac.cutoff}{The proportion of the asymptotic topological distance to use as a cutoff for determining sampling interval.}
 }
 \value{
-A data frame consisting of the k value matching the ac.cutoff proportion of the asymptotic
+A data frame consisting of the value matching the ac.cutoff proportion of the asymptotic
 topological distance for each chain.  This sampling interval estimates the interval at which topological distances
-are no longer autocorrelated.
+are no longer autocorrelated. If the value is larger than the largest sampling distance, the table records this as a value of -1
 }
 \description{
 This function uses an exponential semivariogram model to estimate the asymptotic topological distance, and
@@ -26,7 +26,7 @@ data(fungus)
 # To get a good estimate we need all sampling intervals
 max.intervals = as.integer(length(fungus[[1]]$trees)/21)
 sampling.table <- topological.autocorr(fungus, burnin = 20, max.intervals = max.intervals)
-estimate.autocorr.m(sampling.table, ac.cutoff = 0.9)
+estimate.autocorr.m(sampling.table)
 }
 \keyword{autocorrelation,}
 \keyword{distance}

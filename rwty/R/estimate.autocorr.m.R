@@ -8,9 +8,9 @@
 #' @param dat A data frame output from topological.autocorr.
 #' @param ac.cutoff The proportion of the asymptotic topological distance to use as a cutoff for determining sampling interval.
 #'
-#' @return A data frame consisting of the k value matching the ac.cutoff proportion of the asymptotic 
+#' @return A data frame consisting of the value matching the ac.cutoff proportion of the asymptotic 
 #' topological distance for each chain.  This sampling interval estimates the interval at which topological distances
-#' are no longer autocorrelated.
+#' are no longer autocorrelated. If the value is larger than the largest sampling distance, the table records this as a value of -1
 #' 
 #' @keywords autocorrelation, path distance
 #'
@@ -20,7 +20,7 @@
 #' # To get a good estimate we need all sampling intervals
 #' max.intervals = as.integer(length(fungus[[1]]$trees)/21)
 #' sampling.table <- topological.autocorr(fungus, burnin = 20, max.intervals = max.intervals)
-#' estimate.autocorr.m(sampling.table, ac.cutoff = 0.9)
+#' estimate.autocorr.m(sampling.table)
 
 
 estimate.autocorr.m <- function(dat, ac.cutoff = 0.95){
@@ -45,7 +45,7 @@ estimate.autocorr.m <- function(dat, ac.cutoff = 0.95){
     if(any(thisdata$topo.distance/this.ac.result$par[1] > ac.cutoff)){
       autocorr.m[i,1] <- thisdata$sampling.interval[min(which(thisdata$topo.distance/this.ac.result$par[1] > ac.cutoff))]
     } else {
-      autocorr.m[i,1] <- "> Max"
+      autocorr.m[i,1] <- -1
     }
   }
 

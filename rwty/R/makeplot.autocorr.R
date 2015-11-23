@@ -44,8 +44,6 @@ makeplot.autocorr <- function(chains, burnin = 0, max.intervals = 100, squared =
             theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
 
     if(facet) autocorr.plot = autocorr.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
-
-    autocorr.plot$autocorr.k <- estimate.autocorr.m(dat, ac.cutoff)
     
     autocorr.plot <- list(autocorr.plot = autocorr.plot)
     
