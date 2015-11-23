@@ -5,19 +5,19 @@ library(rwty)
 
 
 # Load in test trees
-testtrees <- load.trees("~/GitHub/RWTY/test/testchain.t", skip=0)
+test.trees <- load.trees("~/GitHub/RWTY/test/testchain.t", skip=0)
 
 # Evaluate the trees object
-expect_equal(names(testtrees), c("trees", "ptable", "gens.per.tree"))
-expect_equal(length(names(testtrees$trees)), 16)
-expect_equal(names(testtrees$trees), c("tree_100", "tree_200", "tree_300", "tree_400",
-                                       "tree_500", "tree_600", "tree_700", "tree_800",
-                                       "tree_900", "tree_1000", "tree_1100", "tree_1200",
-                                       "tree_1300", "tree_1400", "tree_1500", "tree_1600"))
-expect_equal(testtrees$gens.per.tree, 100)
+expect_equal(names(tes.ttrees), c("trees", "ptable", "gens.per.tree"))
+expect_equal(length(names(test.trees$trees)), 16)
+expect_equal(names(test.trees$trees), c("tree_0", "tree_100", "tree_200", "tree_300", 
+                                        "tree_400", "tree_500", "tree_600", "tree_700", 
+                                        "tree_800", "tree_900", "tree_1000", "tree_1100", 
+                                        "tree_1200", "tree_1300", "tree_1400", "tree_1500"))
+expect_equal(test.trees$gens.per.tree, 100)
 
 # Get output from RWTY for test trees object
-test.output <- analyze.rwty(testtrees, window.num=4, treespace.points=4, autocorr.intervals = 4)
+test.output <- analyze.rwty(test.trees, window.num=4, treespace.points=4, autocorr.intervals = 4, burnin=0)
 
 # Show plots
 test.output
@@ -34,4 +34,4 @@ LnL <- test.output$LnL
 expect_equal(class(LnL), c("gg", "ggplot"))
 expect_equal(names(LnL), c("data", "layers", "scales", "mapping", "theme", 
                            "coordinates", "facet","plot_env", "labels" ))
-expect_equal(LnL$data$Gen, seq(100, 1600, by=100))
+expect_equal(LnL$data$Gen, seq(0, 1500, by=100))
