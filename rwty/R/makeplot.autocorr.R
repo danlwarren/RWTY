@@ -11,7 +11,7 @@
 #'
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin.
-#' @param max.intervals The maximum number of sampling intervals to use.
+#' @param autocorr.intervals The maximum number of sampling intervals to use.
 #' @param squared TRUE/FALSE use squared tree distances (necessary to calculate approximate ESS; default FALSE)
 #' @param ac.cutoff The proportion of the estimated asymptotic path distance to use as a cutoff for estimating minimum sampling interval.  For instance, if ac.cutoff = 0.9, the sampling interval returned will be the minimum sampling interval necessary to achieve a path distance of 0.9 times the estimated asymptotic value.
 #' @param facet TRUE/FALSE to turn facetting of the plot on or off (default FALSE)
@@ -26,11 +26,11 @@
 #' data(fungus)
 #' makeplot.autocorr(fungus, burnin = 20)
 
-makeplot.autocorr <- function(chains, burnin = 0, max.intervals = 100, squared = FALSE, ac.cutoff = 0.95, facet = FALSE){
+makeplot.autocorr <- function(chains, burnin = 0, autocorr.intervals = 100, squared = FALSE, ac.cutoff = 0.95, facet = FALSE){
 
     chains = check.chains(chains)
 
-    dat <- topological.autocorr(chains, burnin, max.intervals, squared = squared)
+    dat <- topological.autocorr(chains, burnin, autocorr.intervals, squared = squared)
 
     if(squared == TRUE){
         y.label = "median squared topological distance"

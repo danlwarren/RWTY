@@ -10,7 +10,7 @@
 #'
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin 
-#' @param max.intervals The maximum number of sampling intervals to use 
+#' @param autocorr.intervals The maximum number of sampling intervals to use 
 #' @param squared TRUE/FALSE use squared tree distances (necessary to calculate approximate ESS)
 #'
 #' @return A data frame with one row per sampling interval, per chain. 
@@ -26,7 +26,7 @@
 #' topological.autocorr(fungus, burnin = 20)
 
 
-topological.autocorr <- function(chains, burnin = 0, max.intervals = 100, squared = FALSE){
+topological.autocorr <- function(chains, burnin = 0, autocorr.intervals = 100, squared = FALSE){
 
     chains = check.chains(chains)
 
@@ -36,7 +36,7 @@ topological.autocorr <- function(chains, burnin = 0, max.intervals = 100, square
 
     trees = lapply(chains, function(x) x[['trees']][indices])
 
-    raw.autocorr = lapply(trees, tree.autocorr, max.intervals, squared)
+    raw.autocorr = lapply(trees, tree.autocorr, autocorr.intervals, squared)
 
     final.autocorr = do.call("rbind", raw.autocorr)
 
@@ -56,11 +56,11 @@ tree.autocorr <- function(tree.list, max.intervals = 100, squared = FALSE){
     if(max.intervals<1 | max.intervals%%1!=0) stop("max.intervals must be a positive integer")
 
     # this ensures that we can tell you if your ESS is < some threshold
-    max.thinning <- as.integer(length(tree.list)/21)
+    # the max(,2) bit is a fallback for extremely short tree lists
+    max.thinning <- max(as.integer(length(tree.list)/21), 2)
 
     # we analyze up to max.intervals thinnings spread evenly, less if there are non-unique numbers
     thinnings <- unique(as.integer(seq(from = 1, to = max.thinning, length.out=max.intervals)))
-
     r <- lapply(as.list(thinnings), get.sequential.distances, tree.list, squared = squared) 
     r <- data.frame(matrix(unlist(r), ncol=2, byrow=T))
     names(r) = c("topo.distance", "sampling.interval")
