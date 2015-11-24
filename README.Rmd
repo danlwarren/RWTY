@@ -2,17 +2,47 @@ RWTY: R We There Yet?
 ======================
 This package implements various tests, visualizations, and metrics for diagnosing convergence of MCMC chains in phylogenetics. It implements and automates many of the functions of the AWTY package in the R environment. It also adds a whole bunch of new functionality.
 
+-----
+
 # Installation
 
-At present, RWTY is downloadable from https://github.com/danlwarren/RWTY.  There are multiple ways to download it.  The easiest is to run the following code from your R console:
+At present, RWTY is downloadable from https://github.com/danlwarren/RWTY.  There are multiple ways to download it.  The easiest is to use devtools and install from GitHub.
+
+### Installing from GitHub using devtools
+Run the following code from your R console:
 
 ```{r eval=FALSE}
 install.packages("devtools")
 library(devtools)
-install_url("https://github.com/danlwarren/RWTY/archive/master.zip")
+install_github("danlwarren/RWTY")
 ```
 
+### Install from zip file
 
+A zipped version of the package is available at https://github.com/danlwarren/RWTY/archive/master.zip.  To install from the zip file, download a copy of it to your system.  Once it's finished downloading, type the following (where PATH is the path to the zip file):
+
+```{r eval=FALSE}
+install.packages("devtools")
+library(devtools)
+install_local("PATH")
+```
+
+-----
 
 # Interacting with RWTY
-Most users will only need to interact directly with two RWTY functions: load.trees() and analyze.rwty():
+Most users will only need to interact directly with three RWTY functions: load.trees(), load.multi, and analyze.rwty().
+
+### load.trees
+This function is used to load in a single MCMC chain, with PATH representing the path to the tree file.  
+```{r eval=FALSE}
+my.trees <- load.trees("PATH")
+```
+
+### load.multi
+This function is used to load more than one chain into a single object using a wildcard.  You provide a path to the directory containing the tree files and the extension to use when looking for the files.  For instance, to search a directory named PATH for all files ending in .t, you would input the following:
+```{r eval=FALSE}
+my.trees <- load.multi("PATH", ext.tree=".t")
+```
+
+### analyze.rwty
+This function conducts all rwty analyses that are applicable to the data that are passed to it.  Some plots and metrics are intended to compare the similarity between chains, and so are produced only for rwty.trees objects that contain multiple chains. 
