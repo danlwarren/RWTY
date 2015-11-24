@@ -108,8 +108,11 @@ salamanders.rwty$autocorr.plot
 ```
 ![autocorr plot](images/autocorr.plot.png)
 
+## Multiple chains only
+The following plots are only produced with analyze.rwty() is passed a rwty.trees object that contains more than one chain.
+
 ### Cumulative ASDSF plots
-These plots visualize the differences between chains as a function of chain length.  For each clade that occurrs in any of the chains, the standard deviation of the frequency of that split is calculated across all chains.  Each vertical sample represents the distribution of standard deviations of split frequencies if the chains were all stopped at that point.
+These plots visualize the differences between chains as a function of chain length.  For each clade that occurrs in any of the chains, the standard deviation of the frequency of that split is calculated across all chains.  Each vertical distribution in the plot represents the distribution of standard deviations of split frequencies if the chains were all stopped at that point.
 ```{r eval=FALSE, fig.width=8, fig.height=6}
 salamanders.rwty$cumulative.asdsf
 ```
