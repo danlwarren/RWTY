@@ -30,7 +30,7 @@ install_local("PATH")
 -----
 
 # Interacting with RWTY
-Most users will only need to interact directly with three RWTY functions: load.trees(), load.multi, and analyze.rwty().
+Most users will only need to interact directly with three RWTY functions: load.trees(), load.multi(), and analyze.rwty().
 
 ### load.trees
 This function is used to load in a single MCMC chain, with PATH representing the path to the tree file.  It will attempt to also find an associated log file automatically by searching for files with common suffixed.  For example, if your tree file is named "mytrees.t", RWTY will try to find "mytrees.p" or "mytrees.log" in the same directory, and will insert the file into the trees object automatically if it's found.  
@@ -50,7 +50,7 @@ my.trees <- load.multi("PATH", ext.tree="t", ext.p="log")
 ### analyze.rwty
 This function conducts all rwty analyses that are applicable to the data that are passed to it.  Some plots and metrics are intended to compare the similarity between chains, and so are produced only for rwty.trees objects that contain multiple chains.  Since RWTY runs can take a while, and since a single RWTY run produces a number of plots and metrics, it's a good idea to always store them in an object for later use.
 
-```{r results='hide', fig.keep='none', eval=TRUE,   message=FALSE, warning=FALSE}
+```{r results='hide', fig.keep='none', eval=FALSE,   message=FALSE, warning=FALSE}
 library(rwty)
 data(salamanders)
 salamanders.rwty <- analyze.rwty(salamanders, burnin=50)
@@ -63,61 +63,69 @@ RWTY outputs a number of useful plots for exploring the performance of MCMC chai
 
 ### LnL plots
 If a logfile is provided, RWTY will produce a plot of likelihood as a function of chain length for each chain.  
-```{r eval=TRUE, fig.width=8, fig.height=6}
+```{r eval=FALSE, fig.width=8, fig.height=6}
 salamanders.rwty$LnL
 ```
-
+![lnl plot](images/lnl.plot.png)
 
 ### Parameter plots
 If a logfile is provided, RWTY will produce a plot of parameter values as a function of chain length for each chain and parameter.  
-```{r eval=TRUE, fig.width=8, fig.height=6}
+```{r eval=FALSE, fig.width=8, fig.height=6}
 salamanders.rwty$pi.C
 ```
-
+![parameter plot](images/param.plot.png)
 
 
 ### Heatmap and point treespace plots
 These plots demonstrate the movement of the chain in treespace.  The tree space is based on an NMDS scaling of the distances between trees, much like TreeSetViz.  The space is created using all chains together, so the treespaces represented for different chains are comparable.
-```{r eval=TRUE, fig.width=8, fig.height=6}
+```{r eval=FALSE, fig.width=8, fig.height=6}
 salamanders.rwty$heatmap
 salamanders.rwty$points.plot
 ```
+![heatmap](images/heatmap.png)
+![points plot](images/pointsplot.png)
 
 ### Sliding window and cumulative posterior probability plots
 These plots demonstrate the changing frequency of clades in the chain, either as the frequency within a sliding window or as the cumulative frequency over the whole chain.  
-```{r eval=TRUE, fig.width=8, fig.height=6}
+```{r eval=FALSE, fig.width=8, fig.height=6}
 salamanders.rwty[["AMOTL2.run1 Sliding Window Posterior Probability"]]
 salamanders.rwty[["AMOTL2.run1 Cumulative Posterior Probability"]]
 ```
+![sliding posterior](images/sliding.posterior.png)
+![cumulative posterior](images/cumulative.posterior.png)
 
 ### Pseudo-ESS plots
 These plots simply give the median and confidence intervals for the approximate topological ESS, as calculated from a number of replicate reference trees (default n = 50).
-```{r eval=TRUE, fig.width=8, fig.height=6}
+```{r eval=FALSE, fig.width=8, fig.height=6}
 salamanders.rwty$ess.plot
 ```
+![ess plot](images/ess.plot.png)
 
 ### Autocorrelation plots
 These plots demonstrate the change in average tree distance between trees at different sampling intervals.  They may be used to estimate optimal thinning to increase independence between successive trees in the chain.
-```{r eval=TRUE, fig.width=8, fig.height=6}
+```{r eval=FALSE, fig.width=8, fig.height=6}
 salamanders.rwty$autocorr.plot
 ```
+![autocorr plot](images/autocorr.plot.png)
 
 ### Cumulative ASDSF plots
 These plots visualize the differences between chains as a function of chain length.  For each clade that occurrs in any of the chains, the standard deviation of the frequency of that split is calculated across all chains.  Each vertical sample represents the distribution of standard deviations of split frequencies if the chains were all stopped at that point.
-```{r eval=TRUE, fig.width=8, fig.height=6}
+```{r eval=FALSE, fig.width=8, fig.height=6}
 salamanders.rwty$cumulative.asdsf
 ```
-
+![cumulative asdsf](images/cumulative.asdsf.png)
 
 ### Posterior probability comparison plots
 These plots represent another way of visualizing the agreement or disagreement between chains.  For each pair of chains, the cumulative final frequency of each clade is plotted against ts frequency in another chain.
-```{r eval=TRUE, fig.width=8, fig.height=6}
+```{r eval=FALSE, fig.width=8, fig.height=6}
 salamanders.rwty$compare.plot
 ```
+![compare plot](images/compare.plot.png)
+
 
 ### ASDSF tree 
 These plots present a tree of similarity of clade frequencies between chains.   Chains with similar support for many clades will be closer together in the tree, while chains that differ in their support for many clades will be further apart.
 ```{r eval=FALSE, fig.width=8, fig.height=6}
 salamanders.rwty$asdsf.tree
 ```
-![asdsf tree](asdsf.tree.png)
+![asdsf tree](images/asdsf.tree.png)
