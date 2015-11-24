@@ -108,6 +108,8 @@ salamanders.rwty$autocorr.plot
 ```
 ![autocorr plot](images/autocorr.plot.png)
 
+-----
+
 ## Multiple chains only
 The following plots are only produced with analyze.rwty() is passed a rwty.trees object that contains more than one chain.
 
