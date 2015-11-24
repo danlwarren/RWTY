@@ -6,10 +6,10 @@ This package implements various tests, visualizations, and metrics for diagnosin
 
 At present, RWTY is downloadable from https://github.com/danlwarren/RWTY.  There are multiple ways to download it.  The easiest is to run the following code from your R console:
 
-```{r}
+```{r eval=FALSE}
 install.packages("devtools")
 library(devtools)
-install_github("danlwarren/RWTY")
+install_url("https://github.com/danlwarren/RWTY/archive/master.zip")
 ```
 
 
