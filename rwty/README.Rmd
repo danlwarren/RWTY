@@ -1,0 +1,12 @@
+RWTY: R We There Yet?
+======================
+This package implements various tests, visualizations, and metrics for diagnosing convergence of MCMC chains in phylogenetics. It implements and automates many of the functions of the AWTY package in the R environment. It also adds a whole bunch of new functionality.
+
+# Installation
+
+At present, RWTY is downloadable from http://github.com/danlwarren/RWTY.
+
+
+
+# Interacting with RWTY
+Most users will only need to interact directly with two RWTY functions: load.trees() and analyze.rwty():
