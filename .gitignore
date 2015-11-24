@@ -1,4 +1,6 @@
 .DS_Store
 .Rhistory
 .Rproj.user
-testdata/
+testdata
+rwty/R/.Rapp.history
+rwty/.RData
