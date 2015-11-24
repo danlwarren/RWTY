@@ -33,16 +33,91 @@ install_local("PATH")
 Most users will only need to interact directly with three RWTY functions: load.trees(), load.multi, and analyze.rwty().
 
 ### load.trees
-This function is used to load in a single MCMC chain, with PATH representing the path to the tree file.  
+This function is used to load in a single MCMC chain, with PATH representing the path to the tree file.  It will attempt to also find an associated log file automatically by searching for files with common suffixed.  For example, if your tree file is named "mytrees.t", RWTY will try to find "mytrees.p" or "mytrees.log" in the same directory, and will insert the file into the trees object automatically if it's found.  
+
 ```{r eval=FALSE}
 my.trees <- load.trees("PATH")
 ```
 
 ### load.multi
-This function is used to load more than one chain into a single object using a wildcard.  You provide a path to the directory containing the tree files and the extension to use when looking for the files.  For instance, to search a directory named PATH for all files ending in .t, you would input the following:
+This function is used to load more than one chain into a single object using a wildcard.  You provide a path to the directory containing the tree files and the extension to use when looking for the files.  As with load.trees, load.multi will attempt to automatically find log files.  However, it requires you to supply the log file extension yourself.  For instance, to search a directory named PATH for all files ending in .t and associated log files ending in .log, you would input the following:
+
 ```{r eval=FALSE}
-my.trees <- load.multi("PATH", ext.tree=".t")
+my.trees <- load.multi("PATH", ext.tree="t", ext.p="log")
 ```
 
+
 ### analyze.rwty
-This function conducts all rwty analyses that are applicable to the data that are passed to it.  Some plots and metrics are intended to compare the similarity between chains, and so are produced only for rwty.trees objects that contain multiple chains. 
+This function conducts all rwty analyses that are applicable to the data that are passed to it.  Some plots and metrics are intended to compare the similarity between chains, and so are produced only for rwty.trees objects that contain multiple chains.  Since RWTY runs can take a while, and since a single RWTY run produces a number of plots and metrics, it's a good idea to always store them in an object for later use.
+
+```{r results='hide', fig.keep='none', eval=TRUE,   message=FALSE, warning=FALSE}
+library(rwty)
+data(salamanders)
+salamanders.rwty <- analyze.rwty(salamanders, burnin=50)
+```
+
+-----
+
+# RWTY outputs
+RWTY outputs a number of useful plots for exploring the performance of MCMC chains.
+
+### LnL plots
+If a logfile is provided, RWTY will produce a plot of likelihood as a function of chain length for each chain.  
+```{r eval=TRUE, fig.width=8, fig.height=6}
+salamanders.rwty$LnL
+```
+
+
+### Parameter plots
+If a logfile is provided, RWTY will produce a plot of parameter values as a function of chain length for each chain and parameter.  
+```{r eval=TRUE, fig.width=8, fig.height=6}
+salamanders.rwty$pi.C
+```
+
+
+
+### Heatmap and point treespace plots
+These plots demonstrate the movement of the chain in treespace.  The tree space is based on an NMDS scaling of the distances between trees, much like TreeSetViz.  The space is created using all chains together, so the treespaces represented for different chains are comparable.
+```{r eval=TRUE, fig.width=8, fig.height=6}
+salamanders.rwty$heatmap
+salamanders.rwty$points.plot
+```
+
+### Sliding window and cumulative posterior probability plots
+These plots demonstrate the changing frequency of clades in the chain, either as the frequency within a sliding window or as the cumulative frequency over the whole chain.  
+```{r eval=TRUE, fig.width=8, fig.height=6}
+salamanders.rwty[["AMOTL2.run1 Sliding Window Posterior Probability"]]
+salamanders.rwty[["AMOTL2.run1 Cumulative Posterior Probability"]]
+```
+
+### Pseudo-ESS plots
+These plots simply give the median and confidence intervals for the approximate topological ESS, as calculated from a number of replicate reference trees (default n = 50).
+```{r eval=TRUE, fig.width=8, fig.height=6}
+salamanders.rwty$ess.plot
+```
+
+### Autocorrelation plots
+These plots demonstrate the change in average tree distance between trees at different sampling intervals.  They may be used to estimate optimal thinning to increase independence between successive trees in the chain.
+```{r eval=TRUE, fig.width=8, fig.height=6}
+salamanders.rwty$autocorr.plot
+```
+
+### Cumulative ASDSF plots
+These plots visualize the differences between chains as a function of chain length.  For each clade that occurrs in any of the chains, the standard deviation of the frequency of that split is calculated across all chains.  Each vertical sample represents the distribution of standard deviations of split frequencies if the chains were all stopped at that point.
+```{r eval=TRUE, fig.width=8, fig.height=6}
+salamanders.rwty$cumulative.asdsf
+```
+
+
+### Posterior probability comparison plots
+These plots represent another way of visualizing the agreement or disagreement between chains.  For each pair of chains, the cumulative final frequency of each clade is plotted against ts frequency in another chain.
+```{r eval=TRUE, fig.width=8, fig.height=6}
+salamanders.rwty$compare.plot
+```
+
+### ASDSF tree 
+These plots present a tree of similarity of clade frequencies between chains.   Chains with similar support for many clades will be closer together in the tree, while chains that differ in their support for many clades will be further apart.
+```{r eval=FALSE, fig.width=8, fig.height=6}
+salamanders.rwty$asdsf.tree
+```
+![asdsf tree](asdsf.tree.png)
