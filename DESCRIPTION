@@ -28,6 +28,7 @@ Depends:
     stringr,
     viridis,
     grid,
+    ggdendro,
 Suggests:
     knitr,
 VignetteBuilder: knitr
