@@ -9,6 +9,7 @@
 #'
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin 
+#' @param autocorr.intervals The largest sampling interval you want to plot
 #'
 #' @return A data frame with one row per chain, and columns describing the
 #' approximate ESS and the name of the chain. 
@@ -49,8 +50,9 @@ approx.ess.multi <- function(autocorr.df, autocorr.m, N){
     # estimate the approximate ESS from squared topological distances,
     # using a single chain
 
+    r = length(unique(autocorr.df$chain))
 
-    approx.ess.df = data.frame(approx.ess = rep(NA, length(unique(autocorr.df$chain))), chain = unique(autocorr.df$chain))
+    approx.ess.df = data.frame(operator = rep(NA, r), approx.ess = rep(NA, r), chain = unique(autocorr.df$chain))
   
     # Loop over chains, calculate approx ess
     for(i in 1:nrow(approx.ess.df)){
@@ -60,9 +62,13 @@ approx.ess.multi <- function(autocorr.df, autocorr.m, N){
         thisdata = autocorr.df[autocorr.df$chain == thischain,]
         
         
-        ess = approx.ess.single(thisdata, thism, N)
+        ess.info = approx.ess.single(thisdata, thism, N)
+
+        ess = ess.info$ess
+        operator = ess.info$operator
 
         approx.ess.df$approx.ess[approx.ess.df$chain == thischain] = ess
+        approx.ess.df$operator[approx.ess.df$chain == thischain] = operator
     
   }
 
@@ -98,8 +104,10 @@ approx.ess.single <- function(df, autocorr.time, N){
         
     # sometimes we can only give an upper bound
     if(autocorr.time<0){
-        ESS = paste("<", M)
+        operator = "<"
+    }else{
+        operator = "="
     }
 
-    return(ESS)
+    return(list("ess" = ESS, "operator" = operator))
 }
