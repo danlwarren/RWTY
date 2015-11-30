@@ -86,20 +86,20 @@ approx.ess.single <- function(df, autocorr.time, N){
     S = 0
 
     if(m>1){
-        for(i in 1:(m - 1)){
-            f = df$topo.distance[i]
-            S = S + ((N - m - (i - 1)) * f)
+        for(k in 1:(m - 1)){
+            f = df$topo.distance[k]
+            S = S + ((N - k) * f)
         }
     }
 
-    S = S + (N - m + 1) * (N - m + 2) / 2 * D
-    
-    M = (sqrt(1 + 8 * S / D) - 1)/2
-    
+    S = S + (N - m + 1) * (N - m) * D / 2
+    S = S / 2 / N^2
+    ESS = 1 / (1 - 4 * S / D)
+        
     # sometimes we can only give an upper bound
     if(autocorr.time<0){
-        M = paste("<", M)
+        ESS = paste("<", M)
     }
 
-    return(M)
+    return(ESS)
 }

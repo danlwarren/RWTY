@@ -2,7 +2,7 @@
 #' 
 #' This function uses an exponential semivariogram model to estimate the asymptotic topological distance, and
 #' uses that to estimate the sampling interval at which topological distances have reached some fixed
-#' proportion of that value (default 0.95).  It expects as input a data table output by rwty's topological.autocorr function
+#' proportion of that value (default 0.999).  It expects as input a data table output by rwty's topological.autocorr function
 #' 
 #'
 #' @param dat A data frame output from topological.autocorr.
@@ -23,7 +23,7 @@
 #' estimate.autocorr.m(sampling.table)
 
 
-estimate.autocorr.m <- function(dat, ac.cutoff = 0.95){
+estimate.autocorr.m <- function(dat, ac.cutoff = 0.999){
   
   # Build an empty data frame
   autocorr.m <- data.frame(autocorr.time = rep(NA, length(unique(dat$chain))), row.names = unique(dat$chain))
