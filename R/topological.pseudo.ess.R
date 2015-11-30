@@ -52,7 +52,7 @@ tree.ess <- function(tree.list){
     
     i <- sample(1:length(tree.list), 1)
 
-    distances <- data.frame(matrix(unlist(lapply(tree.list, path.distance, tree.list[[i]])), nrow=length(tree.list), byrow=T))    
+    distances <- tree.distances(tree.list, i)
 
     ESS <- apply(distances, 2, effectiveSize)
     return(as.numeric(ESS))
@@ -66,6 +66,38 @@ tree.ess.multi <- function(tree.list, n=20){
     data <- replicate(n, tree.ess(tree.list))
 
     return(data)
+  
+}
+
+
+tree.distances <- function(tree.list, i = 1){
+
+    distances <- data.frame(matrix(unlist(lapply(tree.list, path.distance, tree.list[[i]])), nrow=length(tree.list), byrow=T))    
+    names(distances) = c("topological.distance")
+    return(distances)
+}
+
+
+tree.distances.from.first <- function(chains, burnin = 0, n = 50){
+  
+    chains <- check.chains(chains)
+    
+    chain <- chains[[1]]
+
+    indices <- seq(from = burnin + 1, to = length(chain$trees), by = 1)   
+    
+    trees <- lapply(chains, function(x) x[['trees']][indices])
+    
+    distances <- lapply(trees, tree.distances)
+
+    names <- lapply(names(chains), rep, length(indices))
+
+    gens <- rep(indices*chains[[1]]$gens.per.tree, length(chains))
+
+    dist.df <- data.frame(topological.distance = unlist(distances), chain = unlist(names), generation = gens)
+    
+    return(dist.df)
+  
   
 }
 
