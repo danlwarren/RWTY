@@ -15,6 +15,7 @@
 #' @param squared TRUE/FALSE use squared tree distances (necessary to calculate approximate ESS; default FALSE)
 #' @param ac.cutoff The proportion of the estimated asymptotic path distance to use as a cutoff for estimating minimum sampling interval.  For instance, if ac.cutoff = 0.9, the sampling interval returned will be the minimum sampling interval necessary to achieve a path distance of 0.9 times the estimated asymptotic value.
 #' @param facet TRUE/FALSE to turn facetting of the plot on or off (default FALSE)
+#' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.
 #'
 #' @return A ggplot2 plot object, with one line (facetting off) or facet
 #' (facetting on) per rwty.trees object.
@@ -26,7 +27,7 @@
 #' data(fungus)
 #' makeplot.autocorr(fungus, burnin = 20)
 
-makeplot.autocorr <- function(chains, burnin = 0, autocorr.intervals = 100, squared = FALSE, ac.cutoff = 0.95, facet = FALSE){
+makeplot.autocorr <- function(chains, burnin = 0, autocorr.intervals = 100, squared = FALSE, ac.cutoff = 0.95, facet = FALSE, free_y = FALSE){
 
     chains = check.chains(chains)
 
@@ -43,7 +44,17 @@ makeplot.autocorr <- function(chains, burnin = 0, autocorr.intervals = 100, squa
             xlab("sampling interval") + ylab(y.label) + 
             theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
 
-    if(facet) autocorr.plot = autocorr.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
+    if(facet){ 
+        if(free_y){
+
+            autocorr.plot = autocorr.plot + facet_wrap(~chain, ncol=1, scales = "free_y") + theme(legend.position="none")
+
+        }else{
+
+            autocorr.plot = autocorr.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
+
+        }
+    }
     
     autocorr.plot <- list(autocorr.plot = autocorr.plot)
     
