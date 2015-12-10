@@ -12,6 +12,7 @@
 #' @param burnin The number of trees to eliminate as burnin 
 #' @param autocorr.intervals The maximum number of sampling intervals to use 
 #' @param squared TRUE/FALSE use squared tree distances (necessary to calculate approximate ESS)
+#' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance
 #'
 #' @return A data frame with one row per sampling interval, per chain. 
 #' The first column is the sampling interval. The second column is the median 
