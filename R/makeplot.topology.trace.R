@@ -1,12 +1,15 @@
 #' Plotting parameters
 #' 
 #' Plots tree topologies over the length of the MCMC chain. The plot shows the path distance
-#' of each tree in the chain from the first tree (after discarding burnin) 
+#' of each tree in each chain from the first tree of the first chain (after discarding burnin).
+#' If required, the behaviour can be changed to plot the path distance of each tree from the first
+#' tree in each chain, using the independent.chains option.
 #'
 #' @param chains A set of rwty.trees objects.
 #' @param burnin The number of trees to omit as burnin. 
-#' @param facet Boolean denoting whether to make a facet plot.
-#' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default TRUE). Only works if facet = TRUE.
+#' @param facet TRUE/FALSE denoting whether to make a facet plot (default TRUE)
+#' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.
+#' @param independent.chains TRUE/FALSE if FALSE (the default) then the plots show the distance of each tree from the first tree of the first chain. If TRUE, the plots show the distance of each tree from the first tree of the chain in which that tree appears. The TRUE option should only be used in the case that different chains represent analyses of different genes or datasets.
 #'
 #' @return topology.plot Returns a ggplot object.
 #'
@@ -17,7 +20,7 @@
 #' data(fungus)
 #' makeplot.topology.trace(fungus, burnin=20, parameter="pi.A.")
 
-makeplot.topology.trace <- function(chains, burnin = 0, facet=TRUE, free_y = TRUE){ 
+makeplot.topology.trace <- function(chains, burnin = 0, facet=TRUE, free_y = FALSE, independent.chains = FALSE){ 
 
     chains = check.chains(chains)
 
@@ -29,8 +32,13 @@ makeplot.topology.trace <- function(chains, burnin = 0, facet=TRUE, free_y = TRU
     ess = round(ess, digits = 0)
     labels = paste(names(chains), " (Approximate ESS ", operator, " ", ess, ")", sep="")
     names(chains) = labels
-    distances = tree.distances.from.first(chains, burnin)
 
+    if(independent.chains == TRUE){
+        distances = tree.distances.from.first(chains, burnin)
+    }else{
+        focal.tree = chains[[1]]$trees[burnin+1]
+        distances = tree.distances.from.first(chains, burnin, focal.tree = focal.tree)        
+    }
     topology.plot =  ggplot(data = distances, aes(x=generation, y=topological.distance)) + 
                     geom_line(aes(colour = chain)) + 
                     ggtitle("Tree topology") +

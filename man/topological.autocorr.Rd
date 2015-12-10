@@ -15,6 +15,8 @@ topological.autocorr(chains, burnin = 0, autocorr.intervals = 100,
 \item{autocorr.intervals}{The maximum number of sampling intervals to use}
 
 \item{squared}{TRUE/FALSE use squared tree distances (necessary to calculate approximate ESS)}
+
+\item{treedist}{the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance}
 }
 \value{
 A data frame with one row per sampling interval, per chain.
