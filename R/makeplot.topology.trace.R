@@ -1,9 +1,9 @@
 #' Plotting parameters
 #' 
 #' Plots tree topologies over the length of the MCMC chain. The plot shows the path distance
-#' of each tree in each chain from the first tree of the first chain (after discarding burnin).
+#' of each tree in each chain from the final tree of the first chain.
 #' If required, the behaviour can be changed to plot the path distance of each tree from the first
-#' tree in each chain, using the independent.chains option.
+#' tree in each chain, using the independent.chains option. However, this is not recommended in most cases.
 #'
 #' @param chains A set of rwty.trees objects.
 #' @param burnin The number of trees to omit as burnin. 
@@ -36,7 +36,7 @@ makeplot.topology.trace <- function(chains, burnin = 0, facet=TRUE, free_y = FAL
     if(independent.chains == TRUE){
         distances = tree.distances.from.first(chains, burnin)
     }else{
-        focal.tree = chains[[1]]$trees[burnin+1]
+        focal.tree = chains[[1]]$trees[length(chains[[1]]$trees)]
         distances = tree.distances.from.first(chains, burnin, focal.tree = focal.tree)        
     }
     topology.plot =  ggplot(data = distances, aes(x=generation, y=topological.distance)) + 

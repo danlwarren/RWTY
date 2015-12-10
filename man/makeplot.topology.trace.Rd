@@ -23,9 +23,9 @@ topology.plot Returns a ggplot object.
 }
 \description{
 Plots tree topologies over the length of the MCMC chain. The plot shows the path distance
-of each tree in each chain from the first tree of the first chain (after discarding burnin).
+of each tree in each chain from the final tree of the first chain.
 If required, the behaviour can be changed to plot the path distance of each tree from the first
-tree in each chain, using the independent.chains option.
+tree in each chain, using the independent.chains option. However, this is not recommended in most cases.
 }
 \examples{
 data(fungus)
