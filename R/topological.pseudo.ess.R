@@ -71,12 +71,17 @@ tree.ess.multi <- function(tree.list, n=20, treedist = 'PD'){
 }
 
 
-tree.distances <- function(tree.list, i = 1, treedist = 'PD'){
+tree.distances <- function(tree.list, i = 1, treedist = 'PD', focal.tree = NA){
+
+    if(is.na(focal.tree)){
+        focal.tree = tree.list[[i]]
+    }
+
 
     if(treedist == 'PD'){
-        distances <- data.frame(matrix(unlist(lapply(tree.list, path.distance, tree.list[[i]])), nrow=length(tree.list), byrow=T))
+        distances <- data.frame(matrix(unlist(lapply(tree.list, path.distance, focal.tree)), nrow=length(tree.list), byrow=T))
     }else if(treedist == 'RF'){
-        distances <- data.frame(matrix(unlist(lapply(tree.list, rf.distance, tree.list[[i]])), nrow=length(tree.list), byrow=T))
+        distances <- data.frame(matrix(unlist(lapply(tree.list, rf.distance, focal.tree)), nrow=length(tree.list), byrow=T))
     }else{
         stop("Unknown option for treedist. Valid options are 'PD' (for path distance) or 'RF' (for Robinson Foulds distance). Please try again")
     }
@@ -86,8 +91,11 @@ tree.distances <- function(tree.list, i = 1, treedist = 'PD'){
 }
 
 
-tree.distances.from.first <- function(chains, burnin = 0, n = 50){
-  
+tree.distances.from.first <- function(chains, burnin = 0, n = 50, focal.tree = NA){
+    # return tree distances from the first tree of each chain
+    # OR from the focal.tree if that argument is passed
+
+
     chains <- check.chains(chains)
     
     chain <- chains[[1]]
@@ -96,7 +104,12 @@ tree.distances.from.first <- function(chains, burnin = 0, n = 50){
     
     trees <- lapply(chains, function(x) x[['trees']][indices])
     
-    distances <- lapply(trees, tree.distances)
+    if(is.na(focal.tree)){
+        distances <- lapply(trees, tree.distances, focal.tree = focal.tree)
+    }else{
+        distances <- lapply(trees, tree.distances)        
+    }
+
 
     names <- lapply(names(chains), rep, length(indices))
 
