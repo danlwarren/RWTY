@@ -12,12 +12,12 @@
 #'
 #' @keywords parameter, plot, convergence, mcmc, phylogenetics
 #'
-#' @export makeplot.topology
+#' @export makeplot.topology.trace
 #' @examples
 #' data(fungus)
-#' makeplot.topology(fungus, burnin=20, parameter="pi.A.")
+#' makeplot.topology.trace(fungus, burnin=20, parameter="pi.A.")
 
-makeplot.topology <- function(chains, burnin = 0, facet=TRUE, free_y = TRUE){ 
+makeplot.topology.trace <- function(chains, burnin = 0, facet=TRUE, free_y = TRUE){ 
 
     chains = check.chains(chains)
 
