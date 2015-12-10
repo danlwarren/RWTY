@@ -13,6 +13,7 @@
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin 
 #' @param n The number of replicate analyses to do 
+#' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance
 #'
 #' @return A data frame with one row per chain, and columns describing the
 #' median ESS, the upper and lower 95% confidence intervals based on the
@@ -27,7 +28,7 @@
 
 
 
-topological.pseudo.ess <- function(chains, burnin = 0, n = 50){
+topological.pseudo.ess <- function(chains, burnin = 0, n = 50, treedist = 'PD'){
   
     chains <- check.chains(chains)
     
@@ -37,7 +38,7 @@ topological.pseudo.ess <- function(chains, burnin = 0, n = 50){
     
     trees <- lapply(chains, function(x) x[['trees']][indices])
     
-    raw.ess <- lapply(trees, tree.ess.multi, n)
+    raw.ess <- lapply(trees, tree.ess.multi, n, treedist)
     
     final.ess <- data.frame(t(matrix(unlist(raw.ess), nrow = length(chains), byrow = T)))
 
@@ -48,7 +49,7 @@ topological.pseudo.ess <- function(chains, burnin = 0, n = 50){
   
 }
 
-tree.ess <- function(tree.list){  
+tree.ess <- function(tree.list, treedist = 'PD'){  
     
     i <- sample(1:length(tree.list), 1)
 
@@ -59,20 +60,27 @@ tree.ess <- function(tree.list){
 }
 
 
-tree.ess.multi <- function(tree.list, n=20){  
+tree.ess.multi <- function(tree.list, n=20, treedist = 'PD'){  
     
     print(sprintf("Calculating pseudo ESS for %s trees and %s replicates, please be patient", length(tree.list), n))
 
-    data <- replicate(n, tree.ess(tree.list))
+    data <- replicate(n, tree.ess(tree.list, treedist))
 
     return(data)
   
 }
 
 
-tree.distances <- function(tree.list, i = 1){
+tree.distances <- function(tree.list, i = 1, treedist = 'PD'){
 
-    distances <- data.frame(matrix(unlist(lapply(tree.list, path.distance, tree.list[[i]])), nrow=length(tree.list), byrow=T))    
+    if(treedist == 'PD'){
+        distances <- data.frame(matrix(unlist(lapply(tree.list, path.distance, tree.list[[i]])), nrow=length(tree.list), byrow=T))
+    }else if(treedist == 'RF'){
+        distances <- data.frame(matrix(unlist(lapply(tree.list, rf.distance, tree.list[[i]])), nrow=length(tree.list), byrow=T))
+    }else{
+        stop("Unknown option for treedist. Valid options are 'PD' (for path distance) or 'RF' (for Robinson Foulds distance). Please try again")
+    }
+
     names(distances) = c("topological.distance")
     return(distances)
 }

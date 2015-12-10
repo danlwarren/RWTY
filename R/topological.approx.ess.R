@@ -10,6 +10,7 @@
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin 
 #' @param autocorr.intervals The largest sampling interval you want to plot
+#' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance
 #'
 #' @return A data frame with one row per chain, and columns describing the
 #' approximate ESS and the name of the chain. 
@@ -23,7 +24,7 @@
 
 
 
-topological.approx.ess <- function(chains, burnin = 0, autocorr.intervals = NA){
+topological.approx.ess <- function(chains, burnin = 0, autocorr.intervals = NA, treedist = 'PD'){
 
     chains = check.chains(chains)
 
@@ -35,7 +36,7 @@ topological.approx.ess <- function(chains, burnin = 0, autocorr.intervals = NA){
       autocorr.intervals = as.integer(N/21)
     } 
 
-    autocorr.df = topological.autocorr(chains, burnin, autocorr.intervals, squared = TRUE)
+    autocorr.df = topological.autocorr(chains, burnin, autocorr.intervals, squared = TRUE, treedist = treedist)
 
     autocorr.m = estimate.autocorr.m(autocorr.df)
 

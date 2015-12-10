@@ -26,7 +26,7 @@
 #' topological.autocorr(fungus, burnin = 20)
 
 
-topological.autocorr <- function(chains, burnin = 0, autocorr.intervals = 100, squared = FALSE){
+topological.autocorr <- function(chains, burnin = 0, autocorr.intervals = 100, squared = FALSE, treedist = 'PD'){
 
     chains = check.chains(chains)
 
@@ -36,7 +36,7 @@ topological.autocorr <- function(chains, burnin = 0, autocorr.intervals = 100, s
 
     trees = lapply(chains, function(x) x[['trees']][indices])
 
-    raw.autocorr = lapply(trees, tree.autocorr, autocorr.intervals, squared)
+    raw.autocorr = lapply(trees, tree.autocorr, autocorr.intervals, squared, treedist)
 
     final.autocorr = do.call("rbind", raw.autocorr)
 
@@ -50,7 +50,7 @@ topological.autocorr <- function(chains, burnin = 0, autocorr.intervals = 100, s
 }
 
 
-tree.autocorr <- function(tree.list, autocorr.intervals = 100, squared = FALSE){
+tree.autocorr <- function(tree.list, autocorr.intervals = 100, squared = FALSE, treedist = 'PD'){
 
     if(!is.numeric(autocorr.intervals)) stop("autocorr.intervals must be a positive integer")
     if(autocorr.intervals<1 | autocorr.intervals%%1!=0) stop("autocorr.intervals must be a positive integer")
@@ -61,7 +61,7 @@ tree.autocorr <- function(tree.list, autocorr.intervals = 100, squared = FALSE){
 
     # we analyze up to autocorr.intervals thinnings spread evenly, less if there are non-unique numbers
     thinnings <- unique(as.integer(seq(from = 1, to = max.thinning, length.out=autocorr.intervals)))
-    r <- lapply(as.list(thinnings), get.sequential.distances, tree.list, squared = squared) 
+    r <- lapply(as.list(thinnings), get.sequential.distances, tree.list, squared = squared, treedist = treedist) 
     r <- data.frame(matrix(unlist(r), ncol=2, byrow=T))
     names(r) = c("topo.distance", "sampling.interval")
 
@@ -74,6 +74,30 @@ path.distance <- function(tree1, tree2){
 
 }
 
+
+rf.distance <- function(tree1, tree2){
+
+    return(rf.dist(list(tree1, tree2)))
+
+}
+
+rf.dist.squared <- function(trees){
+
+    rf = rf.dist(trees)
+
+    return(rf*rf)
+
+}
+
+
+rf.dist <- function(trees){
+
+    tree1 = trees[[1]]
+    tree2 = trees[[2]]
+    rf = RF.dist(tree1, tree2)
+    return(rf)
+
+}
 
 path.dist.squared <- function (trees, check.labels = TRUE){
 
@@ -126,7 +150,7 @@ path.dist <- function (trees, check.labels = TRUE)
 }
 
 
-get.sequential.distances <- function(thinning, tree.list, N=100, squared = FALSE){
+get.sequential.distances <- function(thinning, tree.list, N=100, squared = FALSE, treedist = 'PD'){
     
     # now thin out the input list
     keep <- seq(from=1, to=length(tree.list), by=thinning)
@@ -153,10 +177,20 @@ get.sequential.distances <- function(thinning, tree.list, N=100, squared = FALSE
     # e.g. c(a, b, c, d, e) -> c(a,b), c(c,d)
     tree.pairs <- split(tree.list, ceiling(tree.index/2))
         
-    if(squared == TRUE){
-        distances <- lapply(tree.pairs, path.dist.squared)        
+    if(treedist == 'PD'){
+        if(squared == TRUE){
+            distances <- lapply(tree.pairs, path.dist.squared)        
+        }else{
+            distances <- lapply(tree.pairs, path.dist)
+        }
+    }else if(treedist == 'RF'){
+        if(squared == TRUE){
+            distances <- lapply(tree.pairs, rf.dist.squared)        
+        }else{
+            distances <- lapply(tree.pairs, rf.dist)
+        }
     }else{
-        distances <- lapply(tree.pairs, path.dist)
+        stop("Unknown option for treedist. Valid options are 'PD' (for path distance) or 'RF' (for Robinson Foulds distance). Please try again")
     }
 
     distances <- as.numeric(unlist(distances))
