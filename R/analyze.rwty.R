@@ -71,7 +71,7 @@ analyze.rwty <- function(chains, burnin=0, window.num=50, treespace.points = 100
       parameter.plots <- makeplot.all.params(chains, burnin = burnin, facet=facet, strip = 1)
     }
     else{
-      parameter.plots <- NULL
+      parameter.plots <- makeplot.topology.trace(chains, burnin = burnin, facet = facet)
     }
 
     # plot treespace for all chains
