@@ -39,7 +39,7 @@ analyze.rwty(chains, burnin = 0, window.num = 50, treespace.points = 100,
 \value{
 output The output is a list containing the following plots:
 
-Plots of likelihood and model parameters as a function of chain length (when p table is available).
+Plots of likelihood, model parameters, and tree topologies as a function of chain length (the first two only when a p table is available).
 
 Point and heatmap depictions of chains in treespace (points.plot and heatmap).
 

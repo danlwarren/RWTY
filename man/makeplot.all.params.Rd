@@ -17,10 +17,10 @@ makeplot.all.params(chains, burnin = 0, facet = TRUE, strip = 1)
 You can skip multiple columns by passing a vector of columns to skip, e.g., strip=c(1,4,6).}
 }
 \value{
-param.plot Returns a ggplot object.
+param.plot Returns a list of ggplot objects.
 }
 \description{
-Plots all parameter values over the length of the MCMC chain
+Plots all parameter values, including tree topologies (see makeplot.topology.trace) over the length of the MCMC chain
 }
 \examples{
 data(fungus)
