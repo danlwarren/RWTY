@@ -74,25 +74,22 @@ analyze.rwty <- function(chains, burnin=0, window.num=50, treespace.points = 100
       parameter.plots <- makeplot.topology.trace(chains, burnin = burnin, facet = facet)
     }
 
+    # plot autocorrelation
+    autocorr.plots <- makeplot.autocorr(chains, burnin, autocorr.intervals, facet)
+
     # plot treespace for all chains
     treespace.plots <- makeplot.treespace(chains, n.points = treespace.points, burnin = burnin)
     
     # plot posterior probabilities for all chains
     posterior.plots <- makeplot.posteriors(chains, burnin=burnin, window.num = window.num)
-    
-    # plot ESS and confidence intervals
-    ess.plots <- makeplot.ess(chains, burnin, ess.reps)
-    
-    # plot autocorrelation
-    autocorr.plots <- makeplot.autocorr(chains, burnin, autocorr.intervals, facet)
-    
+            
     # plot multichain plots when appropriate, populate plots list
     if(length(chains) > 1){
       multichain.plots <- makeplot.multichain(chains, burnin, window.num, min.freq, ...)
       plots <- c(parameter.plots, treespace.plots, posterior.plots, ess.plots, autocorr.plots, multichain.plots)
     }
     else{
-      plots <- c(parameter.plots, treespace.plots, posterior.plots, ess.plots, autocorr.plots)
+      plots <- c(parameter.plots, autocorr.plots, treespace.plots, posterior.plots)
     }
     
     # Print all to pdf if filename provided

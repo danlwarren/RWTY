@@ -77,7 +77,7 @@ makeplot.cumulative.asdsf <- function(chains, burnin, window.num, min.freq=0.1){
     all_SDs[[i]] <- apply(winTable,1, sd, na.rm = TRUE)
   }
   
-  #now that we have collected SDSF for all windows, return a pretty ggplot boxplot
+#now that we have collected SDSF for all windows, return a pretty ggplot boxplot
 generations <- as.numeric(as.character(names(slide.data$slide.table[1:slide.wins])))  
 d <- data.frame(x = unlist(all_SDs), 
                 grp = rep(generations[1:length(all_SDs)],times = sapply(all_SDs,length)))

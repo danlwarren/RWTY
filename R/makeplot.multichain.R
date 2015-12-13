@@ -1,7 +1,6 @@
 #' Function for running rwty analyses on multiple chains.
 #' 
-#' This function is automatically called when analyze.simple is called with multple chains.
-#' It runs analyze.single for each chain, and then does multi-chain analyses as well. 
+#' This function is automatically called when analyze.rwty is called with multple chains.
 #'
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin.  Default is zero. 
