@@ -4,7 +4,7 @@
 \alias{slide.freq}
 \title{Sliding window measurements of clade posterior probabilities.}
 \usage{
-slide.freq(chains, burnin = 0, window.size = 50)
+slide.freq(chains, burnin = 0, window.size = 20)
 }
 \arguments{
 \item{burnin}{The number of trees to eliminate as burnin. Defaults to zero.}

@@ -1,23 +1,26 @@
-#' New style plotting of cumulative and slide objects
+#' Plot clade probabilities in sliding windows over the course of an MCMC
 #' 
-#' Takes a table from cumulative.freq or slide.freq as input.  
-#' Numclades gives the number of clades to plot, starting from the
-#' top.  Since cumulative.freq and slide.freq both sort by sd these
-#' will by default be the most variable clades.
+#' Takes a list of rwty.trees objects.  
+#' Plots the posterior probabilities of clades over the course of the MCMC, calculated from windows of a specified size.
+#' Only plots the n.clades most variable clades, as measured by the standard deviation of the posterior probabilities of each clade across all windows.  
+#' Each line in the plot represents a single clade. The colour of the line represents the standard deviation of the posterior probabilities of that clade across all sliding windows.
 #'
-#' @param input.table An rwty.slide or rwty.cumulative object 
-#' @param numclades The number of clades to plot.  The clades with the highest sd in clade frequency are plotted first, so numclades = 10 will be the 10 most variable clades in the chain. 
+#' @param chains A list of rwty.trees objects. 
+#' @param burnin The number of trees to eliminate as burnin 
+#' @param n.clades The number of clades to plot 
+#' @param window.size The number of trees per window (default 20) 
+#' @param facet (TRUE/FALSE). TRUE: return a single plot with one facet per chain; FALSE: return a list of individual plots with one plot per chain 
 #'
-#' @return thisplot Returns a ggplot object.
+#' @return cladeprobs.plot Either a single ggplot2 object or a list of ggplot2 objects.
 #'
-#' @keywords cumulative, sliding window, mcmc, phylogenetics, plot
+#' @keywords sliding window, mcmc, phylogenetics, plot
 #'
-#' @export makeplot.cladeprobs
+#' @export makeplot.cladeprobs.sliding
 #' @examples
 #' data(fungus)
-#' makeplot.cladeprobs(fungus, burnin = 20, numclades=25)
+#' makeplot.cladeprobs.sliding(fungus, burnin = 20, n.clades=25)
 
-makeplot.cladeprobs <- function(chains, burnin = 0, n.clades=20, window.size = 20, facet = TRUE){ 
+makeplot.cladeprobs.sliding <- function(chains, burnin = 0, n.clades=20, window.size = 20, facet = TRUE){ 
 
 
     chains = check.chains(chains)
@@ -28,16 +31,16 @@ makeplot.cladeprobs <- function(chains, burnin = 0, n.clades=20, window.size = 2
     rownames(dat) = NULL
     
     if(facet==TRUE){
-        cladeprob.plot <- ggplot(data=dat, aes(x=as.numeric(as.character(Generations)), y=Posterior.Probability, group = Clade, color = StDev)) + 
+        cladeprobs.plot <- ggplot(data=dat, aes(x=as.numeric(as.character(Generations)), y=Posterior.Probability, group = Clade, color = StDev)) +
             facet_wrap(~Chain, ncol = 1) +
             geom_line() +
-            xlab("Generations")    
+            xlab("Generations")
     }else{
         dat.list = split(dat, f = dat$Chain)
-        cladeprob.plot = lapply(dat.list, single.plot)
+        cladeprobs.plot = lapply(dat.list, single.plot)
     }
 
-    return(cladeprob.plot)
+    return(cladeprobs.plot)
 }
 
 
