@@ -19,7 +19,7 @@
 makeplot.cladevar <- function(input.table, numclades=nrow(input.table)){ 
     # plot variation in clade frequencies between windows
     
-    x <- input.table[1:numclades,2:length(input.table) - 2] #Stripping off mean and SD
+    x <- input.table[1:numclades,!(names(dat) %in% c("mean", "sd"))] #Stripping off mean and SD
     
     # this is a df of absolute differences in pp variation between windows
     d <- t(apply(x, 1, function(z) abs(diff(as.numeric(z)))))
