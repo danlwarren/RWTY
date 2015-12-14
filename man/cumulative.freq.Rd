@@ -2,38 +2,31 @@
 % Please edit documentation in R/cumulative.freq.R
 \name{cumulative.freq}
 \alias{cumulative.freq}
-\title{Cumulative frequencies of clades in an MCMC chain}
+\title{Cumulative means of clade posterior probabilities.}
 \usage{
-cumulative.freq(tree.list, burnin = 0, window.size, gens.per.tree = 1,
-  slide.freq.table = NULL, ...)
+cumulative.freq(chains, burnin = 0, window.size = 20)
 }
 \arguments{
-\item{tree.list}{A single rwty.trees or multiPhylo object.}
+\item{chains}{A list of rwty.trees objects.}
 
-\item{burnin}{The number of trees to eliminate as burnin.  Defaults to zero.}
+\item{burnin}{The number of trees to eliminate as burnin. Defaults to zero.}
 
-\item{window.size}{The length of window (in trees) for the sliding window plot}
-
-\item{gens.per.tree}{The number of generations per tree in the .t file.}
-
-\item{slide.freq.table}{A table from slide.freq.  If a table is not provided, it will be built.}
-
-\item{...}{Further arguments to be passed to slide.freq}
+\item{window.size}{The number of trees to include in each window (note, specified as a number of sampled trees, not a number of generations)}
 }
 \value{
-output A list containing a table of cumulative frequencies and a clade translation table
+A list of rwty.cumulative objects, one per chain in the input list of chains.
+Each rwty.cumulative object contains the cumulative mean posterior probabilties of clades at sp
+windows, and a translation table that converts clade groupings to factors.
 }
 \description{
-Calculates the posterior probability estimate of each clade in an MCMC chain
-as a function of chain length.
+This function calculates the cumulative mean posterior probabilities of clades as an MCMC progresses.
 }
 \examples{
 data(fungus)
-cumulative.freq(fungus$Fungus.Run1$trees, burnin=20, window.size=20, gens.per.tree=10000)
+cumulative.data <- cumulative.freq(fungus, burnin=20)
 }
 \keyword{MCMC,}
 \keyword{convergence}
-\keyword{phylogenetics,}
 \keyword{posterior}
-\keyword{probabilities,}
+\keyword{probability,}
 
