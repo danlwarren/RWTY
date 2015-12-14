@@ -7,17 +7,18 @@
 slide.freq(chains, burnin = 0, window.size = 20)
 }
 \arguments{
+\item{chains}{A list of rwty.trees objects.}
+
 \item{burnin}{The number of trees to eliminate as burnin. Defaults to zero.}
 
 \item{window.size}{The number of trees to include in each window (note, specified as a number of sampled trees, not a number of generations)}
 
-\item{tree.list}{A rwty trees object or multiPhylo.}
-
 \item{gens.per.tree}{The number of steps in the MCMC chain corresponding to a tree in the tree list. Defaults to 1.}
 }
 \value{
-rwty.slide An object containing the frequencies of clades in the sliding
-windows, a translation table that converts clade groupings to factors, and a plot.
+A list of rwty.slide objects, one per chain in the input list of chains.
+Each rwty.slide object contains the frequencies of clades in the sliding
+windows, and a translation table that converts clade groupings to factors.
 }
 \description{
 This function takes sliding windows of a specified length over an MCMC chain
