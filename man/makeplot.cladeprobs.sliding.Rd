@@ -14,7 +14,7 @@ makeplot.cladeprobs.sliding(chains, burnin = 0, n.clades = 20,
 
 \item{n.clades}{The number of clades to plot}
 
-\item{window.size}{The number of trees per window (default 20)}
+\item{window.size}{The number of trees to include in each window (note, specified as a number of sampled trees, not a number of generations)}
 
 \item{facet}{(TRUE/FALSE). TRUE: return a single plot with one facet per chain; FALSE: return a list of individual plots with one plot per chain}
 }

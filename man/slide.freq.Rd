@@ -9,7 +9,7 @@ slide.freq(chains, burnin = 0, window.size = 20)
 \arguments{
 \item{burnin}{The number of trees to eliminate as burnin. Defaults to zero.}
 
-\item{window.size}{The number of trees to include in each window.}
+\item{window.size}{The number of trees to include in each window (note, specified as a number of sampled trees, not a number of generations)}
 
 \item{tree.list}{A rwty trees object or multiPhylo.}
 
