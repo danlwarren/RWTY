@@ -25,7 +25,7 @@ makeplot.cladeprobs.sliding <- function(chains, burnin = 0, n.clades=20, window.
 
     chains = check.chains(chains)
     slide.freq.list = slide.freq(chains, burnin = burnin, window.size = window.size)
-    dat.list = lapply(slide.freq.list, process.slide.freq.table, n.clades = n.clades)
+    dat.list = lapply(slide.freq.list, process.freq.table, n.clades = n.clades)
     dat = do.call("rbind", dat.list)
     dat$Chain = rep(names(dat.list), each = nrow(dat.list[[1]]))
     rownames(dat) = NULL
@@ -37,14 +37,14 @@ makeplot.cladeprobs.sliding <- function(chains, burnin = 0, n.clades=20, window.
             xlab("Generations")
     }else{
         dat.list = split(dat, f = dat$Chain)
-        cladeprobs.plot = lapply(dat.list, single.plot)
+        cladeprobs.plot = lapply(dat.list, single.cladeprob.plot)
     }
 
     return(cladeprobs.plot)
 }
 
 
-single.plot <- function(dat){
+single.cladeprob.plot <- function(dat){
 
     cladeprob.plot <- ggplot(data=dat, aes(x=as.numeric(as.character(Generations)), y=Posterior.Probability, group = Clade, color = StDev)) + 
         geom_line() +
@@ -55,12 +55,18 @@ single.plot <- function(dat){
 }
 
 
-process.slide.freq.table <- function(slide.freq.table, n.clades){
+process.freq.table <- function(freq.table, n.clades){
 
-    # strip out just the parts of a slide.freq.table that we need
+    # strip out just the parts of a slide.freq.table or a cumulative.freq.table that we need
+    if(class(freq.table) == "rwty.slide"){
+        dat = freq.table$slide.table
+    }else if(class(freq.table) == "rwty.cumulative"){
+        dat = freq.table$cumulative.table
+    }else{
+        stop("ERROR: unknown type of frequency table passed to process.freq.table()")
+    }
 
-    dat = slide.freq.table$slide.table
-    dat = dat[1:n.clades,2:length(dat) - 1] #Stripping off mean
+    dat = dat[1:n.clades,!(names(dat) %in% c("mean"))] #Stripping off mean
     dat$clade = rownames(dat)
     dat = melt(dat, id.vars=c("clade", "sd"))
     colnames(dat) = c("Clade", "StDev", "Generations", "Posterior.Probability")
