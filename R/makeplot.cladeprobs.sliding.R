@@ -22,7 +22,6 @@
 
 makeplot.cladeprobs.sliding <- function(chains, burnin = 0, n.clades=20, window.size = 20, facet = TRUE){ 
 
-
     chains = check.chains(chains)
     slide.freq.list = slide.freq(chains, burnin = burnin, window.size = window.size)
     dat.list = lapply(slide.freq.list, process.freq.table, n.clades = n.clades)

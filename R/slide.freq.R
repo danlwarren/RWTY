@@ -28,10 +28,6 @@ slide.freq <- function(chains, burnin=0, window.size = 20){
         stop("ERROR: burnin is too large to make at least two points for the plot, quitting. Try setting a smaller burnin and/or a smaller window size")
     }
 
-    if(window.size < 5){
-        stop("ERROR: minimum window size is 5")
-    }
-
     slide.freq.list = lapply(trees, get.slide.freq.table, burnin = burnin, window.size = window.size, gens.per.tree = chains[[1]]$gens.per.tree)
     return(slide.freq.list)
 
