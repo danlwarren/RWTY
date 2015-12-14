@@ -6,7 +6,7 @@
 #'
 #' @param tree.list A rwty trees object or multiPhylo.
 #' @param burnin The number of trees to eliminate as burnin. Defaults to zero. 
-#' @param window.size The number of trees to include in each window.
+#' @param window.size The number of trees to include in each window (note, specified as a number of sampled trees, not a number of generations)
 #' @param gens.per.tree The number of steps in the MCMC chain corresponding to a tree in the tree list. Defaults to 1.
 #'
 #' @return rwty.slide An object containing the frequencies of clades in the sliding
@@ -19,10 +19,19 @@
 #' data(fungus)
 #' slide.data <- slide.freq(fungus, burnin=20)
 
-slide.freq <- function(chains, burnin=0, window.size = 50){ 
+slide.freq <- function(chains, burnin=0, window.size = 20){ 
 
     chains = check.chains(chains)
     trees = lapply(chains, function(x) x[['trees']])
+
+    if((length(trees[[1]]) - burnin) < 2 * window.size ){
+        stop("ERROR: burnin is too large to make at least two points for the plot, quitting. Try setting a smaller burnin and/or a smaller window size")
+    }
+
+    if(window.size < 5){
+        stop("ERROR: minimum window size is 5")
+    }
+
     slide.freq.list = lapply(trees, get.slide.freq.table, burnin = burnin, window.size = window.size, gens.per.tree = chains[[1]]$gens.per.tree)
     return(slide.freq.list)
 
@@ -31,7 +40,9 @@ slide.freq <- function(chains, burnin=0, window.size = 50){
 
 
 
-get.slide.freq.table <- function(tree.list, burnin = 0, window.size = 50, gens.per.tree = 1){
+get.slide.freq.table <- function(tree.list, burnin = 0, window.size = 20, gens.per.tree = 1){
+
+    tree.list = tree.list[(burnin+1):length(tree.list)]
 
     # take a list of trees and return a table of posterior probabilities of clades
     # from a sliding window
