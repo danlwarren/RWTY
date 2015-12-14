@@ -1,36 +1,42 @@
-#' Cumulative frequencies of clades in an MCMC chain
+#' Cumulative means of clade posterior probabilities.
 #' 
-#' Calculates the posterior probability estimate of each clade in an MCMC chain
-#' as a function of chain length.
+#' This function calculates the cumulative mean posterior probabilities of clades as an MCMC progresses.
 #'
-#' @param tree.list A single rwty.trees or multiPhylo object. 
-#' @param burnin The number of trees to eliminate as burnin.  Defaults to zero. 
-#' @param window.size The length of window (in trees) for the sliding window plot 
-#' @param gens.per.tree The number of generations per tree in the .t file. 
-#' @param slide.freq.table A table from slide.freq.  If a table is not provided, it will be built.
-#' @param ... Further arguments to be passed to slide.freq
-#
-#' @return output A list containing a table of cumulative frequencies and a clade translation table
+#' @param chains A list of rwty.trees objects. 
+#' @param burnin The number of trees to eliminate as burnin. Defaults to zero. 
+#' @param window.size The number of trees to include in each window (note, specified as a number of sampled trees, not a number of generations)
 #'
-#' @keywords MCMC, phylogenetics, posterior probabilities, convergence
+#' @return A list of rwty.cumulative objects, one per chain in the input list of chains.
+#' Each rwty.cumulative object contains the cumulative mean posterior probabilties of clades at sp
+#' windows, and a translation table that converts clade groupings to factors.
+#'
+#' @keywords MCMC, posterior probability, convergence
 #'
 #' @export cumulative.freq
 #' @examples
 #' data(fungus)
-#' cumulative.freq(fungus$Fungus.Run1$trees, burnin=20, window.size=20, gens.per.tree=10000)
+#' cumulative.data <- cumulative.freq(fungus, burnin=20)
 
-cumulative.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1, slide.freq.table = NULL, ...){ 
+cumulative.freq <- function(chains, burnin=0, window.size = 20){ 
 
-    # NB if you pass in a slide.freq.table, all the other stats are ignored.
-    # TODO: need to make this clear to users.
-    
-    # Peel just the trees off of rwty.trees object
-    # so the function can take rwty.trees or multiPhylo
-    if(class(tree.list) == "rwty.trees"){tree.list <- tree.list$trees}
+    chains = check.chains(chains)
+    trees = lapply(chains, function(x) x[['trees']])
 
-    if(is.null(slide.freq.table)){
-        slide.freq.table = slide.freq(tree.list, burnin, window.size, gens.per.tree, ...) 
+    if((length(trees[[1]]) - burnin) < 2 * window.size ){
+        stop("ERROR: burnin is too large to make at least two points for the plot, quitting. Try setting a smaller burnin and/or a smaller window size")
     }
+
+    cum.freq.list = lapply(trees, get.cum.freq.table, burnin = burnin, window.size = window.size, gens.per.tree = chains[[1]]$gens.per.tree)
+    return(cum.freq.list)
+
+}
+
+
+get.cum.freq.table <- function(tree.list, burnin = 0, window.size = 20, gens.per.tree = 1){
+
+    # we start with a slide frequency table, and then just calculate cumulative means from that
+    
+    slide.freq.table = get.slide.freq.table(tree.list, burnin, window.size, gens.per.tree)
     
     # Peel the translation table off for later use
     translation.table <- slide.freq.table$translation
@@ -38,6 +44,7 @@ cumulative.freq <- function(tree.list, burnin=0, window.size, gens.per.tree = 1,
     # Strip the frequency data out
     slide.freq.table <- slide.freq.table$slide.table
     
+    # remove SD and mean from sliding window data
     slide.freq.table <- slide.freq.table[,!(names(slide.freq.table) %in% c("sd", "mean"))]
     
     #Get cumulative means for each row
