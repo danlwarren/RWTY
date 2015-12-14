@@ -4,7 +4,8 @@
 \alias{makeplot.cladeprobs}
 \title{New style plotting of cumulative and slide objects}
 \usage{
-makeplot.cladeprobs(input.table, numclades = 20)
+makeplot.cladeprobs(chains, burnin = 0, n.clades = 20, window.size = 50,
+  facet = TRUE)
 }
 \arguments{
 \item{input.table}{An rwty.slide or rwty.cumulative object}
@@ -22,8 +23,7 @@ will by default be the most variable clades.
 }
 \examples{
 data(fungus)
-slide.data <- slide.freq(fungus$Fungus.Run1$trees, burnin=20, window.size=20, gens.per.tree=10000)
-makeplot.cladeprobs(input.table = slide.data$slide.table, numclades=25)
+makeplot.cladeprobs(fungus, burnin = 20, numclades=25)
 }
 \keyword{cumulative,}
 \keyword{mcmc,}

@@ -19,8 +19,7 @@ makeplot.multichain(chains, burnin, window.num, min.freq = 0.1)
 output A list of plots illustrating agreement between chains.
 }
 \description{
-This function is automatically called when analyze.simple is called with multple chains.
-It runs analyze.single for each chain, and then does multi-chain analyses as well.
+This function is automatically called when analyze.rwty is called with multple chains.
 }
 \examples{
 data(fungus)
