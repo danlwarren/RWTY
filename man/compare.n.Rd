@@ -4,16 +4,14 @@
 \alias{compare.n}
 \title{Compares posterior probability estimates from multiple MCMC chains.}
 \usage{
-compare.n(x, setnames = NA, burnin, min.freq = 0)
+compare.n(chains, burnin = 0, min.freq = 0)
 }
 \arguments{
-\item{x}{A list of rwty.trees objects.}
-
-\item{setnames}{A list of names for the chains.}
+\item{chains}{A list of rwty.trees objects.}
 
 \item{burnin}{The number of trees to eliminate as burnin}
 
-\item{min.freq}{The minimum frequency for a node to be used for calculating Average Standard Deviation of Split Frequncies (ASDSF).  Default value is 0.1.}
+\item{min.freq}{The minimum frequency for a node to be used for calculating Average Standard Deviation of Split Frequncies (ASDSF).  Default value is 0.0.}
 }
 \value{
 output A list containing a table of frequencies of each clade in each chain along with mean and sd, a distance matrix measuring consensus between chains, a translation table, and a ggpairs plot.
