@@ -26,7 +26,7 @@ makeplot.cladeprobs.cumulative <- function(chains, burnin = 0, n.clades=20, wind
     cumulative.freq.list = cumulative.freq(chains, burnin = burnin, window.size = window.size)
     dat.list = lapply(cumulative.freq.list, process.freq.table, n.clades = n.clades)
     dat = do.call("rbind", dat.list)
-    dat$Chain = rep(names(dat.list), each = nrow(dat.list[[1]]))
+    dat$Chain = get.dat.list.chain.names(dat.list)
     rownames(dat) = NULL
     
     if(facet==TRUE){

@@ -26,7 +26,7 @@ makeplot.cladeprobs.sliding <- function(chains, burnin = 0, n.clades=20, window.
     slide.freq.list = slide.freq(chains, burnin = burnin, window.size = window.size)
     dat.list = lapply(slide.freq.list, process.freq.table, n.clades = n.clades)
     dat = do.call("rbind", dat.list)
-    dat$Chain = rep(names(dat.list), each = nrow(dat.list[[1]]))
+    dat$Chain = get.dat.list.chain.names(dat.list)
     rownames(dat) = NULL
     
     if(facet==TRUE){
@@ -40,6 +40,20 @@ makeplot.cladeprobs.sliding <- function(chains, burnin = 0, n.clades=20, window.
     }
 
     return(cladeprobs.plot)
+}
+
+get.dat.list.chain.names <- function(dat.list){
+
+    names = c()
+
+    for(i in 1:length(dat.list)){
+        name = names(dat.list)[[i]]
+        N = nrow(dat.list[[i]])
+        names = c(names, rep(name, N))
+
+    }
+
+    return(names)
 }
 
 
