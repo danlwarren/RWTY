@@ -32,7 +32,10 @@ compare.n <- function(chains, burnin = 0, min.freq=0){
   # new data frame mega dat
   mega_dat = data.frame(gg1$all, Clade=rep(dat$cladenames, length=nrow(gg1$all)))
 
-  
+  ggplot(mega_dat, aes_string(x = "x", y = "y")) + 
+      facet_grid(xvar ~ yvar, scales = "free") + 
+      geom_point(aes(colour=Clade), na.rm = TRUE, alpha=0.8) + 
+      geom_text()  
 
 
   # Make a plot
