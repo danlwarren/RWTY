@@ -5,10 +5,9 @@
 #' each clade in each of those tree files, the pairwise and grand mean average
 #' and a translation table.
 #'
-#' @param x A list of rwty.trees objects.
-#' @param setnames A list of names for the chains.
+#' @param chains A list of rwty.trees objects.
 #' @param burnin The number of trees to eliminate as burnin 
-#' @param min.freq The minimum frequency for a node to be used for calculating Average Standard Deviation of Split Frequncies (ASDSF).  Default value is 0.1.  
+#' @param min.freq The minimum frequency for a node to be used for calculating Average Standard Deviation of Split Frequncies (ASDSF).  Default value is 0.0.
 #'
 #' @return output A list containing a table of frequencies of each clade in each chain along with mean and sd, a distance matrix measuring consensus between chains, a translation table, and a ggpairs plot.
 #'
@@ -19,20 +18,70 @@
 #' data(fungus)
 #' compare.n(fungus, burnin=20)
 
-compare.n <- function(x, setnames=NA, burnin, min.freq=0){ # In this case x is a list of rwty.trees objects
+compare.n <- function(chains, burnin = 0, min.freq=0){
+
+  dat = get.comparison.table(chains, burnin, min.freq)
+
+  dat = dat$cladetable
+
+  dat = dat[,!(names(dat) %in% c("mean", "sd"))] #Remove mean and sd
+
+  # thanks to Gaston Sanchez here: https://gastonsanchez.wordpress.com/2012/08/27/scatterplot-matrices-with-ggplot/
+  gg1 = makePairs(dat[,-1])
+ 
+  # new data frame mega dat
+  mega_dat = data.frame(gg1$all, Clade=rep(dat$cladenames, length=nrow(gg1$all)))
+
+  
+
+
+  # Make a plot
+  assignInNamespace("ggally_cor", ggally_cor, "GGally")
+  assign("asdsf.min", min.freq, envir=globalenv())
+  plot <- ggpairs(clade.table, columns=2:(length(x) + 1),axisLabels='show',diag=list(continuous="blank",params=c(colour="black")),upper=list(params=list(Size=10)))
+
+  return(plot)
+
+}
+
+
+makePairs <- function(data) 
+{
+  # thanks to Gaston Sanchez here: https://gastonsanchez.wordpress.com/2012/08/27/scatterplot-matrices-with-ggplot/
+  grid <- expand.grid(x = 1:ncol(data), y = 1:ncol(data))
+  grid <- subset(grid, x != y)
+  all <- do.call("rbind", lapply(1:nrow(grid), function(i) {
+    xcol <- grid[i, "x"]
+    ycol <- grid[i, "y"]
+    data.frame(xvar = names(data)[ycol], yvar = names(data)[xcol], 
+               x = data[, xcol], y = data[, ycol], data)
+  }))
+  all$xvar <- factor(all$xvar, levels = names(data))
+  all$yvar <- factor(all$yvar, levels = names(data))
+  densities <- do.call("rbind", lapply(1:ncol(data), function(i) {
+    data.frame(xvar = names(data)[i], yvar = names(data)[i], x = data[, i])
+  }))
+  list(all=all, densities=densities)
+}
+ 
+
+get.comparison.table <- function(chains, burnin, min.freq){
+
   print("Calculating clade posterior probabilities from all runs...")
   
   print(paste("Working on chain", 1))
   
+  setnames = names(chains)
+
   # Get a starting table from the first chain
-  clade.table <- clade.freq(x[[1]], start=burnin, end=length(x[[1]]$trees))
+  clade.table <- clade.freq(chains[[1]], start=burnin, end=length(chains[[1]]$trees))
   if(is.na(setnames[1])){colnames(clade.table)[2] <- paste("set", 1, sep=".")}
   else{colnames(clade.table)[2] <- setnames[1]}
   
   # Populate the rest of the table, one chain at a time
-  for(i in 2:length(x)){
+  for(i in 2:length(chains)){
     print(paste("Working on chain", i))
-    thistable <- clade.freq(x[[i]], start = burnin, end  = length(x[[i]]$trees))
+    thistable <- clade.freq(chains[[i]], start = burnin, end  = length(chains[[i]]$trees))
     clade.table <- merge(clade.table, thistable, by = "cladenames", all = TRUE) 
     
     # Either name it with the label provided or with the variable name
@@ -46,12 +95,12 @@ compare.n <- function(x, setnames=NA, burnin, min.freq=0){ # In this case x is a
   # Calculate the pairwise average standard deviation of split frequencies
   # (ASDSF) for clades occuring at a minimum frequency of min.freq
   # across a pair of chains.  
-  d <- matrix(nrow=length(x), ncol=length(x))
+  d <- matrix(nrow=length(chains), ncol=length(chains))
   asdsf.clade.table <- clade.table
-  #asdsf.clade.table <- asdsf.clade.table[apply(asdsf.clade.table, MARGIN = 1, function(x) any(x > min.freq)), ]
-  for(i in 1:length(x)){
-    for(j in i+1:length(x)){
-      if(j <= length(x)){
+
+  for(i in 1:length(chains)){
+    for(j in i+1:length(chains)){
+      if(j <= length(chains)){
         temp.pair <- NULL
         temp.pair <- data.frame(cbind(asdsf.clade.table[,i+1],asdsf.clade.table[,j+1]))
         temp.pair <- temp.pair[apply(temp.pair, MARGIN = 1, function(x) any(x > min.freq)), ]
@@ -60,8 +109,8 @@ compare.n <- function(x, setnames=NA, burnin, min.freq=0){ # In this case x is a
       }
     }
   }
-  colnames(d) <- names(clade.table)[2:(length(x)+1)]
-  rownames(d) <- names(clade.table)[2:(length(x)+1)]
+  colnames(d) <- names(clade.table)[2:(length(chains)+1)]
+  rownames(d) <- names(clade.table)[2:(length(chains)+1)]
   d <- as.dist(d)
   
   # Summary stats, sort by SD
@@ -72,18 +121,12 @@ compare.n <- function(x, setnames=NA, burnin, min.freq=0){ # In this case x is a
   clade.table <- clade.table[order(clade.table$sd, decreasing=TRUE),]
   
   # Create a table that translates clade names
-  translation.table <- cbind(as.numeric(clade.table[,1]), as.character(clade.table[,1]), parse.clades(clade.table[,1], x[[1]]))
+  translation.table <- cbind(as.numeric(clade.table[,1]), as.character(clade.table[,1]), parse.clades(clade.table[,1], chains[[1]]))
   clade.table[,1] <- as.numeric(clade.table[,1])
   
-  # Make a plot
-  assignInNamespace("ggally_cor", ggally_cor, "GGally")
-  assign("asdsf.min", min.freq, envir=globalenv())
-
-  plot <- ggpairs(clade.table, columns=2:(length(x) + 1),axisLabels='show',diag=list(continuous="blank",params=c(colour="black")),upper=list(params=list(Size=10)))
-  
   output <- list("cladetable" = clade.table, "asdsf" = d, "asdsf.min.freq" = min.freq,
-                 "translation" = translation.table,
-                 "compare.plot" = plot)
+                 "translation" = translation.table)
   class(output) = "rwty.comparen"
-  output
+
+  return(output)
 }
