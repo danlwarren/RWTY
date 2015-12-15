@@ -16,7 +16,7 @@
 #' @export makeplot.splitfreq.matrix
 #' @examples
 #' data(fungus)
-#' makeplot.splitfreq.matrix(fungus, burnin=20)
+#' makeplot.splitfreq.matrix(salamanders[1:4], burnin = 20)
 
 makeplot.splitfreq.matrix <- function(chains, burnin = 0){
 
@@ -26,7 +26,11 @@ makeplot.splitfreq.matrix <- function(chains, burnin = 0){
 
   dat = dat[,(names(dat) %in% names(chains))] #keep only the chain values 
 
-  plot = pairs2(dat, lower.panel = panel.smooth, upper.panel = panel.cor, pch = 20, col = 3)
+  pairs2(dat, lower.panel = panel.smooth, upper.panel = panel.cor, pch = 20, col = rgb(0, 0, 1, 0.2))
+
+  plot = recordPlot()
+
+  plot.new()
 
   return(plot)
 
@@ -177,13 +181,13 @@ panel.cor <- function(x, y, digits = 2, cex.cor, ...){
   r <- cor(x, y)
   txt <- format(c(r, 0.123456789), digits = digits)[1]
   txt <- paste("r = ", txt, sep = "")
-  text(0.5, 0.6, txt)
+  text(0.5, 0.7, txt)
 
   # ASDSF
   asdsf = mean(apply(d,1,sd))
   txt2 <- format(c(asdsf, 0.123456789), digits = digits)[1]
   txt2 <- paste("ASDSF = ", txt2, sep = "")
-  text(0.5, 0.4, txt2)
+  text(0.5, 0.3, txt2)
 }
 
 
