@@ -1,8 +1,7 @@
-#' Plot the Average Standard Deviation of Split Frequencies over the course of an MCMC.
+#' Plot the Standard Deviation of Split Frequencies over the course of an MCMC.
 #' 
 #' This function takes two or more rwty.trees ojects and returns a plot of ASDSF as the run progresses.  
-#' The solid line shows the ASDSF at the current generation
-#' The dotted lines show the minimum and maximum SDSF at the current generation
+#' The solid line with points shows the Average Standard Deviation of Split Frequences at the current generation
 #' The grey ribbon shows the upper and lower 95% quantiles of the SDSFs at the current generation
 #'
 #'
@@ -31,8 +30,6 @@ makeplot.asdsf <- function(chains, burnin = 0, window.size = 20, min.freq = 0.0)
 
   asdsf.plot <- ggplot(dat, aes(x = as.numeric(as.character(Generation)))) + 
                 geom_ribbon(aes(ymin = lower.95, ymax = upper.95), alpha = 0.25) + 
-                geom_line(aes(y = min), linetype = 'dashed') + 
-                geom_line(aes(y = max), linetype = 'dashed') + 
                 geom_line(aes(y = ASDSF)) + 
                 geom_point(aes(y = ASDSF)) +
                 expand_limits(y=0) +
