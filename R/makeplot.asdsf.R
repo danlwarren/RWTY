@@ -23,6 +23,9 @@
 
 makeplot.asdsf <- function(chains, burnin = 0, window.size = 20, min.freq = 0.0){
   
+  print(sprintf("Creating ASDSF plot"))
+
+
   chains = check.chains(chains)
   labels = names(chains)
   slide.freq.list = slide.freq(chains, burnin, window.size)
@@ -34,9 +37,10 @@ makeplot.asdsf <- function(chains, burnin = 0, window.size = 20, min.freq = 0.0)
                 geom_point(aes(y = ASDSF)) +
                 expand_limits(y=0) +
                 xlab("Generation") + 
-                ylab("Standard Deviation of Split Frequencies")
+                ylab("Standard Deviation of Split Frequencies") +
+                ggtitle("Average Standard Deviation of Split Frequencies")
   
-  return(asdsf.plot)
+  return(list("asdsf.plot" = asdsf.plot))
 }
 
 get.asdsfs <- function(slide.freq.list, min.freq = 0.1){
