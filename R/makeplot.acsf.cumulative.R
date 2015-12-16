@@ -22,6 +22,9 @@
 
 makeplot.acsf.cumulative <- function(chains, burnin = 0, window.size = 20, facet = TRUE){ 
     # plot variation in clade frequencies 
+
+    print(sprintf("Creating cumulative ACSF plot"))
+
     
     chains = check.chains(chains)
     cumulative.freq.list = cumulative.freq(chains, burnin = burnin, window.size = window.size)
@@ -29,6 +32,7 @@ makeplot.acsf.cumulative <- function(chains, burnin = 0, window.size = 20, facet
     dat = do.call("rbind", dat.list)
     dat$Chain = get.dat.list.chain.names(dat.list)
     rownames(dat) = NULL
+    title = "Cumulative Change in Split Frequncies"
 
     if(facet==TRUE){
         acsf.plot <- ggplot(dat, aes(x = as.numeric(as.character(Generation)))) + 
@@ -37,12 +41,20 @@ makeplot.acsf.cumulative <- function(chains, burnin = 0, window.size = 20, facet
                     geom_point(aes(y = ACSF, colour = Chain)) +
                     theme(legend.position="none") +                
                     expand_limits(y=0) +
-                    xlab("Generation") + 
-                    ylab("Change in Split Frequencies") + 
-                    facet_wrap(~Chain, ncol = 1)
+                    xlab("Generation") +
+                    ylab("Change in Split Frequency") + 
+                    facet_wrap(~Chain, ncol = 1) +
+                    ggtitle(title)
+        acsf.plot <- list("acsf.cumulative.plot" = acsf.plot)
+
     }else{
         dat.list = split(dat, f = dat$Chain)
         acsf.plot = lapply(dat.list, single.acsf.plot)
+        for(i in 1:length(acsf.plot)){
+            acsf.plot[[i]] = acsf.plot[[i]] + ggtitle(paste(title, "for", names(acsf.plot)[i]))
+            names(acsf.plot)[i] = paste("acsf.cumulative.plot.", names(acsf.plot[i]), sep="")
+        }
+
     }
 
     return(acsf.plot)

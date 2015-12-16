@@ -23,12 +23,15 @@
 makeplot.acsf.sliding <- function(chains, burnin = 0, window.size = 20, facet = TRUE){ 
     # plot variation in clade frequencies between windows
     
+    print(sprintf("Creating sliding window ACSF plot"))
+
     chains = check.chains(chains)
     slide.freq.list = slide.freq(chains, burnin = burnin, window.size = window.size)
     dat.list = lapply(slide.freq.list, get.acsf)
     dat = do.call("rbind", dat.list)
     dat$Chain = get.dat.list.chain.names(dat.list)
     rownames(dat) = NULL
+    title = "Sliding window Change in Split Frequencies"
 
     if(facet==TRUE){
         acsf.plot <- ggplot(dat, aes(x = as.numeric(as.character(Generation)))) + 
@@ -38,11 +41,18 @@ makeplot.acsf.sliding <- function(chains, burnin = 0, window.size = 20, facet = 
                     theme(legend.position="none") +                
                     expand_limits(y=0) +
                     xlab("Generation") + 
-                    ylab("Change in Split Frequencies") + 
-                    facet_wrap(~Chain, ncol = 1)
+                    ylab("Change in Split Frequency") + 
+                    facet_wrap(~Chain, ncol = 1) +
+                    ggtitle(title)
+        acsf.plot <- list("acsf.sliding.plot" = acsf.plot)
     }else{
         dat.list = split(dat, f = dat$Chain)
         acsf.plot = lapply(dat.list, single.acsf.plot)
+        for(i in 1:length(acsf.plot)){
+            acsf.plot[[i]] = acsf.plot[[i]] + ggtitle(paste(title, "for", names(acsf.plot)[i]))
+            names(acsf.plot)[i] = paste("acsf.sliding.plot.", names(acsf.plot[i]), sep="")
+        }
+
     }
 
     return(acsf.plot)
@@ -57,7 +67,7 @@ single.acsf.plot <- function(dat){
                 theme(legend.position="none") +                
                 expand_limits(y=0) +
                 xlab("Generation") + 
-                ylab("Change in Split Frequencies")
+                ylab("Change in Split Frequency")
 }
 
 
