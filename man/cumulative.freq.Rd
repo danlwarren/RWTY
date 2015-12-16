@@ -2,7 +2,7 @@
 % Please edit documentation in R/cumulative.freq.R
 \name{cumulative.freq}
 \alias{cumulative.freq}
-\title{Cumulative means of clade posterior probabilities.}
+\title{Cumulative means of clade split frequencies.}
 \usage{
 cumulative.freq(chains, burnin = 0, window.size = 20)
 }
@@ -15,11 +15,11 @@ cumulative.freq(chains, burnin = 0, window.size = 20)
 }
 \value{
 A list of rwty.cumulative objects, one per chain in the input list of chains.
-Each rwty.cumulative object contains the cumulative mean posterior probabilties of clades at sp
+Each rwty.cumulative object contains the cumulative mean split frequencies of clades at sp
 windows, and a translation table that converts clade groupings to factors.
 }
 \description{
-This function calculates the cumulative mean posterior probabilities of clades as an MCMC progresses.
+This function calculates the cumulative mean split frequencies of clades as an MCMC progresses.
 }
 \examples{
 data(fungus)
@@ -27,6 +27,6 @@ cumulative.data <- cumulative.freq(fungus, burnin=20)
 }
 \keyword{MCMC,}
 \keyword{convergence}
-\keyword{posterior}
-\keyword{probability,}
+\keyword{frequency,}
+\keyword{split}
 

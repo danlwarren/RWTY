@@ -41,28 +41,25 @@ analyze.rwty(chains, burnin = 0, window.size = 20, treespace.points = 100,
 \value{
 output The output is a list containing the following plots:
 
-Plots of likelihood, model parameters, and tree topologies as a function of chain length (the first two only when a p table is available).
+Plots of likelihood, model parameters, and tree topologies as a function of chain length (the first two only when output from MCMC parameters has been loaded along with the tree topologies).
 
-Point and heatmap depictions of chains in treespace (points.plot and heatmap).
+Plot of autocorrelation of tree topolgies at different sampling intervals along a chain
 
-Sliding window posterior probability, depicting posterior probabilities of the most variable clades
-over a series of non-overlapping windows along the MCMC chain.
+Plot of split frequencies calculated in sliding windows for the most variable clades
 
-Cumulative posterior probability, depicting the posterior probabilities of the most variable clades
-as a function of chain length.
+Plot of change in split frequencies between sliding windows for all clades
 
-Sliding window variance, depicting the distribution of variances of clade posterior probability estimates
-over a series of non-overlapping windows along the MCMC chain.
+Plot of cumulative split frequencies as the MCMC progresses
 
-Cumulative variance, depicting the distribution of variances in posterior probability estimates as a function of
-chain length.
+Plot of change in cumulative split frequencies as the MCMC progresses
 
-Compare plot (when multiple rwty.trees objects are passed): an xy plot (or several) of the correlation between posterior
-estimates from multiple chains.
+Heatmap and point depictions of chains in treespace.
 
-Discordance tree (when multiple rwty.trees objects are passed): a tree that depicts the similarity in posterior support
-values obtained by multiple chains.  Chains that produce similar posterior estimates will appear grouped, while those that
-support very different topologies (or posterior support values) will be more distant from each other.
+Plot of the Average Standard Deviation of Split Frequencies (ASDSF) between chains as the MCMC progresses
+
+Plot of pairwise correlations between split frequencies among chains
+
+Plot of chains clustered by their pairwise ASDSF values
 }
 \description{
 This is the main user interface to rwty.  It allows users to conduct simple
@@ -73,5 +70,9 @@ data(fungus)
 p <- analyze.rwty(fungus, burnin = 50, window.num = 50)
 p
 }
-\keyword{keywords}
+\keyword{ESS}
+\keyword{MCMC,}
+\keyword{plots,}
+\keyword{rwty,}
+\keyword{topology,}
 

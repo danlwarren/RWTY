@@ -2,7 +2,7 @@
 % Please edit documentation in R/slide.freq.R
 \name{slide.freq}
 \alias{slide.freq}
-\title{Sliding window measurements of clade posterior probabilities.}
+\title{Sliding window measurements of clade split frequencies.}
 \usage{
 slide.freq(chains, burnin = 0, window.size = 20)
 }
@@ -20,7 +20,7 @@ windows, and a translation table that converts clade groupings to factors.
 }
 \description{
 This function takes sliding windows of a specified length over an MCMC chain
-and calculates the posterior probability of clades within that window.  It
+and calculates the split frequency of clades within that window.  It
 allows users to see whether the chain is visiting different areas of treespace.
 }
 \examples{
@@ -29,6 +29,6 @@ slide.data <- slide.freq(fungus, burnin=20)
 }
 \keyword{MCMC,}
 \keyword{convergence}
-\keyword{posterior}
-\keyword{probability,}
+\keyword{frequency,}
+\keyword{split}
 
