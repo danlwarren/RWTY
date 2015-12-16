@@ -16,6 +16,7 @@
 #' @param ac.cutoff The proportion of the estimated asymptotic path distance to use as a cutoff for estimating minimum sampling interval.  For instance, if ac.cutoff = 0.9, the sampling interval returned will be the minimum sampling interval necessary to achieve a path distance of 0.9 times the estimated asymptotic value.
 #' @param facet TRUE/FALSE to turn facetting of the plot on or off (default FALSE)
 #' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.
+#' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance
 #'
 #' @return A ggplot2 plot object, with one line (facetting off) or facet
 #' (facetting on) per rwty.trees object.
@@ -27,22 +28,32 @@
 #' data(fungus)
 #' makeplot.autocorr(fungus, burnin = 20)
 
-makeplot.autocorr <- function(chains, burnin = 0, autocorr.intervals = 100, squared = FALSE, ac.cutoff = 0.95, facet = FALSE, free_y = FALSE){
+makeplot.autocorr <- function(chains, burnin = 0, autocorr.intervals = 100, squared = FALSE, ac.cutoff = 0.95, facet = FALSE, free_y = FALSE, treedist = 'PD'){
+
+    print(sprintf("Creating topological autocorrelation plot"))
 
     chains = check.chains(chains)
 
-    dat <- topological.autocorr(chains, burnin, autocorr.intervals, squared = squared)
+    dat <- topological.autocorr(chains, burnin, autocorr.intervals, squared = squared, treedist = treedist)
+
+    if(treedist=='RF'){
+        td.name = "Robinson Foulds"
+    }else if(treedist=="PD"){
+        td.name = "Path Distance"
+    }else{
+        stop("Unknown option for treedist. Valid options are 'PD' (for path distance) or 'RF' (for Robinson Foulds distance). Please try again")
+    }
 
     if(squared == TRUE){
-        y.label = "median squared topological distance"
+        y.label = sprintf("Median Squared %s between Pairs of Trees", td.name)
     }else{
-        y.label = "median topological distance"
+        y.label = sprintf("Median %s between Pairs of Trees", td.name)
     }
 
     autocorr.plot = ggplot(data=dat, aes(x=sampling.interval, y=topo.distance)) + 
-            geom_line(alpha=0.2, aes(colour = chain)) + geom_point(size = 2, aes(colour = chain)) + 
-            xlab("sampling interval") + ylab(y.label) + 
-            theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
+            geom_line(aes(colour = chain)) + geom_point(aes(colour = chain)) + 
+            xlab("Sampling Interval between Trees") + ylab(y.label) + 
+            ggtitle("Topological autocorrelation plot")
 
     if(facet){ 
         if(free_y){
