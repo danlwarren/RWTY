@@ -1,16 +1,16 @@
-#' Cumulative means of clade posterior probabilities.
+#' Cumulative means of clade split frequencies.
 #' 
-#' This function calculates the cumulative mean posterior probabilities of clades as an MCMC progresses.
+#' This function calculates the cumulative mean split frequencies of clades as an MCMC progresses.
 #'
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin. Defaults to zero. 
 #' @param window.size The number of trees to include in each window (note, specified as a number of sampled trees, not a number of generations)
 #'
 #' @return A list of rwty.cumulative objects, one per chain in the input list of chains.
-#' Each rwty.cumulative object contains the cumulative mean posterior probabilties of clades at sp
+#' Each rwty.cumulative object contains the cumulative mean split frequencies of clades at sp
 #' windows, and a translation table that converts clade groupings to factors.
 #'
-#' @keywords MCMC, posterior probability, convergence
+#' @keywords MCMC, split frequency, convergence
 #'
 #' @export cumulative.freq
 #' @examples

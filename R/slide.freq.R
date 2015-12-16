@@ -1,7 +1,7 @@
-#' Sliding window measurements of clade posterior probabilities.
+#' Sliding window measurements of clade split frequencies.
 #' 
 #' This function takes sliding windows of a specified length over an MCMC chain
-#' and calculates the posterior probability of clades within that window.  It
+#' and calculates the split frequency of clades within that window.  It
 #' allows users to see whether the chain is visiting different areas of treespace.
 #'
 #' @param chains A list of rwty.trees objects. 
@@ -12,7 +12,7 @@
 #' Each rwty.slide object contains the frequencies of clades in the sliding
 #' windows, and a translation table that converts clade groupings to factors.
 #'
-#' @keywords MCMC, posterior probability, convergence
+#' @keywords MCMC, split frequency, convergence
 #'
 #' @export slide.freq
 #' @examples
@@ -40,7 +40,7 @@ get.slide.freq.table <- function(tree.list, burnin = 0, window.size = 20, gens.p
 
     tree.list = tree.list[(burnin+1):length(tree.list)]
 
-    # take a list of trees and return a table of posterior probabilities of clades
+    # take a list of trees and return a table of split frequencies of clades
     # from a sliding window
     n.windows = as.integer(length(tree.list)/window.size)
 

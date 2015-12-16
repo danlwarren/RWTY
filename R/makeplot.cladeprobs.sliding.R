@@ -1,9 +1,9 @@
-#' Plot clade probabilities in sliding windows over the course of an MCMC
+#' Plot split frequencies in sliding windows over the course of an MCMC
 #' 
 #' Takes a list of rwty.trees objects.  
-#' Plots the posterior probabilities of clades over the course of the MCMC, calculated from windows of a specified size.
-#' Only plots the n.clades most variable clades, as measured by the standard deviation of the posterior probabilities of each clade across all windows.  
-#' Each line in the plot represents a single clade. The colour of the line represents the standard deviation of the posterior probabilities of that clade across all sliding windows.
+#' Plots the split frequencies of clades over the course of the MCMC, calculated from windows of a specified size.
+#' Only plots the n.clades most variable clades, as measured by the standard deviation of the split frequencies of each clade across the MCMC.  
+#' Each line in the plot represents a single clade. The colour of the line represents the standard deviation of the split frequencies of that clade across the MCMC.
 #'
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin 
@@ -11,16 +11,16 @@
 #' @param window.size The number of trees to include in each window (note, specified as a number of sampled trees, not a number of generations)
 #' @param facet (TRUE/FALSE). TRUE: return a single plot with one facet per chain; FALSE: return a list of individual plots with one plot per chain 
 #'
-#' @return cladeprobs.plot Either a single ggplot2 object or a list of ggplot2 objects.
+#' @return splitfreqs.plot Either a single ggplot2 object or a list of ggplot2 objects.
 #'
 #' @keywords sliding window, mcmc, phylogenetics, plot
 #'
-#' @export makeplot.cladeprobs.sliding
+#' @export makeplot.splitfreqs.sliding
 #' @examples
 #' data(fungus)
-#' makeplot.cladeprobs.sliding(fungus, burnin = 20, n.clades=25)
+#' makeplot.splitfreqs.sliding(fungus, burnin = 20, n.clades=25)
 
-makeplot.cladeprobs.sliding <- function(chains, burnin = 0, n.clades=20, window.size = 20, facet = TRUE){ 
+makeplot.splitfreqs.sliding <- function(chains, burnin = 0, n.clades=20, window.size = 20, facet = TRUE){ 
 
     print(sprintf("Creating sliding window split frequency plot for %d clades", n.clades))
 
@@ -33,26 +33,26 @@ makeplot.cladeprobs.sliding <- function(chains, burnin = 0, n.clades=20, window.
     title = sprintf("Sliding Window Split Frequencies for %d clades", n.clades)
     
     if(facet==TRUE){
-        cladeprobs.plot <- ggplot(data=dat, aes(x=as.numeric(as.character(Generations)), y=Posterior.Probability, group = Clade, color = StDev)) +
+        splitfreqs.plot <- ggplot(data=dat, aes(x=as.numeric(as.character(Generations)), y=Posterior.Probability, group = Clade, color = StDev)) +
             facet_wrap(~Chain, ncol = 1) +
             geom_line() +
             xlab("Generation") +
             ylab("Split frequency") +
             ggtitle(title)
 
-        cladeprobs.plot = list("cladeprobs.sliding.plot" = cladeprobs.plot)
+        splitfreqs.plot = list("splitfreqs.sliding.plot" = splitfreqs.plot)
 
     }else{
         dat.list = split(dat, f = dat$Chain)
-        cladeprobs.plot = lapply(dat.list, single.cladeprob.plot)
-        for(i in 1:length(cladeprobs.plot)){
-            cladeprobs.plot[[i]] = cladeprobs.plot[[i]] + ggtitle(paste(title, "from", names(cladeprobs.plot)[i]))
-            names(cladeprobs.plot)[i] = paste("cladeprobs.sliding.plot.", names(cladeprobs.plot[i]), sep="")
+        splitfreqs.plot = lapply(dat.list, single.splitfreq.plot)
+        for(i in 1:length(splitfreqs.plot)){
+            splitfreqs.plot[[i]] = splitfreqs.plot[[i]] + ggtitle(paste(title, "from", names(splitfreqs.plot)[i]))
+            names(splitfreqs.plot)[i] = paste("splitfreqs.sliding.plot.", names(splitfreqs.plot[i]), sep="")
         }
     }
 
 
-    return(cladeprobs.plot)
+    return(splitfreqs.plot)
 }
 
 get.dat.list.chain.names <- function(dat.list){
@@ -70,14 +70,14 @@ get.dat.list.chain.names <- function(dat.list){
 }
 
 
-single.cladeprob.plot <- function(dat){
+single.splitfreq.plot <- function(dat){
 
-    cladeprob.plot <- ggplot(data=dat, aes(x=as.numeric(as.character(Generations)), y=Posterior.Probability, group = Clade, color = StDev)) + 
+    splitfreq.plot <- ggplot(data=dat, aes(x=as.numeric(as.character(Generations)), y=Posterior.Probability, group = Clade, color = StDev)) + 
         geom_line() +
         xlab("Generation") +
         ylab("Split frequency")
 
-    return(cladeprob.plot)
+    return(splitfreq.plot)
 
 }
 
