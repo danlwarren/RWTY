@@ -22,22 +22,35 @@
 
 makeplot.cladeprobs.sliding <- function(chains, burnin = 0, n.clades=20, window.size = 20, facet = TRUE){ 
 
+    print(sprintf("Creating sliding window split frequency plot for %d clades", n.clades))
+
     chains = check.chains(chains)
     slide.freq.list = slide.freq(chains, burnin = burnin, window.size = window.size)
     dat.list = lapply(slide.freq.list, process.freq.table, n.clades = n.clades)
     dat = do.call("rbind", dat.list)
     dat$Chain = get.dat.list.chain.names(dat.list)
     rownames(dat) = NULL
+    title = sprintf("Sliding Window Split Frequencies for %d clades", n.clades)
     
     if(facet==TRUE){
         cladeprobs.plot <- ggplot(data=dat, aes(x=as.numeric(as.character(Generations)), y=Posterior.Probability, group = Clade, color = StDev)) +
             facet_wrap(~Chain, ncol = 1) +
             geom_line() +
-            xlab("Generations")
+            xlab("Generation") +
+            ylab("Split frequency") +
+            ggtitle(title)
+
+        cladeprobs.plot = list("cladeprobs.sliding.plot" = cladeprobs.plot)
+
     }else{
         dat.list = split(dat, f = dat$Chain)
         cladeprobs.plot = lapply(dat.list, single.cladeprob.plot)
+        for(i in 1:length(cladeprobs.plot)){
+            cladeprobs.plot[[i]] = cladeprobs.plot[[i]] + ggtitle(paste(title, "from", names(cladeprobs.plot)[i]))
+            names(cladeprobs.plot)[i] = paste("cladeprobs.sliding.plot.", names(cladeprobs.plot[i]), sep="")
+        }
     }
+
 
     return(cladeprobs.plot)
 }
@@ -61,7 +74,8 @@ single.cladeprob.plot <- function(dat){
 
     cladeprob.plot <- ggplot(data=dat, aes(x=as.numeric(as.character(Generations)), y=Posterior.Probability, group = Clade, color = StDev)) + 
         geom_line() +
-        xlab("Generations")    
+        xlab("Generation") +
+        ylab("Split frequency")
 
     return(cladeprob.plot)
 
