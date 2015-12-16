@@ -5,7 +5,7 @@
 #' @param chains A list of one or more rwty.trees objects
 #' @param n.points The number of points on each plot
 #' @param burnin The number of samples to remove from the start of the chain as burnin
-#' @param fill.colour The name of any column in your parameter file that you would like to use as a fill colour for the points of the plot
+#' @param fill.color The name of any column in your parameter file that you would like to use as a fill colour for the points of the plot
 #'
 #' @return A list of two ggplot objects: one plots the points in treespace, the other shows a heatmap of the same points
 #'
@@ -29,24 +29,23 @@
 #' 
 #' # we can also plot different parameters as the fill colour.
 #' # e.g. we can plot the first two fungus chains with likelihood as the fill
-#' makeplot.treespace(fungus[1:2], burnin = 100, fill.colour = 'LnL')
+#' makeplot.treespace(fungus[1:2], burnin = 100, fill.color = 'LnL')
 #' 
 #' # or with tree length as the fill
-#' makeplot.treespace(fungus[1:2], burnin = 100, fill.colour = 'TL')
+#' makeplot.treespace(fungus[1:2], burnin = 100, fill.color = 'TL')
 #'
 #' # you can colour the plot with any parameter in your ptable
 #' # to see which parameters you have you can simply do this:
 #' head(fungus[[1]]$ptable)
 
 
-makeplot.treespace <- function(chains, n.points = 100, burnin = 0, fill.colour = NA){
+makeplot.treespace <- function(chains, n.points = 100, burnin = 0, fill.color = NA){
 
+
+    print(sprintf("Creating treespace plots"))
 
     # Pre - compute checks. Since the calculations can take a while...
     comparisons = ((n.points * length(chains)) * (n.points * length(chains)) / 2.0) - (n.points * length(chains))
-
-    print(sprintf("Creating treespace plot"))
-    print(sprintf("This will require the calculation of %s pairwise tree distances", comparisons))
 
     if(n.points < 2) {
       stop("You need at least two points to make a meaningful treespace plot")
@@ -57,23 +56,24 @@ makeplot.treespace <- function(chains, n.points = 100, burnin = 0, fill.colour =
     }
 
     if(comparisons > 1000000){
-        print(sprintf("WARNING: Calculating %s pairwise tree distances may take a long time, consider plotting fewer points.", comparisons))
+        print(sprintf("WARNING: Calculating %s pairwise tree distances for the treespace plot may take a long time, consider plotting fewer points.", comparisons))
     }
 
     # now go and get the x,y coordinates from the trees
-    points = treespace(chains, n.points, burnin, fill.colour)
+    points = treespace(chains, n.points, burnin, fill.color)
 
     points.plot <- ggplot(data=points, aes(x=x, y=y)) + 
       geom_path(alpha=0.25, aes(colour = generation), size=0.75) + 
       scale_colour_gradient(low='red', high='yellow') +
       theme(panel.background = element_blank(), axis.line = element_line(color='grey'), panel.margin = unit(0.1, "lines")) +
       theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5)) +
-      facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain)))))    
+      facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain))))) +
+      ggtitle(sprintf("Tree space for %d trees", n.points))
 
 
-    if(!is.na(fill.colour)){
+    if(!is.na(fill.color)){
       points.plot <- points.plot + 
-        geom_point(shape = 21, size=4, colour = 'white', aes_string(fill = fill.colour)) + 
+        geom_point(shape = 21, size=4, colour = 'white', aes_string(fill = fill.color)) + 
         scale_fill_gradientn(colours = viridis(256))
     } else {
       points.plot <- points.plot + geom_point(size=4) 
@@ -89,9 +89,9 @@ makeplot.treespace <- function(chains, n.points = 100, burnin = 0, fill.colour =
           facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain))))) + 
           scale_x_continuous(expand = c(0, 0)) +
           scale_y_continuous(expand = c(0, 0)) +
-          scale_fill_gradientn(colours = viridis(256))
-
+          scale_fill_gradientn(colours = viridis(256)) +
+          ggtitle(sprintf("Tree space heatmap for %d trees", n.points))
     }
 
-    return(list('heatmap' = heatmap, 'points.plot' = points.plot))
+    return(list('treespace.heatmap' = heatmap, 'treespace.points.plot' = points.plot))
 }
