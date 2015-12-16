@@ -25,7 +25,7 @@
 #' data(fungus)
 #' makeplot.pseudo.ess(fungus, burnin = 20, n = 10)
 
-makeplot.pseudo.ess <- function(chains, burnin = 0, n = 50){
+makeplot.pseudo.ess <- function(chains, burnin = 0, n = 20){
 
     print(sprintf("Creating pseudo ESS plot"))
 
