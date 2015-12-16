@@ -25,9 +25,7 @@ makeplot.topology.trace <- function(chains, burnin = 0, facet=TRUE, free_y = FAL
 
     print(sprintf("Creating trace for tree topologies"))
 
-
     chains = check.chains(chains)
-
 
     # get ESS values
     ess = topological.approx.ess(chains, burnin)
@@ -70,7 +68,7 @@ makeplot.topology.trace <- function(chains, burnin = 0, facet=TRUE, free_y = FAL
 
 
 
-    return(topology.trace.plot)
+    return(list("topology.trace.plot" = topology.trace.plot))
 
 
 }
