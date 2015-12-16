@@ -24,11 +24,11 @@
 #' @export topological.pseudo.ess
 #' @examples
 #' data(fungus)
-#' topological.pseudo.ess(fungus, burnin = 20, n = 10)
+#' topological.pseudo.ess(fungus, burnin = 20, n = 20)
 
 
 
-topological.pseudo.ess <- function(chains, burnin = 0, n = 50, treedist = 'PD'){
+topological.pseudo.ess <- function(chains, burnin = 0, n = 20, treedist = 'PD'){
   
     chains <- check.chains(chains)
     
