@@ -9,9 +9,9 @@
 #' @param chains A list of rwty.trees objects.
 #' @param burnin The number of trees to eliminate as burnin 
 #'
-#' @return output A list containing a table of frequencies of each clade in each chain along with mean and sd, a distance matrix measuring consensus between chains, a translation table, and a ggpairs plot.
+#' @return output A list of two plots: the first is a matrix of scatterplots, where each point is a clade, and the values are the split frequencies of that clade in the post-burnin trees of each chain. The second plot is a tree of the chains clustered by their ASDSFs.
 #'
-#' @keywords MCMC, phylogenetics, consensus, clade frequency, convergence
+#' @keywords MCMC, phylogenetics, consensus, clade frequency, convergence, ASDSF
 #'
 #' @export makeplot.splitfreq.matrix
 #' @examples
@@ -20,19 +20,32 @@
 
 makeplot.splitfreq.matrix <- function(chains, burnin = 0){
 
+  print(sprintf("Creating split frequency matrix and ASDSF clustering plots"))
+
   dat = get.comparison.table(chains, burnin, min.freq = 0)
 
+  asdsf = dat$asdsf
   dat = dat$cladetable
 
   dat = dat[,(names(dat) %in% names(chains))] #keep only the chain values 
 
   pairs2(dat, lower.panel = panel.smooth, upper.panel = panel.cor, pch = 20, col = rgb(0, 0, 1, 0.2))
+  title("Split frequency comparisons")
+  splitfreq.matrix = recordPlot()
 
-  plot = recordPlot()
+  if(all(asdsf  == 0)){
+    print("No non-zero ASDSF values, skipping ASDSF tree")  
+  }
+  else{
+    dtree <- as.phylo(hclust(asdsf))
+    plot.phylo(dtree, main="Chains clustered by ASDSF")
+    axisPhylo()
+    lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
+    mtext("Pairwise ASDSF", side=1, line=2, at=max(lastPP$xx)/2)
+    asdsf.tree <- recordPlot()
+  }
 
-  plot.new()
-
-  return(plot)
+  return(list("splitfreq.matrix" = splitfreq.matrix, "asdsf.tree" = asdsf.tree))
 
 }
 
@@ -192,10 +205,6 @@ panel.cor <- function(x, y, digits = 2, cex.cor, ...){
 
 
 get.comparison.table <- function(chains, burnin, min.freq){
-
-  print("Calculating clade posterior probabilities from all runs...")
-  
-  print(paste("Working on chain", 1))
   
   setnames = names(chains)
 
@@ -206,7 +215,6 @@ get.comparison.table <- function(chains, burnin, min.freq){
   
   # Populate the rest of the table, one chain at a time
   for(i in 2:length(chains)){
-    print(paste("Working on chain", i))
     thistable <- clade.freq(chains[[i]], start = burnin, end  = length(chains[[i]]$trees))
     clade.table <- merge(clade.table, thistable, by = "cladenames", all = TRUE) 
     
