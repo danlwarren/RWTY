@@ -19,16 +19,14 @@ which represents the median pseudo ESS from the n replicates, and
 whiskers representing the upper and lower 95% intervals of the n replicates.
 }
 \description{
-NB: We do not recommend the use of this ESS value. For calculating the ESS you should use
-the approximate ESS, see the topological.approx.ess() function in rwty.
 This function takes a list of rwty.trees objects, and plots the
-pseudo ESS of the trees from each chain, after removing burnin.
+pseudo ESS of the tree topologies from each chain, after removing burnin.
 Each caulcation is repeated n times, where in each replicate a random
 tree from the chain is chosen as a 'focal' tree. The calculation works
 by calculating the path distance of each tree in the chain
 from the focal tree, and calculating the ESS of the resulting vector
 of phylogenetic distances using the effectiveSize function from the
-coda package. NB this function requires the calculation of many many
+coda package. NB this function requires the calculation of many
 tree distances, so can take some time.
 }
 \examples{

@@ -4,37 +4,39 @@
 \alias{analyze.rwty}
 \title{analyze.rwty, the main interface for rwty analyses and plots.}
 \usage{
-analyze.rwty(chains, burnin = 0, window.num = 50, treespace.points = 100,
-  min.freq = 0.1, labels = NA, likelihood.param = NA, filename = NA,
-  overwrite = FALSE, facet = TRUE, ess.reps = 50,
-  autocorr.intervals = 100, ...)
+analyze.rwty(chains, burnin = 0, window.size = 20, treespace.points = 100,
+  n.clades = 20, min.freq = 0, labels = NA, fill.color = NA,
+  filename = NA, overwrite = FALSE, facet = TRUE,
+  autocorr.intervals = 100, ess.reps = 20, ...)
 }
 \arguments{
 \item{chains}{A list of rwty.trees objects.}
 
 \item{burnin}{The number of trees to eliminate as burnin.  Default value is zero.}
 
-\item{window.num}{The number of windows for the posterior plots.}
+\item{window.size}{The number of trees to include in each windows of sliding window plots}
 
 \item{treespace.points}{The number of trees to plot in the treespace plot. Default is 100}
 
+\item{n.clades}{The number of clades to include in plots of split frequencies over the course of the MCMC}
+
 \item{min.freq}{The minimum frequency for a node to be used for calculating ASDSF. Default is 0.1}
 
-\item{labels}{A vector of names to apply to a list of chains.}
+\item{labels}{A vector of names to apply to a list of chains. If nothing is specified, the chain names are used.}
 
-\item{likelihood.param}{The name of the likelihood column in the log file.}
+\item{fill.color}{The name of a column in your log file that you would like to use as the fill colour of points in the treespace plots}
 
-\item{filename}{Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not print outputs to file.}
+\item{filename}{Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not save outputs to file.}
 
 \item{overwrite}{Boolean variable saying whether output file should be overwritten, if it exists.}
 
-\item{facet}{A Boolean expression indicating whether multiple chains should be plotted as facet plots.}
+\item{facet}{A Boolean expression indicating whether multiple chains should be plotted as facet plots (default TRUE).}
 
-\item{ess.reps}{The number of replicate trees to use as the focal tree for estimating confidence in topological ESS estimates.}
-
-\item{autocorr.intervals}{The number of intervals to use for autocorrelation plots.}
+\item{autocorr.intervals}{The maximum number of intervals to use for autocorrelation plots.}
 
 \item{...}{Extra arguments to be passed to plotting and analysis functions.}
+
+\item{n}{The number of replicate analyses to do when calculating the pseudo ESS.}
 }
 \value{
 output The output is a list containing the following plots:

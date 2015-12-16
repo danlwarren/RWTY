@@ -12,7 +12,7 @@ makeplot.splitfreq.matrix(chains, burnin = 0)
 \item{burnin}{The number of trees to eliminate as burnin}
 }
 \value{
-output A list containing a table of frequencies of each clade in each chain along with mean and sd, a distance matrix measuring consensus between chains, a translation table, and a ggpairs plot.
+output A list of two plots: the first is a matrix of scatterplots, where each point is a clade, and the values are the split frequencies of that clade in the post-burnin trees of each chain. The second plot is a tree of the chains clustered by their ASDSFs.
 }
 \description{
 This function takes list of rwty.trees objects, and returns a scatterplot matrix
@@ -24,10 +24,11 @@ frequencies (Pearson's R), and the Average Standard Deviation of the split frequ
 data(fungus)
 makeplot.splitfreq.matrix(salamanders[1:4], burnin = 20)
 }
+\keyword{ASDSF}
 \keyword{MCMC,}
 \keyword{clade}
 \keyword{consensus,}
-\keyword{convergence}
+\keyword{convergence,}
 \keyword{frequency,}
 \keyword{phylogenetics,}
 

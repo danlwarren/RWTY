@@ -19,14 +19,14 @@ makeplot.topology.trace(chains, burnin = 0, facet = TRUE, free_y = FALSE,
 \item{independent.chains}{TRUE/FALSE if FALSE (the default) then the plots show the distance of each tree from the last tree of the burnin of the first chain. If TRUE, the plots show the distance of each tree from the first tree of the chain in which that tree appears. The TRUE option should only be used in the case that different chains represent analyses of different genes or datasets.}
 }
 \value{
-topology.plot Returns a ggplot object.
+topology.trace.plot Returns a ggplot object.
 }
 \description{
 Plots a trace of topological distances of trees over the length of the MCMC chain. The plot shows the path distance
-of each tree in each chain from the last tree of the burn in of the first chain. If burn in is set to zero, then
+of each tree in each chain from the last tree of the burnin of the first chain. If burnin is set to zero, then
 distances are calculated from the first tree of the first chain.
-If required, the behaviour can be changed to plot the path distance of each tree from the first
-tree in each chain, using the independent.chains option. This is not recommended in most cases.
+If required, the behaviour can be changed to plot the path distance of each tree from the last tree of the burnin
+of each chain, using the independent.chains option. This is not recommended in most cases.
 }
 \examples{
 data(fungus)

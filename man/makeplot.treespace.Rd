@@ -4,7 +4,7 @@
 \alias{makeplot.treespace}
 \title{Plot chains in treespace.}
 \usage{
-makeplot.treespace(chains, n.points = 100, burnin = 0, fill.colour = NA)
+makeplot.treespace(chains, n.points = 100, burnin = 0, fill.color = NA)
 }
 \arguments{
 \item{chains}{A list of one or more rwty.trees objects}
@@ -13,7 +13,7 @@ makeplot.treespace(chains, n.points = 100, burnin = 0, fill.colour = NA)
 
 \item{burnin}{The number of samples to remove from the start of the chain as burnin}
 
-\item{fill.colour}{The name of any column in your parameter file that you would like to use as a fill colour for the points of the plot}
+\item{fill.color}{The name of any column in your parameter file that you would like to use as a fill colour for the points of the plot}
 }
 \value{
 A list of two ggplot objects: one plots the points in treespace, the other shows a heatmap of the same points
@@ -38,10 +38,10 @@ p$heatmap
 
 # we can also plot different parameters as the fill colour.
 # e.g. we can plot the first two fungus chains with likelihood as the fill
-makeplot.treespace(fungus[1:2], burnin = 100, fill.colour = 'LnL')
+makeplot.treespace(fungus[1:2], burnin = 100, fill.color = 'LnL')
 
 # or with tree length as the fill
-makeplot.treespace(fungus[1:2], burnin = 100, fill.colour = 'TL')
+makeplot.treespace(fungus[1:2], burnin = 100, fill.color = 'TL')
 
 # you can colour the plot with any parameter in your ptable
 # to see which parameters you have you can simply do this:
