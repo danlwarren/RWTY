@@ -4,7 +4,7 @@
 \alias{makeplot.pseudo.ess}
 \title{Plot the pseudo ESS of tree topologies from MCMC chains.}
 \usage{
-makeplot.pseudo.ess(chains, burnin = 0, n = 50)
+makeplot.pseudo.ess(chains, burnin = 0, n = 20)
 }
 \arguments{
 \item{chains}{A list of rwty.trees objects.}
