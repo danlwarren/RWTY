@@ -38,7 +38,8 @@ makeplot.asdsf <- function(chains, burnin = 0, window.size = 20, min.freq = 0.0)
                 expand_limits(y=0) +
                 xlab("Generation") + 
                 ylab("Standard Deviation of Split Frequencies") +
-                ggtitle("Average Standard Deviation of Split Frequencies")
+                ggtitle("Average Standard Deviation of Split Frequencies") +
+                scale_y_log10()
   
   return(list("asdsf.plot" = asdsf.plot))
 }

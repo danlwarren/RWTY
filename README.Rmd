@@ -169,13 +169,12 @@ salamanders.rwty$acsf.cumulative.plot
 The following plots are only produced with analyze.rwty() is passed list of rwty.trees object that contains more than one chain.
 
 ### Average Standard Deviation of Split Frequency (ASDSF) plot
-This plot shows the ASDSF of all clades that appear in any of the chains, calculated from cumulative samples in the chain at various points in the analysis. The solid line shows the ASDSF, and the grey ribbon shows the 95% quantiles of the Standard Deviation of Split Frequencies (SDSF) across clades. I.e. the upper line of the grey ribbon shows the clade with the 97.5% highest SDSF between chains, and the lower line of the grey ribbon shows the clade with the 2.5% highest SDSF. Each generation in the plot represents the distribution of SDSFs if the chains were all stopped at that point. The lowerteh ASDSF, the more the chains agree on split frequencies. In general we expect the SDSF to get lower as the chains progress, and to eventually reach an asymptote at some low value once all the chains have been sampling from a stationary distribution for a long time.
-
+This plot shows the ASDSF of all clades that appear in any of the chains, calculated from cumulative samples in the chain at various points in the analysis. The solid line shows the ASDSF, and the grey ribbon shows the 95% quantiles of the Standard Deviation of Split Frequencies (SDSF) across clades. I.e. the upper line of the grey ribbon shows the clade with the 97.5% highest SDSF between chains, and the lower line of the grey ribbon shows the clade with the 2.5% highest SDSF. Each generation in the plot represents the distribution of SDSFs if the chains were all stopped at that point. The lowerteh ASDSF, the more the chains agree on split frequencies. In general we expect the SDSF to get lower as the chains progress, and to eventually reach an asymptote at some low value once all the chains have been sampling from a stationary distribution for a long time. Because we are usually intersted in the right-hand end of this graph, where the ASDSF values can be much lower than at the start of the chain, the y axis is plotted on a log10 scale. 
 
 ```{r eval=FALSE, fig.width=8, fig.height=6}
 salamanders.rwty$asdsf.plot
 ```
-![asdsf plot](images/asdsf.png)
+![asdsf plot](images/asdsf.plot.png)
 
 ### Split frequency scatterplot matrix
 These plots are another way of visualizing the agreement or disagreement between the regions of tree space that chains have sampled. For each pair of chains, the cumulative final frequency of each clade is plotted against ts frequency in another chain in the lower triangle, and the the correlation (Pearson's R) and ASDSF of each pair of chains is shown in the upper triangle.
