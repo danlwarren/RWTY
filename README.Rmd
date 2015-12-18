@@ -127,6 +127,19 @@ salamanders.rwty$treespace.points.plot
 ![heatmap](images/heatmap.png)
 ![points plot](images/pointsplot.png)
 
+Since the salamanders data comes from different genes, and those genes are obviously sampling different bits of tree space, it might be more informative to compare the replicate runs of each gene individually.
+
+```{r eval=FALSE, fig.width=8, fig.height=6}
+salamanders.treespace = makeplot.treespace(salamanders[1:2], burnin = 50, n.points = 200, fill.color = "LnL")
+
+salamanders.treespace$treespace.heatmap
+salamanders.treespace$treespace.points.plot
+```
+![heatmap 2](images/heatmap2.png)
+![points plot 2](images/pointsplot2.png)
+
+This shows that the replicate analyses of the same gene are sampling very similar parts of treespace.
+
 ### Sliding window and cumulative split frequency plots
 These plots show the split frequencies of clades in the chain, either as the frequency within a sliding window or as the frequency calculated from cumulative samples in the chain at various points in analysis. By default they show the 20 clades with the highest standard deviation of split frequencies within each sample (e.g. the standard deviation of the split frequencies of a given clade in a given chain, across all sliding windows). In an analysis that is mixing well, we expect the frequencies in the sliding window to move around a lot, but the frequencies in the cumulative plot should level off. If the frequencies in the cumulative plot have not levelled off, it might be necessary to run the chain for longer. 
 
