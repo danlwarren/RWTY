@@ -83,8 +83,11 @@ This function calculates the approximate ESS of tree topologies from all of the 
 
 ```{r eval=FALSE}
 approx.ess <- topological.approx.ess(salamanders, burnin = 50)
-approx.ess
+```
 
+Which gives you a data frame that looks like this:
+
+```
   operator approx.ess       chain
 1        =   243.0683 AMOTL2.run1
 2        =   134.2827 AMOTL2.run2
