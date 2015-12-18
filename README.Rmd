@@ -61,7 +61,7 @@ This function conducts a suite of analyses that are applicable to the data that 
 
 ```{r results='hide', fig.keep='none', eval=FALSE, message=FALSE, warning=FALSE}
 data(salamanders)
-salamanders.rwty <- analyze.rwty(salamanders, burnin=50, fill.color)
+salamanders.rwty <- analyze.rwty(salamanders, burnin=50, fill.color = 'LnL')
 
 # to see which plots you have
 names(salamanders.rwty)
