@@ -31,12 +31,11 @@ library(rwty)
 
 -----
 
-# The basics
-
+# Interacting with RWTY
 RWTY works with rwty.chain objects. These are lists of outputs from Bayesian phylogenetic MCMC analyses, e.g. from BEAST or MrBayes. A single rwty.chain object must contain the tree topologies from the chain (e.g. from the .t file from MrBayes), and can optionally contain the continuous parameters as well (e.g. from the .p file from MrBayes). A list of rwty.chain objects should all come from analyses of the same taxa. Most often, a list of rwty.chain objects will contain multiple independent replicates of a single MCMC analysis, but it could also contain independent MCMC analyses of different loci from the same set of taxa, or a combination of both (e.g. 4 replicate analyses of 3 different loci).  
 
-# Interacting with RWTY
 A lot of analyses can be done using just three functions RWTY functions: ```load.trees()```, ```load.multi()```, and ```analyze.rwty()```. Other functions you might use are any of the functions that start with ```makeplot.```, and the ```topological.approx.ess()``` function.
+
 
 ### ```load.trees()```
 This function is used to load in a single MCMC chain, where PATH representing the path to the tree file.  It will load the tree file and attempt find an associated log file, by searching for files with common suffixed.  For example, if your tree file is named "mytrees.t", RWTY will try to find "mytrees.p" or "mytrees.log" in the same directory, and will insert the file into the trees object automatically if it's found.  
