@@ -4,7 +4,7 @@
 \alias{treespace}
 \title{MDS scaling of treespace for a single tree list.}
 \usage{
-treespace(chains, n.points, burnin = 0, parameter = NA)
+treespace(chains, n.points = 100, burnin = 0, fill.color = NA)
 }
 \arguments{
 \item{chains}{A list of 1 or more rwty.trees objects.}
@@ -13,7 +13,7 @@ treespace(chains, n.points, burnin = 0, parameter = NA)
 
 \item{burnin}{The number of trees to eliminate as burnin. Default is zero.}
 
-\item{likelihood}{The name of the column from the log table that contains likelihood values for trees.}
+\item{fill.color}{The name of the column from the log table that that you would like to use to colour the points in the plot.}
 }
 \value{
 Returns a list containing the points and a plot.

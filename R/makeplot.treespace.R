@@ -3,9 +3,9 @@
 #' This function will take list of rwty.chains objects and produce plots of chains in treespace.
 #'
 #' @param chains A list of one or more rwty.trees objects
-#' @param n.points The number of points on each plot
 #' @param burnin The number of samples to remove from the start of the chain as burnin
-#' @param fill.color The name of any column in your parameter file that you would like to use as a fill colour for the points of the plot
+#' @param n.points The number of points on each plot
+#' @param fill.color The name of any column in your parameter file that you would like to use as a fill colour for the points of the plot.
 #'
 #' @return A list of two ggplot objects: one plots the points in treespace, the other shows a heatmap of the same points
 #'
@@ -15,17 +15,17 @@
 #' @examples
 #' data(fungus)
 #' 
-#' p <- makeplot.treespace(fungus, burnin = 20, likelihood = 'LnL')
+#' p <- makeplot.treespace(fungus, burnin = 20, fill.color = 'LnL')
 #' # Treespace plot for all the fungus data
 #' 
 #' # NB: these data indicate significant problems: the chains are sampling very different parts of tree space
 #' # View the points plotted in treespace (these data indicate significant problems)
-#' p$points.plot
+#' p$treespace.points.plot
 #' 
 #' # View the heatmap of the same data
 #' # Note that this data is so pathologically bad that the heatmap is not
 #' # very useful. It is more useful on better behaved datasets
-#' p$heatmap
+#' p$treespace.heatmap
 #' 
 #' # we can also plot different parameters as the fill colour.
 #' # e.g. we can plot the first two fungus chains with likelihood as the fill
@@ -36,10 +36,10 @@
 #'
 #' # you can colour the plot with any parameter in your ptable
 #' # to see which parameters you have you can simply do this:
-#' head(fungus[[1]]$ptable)
+#' names(fungus[[1]]$ptable)
 
 
-makeplot.treespace <- function(chains, n.points = 100, burnin = 0, fill.color = NA){
+makeplot.treespace <- function(chains, burnin = 0, n.points = 100,  fill.color = NA){
 
 
     print(sprintf("Creating treespace plots"))

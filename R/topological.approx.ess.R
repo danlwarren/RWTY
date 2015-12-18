@@ -9,7 +9,7 @@
 #'
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin 
-#' @param autocorr.intervals The largest sampling interval you want to plot
+#' @param autocorr.intervals The largest sampling interval you want to plot. Defaults to the largest possible sampling interval, which is the one for which we can sample at least 20 indpendent pairs of trees
 #' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance
 #'
 #' @return A data frame with one row per chain, and columns describing the

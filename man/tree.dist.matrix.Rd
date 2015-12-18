@@ -14,7 +14,7 @@ RF A distance matrix of RF distances
 }
 \description{
 This function takes a list of trees and returns a distance matrix
-populated with Robinsoun-Foulds tree distances between all trees
+populated with Robinson-Foulds tree distances between all trees
 in the list.
 }
 \examples{
