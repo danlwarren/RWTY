@@ -32,9 +32,9 @@ library(rwty)
 -----
 
 # Interacting with RWTY
-RWTY works with rwty.chain objects. These are lists of outputs from Bayesian phylogenetic MCMC analyses, e.g. from BEAST or MrBayes. A single rwty.chain object must contain the tree topologies from the chain (e.g. from the .t file from MrBayes), and can optionally contain the continuous parameters as well (e.g. from the .p file from MrBayes). A list of rwty.chain objects should all come from analyses of the same taxa. Most often, a list of rwty.chain objects will contain multiple independent replicates of a single MCMC analysis, but it could also contain independent MCMC analyses of different loci from the same set of taxa, or a combination of both (e.g. 4 replicate analyses of 3 different loci).  
+RWTY works with lists of rwty.trees objects. Each rwty.trees object contains outputs from a single Bayesian phylogenetic MCMC analysis, e.g. from BEAST or MrBayes. A rwty.trees object must contain the tree topologies from the chain (e.g. from the .t file from MrBayes), and can optionally contain the continuous parameters as well (e.g. from the .p file from MrBayes). A list of rwty.trees objects should all come from analyses of the same taxa. Most often, a list of rwty.trees objects will contain multiple independent replicates of a single MCMC analysis, but it could also contain independent MCMC analyses of different loci from the same set of taxa, or a combination of both (e.g. 4 replicate analyses of 3 different loci).
 
-A lot of analyses can be done using just three functions RWTY functions: ```load.trees()```, ```load.multi()```, and ```analyze.rwty()```. Other functions you might use are any of the functions that start with ```makeplot.```, and the ```topological.approx.ess()``` function.
+A lot of analyses in RWTY can be done using just three RWTY functions: ```load.trees()```, ```load.multi()```, and ```analyze.rwty()```. Other functions you might use are any of the functions that start with ```makeplot.```, and the ```topological.approx.ess()``` function.
 
 
 ### ```load.trees()```
@@ -45,7 +45,7 @@ my.trees <- load.trees("PATH")
 ```
 
 ### ```load.multi()```
-This function is used to load more than one chain into a list of rwty.chains objects. It allows you to specify the file extension of the tree and log files from your MCMC analysis, so it should work well with output from most programs. You provide a path to the folder containing the tree files, as well as the extension to use when looking for the files. As with load.trees, load.multi will attempt to automatically find log files. However, it requires you to supply the log file extension yourself.  For example, to search a directory named PATH for all files ending in .t and associated log files ending in .log, you would input the following:
+This function is used to load more than one chain into a list of rwty.treess objects. It allows you to specify the file extension of the tree and log files from your MCMC analysis, so it should work well with output from most programs. You provide a path to the folder containing the tree files, as well as the extension to use when looking for the files. As with load.trees, load.multi will attempt to automatically find log files. However, it requires you to supply the log file extension yourself.  For example, to search a directory named PATH for all files ending in .t and associated log files ending in .log, you would input the following:
 
 ```{r eval=FALSE}
 my.trees <- load.multi("PATH", ext.tree="t", ext.p="log")
