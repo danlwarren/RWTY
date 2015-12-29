@@ -79,7 +79,26 @@ compare.n <- function(x, setnames=NA, burnin, min.freq=0){ # In this case x is a
   assignInNamespace("ggally_cor", ggally_cor, "GGally")
   assign("asdsf.min", min.freq, envir=globalenv())
 
-  plot <- ggpairs(clade.table, columns=2:(length(x) + 1),axisLabels='show',diag=list(continuous="blank",params=c(colour="black")),upper=list(params=list(Size=10)))
+  #plot <- ggpairs(clade.table, columns=2:(length(x) + 1),axisLabels='show',diag=list(continuous="blank",params=c(colour="black")),upper=list(params=list(Size=10)))
+  
+  text_size <- 20/length(x)
+  
+  if (length(x)<=4){
+    col_labs <- colnames(clade.table)[2:(length(x) + 1)]
+  }
+  else{
+    #col_labs <-  rep("",length(x))
+    col_labs <- seq(1:length(x))
+  }
+  
+  plot <- ggpairs(clade.table,
+              columns=2:(length(x) + 1),
+               axisLabels='show',
+               diag=list(continuous="blank",params=c(colour="black")),
+               upper=list(params=c(size=text_size)),
+               columnLabels = col_labs) +
+              theme(axis.text=element_text(size = (text_size*.75)))
+  
   
   output <- list("cladetable" = clade.table, "asdsf" = d, "asdsf.min.freq" = min.freq,
                  "translation" = translation.table,

@@ -28,13 +28,9 @@ makeplot.multichain <- function(chains, burnin, window.num, min.freq = 0.1){
     print("No non-zero ASDSF values, skipping ASDSF tree")  
   }
   else{
-    dtree <- as.phylo(hclust(compn$asdsf))
-    plot.phylo(dtree, main="Chains clustered by ASDSF")
-    axisPhylo()
-    lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
-    mtext(paste("Pairwise ASDSF (minimum clade frequency = ",min.freq,")", sep=""), side=1, line=2, at=max(lastPP$xx)/2)
-    output[["asdsf.tree"]] <- recordPlot()
-  }
-  
+    hc <- hclust(compn$asdsf/2)
+    dendro_plot <- ggdendrogram(hc, rotate=TRUE, theme = FALSE) + ylab(paste("Pairwise ASDSF (minimum clade frequency = ",min.freq,")", sep="")) + xlab("")
+    output[["asdsf.tree"]] <- dendro_plot
+    }
   output
 }
