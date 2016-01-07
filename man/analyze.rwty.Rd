@@ -4,63 +4,62 @@
 \alias{analyze.rwty}
 \title{analyze.rwty, the main interface for rwty analyses and plots.}
 \usage{
-analyze.rwty(chains, burnin = 0, window.num = 50, treespace.points = 100,
-  min.freq = 0.1, labels = NA, likelihood.param = NA, filename = NA,
-  overwrite = FALSE, facet = TRUE, ess.reps = 50,
-  autocorr.intervals = 100, ...)
+analyze.rwty(chains, burnin = 0, window.size = 20, treespace.points = 100,
+  n.clades = 20, min.freq = 0, labels = NA, fill.color = NA,
+  filename = NA, overwrite = FALSE, facet = TRUE,
+  autocorr.intervals = 100, ess.reps = 20, ...)
 }
 \arguments{
 \item{chains}{A list of rwty.trees objects.}
 
 \item{burnin}{The number of trees to eliminate as burnin.  Default value is zero.}
 
-\item{window.num}{The number of windows for the posterior plots.}
+\item{window.size}{The number of trees to include in each windows of sliding window plots}
 
 \item{treespace.points}{The number of trees to plot in the treespace plot. Default is 100}
 
+\item{n.clades}{The number of clades to include in plots of split frequencies over the course of the MCMC}
+
 \item{min.freq}{The minimum frequency for a node to be used for calculating ASDSF. Default is 0.1}
 
-\item{labels}{A vector of names to apply to a list of chains.}
+\item{labels}{A vector of names to apply to a list of chains. If nothing is specified, the chain names are used.}
 
-\item{likelihood.param}{The name of the likelihood column in the log file.}
+\item{fill.color}{The name of a column in your log file that you would like to use as the fill colour of points in the treespace plots}
 
-\item{filename}{Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not print outputs to file.}
+\item{filename}{Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not save outputs to file.}
 
 \item{overwrite}{Boolean variable saying whether output file should be overwritten, if it exists.}
 
-\item{facet}{A Boolean expression indicating whether multiple chains should be plotted as facet plots.}
+\item{facet}{A Boolean expression indicating whether multiple chains should be plotted as facet plots (default TRUE).}
 
-\item{ess.reps}{The number of replicate trees to use as the focal tree for estimating confidence in topological ESS estimates.}
-
-\item{autocorr.intervals}{The number of intervals to use for autocorrelation plots.}
+\item{autocorr.intervals}{The maximum number of intervals to use for autocorrelation plots.}
 
 \item{...}{Extra arguments to be passed to plotting and analysis functions.}
+
+\item{n}{The number of replicate analyses to do when calculating the pseudo ESS.}
 }
 \value{
 output The output is a list containing the following plots:
 
-Plots of likelihood, model parameters, and tree topologies as a function of chain length (the first two only when a p table is available).
+Plots of likelihood, model parameters, and tree topologies as a function of chain length (the first two only when output from MCMC parameters has been loaded along with the tree topologies).
 
-Point and heatmap depictions of chains in treespace (points.plot and heatmap).
+Plot of autocorrelation of tree topolgies at different sampling intervals along a chain
 
-Sliding window posterior probability, depicting posterior probabilities of the most variable clades
-over a series of non-overlapping windows along the MCMC chain.
+Plot of split frequencies calculated in sliding windows for the most variable clades
 
-Cumulative posterior probability, depicting the posterior probabilities of the most variable clades
-as a function of chain length.
+Plot of change in split frequencies between sliding windows for all clades
 
-Sliding window variance, depicting the distribution of variances of clade posterior probability estimates
-over a series of non-overlapping windows along the MCMC chain.
+Plot of cumulative split frequencies as the MCMC progresses
 
-Cumulative variance, depicting the distribution of variances in posterior probability estimates as a function of
-chain length.
+Plot of change in cumulative split frequencies as the MCMC progresses
 
-Compare plot (when multiple rwty.trees objects are passed): an xy plot (or several) of the correlation between posterior
-estimates from multiple chains.
+Heatmap and point depictions of chains in treespace.
 
-Discordance tree (when multiple rwty.trees objects are passed): a tree that depicts the similarity in posterior support
-values obtained by multiple chains.  Chains that produce similar posterior estimates will appear grouped, while those that
-support very different topologies (or posterior support values) will be more distant from each other.
+Plot of the Average Standard Deviation of Split Frequencies (ASDSF) between chains as the MCMC progresses
+
+Plot of pairwise correlations between split frequencies among chains
+
+Plot of chains clustered by their pairwise ASDSF values
 }
 \description{
 This is the main user interface to rwty.  It allows users to conduct simple
@@ -71,5 +70,9 @@ data(fungus)
 p <- analyze.rwty(fungus, burnin = 50, window.num = 50)
 p
 }
-\keyword{keywords}
+\keyword{ESS}
+\keyword{MCMC,}
+\keyword{plots,}
+\keyword{rwty,}
+\keyword{topology,}
 

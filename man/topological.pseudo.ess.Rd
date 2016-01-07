@@ -4,7 +4,7 @@
 \alias{topological.pseudo.ess}
 \title{Calculate the pseudo Effective Sample Size (ESS) of tree topologies}
 \usage{
-topological.pseudo.ess(chains, burnin = 0, n = 50, treedist = "PD")
+topological.pseudo.ess(chains, burnin = 0, n = 20, treedist = "PD")
 }
 \arguments{
 \item{chains}{A list of rwty.trees objects.}
@@ -33,7 +33,7 @@ tree distances, so can take some time.
 }
 \examples{
 data(fungus)
-topological.pseudo.ess(fungus, burnin = 20, n = 10)
+topological.pseudo.ess(fungus, burnin = 20, n = 20)
 }
 \keyword{distance}
 \keyword{distance,}

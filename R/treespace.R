@@ -7,7 +7,7 @@
 #' @param chains A list of 1 or more rwty.trees objects.
 #' @param burnin The number of trees to eliminate as burnin. Default is zero. 
 #' @param n.points The minimum number of points you want in your plot.
-#' @param likelihood The name of the column from the log table that contains likelihood values for trees.
+#' @param fill.color The name of the column from the log table that that you would like to use to colour the points in the plot.
 #'
 #' @return Returns a list containing the points and a plot.
 #'
@@ -20,16 +20,16 @@
 
 
 
-treespace <- function(chains, n.points, burnin=0, parameter=NA){
+treespace <- function(chains, n.points = 100, burnin=0, fill.color=NA){
 
     chains = check.chains(chains)
     labels = names(chains)
     ptable = combine.ptables(chains, burnin=0) # we deal with burnin later for this 
 
     # check that the user-supplied parameter variable exists
-    if(!is.na(parameter)){
-        if(parameter %in% names(ptable)){} else
-        stop(sprintf("The parameter name you supplied ('%s') wasn't found in your parameter table", parameter))
+    if(!is.na(fill.color)){
+        if(fill.color %in% names(ptable)){} else
+        stop(sprintf("The fill.color name you supplied ('%s') wasn't found in your parameter table", fill.color))
     }
 
     chain = chains[[1]]
@@ -75,7 +75,7 @@ treespace <- function(chains, n.points, burnin=0, parameter=NA){
     points$sample = ptable$sample
     points$generation = ptable$generation
 
-    if(!is.na(parameter)) points[,parameter] = as.numeric(ptable[[parameter]])
+    if(!is.na(fill.color)) points[,fill.color] = as.numeric(ptable[[fill.color]])
 
     return(points)
         

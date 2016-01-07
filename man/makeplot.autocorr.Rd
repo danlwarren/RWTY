@@ -5,7 +5,8 @@
 \title{Make autocorrelation plots of tree topologies from MCMC analyses}
 \usage{
 makeplot.autocorr(chains, burnin = 0, autocorr.intervals = 100,
-  squared = FALSE, ac.cutoff = 0.95, facet = FALSE, free_y = FALSE)
+  squared = FALSE, ac.cutoff = 0.95, facet = FALSE, free_y = FALSE,
+  treedist = "PD")
 }
 \arguments{
 \item{chains}{A list of rwty.trees objects.}
@@ -21,6 +22,8 @@ makeplot.autocorr(chains, burnin = 0, autocorr.intervals = 100,
 \item{facet}{TRUE/FALSE to turn facetting of the plot on or off (default FALSE)}
 
 \item{free_y}{TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.}
+
+\item{treedist}{the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance}
 }
 \value{
 A ggplot2 plot object, with one line (facetting off) or facet

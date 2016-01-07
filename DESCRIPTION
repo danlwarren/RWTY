@@ -23,11 +23,11 @@ Depends:
     reshape2,
     phangorn,
     MASS,
-    GGally,
     coda,
     stringr,
     viridis,
     grid,
+    plyr,
 Suggests:
     knitr,
 VignetteBuilder: knitr

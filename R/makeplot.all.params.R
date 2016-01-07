@@ -31,7 +31,7 @@ makeplot.all.params <- function(chains, burnin = 0, facet=TRUE, strip = 1){
 
     param.plots[[length(param.plots)+1]] <- t.plot
 
-    plot.names = c(params, "Tree Topology")
+    plot.names = c(paste(params, ".trace", sep=""), "topology.trace.plot")
 
     names(param.plots) <- plot.names
 
