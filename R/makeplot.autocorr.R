@@ -39,7 +39,7 @@ makeplot.autocorr <- function(chains, burnin = 0, autocorr.intervals = 100, squa
     if(treedist=='RF'){
         td.name = "Robinson Foulds"
     }else if(treedist=="PD"){
-        td.name = "Path Distance"
+        td.name = "Path Difference"
     }else{
         stop("Unknown option for treedist. Valid options are 'PD' (for path distance) or 'RF' (for Robinson Foulds distance). Please try again")
     }
