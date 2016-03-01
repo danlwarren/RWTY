@@ -53,7 +53,7 @@ tree.ess <- function(tree.list, treedist = 'PD'){
     
     i <- sample(1:length(tree.list), 1)
 
-    distances <- tree.distances(tree.list, i)
+    distances <- tree.distances(tree.list, i, treedist = treedist)
 
     ESS <- apply(distances, 2, effectiveSize)
     return(as.numeric(ESS))
