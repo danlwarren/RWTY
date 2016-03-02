@@ -11,6 +11,7 @@
 #' @param facet TRUE/FALSE denoting whether to make a facet plot (default TRUE)
 #' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.
 #' @param independent.chains TRUE/FALSE if FALSE (the default) then the plots show the distance of each tree from the last tree of the burnin of the first chain. If TRUE, the plots show the distance of each tree from the first tree of the chain in which that tree appears. The TRUE option should only be used in the case that different chains represent analyses of different genes or datasets.
+#' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance
 #'
 #' @return topology.trace.plot Returns a ggplot object.
 #'
@@ -21,7 +22,7 @@
 #' data(fungus)
 #' makeplot.topology.trace(fungus, burnin=20, parameter="pi.A.")
 
-makeplot.topology.trace <- function(chains, burnin = 0, facet=TRUE, free_y = FALSE, independent.chains = FALSE){ 
+makeplot.topology.trace <- function(chains, burnin = 0, facet=TRUE, free_y = FALSE, independent.chains = FALSE, treedist = 'PD'){ 
 
     print(sprintf("Creating trace for tree topologies"))
 
@@ -36,7 +37,7 @@ makeplot.topology.trace <- function(chains, burnin = 0, facet=TRUE, free_y = FAL
     names(chains) = labels
 
     if(independent.chains == TRUE){
-        distances = tree.distances.from.first(chains, burnin)
+        distances = tree.distances.from.first(chains, burnin, treedist = treedist)
     }else{
         # use the tree 1 before the trees used in the chains
         index = burnin
@@ -49,7 +50,7 @@ makeplot.topology.trace <- function(chains, burnin = 0, facet=TRUE, free_y = FAL
                     geom_line(aes(colour = chain)) + 
                     ggtitle("Tree topology trace") +
                     xlab("Generation") +
-                    ylab("Path Difference of Tree from Focal Tree")
+                    ylab("Path Difference of Tree from Focal")
                     theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
 
     if(facet) topology.trace.plot = topology.trace.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")

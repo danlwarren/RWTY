@@ -93,7 +93,7 @@ tree.distances <- function(tree.list, i = 1, treedist = 'PD', focal.tree = NA){
 }
 
 
-tree.distances.from.first <- function(chains, burnin = 0, n = 50, focal.tree = NA){
+tree.distances.from.first <- function(chains, burnin = 0, n = 50, focal.tree = NA, treedist = 'PD'){
     # return tree distances from the first tree of each chain
     # OR from the focal.tree if that argument is passed
 
@@ -107,9 +107,9 @@ tree.distances.from.first <- function(chains, burnin = 0, n = 50, focal.tree = N
     trees <- lapply(chains, function(x) x[['trees']][indices])
     
     if(is.na(focal.tree)){
-        distances <- lapply(trees, tree.distances)        
+        distances <- lapply(trees, tree.distances, treedist = treedist)        
     }else{
-        distances <- lapply(trees, tree.distances, focal.tree = focal.tree)
+        distances <- lapply(trees, tree.distances, focal.tree = focal.tree, treedist = treedist)
     }
 
 
