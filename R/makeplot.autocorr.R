@@ -13,7 +13,6 @@
 #' @param burnin The number of trees to eliminate as burnin.
 #' @param autocorr.intervals The maximum number of sampling intervals to use.
 #' @param squared TRUE/FALSE use squared tree distances (necessary to calculate approximate ESS; default FALSE)
-#' @param ac.cutoff The proportion of the estimated asymptotic path distance to use as a cutoff for estimating minimum sampling interval.  For instance, if ac.cutoff = 0.9, the sampling interval returned will be the minimum sampling interval necessary to achieve a path distance of 0.9 times the estimated asymptotic value.
 #' @param facet TRUE/FALSE to turn facetting of the plot on or off (default FALSE)
 #' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.
 #' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance
@@ -28,7 +27,7 @@
 #' data(fungus)
 #' makeplot.autocorr(fungus, burnin = 20)
 
-makeplot.autocorr <- function(chains, burnin = 0, autocorr.intervals = 100, squared = FALSE, ac.cutoff = 0.95, facet = FALSE, free_y = FALSE, treedist = 'PD'){
+makeplot.autocorr <- function(chains, burnin = 0, autocorr.intervals = 100, squared = FALSE, facet = FALSE, free_y = FALSE, treedist = 'PD'){
 
     print(sprintf("Creating topological autocorrelation plot"))
 
