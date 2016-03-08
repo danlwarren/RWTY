@@ -1,8 +1,8 @@
 #' Calculate data for autocorrelation plots of tree topologies from MCMC analyses
 #' 
 #' This function takes a list of rwty.trees objects, and calculates the
-#' median phylogenetic distance at a series of roughly even sampling intervals.
-#' In really well behaved MCMC analyses, the median distance will stay constant
+#' mean phylogenetic distance at a series of roughly even sampling intervals.
+#' In really well behaved MCMC analyses, the mean distance will stay constant
 #' as the sampling interval increases. If there is autocorrelation, it will 
 #' increase as the sampling interval increases, and is expected to level
 #' off when the autocorrelation decreases to zero. The function calculates
@@ -15,7 +15,7 @@
 #' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance
 #'
 #' @return A data frame with one row per sampling interval, per chain. 
-#' The first column is the sampling interval. The second column is the median 
+#' The first column is the sampling interval. The second column is the mean 
 #' path distance between pairs of trees from that sampling interval. The third
 #' column is the chain ID.
 #'
@@ -181,7 +181,7 @@ get.sequential.distances <- function(thinning, tree.list, N=100, squared = FALSE
 
     distances <- as.numeric(unlist(distances))
     distances <- as.data.frame(distances)
-    result <- apply(distances, 2, median)
+    result <- apply(distances, 2, mean)
     result <- data.frame('distance' = t(t(result)))
     result$sampling.interval <- thinning
     return(result)
