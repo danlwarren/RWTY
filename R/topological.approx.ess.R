@@ -85,7 +85,7 @@ approx.ess.single <- function(df, autocorr.time, N){
         m = autocorr.time
     }
 
-    D = mean(df$topo.distance[df$sampling.interval>=m])
+    D = max(df$topo.distance)
     S = 0
 
     if(m>1){
