@@ -9,7 +9,7 @@
 #'
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin 
-#' @param max.interval The largest sampling interval you want to plot. Defaults to the largest possible sampling interval, which is the one for which we can sample at least 20 indpendent pairs of trees
+#' @param autocorr.intervals The number of sampling intervals you want to sample to calculate the ESS. Default 100. Higher is better, but will be slower. If you have a chain of N trees, the maximum interval is N-100. If you supply a larger number, it will default to N-100.
 #' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance
 #'
 #' @return A data frame with one row per chain, and columns describing the
@@ -24,7 +24,7 @@
 
 
 
-topological.approx.ess <- function(chains, burnin = 0, max.interval = NA, treedist = 'PD'){
+topological.approx.ess <- function(chains, burnin = 0, autocorr.intervals = 100, treedist = 'PD'){
 
     chains = check.chains(chains)
 
@@ -32,11 +32,7 @@ topological.approx.ess <- function(chains, burnin = 0, max.interval = NA, treedi
     # this interval means the minimum number of samples is 20
     N = length(chains[[1]]$trees)
 
-    if(is.na(max.interval)){
-      max.interval = as.integer(N/21)
-    } 
-
-    autocorr.df = topological.autocorr(chains, burnin, max.interval, squared = TRUE, treedist = treedist)
+    autocorr.df = topological.autocorr(chains, burnin, autocorr.intervals, squared = TRUE, treedist = treedist)
 
     autocorr.m = estimate.autocorr.m(autocorr.df)
 

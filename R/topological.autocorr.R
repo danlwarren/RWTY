@@ -58,7 +58,7 @@ tree.autocorr <- function(tree.list, autocorr.intervals = 100, squared = FALSE, 
 
     # this ensures that we can tell you if your ESS is < some threshold
     # the max(,2) bit is a fallback for extremely short tree lists
-    max.thinning <- max(as.integer(length(tree.list)/21), 2)
+    max.thinning <- max(as.integer(length(tree.list)/10), 2)
 
     # we analyze up to autocorr.intervals thinnings spread evenly, less if there are non-unique numbers
     thinnings <- unique(as.integer(seq(from = 1, to = max.thinning, length.out=autocorr.intervals)))
@@ -153,24 +153,9 @@ path.dist <- function (trees, check.labels = TRUE)
 
 get.sequential.distances <- function(thinning, tree.list, N=100, squared = FALSE, treedist = 'PD'){
     
-    # now thin out the input list
-    keep <- seq(from=1, to=length(tree.list), by=thinning)
-    
-    # first we cut off any trailing trees from the input list
-    if(length(keep)%%2 != 0) keep <- keep[1:(length(keep)-1)]
-    
-    # now we get the indices of the odd elements of keep
-    # we will use these to make a pairwise list of sequential samples
-    odds <- seq(from=1, to=length(keep), by=2)
-    
-    # we only look at N samples, allows for variation in effciency    
-#    if((length(odds))>N){
-#        odds <- sample(odds[1:(length(odds))], N, replace=FALSE)
-#        evens <- odds + 1 # indices of the tree2 trees in keep
-#        indices <- sort(c(odds, evens))
-#        keep <- keep[indices]
-#    }
-    
+    starts = 1:(length(tree.list) - thinning)
+    ends = starts + thinning
+    keep = c(rbind(starts, ends))
     tree.list <- tree.list[keep]
     tree.index <- seq_along(tree.list)
     
