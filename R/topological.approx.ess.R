@@ -80,7 +80,7 @@ approx.ess.single <- function(df, autocorr.time, N){
     # if the autocorrelation time is larger than the maximum sample
     # our it is recorded as -1
     if(autocorr.time < 0){
-        m = nrow(df)
+        m = nrow(df) + 1
     }else{
         m = autocorr.time
     }
