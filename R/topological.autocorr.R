@@ -58,7 +58,7 @@ tree.autocorr <- function(tree.list, autocorr.intervals = 100, squared = FALSE, 
 
     # this ensures that we can tell you if your ESS is < some threshold
     # the max(,2) bit is a fallback for extremely short tree lists
-    max.thinning <- max(as.integer(length(tree.list)/10), 2)
+    max.thinning <- max(as.integer(length(tree.list)/2), 2)
 
     # we analyze up to autocorr.intervals thinnings spread evenly, less if there are non-unique numbers
     thinnings <- unique(as.integer(seq(from = 1, to = max.thinning, length.out=autocorr.intervals)))
