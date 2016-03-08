@@ -102,7 +102,7 @@ approx.ess.single <- function(df, autocorr.time, N){
     S = S + (N - m + 1) * (N - m) * D / 2
     S = S / 2 / N^2
     ESS = 1 / (1 - 4 * S / D)
-        
+         
     # sometimes we can only give an upper bound
     if(autocorr.time<0){
         operator = "<"

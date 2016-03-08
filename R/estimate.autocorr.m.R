@@ -41,7 +41,7 @@ estimate.autocorr.m <- function(dat, ac.cutoff = 0.95){
                             data = thisdata)
     
     # If the cutoff is exceeded within the set of sampling intervals, return the interval
-    # Else return "> Max"
+    # Else return "-1"
     if(any(thisdata$topo.distance/this.ac.result$par[1] > ac.cutoff)){
       autocorr.m[i,1] <- thisdata$sampling.interval[min(which(thisdata$topo.distance/this.ac.result$par[1] > ac.cutoff))]
     } else {
