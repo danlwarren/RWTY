@@ -164,12 +164,12 @@ get.sequential.distances <- function(thinning, tree.list, N=100, squared = FALSE
     odds <- seq(from=1, to=length(keep), by=2)
     
     # we only look at N samples, allows for variation in effciency    
-    if((length(odds))>N){
-        odds <- sample(odds[1:(length(odds))], N, replace=FALSE)
-        evens <- odds + 1 # indices of the tree2 trees in keep
-        indices <- sort(c(odds, evens))
-        keep <- keep[indices]
-    }
+#    if((length(odds))>N){
+#        odds <- sample(odds[1:(length(odds))], N, replace=FALSE)
+#        evens <- odds + 1 # indices of the tree2 trees in keep
+#        indices <- sort(c(odds, evens))
+#        keep <- keep[indices]
+#    }
     
     tree.list <- tree.list[keep]
     tree.index <- seq_along(tree.list)
