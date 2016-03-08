@@ -6,7 +6,7 @@
 #' 
 #'
 #' @param dat A data frame output from topological.autocorr.
-#' @param ac.cutoff The proportion of the asymptotic topological distance to use as a cutoff for determining sampling interval.
+#' @param ac.cutoff Default 0.95. The proportion of the asymptotic topological distance to use as a cutoff for determining sampling interval. For example, if ac.cutoff = 0.9, then the minimum sampling interval returned is the one that guarantees a topological distance at least 0.9 times the asymptotic value.
 #'
 #' @return A data frame consisting of the value matching the ac.cutoff proportion of the asymptotic 
 #' topological distance for each chain.  This sampling interval estimates the interval at which topological distances
@@ -23,7 +23,7 @@
 #' estimate.autocorr.m(sampling.table)
 
 
-estimate.autocorr.m <- function(dat, ac.cutoff = 0.999){
+estimate.autocorr.m <- function(dat, ac.cutoff = 0.95){
   
   # Build an empty data frame
   autocorr.m <- data.frame(autocorr.time = rep(NA, length(unique(dat$chain))), row.names = unique(dat$chain))
