@@ -11,7 +11,8 @@
 #'
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin.
-#' @param autocorr.intervals The maximum number of sampling intervals to use.
+#' @param autocorr.intervals The number of sampling intervals to use. These will be spaced evenly between 1 and the max.sampling.interval 
+#' @param max.sampling.interval The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is 10% of the length of the chain).
 #' @param squared TRUE/FALSE use squared tree distances (necessary to calculate approximate ESS; default FALSE)
 #' @param facet TRUE/FALSE to turn facetting of the plot on or off (default FALSE)
 #' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.
@@ -27,13 +28,19 @@
 #' data(fungus)
 #' makeplot.autocorr(fungus, burnin = 20)
 
-makeplot.autocorr <- function(chains, burnin = 0, autocorr.intervals = 100, squared = FALSE, facet = FALSE, free_y = FALSE, treedist = 'PD'){
+makeplot.autocorr <- function(chains, burnin = 0, max.sampling.interval = NA, autocorr.intervals = 40, squared = FALSE, facet = FALSE, free_y = FALSE, treedist = 'PD'){
 
     print(sprintf("Creating topological autocorrelation plot"))
 
     chains = check.chains(chains)
 
-    dat <- topological.autocorr(chains, burnin, autocorr.intervals, squared = squared, treedist = treedist)
+    chain = chains[[1]]
+
+    if(is.na(max.sampling.interval)){
+        max.sampling.interval = floor(length(chain$trees) - (0.9*length(chain$trees)))
+    }
+
+    dat <- topological.autocorr(chains, burnin, max.sampling.interval, autocorr.intervals, squared = squared, treedist = treedist)
 
     if(treedist=='RF'){
         td.name = "Robinson Foulds"

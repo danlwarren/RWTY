@@ -10,7 +10,8 @@
 #'
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin 
-#' @param autocorr.intervals The maximum number of sampling intervals to use 
+#' @param autocorr.intervals The number of sampling intervals to use. These will be spaced evenly between 1 and the max.sampling.interval 
+#' @param max.sampling.interval The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is 10% of the length of the chain).
 #' @param squared TRUE/FALSE use squared tree distances (necessary to calculate approximate ESS)
 #' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance
 #'
@@ -27,17 +28,21 @@
 #' topological.autocorr(fungus, burnin = 20)
 
 
-topological.autocorr <- function(chains, burnin = 0, autocorr.intervals = 100, squared = FALSE, treedist = 'PD'){
+topological.autocorr <- function(chains, burnin = 0, max.sampling.interval = NA, autocorr.intervals = 100, squared = FALSE, treedist = 'PD'){
 
     chains = check.chains(chains)
 
     chain = chains[[1]]
 
+    if(is.na(max.sampling.interval)){
+        max.sampling.interval = floor(length(chain$trees) - (0.9*length(chain$trees)))
+    }
+
     indices = seq(from = burnin + 1, to = length(chain$trees), by = 1)   
 
     trees = lapply(chains, function(x) x[['trees']][indices])
 
-    raw.autocorr = lapply(trees, tree.autocorr, autocorr.intervals, squared, treedist)
+    raw.autocorr = lapply(trees, tree.autocorr, max.sampling.interval, autocorr.intervals, squared, treedist)
 
     final.autocorr = do.call("rbind", raw.autocorr)
 
@@ -51,14 +56,18 @@ topological.autocorr <- function(chains, burnin = 0, autocorr.intervals = 100, s
 }
 
 
-tree.autocorr <- function(tree.list, autocorr.intervals = 100, squared = FALSE, treedist = 'PD'){
+tree.autocorr <- function(tree.list, max.sampling.interval = NA, autocorr.intervals = 100, squared = FALSE, treedist = 'PD'){
 
     if(!is.numeric(autocorr.intervals)) stop("autocorr.intervals must be a positive integer")
     if(autocorr.intervals<1 | autocorr.intervals%%1!=0) stop("autocorr.intervals must be a positive integer")
 
     # this ensures that we can tell you if your ESS is < some threshold
     # the max(,2) bit is a fallback for extremely short tree lists
-    max.thinning <- max(as.integer(length(tree.list)/2), 2)
+    max.thinning <- max.sampling.interval
+
+    if(max.thinning > (length(tree.list) - 100)) {
+        max.thinning = length(tree.list) - 100
+    }
 
     # we analyze up to autocorr.intervals thinnings spread evenly, less if there are non-unique numbers
     thinnings <- unique(as.integer(seq(from = 1, to = max.thinning, length.out=autocorr.intervals)))
