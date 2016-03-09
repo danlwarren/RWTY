@@ -4,15 +4,18 @@
 \alias{makeplot.autocorr}
 \title{Make autocorrelation plots of tree topologies from MCMC analyses}
 \usage{
-makeplot.autocorr(chains, burnin = 0, autocorr.intervals = 100,
-  squared = FALSE, facet = FALSE, free_y = FALSE, treedist = "PD")
+makeplot.autocorr(chains, burnin = 0, max.sampling.interval = NA,
+  autocorr.intervals = 40, squared = FALSE, facet = FALSE,
+  free_y = FALSE, treedist = "PD")
 }
 \arguments{
 \item{chains}{A list of rwty.trees objects.}
 
 \item{burnin}{The number of trees to eliminate as burnin.}
 
-\item{autocorr.intervals}{The maximum number of sampling intervals to use.}
+\item{max.sampling.interval}{The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is 10% of the length of the chain).}
+
+\item{autocorr.intervals}{The number of sampling intervals to use. These will be spaced evenly between 1 and the max.sampling.interval}
 
 \item{squared}{TRUE/FALSE use squared tree distances (necessary to calculate approximate ESS; default FALSE)}
 
@@ -28,10 +31,10 @@ A ggplot2 plot object, with one line (facetting off) or facet
 }
 \description{
 This function takes a list of rwty.trees objects, and makes an
-autocorrelation plot for each chain. Each plot shows the median phylogenetic
+autocorrelation plot for each chain. Each plot shows the mean phylogenetic
 distance at a series of sampling intervals. In really well behaved MCMC 
-analyses, the median distance will stay constant as the sampling interval 
-increases. If there is autocorrelation, the median distance will 
+analyses, the mean distance will stay constant as the sampling interval 
+increases. If there is autocorrelation, the mean distance will 
 increase as the sampling interval increases, and is expected to level
 off when the autocorrelation decreases to zero. The function calculates
 path distances, though other distances could also be employed.

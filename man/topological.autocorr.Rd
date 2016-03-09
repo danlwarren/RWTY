@@ -4,15 +4,17 @@
 \alias{topological.autocorr}
 \title{Calculate data for autocorrelation plots of tree topologies from MCMC analyses}
 \usage{
-topological.autocorr(chains, burnin = 0, autocorr.intervals = 100,
-  squared = FALSE, treedist = "PD")
+topological.autocorr(chains, burnin = 0, max.sampling.interval = NA,
+  autocorr.intervals = 100, squared = FALSE, treedist = "PD")
 }
 \arguments{
 \item{chains}{A list of rwty.trees objects.}
 
 \item{burnin}{The number of trees to eliminate as burnin}
 
-\item{autocorr.intervals}{The maximum number of sampling intervals to use}
+\item{max.sampling.interval}{The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is 10% of the length of the chain).}
+
+\item{autocorr.intervals}{The number of sampling intervals to use. These will be spaced evenly between 1 and the max.sampling.interval}
 
 \item{squared}{TRUE/FALSE use squared tree distances (necessary to calculate approximate ESS)}
 
@@ -20,14 +22,14 @@ topological.autocorr(chains, burnin = 0, autocorr.intervals = 100,
 }
 \value{
 A data frame with one row per sampling interval, per chain. 
-The first column is the sampling interval. The second column is the median 
+The first column is the sampling interval. The second column is the mean 
 path distance between pairs of trees from that sampling interval. The third
 column is the chain ID.
 }
 \description{
 This function takes a list of rwty.trees objects, and calculates the
-median phylogenetic distance at a series of roughly even sampling intervals.
-In really well behaved MCMC analyses, the median distance will stay constant
+mean phylogenetic distance at a series of roughly even sampling intervals.
+In really well behaved MCMC analyses, the mean distance will stay constant
 as the sampling interval increases. If there is autocorrelation, it will 
 increase as the sampling interval increases, and is expected to level
 off when the autocorrelation decreases to zero. The function calculates
