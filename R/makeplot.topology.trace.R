@@ -50,7 +50,7 @@ makeplot.topology.trace <- function(chains, burnin = 0, facet=TRUE, free_y = FAL
                     geom_line(aes(colour = chain)) + 
                     ggtitle("Tree topology trace") +
                     xlab("Generation") +
-                    ylab("Path Difference of Tree from Focal")
+                    ylab("Path Difference of Tree from Focal Tree")
                     theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
 
     if(facet) topology.trace.plot = topology.trace.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
