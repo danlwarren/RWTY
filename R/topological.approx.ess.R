@@ -42,8 +42,6 @@ topological.approx.ess <- function(chains, burnin = 0, max.sampling.interval = N
 
     autocorr.m = estimate.autocorr.m(autocorr.df)
 
-    print(autocorr.m)
-
     approx.ess.df = approx.ess.multi(autocorr.df, autocorr.m, N)
 
     return(approx.ess.df)
