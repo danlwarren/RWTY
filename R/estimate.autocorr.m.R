@@ -23,7 +23,7 @@
 #' estimate.autocorr.m(sampling.table)
 
 
-estimate.autocorr.m <- function(dat, ac.cutoff = 1.0){
+estimate.autocorr.m <- function(dat, ac.cutoff = 0.9){
   
   # Build an empty data frame
   autocorr.m <- data.frame(autocorr.time = rep(NA, length(unique(dat$chain))), row.names = unique(dat$chain))
