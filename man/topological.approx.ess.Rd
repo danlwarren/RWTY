@@ -12,7 +12,7 @@ topological.approx.ess(chains, burnin = 0, max.sampling.interval = NA,
 
 \item{burnin}{The number of trees to eliminate as burnin}
 
-\item{max.sampling.interval}{The largest sampling interval you want to use to calculate the ESS. Every sampling interval up to and including this number will be sampled. Higher is better, but also slower. In general, setting this number to 100 should be fine for most cases. However, if you get an upper bound on the ESS estimate (i.e. ESS<x) rather than a point estimate (i.e. ESS = x) then that indicates a higher max.sampling.interval would be better, because the algorithm could not find the asymptote on the autocorrelation plot with the current max.sampling.interval. For this reason, the default max.sampling.interval is 10% of the length of the chain.}
+\item{max.sampling.interval}{The largest sampling interval you want to use to calculate the ESS. Every sampling interval up to and including this number will be sampled. Higher is better, but also slower. In general, setting this number to 100 should be fine for most cases. However, if you get an upper bound on the ESS estimate (i.e. ESS<x) rather than a point estimate (i.e. ESS = x) then that indicates a higher max.sampling.interval would be better, because the algorithm could not find the asymptote on the autocorrelation plot with the current max.sampling.interval. For this reason, the default max.sampling.interval is 10 percent of the length of the chain.}
 
 \item{treedist}{the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance}
 }
