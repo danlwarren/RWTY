@@ -12,6 +12,7 @@
 #' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.
 #' @param independent.chains TRUE/FALSE if FALSE (the default) then the plots show the distance of each tree from the last tree of the burnin of the first chain. If TRUE, the plots show the distance of each tree from the first tree of the chain in which that tree appears. The TRUE option should only be used in the case that different chains represent analyses of different genes or datasets.
 #' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance
+#' @param approx.ess TRUE/FALSE do you want the approximate topological ess to be calculated and displayed for each chain?
 #'
 #' @return topology.trace.plot Returns a ggplot object.
 #'
@@ -22,19 +23,21 @@
 #' data(fungus)
 #' makeplot.topology.trace(fungus, burnin=20, parameter="pi.A.")
 
-makeplot.topology.trace <- function(chains, burnin = 0, facet=TRUE, free_y = FALSE, independent.chains = FALSE, treedist = 'PD'){ 
+makeplot.topology.trace <- function(chains, burnin = 0, facet=TRUE, free_y = FALSE, independent.chains = FALSE, treedist = 'PD', approx.ess = TRUE){ 
 
     print(sprintf("Creating trace for tree topologies"))
 
     chains = check.chains(chains)
 
     # get ESS values
-    ess = topological.approx.ess(chains, burnin)
-    operator = ess$operator
-    ess = list(ess$approx.ess, stringsAsFactors=FALSE)[[1]]
-    ess = round(ess, digits = 0)
-    labels = paste(names(chains), " (Approximate ESS ", operator, " ", ess, ")", sep="")
-    names(chains) = labels
+    if(approx.ess==TRUE){
+        ess = topological.approx.ess(chains, burnin)
+        operator = ess$operator
+        ess = list(ess$approx.ess, stringsAsFactors=FALSE)[[1]]
+        ess = round(ess, digits = 0)
+        labels = paste(names(chains), " (Approximate ESS ", operator, " ", ess, ")", sep="")
+        names(chains) = labels
+    }
 
     if(independent.chains == TRUE){
         distances = tree.distances.from.first(chains, burnin, treedist = treedist)
