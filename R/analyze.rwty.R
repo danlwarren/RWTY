@@ -16,6 +16,7 @@
 #' @param filename Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not save outputs to file.
 #' @param overwrite Boolean variable saying whether output file should be overwritten, if it exists.
 #' @param facet A Boolean expression indicating whether multiple chains should be plotted as facet plots (default TRUE).
+#' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.
 #' @param autocorr.intervals The maximum number of intervals to use for autocorrelation plots.
 #' @param n The number of replicate analyses to do when calculating the pseudo ESS.
 #' @param ... Extra arguments to be passed to plotting and analysis functions.
@@ -52,7 +53,7 @@
 
 analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 100, n.clades = 20,
                            min.freq = 0.0, labels=NA, fill.color = NA, filename = NA, 
-                           overwrite=FALSE, facet=TRUE, autocorr.intervals=100, ess.reps = 20, ...){
+                           overwrite=FALSE, facet=TRUE, free_y=FALSE, autocorr.intervals=100, ess.reps = 20, ...){
     
     chains <- check.chains(chains, labels)
     

@@ -6,6 +6,7 @@
 #' @param burnin The number of trees to omit as burnin. 
 #' @param parameter The column name of the parameter to plot.
 #' @param facet Boolean denoting whether to make a facet plot.
+#' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.
 #'
 #' @return param.plot Returns a ggplot object.
 #'
@@ -16,7 +17,7 @@
 #' data(fungus)
 #' makeplot.param(fungus, burnin=20, parameter="pi.A.")
 
-makeplot.param <- function(chains, burnin = 0, parameter = "LnL", facet=TRUE){ 
+makeplot.param <- function(chains, burnin = 0, parameter = "LnL", facet=TRUE, free_y=FALSE){ 
 
     print(sprintf("Creating trace for %s", parameter))
 
@@ -39,7 +40,20 @@ makeplot.param <- function(chains, burnin = 0, parameter = "LnL", facet=TRUE){
                         ggtitle(title) +
                         xlab("Generation")
 
-        if(facet) param.plot = param.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
+
+        if(facet){ 
+            if(free_y){
+
+                param.plot = param.plot + facet_wrap(~chain, ncol=1, scales = "free_y") + theme(legend.position="none")
+
+            }else{
+
+                param.plot = param.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
+
+            }
+        }
+
+
 
         return(param.plot)
 
