@@ -37,7 +37,6 @@ makeplot.splitfreqs.sliding <- function(chains, burnin = 0, n.clades=20, window.
             facet_wrap(~Chain, ncol = 1) +
             geom_line() + 
             scale_color_viridis(option = "B") +
-            scale_color_viridis() +
             xlab("Generation") +
             ylab("Split frequency") +
             ggtitle(title)
