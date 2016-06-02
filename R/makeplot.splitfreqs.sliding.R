@@ -39,7 +39,7 @@ makeplot.splitfreqs.sliding <- function(chains, burnin = 0, n.clades=20, window.
         splitfreqs.plot <- ggplot(data=dat, aes(x=as.numeric(as.character(Generations)), y=Split.Frequency, group = Clade)) +
             facet_wrap(~Chain, ncol = 1) +
             geom_line(aes_string(colour = RANK)) + 
-            scale_color_viridis(option = "B") +
+            scale_color_viridis(option = "C", end = 0.85) +
             xlab("Generation") +
             ylab("Split frequency") +
             ggtitle(title)
@@ -78,6 +78,7 @@ single.splitfreq.plot <- function(dat, rank){
 
     splitfreq.plot <- ggplot(data=dat, aes(x=as.numeric(as.character(Generations)), y=Split.Frequency, group = Clade)) + 
         geom_line(aes_string(colour = rank)) +
+        scale_color_viridis(option = "C", end = 0.85) +
         xlab("Generation") +
         ylab("Split frequency")
 
