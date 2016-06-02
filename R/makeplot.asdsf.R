@@ -52,6 +52,8 @@ get.asdsfs <- function(slide.freq.list, min.freq = 0.1){
   sets <- length(x)
   slide.wins <- ncol(x[[1]]$slide.table)-2
 
+  slide.wins = length(setdiff(names(x[[1]]$slide.table), c("mean", "sd", "ess", "wcsf"))) #Remove mean and sd etc. columsn
+
   #use to label plot
   all_SDs <- list()
   

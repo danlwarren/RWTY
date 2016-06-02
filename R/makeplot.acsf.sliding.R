@@ -35,19 +35,21 @@ makeplot.acsf.sliding <- function(chains, burnin = 0, window.size = 20, facet = 
 
     if(facet==TRUE){
         acsf.plot <- ggplot(dat, aes(x = as.numeric(as.character(Generation)))) + 
-                    geom_ribbon(aes(ymin = lower.95, ymax = upper.95), alpha = 0.25) + 
+                    geom_ribbon(aes(ymin = min, ymax = lower.95), alpha = 0.15) + 
+                    geom_ribbon(aes(ymin = lower.95, ymax = upper.95), alpha = 0.30) + 
+                    geom_ribbon(aes(ymin = upper.95, ymax = max), alpha = 0.15) + 
                     geom_line(aes(y = ACSF, colour = Chain)) + 
                     geom_point(aes(y = ACSF, colour = Chain)) +
                     theme(legend.position="none") +                
-                    expand_limits(y=0) +
-                    xlab("Generation") + 
+                    expand_limits(y = 0) +
+                    xlab("Generation") +
                     ylab("Change in Split Frequency") + 
                     facet_wrap(~Chain, ncol = 1) +
                     ggtitle(title)
         acsf.plot <- list("acsf.sliding.plot" = acsf.plot)
     }else{
         dat.list = split(dat, f = dat$Chain)
-        acsf.plot = lapply(dat.list, single.acsf.plot)
+        acsf.plot = lapply(dat.list, single.acsf.plot, type = 'sliding')
         for(i in 1:length(acsf.plot)){
             acsf.plot[[i]] = acsf.plot[[i]] + ggtitle(paste(title, "for", names(acsf.plot)[i]))
             names(acsf.plot)[i] = paste("acsf.sliding.plot.", names(acsf.plot[i]), sep="")
@@ -59,46 +61,23 @@ makeplot.acsf.sliding <- function(chains, burnin = 0, window.size = 20, facet = 
 
 }
 
-single.acsf.plot <- function(dat){
+single.acsf.plot <- function(dat, type){
     acsf.plot <- ggplot(dat, aes(x = as.numeric(as.character(Generation)))) + 
-                geom_ribbon(aes(ymin = lower.95, ymax = upper.95), alpha = 0.25) + 
-                geom_line(aes(y = ACSF)) + 
-                geom_point(aes(y = ACSF)) +
-                theme(legend.position="none") +                
-                expand_limits(y=0) +
-                xlab("Generation") + 
-                ylab("Change in Split Frequency")
+                    geom_ribbon(aes(ymin = min, ymax = lower.95), alpha = 0.15) + 
+                    geom_ribbon(aes(ymin = lower.95, ymax = upper.95), alpha = 0.30) + 
+                    geom_ribbon(aes(ymin = upper.95, ymax = max), alpha = 0.15) + 
+                    geom_line(aes(y = ACSF, colour = Chain)) + 
+                    geom_point(aes(y = ACSF, colour = Chain)) +
+                    theme(legend.position="none") +                
+                    xlab("Generation") +
+                    ylab("Change in Split Frequency") + 
+                    facet_wrap(~Chain, ncol = 1) +
+                    ggtitle(title)
+
+    if(type == 'sliding'){ acsf.plot = acsf.plot + expand_limits(y = 0)}
+    if(type == 'cumulative'){ acsf.plot = acsf.plot + coord_cartesian(ylim=c(0,max(dat$ACSF))) }
+
+    return(acsf.plot)
 }
 
 
-get.acsf <- function(freq.table){
-
-    # get a df of absolute differences in pp variation between windows
-    if(class(freq.table) == "rwty.slide"){
-        dat = freq.table$slide.table
-    }else if(class(freq.table) == "rwty.cumulative"){
-        dat = freq.table$cumulative.table
-    }else{
-        stop("ERROR: unknown type of frequency table passed to process.freq.table()")
-    }
-
-    dat = dat[,!(names(dat) %in% c("mean", "sd"))] #Remove mean and sd
-
-    d <- t(apply(dat, 1, function(z) abs(diff(as.numeric(z)))))
-    d <- as.data.frame(d)
-    colnames(d) <- colnames(dat)[2:ncol(dat)] # differences of previous window
-    d$clade <- rownames(d)
-
-    d <- melt(d, id.vars="clade")
-    colnames(d) <- c("Clade", "Generation", "CSF")
-    d$Clade <- as.factor(d$Clade)
-
-    dat = ddply(d, .(Generation), summarize, 
-                ACSF = mean(CSF), 
-                upper.95 = quantile(CSF, c(0.975)), 
-                lower.95 = quantile(CSF, c(0.025)), 
-                min = min(CSF), 
-                max = max(CSF))
-
-    return(dat)
-}

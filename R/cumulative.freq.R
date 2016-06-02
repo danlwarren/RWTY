@@ -44,7 +44,7 @@ get.cum.freq.table <- function(tree.list, burnin = 0, window.size = 20, gens.per
     slide.freq.table <- slide.freq.table$slide.table
     
     # remove SD and mean from sliding window data
-    slide.freq.table <- slide.freq.table[,!(names(slide.freq.table) %in% c("sd", "mean", "ess"))]
+    slide.freq.table <- slide.freq.table[,!(names(slide.freq.table) %in% c("sd", "mean", "ess", "wcsf"))]
     
     #Get cumulative means for each row
     cum.freq.table <- apply(slide.freq.table, 1, cummean)

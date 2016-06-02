@@ -1,7 +1,7 @@
 #' Plot the Change in Split Frequencies (CSF) in sliding windows over the course of an MCMC.
 #' 
 #' This function takes one or more rwty.trees ojects and returns a plot of CSF within each chain as the MCMC progresses.  
-#' The solid line with points shows the Average Change in Split Frequencies (ACSF) between this window and the previous window
+#' The solid line with points shows the Average Change in Split Frequencies (ACSF; it is average across the changes in split frequencies from all clades in the analysis) between this window and the previous window
 #' The grey ribbon shows the upper and lower 95% quantiles of the CSFs between this window and the previuos window
 #'
 #' @param chains A list of rwty.trees objects. 
@@ -22,25 +22,27 @@
 
 makeplot.acsf.cumulative <- function(chains, burnin = 0, window.size = 20, facet = TRUE){ 
     # plot variation in clade frequencies 
-
     print(sprintf("Creating cumulative ACSF plot"))
 
-    
     chains = check.chains(chains)
     cumulative.freq.list = cumulative.freq(chains, burnin = burnin, window.size = window.size)
+ 
     dat.list = lapply(cumulative.freq.list, get.acsf)
     dat = do.call("rbind", dat.list)
     dat$Chain = get.dat.list.chain.names(dat.list)
+
     rownames(dat) = NULL
     title = "Cumulative Change in Split Frequncies"
 
     if(facet==TRUE){
         acsf.plot <- ggplot(dat, aes(x = as.numeric(as.character(Generation)))) + 
-                    geom_ribbon(aes(ymin = lower.95, ymax = upper.95), alpha = 0.25) + 
+                    geom_ribbon(aes(ymin = min, ymax = lower.95), alpha = 0.15) + 
+                    geom_ribbon(aes(ymin = lower.95, ymax = upper.95), alpha = 0.30) + 
+                    geom_ribbon(aes(ymin = upper.95, ymax = max), alpha = 0.15) + 
                     geom_line(aes(y = ACSF, colour = Chain)) + 
                     geom_point(aes(y = ACSF, colour = Chain)) +
                     theme(legend.position="none") +                
-                    expand_limits(y=0) +
+                    coord_cartesian(ylim=c(0,max(dat$ACSF))) +
                     xlab("Generation") +
                     ylab("Change in Split Frequency") + 
                     facet_wrap(~Chain, ncol = 1) +
@@ -49,7 +51,7 @@ makeplot.acsf.cumulative <- function(chains, burnin = 0, window.size = 20, facet
 
     }else{
         dat.list = split(dat, f = dat$Chain)
-        acsf.plot = lapply(dat.list, single.acsf.plot)
+        acsf.plot = lapply(dat.list, single.acsf.plot, type = 'cumulative')
         for(i in 1:length(acsf.plot)){
             acsf.plot[[i]] = acsf.plot[[i]] + ggtitle(paste(title, "for", names(acsf.plot)[i]))
             names(acsf.plot)[i] = paste("acsf.cumulative.plot.", names(acsf.plot[i]), sep="")
@@ -64,6 +66,7 @@ makeplot.acsf.cumulative <- function(chains, burnin = 0, window.size = 20, facet
 get.acsf <- function(freq.table){
 
     d = get.csf(freq.table)
+
 
     dat = ddply(d, .(Generation), summarize, 
                 ACSF = mean(CSF), 
@@ -87,14 +90,13 @@ get.csf <- function(freq.table){
         stop("ERROR: unknown type of frequency table passed to process.freq.table()")
     }
 
-    dat = dat[,!(names(dat) %in% c("mean", "sd", "ess"))] #Remove mean and sd
+    dat = dat[,!(names(dat) %in% c("mean", "sd", "ess", "wcsf"))] #Remove mean and sd
 
     d <- t(apply(dat, 1, function(z) abs(diff(as.numeric(z)))))
 
     d <- as.data.frame(d)
     colnames(d) <- colnames(dat)[2:ncol(dat)] # differences of previous window
     d$clade <- rownames(d)
-
     d <- melt(d, id.vars="clade")
     colnames(d) <- c("Clade", "Generation", "CSF")
     d$Clade <- as.factor(d$Clade)
