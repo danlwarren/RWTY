@@ -75,6 +75,7 @@ single.splitfreq.plot <- function(dat){
 
     splitfreq.plot <- ggplot(data=dat, aes(x=as.numeric(as.character(Generations)), y=Posterior.Probability, group = Clade, color = StDev)) + 
         geom_line() +
+        scale_color_viridis(option = "C", end = 0.85) +
         xlab("Generation") +
         ylab("Split frequency")
 
