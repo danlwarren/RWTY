@@ -37,12 +37,10 @@ makeplot.splitfreq.matrix <- function(chains, burnin = 0){
     print("No non-zero ASDSF values, skipping ASDSF tree")  
   }
   else{
-    dtree <- as.phylo(hclust(asdsf))
-    plot.phylo(dtree, main="Chains clustered by ASDSF")
-    axisPhylo()
-    lastPP <- get("last_plot.phylo", envir = .PlotPhyloEnv)
-    mtext("Pairwise ASDSF", side=1, line=2, at=max(lastPP$xx)/2)
-    asdsf.tree <- recordPlot()
+
+    hc <- hclust(asdsf)
+    asdsf.tree <- ggdendrogram(hc, rotate=TRUE, theme = FALSE) + ylab("Pairwise ASDSF") + xlab("")
+
   }
 
   return(list("splitfreq.matrix" = splitfreq.matrix, "asdsf.tree" = asdsf.tree))
