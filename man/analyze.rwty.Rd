@@ -6,7 +6,7 @@
 \usage{
 analyze.rwty(chains, burnin = 0, window.size = 20, treespace.points = 100,
   n.clades = 20, min.freq = 0, labels = NA, fill.color = NA,
-  filename = NA, overwrite = FALSE, facet = TRUE,
+  filename = NA, overwrite = FALSE, facet = TRUE, free_y = FALSE,
   autocorr.intervals = 100, ess.reps = 20, ...)
 }
 \arguments{
@@ -31,6 +31,8 @@ analyze.rwty(chains, burnin = 0, window.size = 20, treespace.points = 100,
 \item{overwrite}{Boolean variable saying whether output file should be overwritten, if it exists.}
 
 \item{facet}{A Boolean expression indicating whether multiple chains should be plotted as facet plots (default TRUE).}
+
+\item{free_y}{TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.}
 
 \item{autocorr.intervals}{The maximum number of intervals to use for autocorrelation plots.}
 

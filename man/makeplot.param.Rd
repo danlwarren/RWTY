@@ -4,7 +4,8 @@
 \alias{makeplot.param}
 \title{Plotting parameters}
 \usage{
-makeplot.param(chains, burnin = 0, parameter = "LnL", facet = TRUE)
+makeplot.param(chains, burnin = 0, parameter = "LnL", facet = TRUE,
+  free_y = FALSE)
 }
 \arguments{
 \item{chains}{A set of rwty.trees objects.}
@@ -14,6 +15,8 @@ makeplot.param(chains, burnin = 0, parameter = "LnL", facet = TRUE)
 \item{parameter}{The column name of the parameter to plot.}
 
 \item{facet}{Boolean denoting whether to make a facet plot.}
+
+\item{free_y}{TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.}
 }
 \value{
 param.plot Returns a ggplot object.

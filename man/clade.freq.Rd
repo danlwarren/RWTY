@@ -4,7 +4,7 @@
 \alias{clade.freq}
 \title{Returns clade names and frequencies}
 \usage{
-clade.freq(x, start, end, check.labels = TRUE)
+clade.freq(x, start, end, check.labels = TRUE, rooted = FALSE)
 }
 \arguments{
 \item{x}{A multiPhylo or rwty.trees object}

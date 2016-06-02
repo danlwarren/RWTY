@@ -5,7 +5,7 @@
 \title{Plotting parameters}
 \usage{
 makeplot.topology.trace(chains, burnin = 0, facet = TRUE, free_y = FALSE,
-  independent.chains = FALSE, treedist = "PD")
+  independent.chains = FALSE, treedist = "PD", approx.ess = TRUE)
 }
 \arguments{
 \item{chains}{A set of rwty.trees objects.}
@@ -19,6 +19,8 @@ makeplot.topology.trace(chains, burnin = 0, facet = TRUE, free_y = FALSE,
 \item{independent.chains}{TRUE/FALSE if FALSE (the default) then the plots show the distance of each tree from the last tree of the burnin of the first chain. If TRUE, the plots show the distance of each tree from the first tree of the chain in which that tree appears. The TRUE option should only be used in the case that different chains represent analyses of different genes or datasets.}
 
 \item{treedist}{the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance}
+
+\item{approx.ess}{TRUE/FALSE do you want the approximate topological ess to be calculated and displayed for each chain?}
 }
 \value{
 topology.trace.plot Returns a ggplot object.
