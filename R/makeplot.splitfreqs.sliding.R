@@ -36,7 +36,7 @@ makeplot.splitfreqs.sliding <- function(chains, burnin = 0, n.clades=20, window.
         splitfreqs.plot <- ggplot(data=dat, aes(x=as.numeric(as.character(Generations)), y=Posterior.Probability, group = Clade, color = StDev)) +
             facet_wrap(~Chain, ncol = 1) +
             geom_line() + 
-            scale_color_viridis(option = "B") +
+            scale_color_viridis(option = "C", end = 0.85) +
             xlab("Generation") +
             ylab("Split frequency") +
             ggtitle(title)
