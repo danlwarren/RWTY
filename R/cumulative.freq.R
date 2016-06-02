@@ -34,8 +34,7 @@ cumulative.freq <- function(chains, burnin=0, window.size = 20){
 
 get.cum.freq.table <- function(tree.list, burnin = 0, window.size = 20, gens.per.tree = 1){
 
-    # we start with a slide frequency table, and then just calculate cumulative means from that
-    
+    # we start with a slide frequency table, and then just calculate cumulative means from that    
     slide.freq.table = get.slide.freq.table(tree.list, burnin, window.size, gens.per.tree)
     
     # Peel the translation table off for later use
@@ -45,7 +44,7 @@ get.cum.freq.table <- function(tree.list, burnin = 0, window.size = 20, gens.per
     slide.freq.table <- slide.freq.table$slide.table
     
     # remove SD and mean from sliding window data
-    slide.freq.table <- slide.freq.table[,!(names(slide.freq.table) %in% c("sd", "mean"))]
+    slide.freq.table <- slide.freq.table[,!(names(slide.freq.table) %in% c("sd", "mean", "ess"))]
     
     #Get cumulative means for each row
     cum.freq.table <- apply(slide.freq.table, 1, cummean)
@@ -57,9 +56,11 @@ get.cum.freq.table <- function(tree.list, burnin = 0, window.size = 20, gens.per
     # calculate sd and mean of cumulative frequency and mean
     thissd <- apply(cum.freq.table, 1, sd)
     thismean <- apply(cum.freq.table, 1, mean) 
+    thiswcsf <- get.wcsf(cum.freq.table)
 
     cum.freq.table$sd <- thissd
     cum.freq.table$mean <- thismean
+    cum.freq.table$wcsf <- thiswcsf
 
     cum.freq.table <- cum.freq.table[order(cum.freq.table$sd, decreasing=TRUE),]
     
@@ -74,3 +75,17 @@ cummean <- function(x){
   r <- (cumsum(as.numeric(x)))/seq(1:length(x))
   r
 }
+
+get.wcsf <- function(dat){
+
+    d <- t(apply(dat, 1, function(z) abs(diff(as.numeric(z)))))
+
+    # multiply all columns by a weighted linear distribution
+    N = ncol(d)
+    w = 1:N/N
+    d <- (t(t(d) * w))
+
+    return(rowSums(d))
+
+}
+

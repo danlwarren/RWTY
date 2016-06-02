@@ -2,7 +2,7 @@
 % Please edit documentation in R/makeplot.acsf.cumulative.R
 \name{makeplot.acsf.cumulative}
 \alias{makeplot.acsf.cumulative}
-\title{Plot the Chaing in Split Frequencies (CSF) in sliding windows over the course of an MCMC.}
+\title{Plot the Change in Split Frequencies (CSF) in sliding windows over the course of an MCMC.}
 \usage{
 makeplot.acsf.cumulative(chains, burnin = 0, window.size = 20,
   facet = TRUE)

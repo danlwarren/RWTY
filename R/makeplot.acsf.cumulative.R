@@ -1,4 +1,4 @@
-#' Plot the Chaing in Split Frequencies (CSF) in sliding windows over the course of an MCMC.
+#' Plot the Change in Split Frequencies (CSF) in sliding windows over the course of an MCMC.
 #' 
 #' This function takes one or more rwty.trees ojects and returns a plot of CSF within each chain as the MCMC progresses.  
 #' The solid line with points shows the Average Change in Split Frequencies (ACSF) between this window and the previous window
@@ -61,28 +61,9 @@ makeplot.acsf.cumulative <- function(chains, burnin = 0, window.size = 20, facet
 
 }
 
-
 get.acsf <- function(freq.table){
 
-    # get a df of absolute differences in pp variation between windows
-    if(class(freq.table) == "rwty.slide"){
-        dat = freq.table$slide.table
-    }else if(class(freq.table) == "rwty.cumulative"){
-        dat = freq.table$cumulative.table
-    }else{
-        stop("ERROR: unknown type of frequency table passed to process.freq.table()")
-    }
-
-    dat = dat[,!(names(dat) %in% c("mean", "sd"))] #Remove mean and sd
-
-    d <- t(apply(dat, 1, function(z) abs(diff(as.numeric(z)))))
-    d <- as.data.frame(d)
-    colnames(d) <- colnames(dat)[2:ncol(dat)] # differences of previous window
-    d$clade <- rownames(d)
-
-    d <- melt(d, id.vars="clade")
-    colnames(d) <- c("Clade", "Generation", "CSF")
-    d$Clade <- as.factor(d$Clade)
+    d = get.csf(freq.table)
 
     dat = ddply(d, .(Generation), summarize, 
                 ACSF = mean(CSF), 
@@ -92,4 +73,32 @@ get.acsf <- function(freq.table){
                 max = max(CSF))
 
     return(dat)
+
+}
+
+
+get.csf <- function(freq.table){
+    # get a df of absolute differences in pp variation between windows
+    if(class(freq.table) == "rwty.slide"){
+        dat = freq.table$slide.table
+    }else if(class(freq.table) == "rwty.cumulative"){
+        dat = freq.table$cumulative.table
+    }else{
+        stop("ERROR: unknown type of frequency table passed to process.freq.table()")
+    }
+
+    dat = dat[,!(names(dat) %in% c("mean", "sd", "ess"))] #Remove mean and sd
+
+    d <- t(apply(dat, 1, function(z) abs(diff(as.numeric(z)))))
+
+    d <- as.data.frame(d)
+    colnames(d) <- colnames(dat)[2:ncol(dat)] # differences of previous window
+    d$clade <- rownames(d)
+
+    d <- melt(d, id.vars="clade")
+    colnames(d) <- c("Clade", "Generation", "CSF")
+    d$Clade <- as.factor(d$Clade)
+
+    return(d)
+
 }

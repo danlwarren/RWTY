@@ -103,6 +103,8 @@ process.freq.table <- function(freq.table, n.clades, rank){
     }else if(rank == 'ess'){
         dat = dat[order(dat$ess, decreasing=FALSE),]   
         dat = subset(dat, ess>0)     
+    }else if(rank == 'wcsf'){
+        dat = dat[order(dat$wcsf, decreasing=TRUE),]   
     }
 
     # take the top 20 worst clades
@@ -110,9 +112,17 @@ process.freq.table <- function(freq.table, n.clades, rank){
 
     dat = dat[,!(names(dat) %in% c("mean"))] #Stripping off mean
     dat$clade = rownames(dat)
-    dat = melt(dat, id.vars=c("clade", "sd", "ess"))
 
-    colnames(dat) = c("Clade", "StDev", "ESS", "Generations", "Split.Frequency")
+
+    if(class(freq.table) == "rwty.slide"){
+        dat = melt(dat, id.vars=c("clade", "sd", "ess"))
+        colnames(dat) = c("Clade", "StDev", "ESS", "Generations", "Split.Frequency")
+    }else if(class(freq.table) == "rwty.cumulative"){
+        dat = melt(dat, id.vars=c("clade", "sd", "wcsf"))
+        colnames(dat) = c("Clade", "StDev", "WCSF", "Generations", "Split.Frequency")
+    }
+
+
     dat$Clade = as.factor(dat$Clade)
     dat$id = rep(1:length(unique(dat$Clade)), length.out = nrow(dat))
 
