@@ -10,6 +10,7 @@
 #' @param n.clades The number of clades to plot 
 #' @param window.size The number of trees to include in each window (note, specified as a number of sampled trees, not a number of generations)
 #' @param facet (TRUE/FALSE). TRUE: return a single plot with one facet per chain; FALSE: return a list of individual plots with one plot per chain 
+#' @param rank ('ess', 'sd'). How to rank the clades? By default, we plot the 20 'worst' clades. This parameter sets the definition of 'worst'. The default is to rank the clades by increasing Effective Sample Size (i.e. the 20 worst clades are those with the lowest ESS), since in a sliding window plot we expect well-sampled splits to have a high value (rank = "ess").  The original AWTY ranked clades by their standard deviations. To do this, just set rank = 'sd'.
 #'
 #' @return splitfreqs.plot Either a single ggplot2 object or a list of ggplot2 objects.
 #'
@@ -20,22 +21,24 @@
 #' data(fungus)
 #' makeplot.splitfreqs.sliding(fungus, burnin = 20, n.clades=25)
 
-makeplot.splitfreqs.sliding <- function(chains, burnin = 0, n.clades=20, window.size = 20, facet = TRUE){ 
+makeplot.splitfreqs.sliding <- function(chains, burnin = 0, n.clades=20, window.size = 20, facet = TRUE, rank = 'ess'){ 
 
     print(sprintf("Creating sliding window split frequency plot for %d clades", n.clades))
 
     chains = check.chains(chains)
     slide.freq.list = slide.freq(chains, burnin = burnin, window.size = window.size)
-    dat.list = lapply(slide.freq.list, process.freq.table, n.clades = n.clades)
+    dat.list = lapply(slide.freq.list, process.freq.table, n.clades = n.clades, rank = rank)
     dat = do.call("rbind", dat.list)
     dat$Chain = get.dat.list.chain.names(dat.list)
     rownames(dat) = NULL
     title = sprintf("Sliding Window Split Frequencies for %d clades", n.clades)
-    
+    if(rank == 'ess') RANK = "ESS"
+    if(rank == 'sd') RANK = "StDev"
+
     if(facet==TRUE){
-        splitfreqs.plot <- ggplot(data=dat, aes(x=as.numeric(as.character(Generations)), y=Posterior.Probability, group = Clade, color = StDev)) +
+        splitfreqs.plot <- ggplot(data=dat, aes(x=as.numeric(as.character(Generations)), y=Split.Frequency, group = Clade)) +
             facet_wrap(~Chain, ncol = 1) +
-            geom_line() + 
+            geom_line(aes_string(colour = RANK)) + 
             scale_color_viridis(option = "B") +
             xlab("Generation") +
             ylab("Split frequency") +
@@ -45,7 +48,7 @@ makeplot.splitfreqs.sliding <- function(chains, burnin = 0, n.clades=20, window.
 
     }else{
         dat.list = split(dat, f = dat$Chain)
-        splitfreqs.plot = lapply(dat.list, single.splitfreq.plot)
+        splitfreqs.plot = lapply(dat.list, single.splitfreq.plot, rank = RANK)
         for(i in 1:length(splitfreqs.plot)){
             splitfreqs.plot[[i]] = splitfreqs.plot[[i]] + ggtitle(paste(title, "from", names(splitfreqs.plot)[i]))
             names(splitfreqs.plot)[i] = paste("splitfreqs.sliding.plot.", names(splitfreqs.plot[i]), sep="")
@@ -71,10 +74,10 @@ get.dat.list.chain.names <- function(dat.list){
 }
 
 
-single.splitfreq.plot <- function(dat){
+single.splitfreq.plot <- function(dat, rank){
 
-    splitfreq.plot <- ggplot(data=dat, aes(x=as.numeric(as.character(Generations)), y=Posterior.Probability, group = Clade, color = StDev)) + 
-        geom_line() +
+    splitfreq.plot <- ggplot(data=dat, aes(x=as.numeric(as.character(Generations)), y=Split.Frequency, group = Clade)) + 
+        geom_line(aes_string(colour = rank)) +
         xlab("Generation") +
         ylab("Split frequency")
 
@@ -83,7 +86,7 @@ single.splitfreq.plot <- function(dat){
 }
 
 
-process.freq.table <- function(freq.table, n.clades){
+process.freq.table <- function(freq.table, n.clades, rank){
 
     # strip out just the parts of a slide.freq.table or a cumulative.freq.table that we need
     if(class(freq.table) == "rwty.slide"){
@@ -94,10 +97,21 @@ process.freq.table <- function(freq.table, n.clades){
         stop("ERROR: unknown type of frequency table passed to process.freq.table()")
     }
 
-    dat = dat[1:n.clades,!(names(dat) %in% c("mean"))] #Stripping off mean
+    if(rank == 'sd'){ 
+        dat = dat[order(dat$sd, decreasing=TRUE),]
+    }else if(rank == 'ess'){
+        dat = dat[order(dat$ess, decreasing=FALSE),]   
+        dat = subset(dat, ess>0)     
+    }
+
+    # take the top 20 worst clades
+    dat = dat[1:n.clades,]
+
+    dat = dat[,!(names(dat) %in% c("mean"))] #Stripping off mean
     dat$clade = rownames(dat)
-    dat = melt(dat, id.vars=c("clade", "sd"))
-    colnames(dat) = c("Clade", "StDev", "Generations", "Posterior.Probability")
+    dat = melt(dat, id.vars=c("clade", "sd", "ess"))
+
+    colnames(dat) = c("Clade", "StDev", "ESS", "Generations", "Split.Frequency")
     dat$Clade = as.factor(dat$Clade)
     dat$id = rep(1:length(unique(dat$Clade)), length.out = nrow(dat))
 
