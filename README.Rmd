@@ -153,7 +153,7 @@ salamanders.treespace$treespace.points.plot
 This shows that the replicate analyses of the same gene are sampling very similar parts of treespace.
 
 ### Sliding window and cumulative split frequency plots
-These plots show the split frequencies of clades in the chain, either as the frequency within a sliding window or as the frequency calculated from cumulative samples in the chain at various points in analysis. By default they show the 20 clades with the highest standard deviation of split frequencies within each sample (e.g. the standard deviation of the split frequencies of a given clade in a given chain, across all sliding windows). In an analysis that is mixing well, we expect the frequencies in the sliding window to move around a lot, but the frequencies in the cumulative plot should level off. If the frequencies in the cumulative plot have not levelled off, it might be necessary to run the chain for longer. 
+These plots show the split frequencies of clades in the chain, either as the frequency within a sliding window or as the frequency calculated from cumulative samples in the chain at various points in analysis. By default they show the 20 clades with the highest standard deviation of split frequencies within each sample (e.g. the standard deviation of the split frequencies of a given clade in a given chain, across all sliding windows). In an analysis that is mixing well, we expect the frequencies in the sliding window to move around a lot, but the frequencies in the cumulative plot should level off. If the frequencies in the cumulative plot have not levelled off, it might be necessary to run the chain for longer.  Plots can be produced for single chains, or for multiple chains.
 
 
 ```{r eval=FALSE, fig.width=8, fig.height=6}
@@ -162,6 +162,16 @@ salamanders.rwty$splitfreqs.cumulative.plot
 ```
 ![sliding split frequencies](images/splitfreqs.sliding.png)
 ![cumulative split frequencies](images/splitfreqs.cumulative.png)
+
+
+For a single chain:
+```{r eval=FALSE, fig.width=8, fig.height=6}
+makeplot.splitfreqs.cumulative(salamanders[[1]])
+makeplot.splitfreqs.sliding(salamanders[[1]])
+```
+![sliding split frequencies](images/sliding.single.png)
+![cumulative split frequencies](images/cumulative.single.png)
+
 
 ### Sliding window and cumulative average change in split frequency (ACSF) plots
 These plots show the change in split frequencies of clades in the chain, either as the frequency within a sliding window or as the frequency calculated from cumulative samples in the chain at various points in the analysis. They are analagous to the previous two plots, but instead of showing split frequencies of clades on the y axis, they show the change in split frequencies of all clades on the y axis. The solid line is the average change in split frequencies (ACSF), and the grey ribbon shows the 95% quantiles of the Change in Split Frequencies (CSF). I.e. the upper line of the grey ribbon shows the clade with the 97.5% highest change in split frequencies, and the lower line of the grey ribbon shows the clade with the 2.5% highest change in split frequencies between windows or sampling points. Ideally, we'd see the sliding window change in split frequencies remaining above zero but without big jumps (which would indicate the chain being stuck in one region of tree space, then moving to another), and we'd see the cumulative change in split frequencies approaching zero (indicating that the chain has settled on sampling from a single reqion of tree space, and that adding additional samples is not making any appreciable difference to the estimates of clade posterior probabilities one might make from the analysis).
