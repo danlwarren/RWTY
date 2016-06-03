@@ -36,14 +36,15 @@ makeplot.acsf.cumulative <- function(chains, burnin = 0, window.size = 20, facet
   
   if(facet==TRUE){
     acsf.plot <- ggplot(dat, aes(x = as.numeric(as.character(Generation)))) + 
-      geom_ribbon(aes(ymin = min, ymax = lower.95, fill = Chain), alpha = 0.20) + 
+      geom_ribbon(aes(ymin = min, ymax = lower.95, fill = Chain), alpha = 0.10) + 
       geom_ribbon(aes(ymin = lower.95, ymax = lower.75, fill = Chain), alpha = 0.30) +
-      geom_ribbon(aes(ymin = lower.75, ymax = upper.75, fill = Chain), alpha = 0.40) +
+      geom_ribbon(aes(ymin = lower.75, ymax = upper.75, fill = Chain), alpha = 0.50) +
       geom_ribbon(aes(ymin = upper.75, ymax = upper.95, fill = Chain), alpha = 0.30) + 
-      geom_ribbon(aes(ymin = upper.95, ymax = max, fill = Chain), alpha = 0.20) + 
+      geom_ribbon(aes(ymin = upper.95, ymax = max, fill = Chain), alpha = 0.10) + 
       geom_line(aes(y = ACSF, colour = Chain)) + 
       geom_point(aes(y = ACSF, colour = Chain)) +
-      theme(legend.position="none") +                
+      theme(legend.position="none") +   
+      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
       coord_cartesian(ylim=c(0,max(dat$ACSF))) +
       xlab("Generation") +
       ylab("Change in Split Frequency") + 
