@@ -18,7 +18,7 @@
 #'
 #' @keywords parameter, plot, convergence, mcmc, phylogenetics
 #'
-#' @export makeplot.topology.trace
+#' @export makeplot.topology
 #' @examples
 #' data(fungus)
 #' makeplot.topology.trace(fungus, burnin=20)

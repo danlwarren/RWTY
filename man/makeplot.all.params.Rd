@@ -5,7 +5,7 @@
 \title{Plotting all parameters}
 \usage{
 makeplot.all.params(chains, burnin = 0, facet = TRUE, free_y = FALSE,
-  strip = 1)
+  type = "trace", strip = 1)
 }
 \arguments{
 \item{chains}{A set of rwty.trees objects}
