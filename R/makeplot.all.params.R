@@ -6,7 +6,7 @@
 #' @param burnin The number of trees to omit as burnin. 
 #' @param facet Boolean denoting whether to make a facet plot.
 #' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.
-#' @param strip Number indicating which column to strip off (i.e., strip=1 removes first column, which is necessary for most MCMC outputs).
+#' @param strip Number indicating which column to strip off (i.e., strip=1 removes first column, which is necessary for most MCMC outputs in which the first column is just the generation).
 #' You can skip multiple columns by passing a vector of columns to skip, e.g., strip=c(1,4,6). 
 #'
 #' @return param.plot Returns a list of ggplot objects.

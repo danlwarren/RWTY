@@ -27,6 +27,7 @@ Depends:
     grid,
     plyr,
     ggdendro,
+    GGally,
 Suggests:
     knitr,
 VignetteBuilder: knitr

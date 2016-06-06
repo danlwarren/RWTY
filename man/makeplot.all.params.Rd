@@ -16,7 +16,7 @@ makeplot.all.params(chains, burnin = 0, facet = TRUE, free_y = FALSE,
 
 \item{free_y}{TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.}
 
-\item{strip}{Number indicating which column to strip off (i.e., strip=1 removes first column, which is necessary for most MCMC outputs).
+\item{strip}{Number indicating which column to strip off (i.e., strip=1 removes first column, which is necessary for most MCMC outputs in which the first column is just the generation).
 You can skip multiple columns by passing a vector of columns to skip, e.g., strip=c(1,4,6).}
 }
 \value{
