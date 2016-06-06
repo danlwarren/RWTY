@@ -34,7 +34,7 @@ of each chain, using the independent.chains option. This is not recommended in m
 }
 \examples{
 data(fungus)
-makeplot.topology.trace(fungus, burnin=20)
+makeplot.topology(fungus, burnin=20)
 }
 \keyword{convergence,}
 \keyword{mcmc,}

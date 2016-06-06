@@ -5,7 +5,7 @@
 \title{Plotting all parameters}
 \usage{
 makeplot.all.params(chains, burnin = 0, facet = TRUE, free_y = FALSE,
-  type = "trace", strip = 1)
+  strip = 1)
 }
 \arguments{
 \item{chains}{A set of rwty.trees objects}
@@ -23,7 +23,7 @@ You can skip multiple columns by passing a vector of columns to skip, e.g., stri
 param.plot Returns a list of ggplot objects.
 }
 \description{
-Plots all parameter values, including tree topologies (see makeplot.topology.trace) over the length of the MCMC chain
+Plots all parameter values, including tree topologies (see makeplot.topology) over the length of the MCMC chain
 }
 \examples{
 data(fungus)
