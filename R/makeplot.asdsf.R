@@ -24,36 +24,41 @@
 makeplot.asdsf <- function(chains, burnin = 0, window.size = 20, min.freq = 0.0){
   
   print(sprintf("Creating ASDSF plot"))
-
-
+  
+  
   chains = check.chains(chains)
   labels = names(chains)
   slide.freq.list = slide.freq(chains, burnin, window.size)
   dat = get.asdsfs(slide.freq.list, min.freq)
-
+  
   asdsf.plot <- ggplot(dat, aes(x = as.numeric(as.character(Generation)))) + 
-                geom_ribbon(aes(ymin = lower.95, ymax = upper.95), alpha = 0.25) + 
-                geom_line(aes(y = ASDSF)) + 
-                geom_point(aes(y = ASDSF)) +
-                expand_limits(y=0) +
-                xlab("Generation") + 
-                ylab("Standard Deviation of Split Frequencies") +
-                ggtitle("Average Standard Deviation of Split Frequencies") +
-                scale_y_log10()
+    geom_ribbon(aes(ymin = min, ymax = lower.95, fill = 14), alpha = 0.30) + 
+    geom_ribbon(aes(ymin = lower.95, ymax = lower.75, fill = 13), alpha = 0.30) +
+    geom_ribbon(aes(ymin = lower.75, ymax = upper.75, fill = 12), alpha = 0.30) +
+    geom_ribbon(aes(ymin = upper.75, ymax = upper.95, fill = 13), alpha = 0.30) + 
+    geom_ribbon(aes(ymin = upper.95, ymax = max, fill = 14), alpha = 0.30) + 
+    geom_line(aes(y = ASDSF)) + 
+    geom_point(aes(y = ASDSF)) +
+    expand_limits(y=0) +
+    theme(legend.position="none") +
+    xlab("Generation") + 
+    ylab("Standard Deviation of Split Frequencies") +
+    ggtitle("Average Standard Deviation of Split Frequencies") +
+    scale_y_log10()
   
   return(list("asdsf.plot" = asdsf.plot))
 }
 
 get.asdsfs <- function(slide.freq.list, min.freq = 0.1){
-    
+  
   x = slide.freq.list
-
+  
   # set initial values
   sets <- length(x)
   slide.wins <- ncol(x[[1]]$slide.table)-2
-
+  
   slide.wins = length(setdiff(names(x[[1]]$slide.table), c("mean", "sd", "ess", "wcsf"))) #Remove mean and sd etc. columsn
-
+  
   #use to label plot
   all_SDs <- list()
   
@@ -73,7 +78,7 @@ get.asdsfs <- function(slide.freq.list, min.freq = 0.1){
     # Populate the rest of the table, one chain at a time
     for (j in 2:sets){
       thisTable <- NULL
-    
+      
       if(i==1){ #special case of first window
         thisTable <- data.frame(cbind(x[[j]]$translation[,3],x[[j]]$slide.table[,i]), stringsAsFactors=FALSE)
       }
@@ -96,15 +101,17 @@ get.asdsfs <- function(slide.freq.list, min.freq = 0.1){
   generations <- as.numeric(as.character(names(x[[1]]$slide.table[1:slide.wins])))  
   d <- data.frame(split.frequency = unlist(all_SDs), 
                   Generation = rep(generations[1:length(all_SDs)],times = sapply(all_SDs,length)))
-
-
+  
+  
   dat = ddply(d, .(Generation), summarize, 
               ASDSF = mean(split.frequency), 
               upper.95 = quantile(split.frequency, c(0.975)), 
               lower.95 = quantile(split.frequency, c(0.025)), 
+              upper.75 = quantile(split.frequency, c(0.875)), 
+              lower.75 = quantile(split.frequency, c(0.125)), 
               min = min(split.frequency), 
               max = max(split.frequency))
-
+  
   return(dat)
-
+  
 }
