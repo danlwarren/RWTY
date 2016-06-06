@@ -115,7 +115,7 @@ tree.distances.from.first <- function(chains, burnin = 0, n = 50, focal.tree = N
 
     names <- lapply(names(chains), rep, length(indices))
 
-    gens <- rep(indices*chains[[1]]$gens.per.tree, length(chains))
+    gens <- rep((indices-1)*chains[[1]]$gens.per.tree, length(chains))
 
     dist.df <- data.frame(topological.distance = unlist(distances), chain = unlist(names), generation = gens)
     
