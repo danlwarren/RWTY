@@ -21,7 +21,7 @@
 #' @export makeplot.topology
 #' @examples
 #' data(fungus)
-#' makeplot.topology.trace(fungus, burnin=20)
+#' makeplot.topology(fungus, burnin=20)
 
 makeplot.topology <- function(chains, burnin = 0, facet=TRUE, free_y = FALSE, independent.chains = FALSE, treedist = 'PD', approx.ess = TRUE){ 
 

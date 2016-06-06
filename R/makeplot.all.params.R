@@ -1,6 +1,6 @@
 #' Plotting all parameters
 #' 
-#' Plots all parameter values, including tree topologies (see makeplot.topology.trace) over the length of the MCMC chain
+#' Plots all parameter values, including tree topologies (see makeplot.topology) over the length of the MCMC chain
 #'
 #' @param chains A set of rwty.trees objects 
 #' @param burnin The number of trees to omit as burnin. 
@@ -18,7 +18,7 @@
 #' data(fungus)
 #' makeplot.all.params(fungus, burnin=20)
 
-makeplot.all.params <- function(chains, burnin = 0, facet=TRUE, free_y=FALSE, type = 'trace', strip = 1){
+makeplot.all.params <- function(chains, burnin = 0, facet=TRUE, free_y=FALSE, strip = 1){
 
     chains = check.chains(chains)
     chain = chains[[1]]
@@ -26,9 +26,9 @@ makeplot.all.params <- function(chains, burnin = 0, facet=TRUE, free_y=FALSE, ty
 
     params <- names(chain$ptable)[-strip]
 
-    param.plots <- lapply(params, FUN = function(x) makeplot.param(param = x, burnin = burnin, chains = chains, facet = facet, type = type))
+    param.plots <- lapply(params, FUN = function(x) makeplot.param(param = x, burnin = burnin, chains = chains, facet = facet))
 
-    t.plot = makeplot.topology.trace(chains, burnin = burnin, facet = facet, type = type)
+    t.plot = makeplot.topology(chains, burnin = burnin, facet = facet)
 
     param.plots[[length(param.plots)+1]] <- t.plot
 
