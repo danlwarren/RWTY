@@ -21,13 +21,17 @@
 #' @export makeplot.topology.trace
 #' @examples
 #' data(fungus)
-#' makeplot.topology.trace(fungus, burnin=20, parameter="pi.A.")
+#' makeplot.topology.trace(fungus, burnin=20)
 
-makeplot.topology.trace <- function(chains, burnin = 0, facet=TRUE, free_y = FALSE, independent.chains = FALSE, treedist = 'PD', approx.ess = TRUE){ 
+makeplot.topology <- function(chains, burnin = 0, facet=TRUE, free_y = FALSE, independent.chains = FALSE, treedist = 'PD', approx.ess = TRUE){ 
 
     print(sprintf("Creating trace for tree topologies"))
 
     chains = check.chains(chains)
+
+    if(facet == FALSE && independent.chains == TRUE){
+        stop("Cannot produce this plot. The independent.chains argument means that each topology trace is calculated from a different focal tree, so plotting them all on the same axes would be misleading")
+    }
 
     # get ESS values
     if(approx.ess==TRUE){
@@ -46,33 +50,33 @@ makeplot.topology.trace <- function(chains, burnin = 0, facet=TRUE, free_y = FAL
         index = burnin
         if(index == 0){ index = 1 }
         focal.tree = chains[[1]]$trees[index]
-        distances = tree.distances.from.first(chains, burnin, focal.tree = focal.tree)        
+        distances = tree.distances.from.first(chains, burnin, focal.tree = focal.tree, treedist = treedist)        
     }
 
-    topology.trace.plot =  ggplot(data = distances, aes(x=generation, y=topological.distance)) + 
-                    geom_line(aes(colour = chain)) + 
-                    ggtitle("Tree topology trace") +
-                    xlab("Generation") +
-                    ylab("Path Difference of Tree from Focal Tree")
-                    theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
 
-    if(facet) topology.trace.plot = topology.trace.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
+    trace.plot =  ggplot(data = distances, aes(x=generation, y=topological.distance)) + 
+                        geom_line(aes(colour = chain)) + 
+                        ggtitle("Tree topology trace") +
+                        xlab("Generation") +
+                        ylab("Topological Distance of Tree from Focal Tree")
+                        theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
+
+    density.plot =  ggplot(data = distances, aes(x=topological.distance)) + 
+                        geom_density(aes(colour = chain, fill = chain), alpha = 0.1) + 
+                        ggtitle("Tree topology trace") +
+                        xlab("Topological Distance of Tree from Focal Tree")
+                        theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
 
     if(facet){ 
         if(free_y){
-
-            topology.trace.plot = topology.trace.plot + facet_wrap(~chain, ncol=1, scales = "free_y") + theme(legend.position="none")
-
+            trace.plot = trace.plot + facet_wrap(~chain, ncol=1, scales = "free_y") + theme(legend.position="none")
+            density.plot = density.plot + facet_wrap(~chain, ncol=1, scales = "free_y") + theme(legend.position="none")
         }else{
-
-            topology.trace.plot = topology.trace.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
-
+            trace.plot = trace.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
+            density.plot = density.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
         }
     }
 
-
-
-    return(list("topology.trace.plot" = topology.trace.plot))
-
+    return(list(trace.plot = trace.plot, density.plot = density.plot))
 
 }

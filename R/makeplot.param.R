@@ -35,27 +35,28 @@ makeplot.param <- function(chains, burnin = 0, parameter = "LnL", facet=TRUE, fr
         ptable = combine.ptables(chains, burnin)
         title = paste(parameter, "trace")
 
-        param.plot =  ggplot(ptable, aes_string(x="generation", y=parameter)) + 
+        trace.plot =  ggplot(ptable, aes_string(x="generation", y=parameter)) + 
                         geom_line(aes(colour = chain)) + 
                         ggtitle(title) +
                         xlab("Generation")
 
+        density.plot =  ggplot(ptable, aes_string(x=parameter)) + 
+                        geom_density(aes(colour = chain, fill = chain), alpha = 0.1) + 
+                        ggtitle(title)
 
         if(facet){ 
             if(free_y){
-
-                param.plot = param.plot + facet_wrap(~chain, ncol=1, scales = "free_y") + theme(legend.position="none")
-
+                trace.plot = trace.plot + facet_wrap(~chain, ncol=1, scales = "free_y") + theme(legend.position="none")
+                density.plot = density.plot + facet_wrap(~chain, ncol=1, scales = "free_y") + theme(legend.position="none")
             }else{
-
-                param.plot = param.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
-
+                trace.plot = trace.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
+                density.plot = density.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
             }
         }
 
 
 
-        return(param.plot)
+        return(list(trace.plot = trace.plot, density.plot = density.plot))
 
     }else{
         stop(sprintf("The variable '%s' is not a column in the table of parameters you have supplied", parameter))

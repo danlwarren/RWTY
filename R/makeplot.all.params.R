@@ -18,7 +18,7 @@
 #' data(fungus)
 #' makeplot.all.params(fungus, burnin=20)
 
-makeplot.all.params <- function(chains, burnin = 0, facet=TRUE, free_y=FALSE, strip = 1){
+makeplot.all.params <- function(chains, burnin = 0, facet=TRUE, free_y=FALSE, type = 'trace', strip = 1){
 
     chains = check.chains(chains)
     chain = chains[[1]]
@@ -26,9 +26,9 @@ makeplot.all.params <- function(chains, burnin = 0, facet=TRUE, free_y=FALSE, st
 
     params <- names(chain$ptable)[-strip]
 
-    param.plots <- lapply(params, FUN = function(x) makeplot.param(param = x, burnin = burnin, chains = chains, facet = facet))
+    param.plots <- lapply(params, FUN = function(x) makeplot.param(param = x, burnin = burnin, chains = chains, facet = facet, type = type))
 
-    t.plot = makeplot.topology.trace(chains, burnin = burnin, facet = facet)
+    t.plot = makeplot.topology.trace(chains, burnin = burnin, facet = facet, type = type)
 
     param.plots[[length(param.plots)+1]] <- t.plot
 
