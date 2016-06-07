@@ -13,7 +13,7 @@
 #' @param params 'NA', 'all', or a vector of column names to include in the plot. 'NA' gives the default behaviour (see above). 'all' plots all columns (watch out!). Choose specific columns by name with a vector.
 #' @param strip Number indicating which column to strip off (i.e., strip=1 removes first column, which is necessary for most MCMC outputs in which the first column is just the generation).
 #'
-#' @return topology.trace.plot Returns a ggplot object.
+#' @return pairs.plot Returns a ggplot object.
 #'
 #' @keywords parameter, plot, convergence, mcmc, phylogenetics
 #'

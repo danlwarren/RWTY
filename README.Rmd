@@ -112,6 +112,24 @@ salamanders.rwty$pi.C
 ```
 ![parameter plot](images/param.plot.png)
 
+
+### Parameter correlation plots
+If a logfile is provided, RWTY will produce a scatter plot matrix from the columns of the log file, along with the topological distance from the starting tree. Because the log file output of many MCMC programs can contain a large number of columns, the default behavior of makeplot.pairs is to only plot the topological distance along with the first two data columns. 
+
+```{r eval=FALSE, fig.width=8, fig.height=6}
+salamanders.rwty$AMOTL2.run1.correlations
+```
+![parameter plot](images/param.correlations.default.png)
+
+If you would like to view correlations between likelihood, topology, and model parameters, you can do so by passing a vector of parameter names or "all" to the params argument of makeplot.pairs or analyze.rwty.
+
+```{r eval=FALSE, fig.width=8, fig.height=6}
+data(fungus)
+plotparams <- c("LnL", "pi.A.", "pi.T.")
+makeplot.pairs(fungus$Fungus.Run1, burnin = 20, params = plotparams)
+```
+![parameter plot](images/param.correlations.supplied.png)
+
 ### Tree topology trace plot
 RWTY will produce a plot of tree topologies that is similar to those for parameters. In these plots, the y-axis represents the distance of each tree in the chain from the last tree of the burnin of the first chain. These plots can reveal whether the MCMC was sampling from a stationary distribution of chains (in which case it should be relative stable) or whether it is moving between modes (in which case you might see large jumps). They can also show how well the chain is mixing with respect to tree topologies. Well mixed chains will show the topology trace jumping rapidly between values. Poorly mixed chains will show chains remaining at similar values in successive samples. Topology traces can also reveal whether different chains are sampling different bits of tree space, in which case the stationary distrubtions will show traces at different y values on the plot. Finally, the topology trace contains an estimate of the ESS (called the approximate ESS) of tree topologies. Note that this estimate is only useful if the trees are sampled from a stationary distribution.
 
