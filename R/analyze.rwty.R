@@ -67,6 +67,7 @@ analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 10
       # plot parameters for all chains
       parameter.plots <- makeplot.all.params(chains, burnin = burnin, facet=facet, strip = 1)
       parameter.correlations <- makeplot.pairs(chains, burnin = burnin, treedist = treedist, strip = 1)
+      names(parameter.correlations) <- paste0(names(parameter.correlations), ".correlations")
     }
     else{
       parameter.plots <- makeplot.topology(chains, burnin = burnin, facet = facet)
