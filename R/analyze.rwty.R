@@ -53,7 +53,8 @@
 
 analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 100, n.clades = 20,
                            min.freq = 0.0, labels=NA, fill.color = NA, filename = NA, 
-                           overwrite=FALSE, facet=TRUE, free_y=FALSE, autocorr.intervals=100, ess.reps = 20, ...){
+                           overwrite=FALSE, facet=TRUE, free_y=FALSE, autocorr.intervals=100, ess.reps = 20,
+                          treedist = 'PD', params = NA, ...){
     
     chains <- check.chains(chains, labels)
     
@@ -65,6 +66,7 @@ analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 10
     if(all(unlist(lapply(chains, function(x) length(x$ptable[,1])))) > 0){ 
       # plot parameters for all chains
       parameter.plots <- makeplot.all.params(chains, burnin = burnin, facet=facet, strip = 1)
+      parameter.correlations <- makeplot.pairs(chains, burnin = burnin, treedist = treedist, strip = 1)
     }
     else{
       parameter.plots <- makeplot.topology(chains, burnin = burnin, facet = facet)
@@ -86,6 +88,7 @@ analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 10
 
 
     plots <- c(parameter.plots,
+               parameter.correlations,
                 autocorr.plot,
                 splitfreq.sliding,
                 acsf.sliding,
