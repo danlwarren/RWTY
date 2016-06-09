@@ -75,8 +75,6 @@ do.pairs.plot <- function(chain, burnin = 0, params, treedist){
     name = chain$name
     chains = check.chains(chain)
 
-    ptable = ptable[c(params, 'chain')]
-
     # we use the first tree in each chain as the focal tree, 
     # this is so that the distances look nicer in the plots
     focal.tree = chains[[1]]$trees[1]
@@ -84,13 +82,38 @@ do.pairs.plot <- function(chain, burnin = 0, params, treedist){
 
     ptable$topological.distance = distances$topological.distance
 
-    pairs.plot = ggpairs(ptable, 
-                    upper = list(continuous = "density"),
-                    diag = list(continuous = "barDiag"),
-                    columns = c(params, 'topological.distance'),
-                    title = name
-                    )
+    points <- function(data, mapping, ...) {
+      ggplot(data = data, mapping = mapping) +
+        geom_path(aes(colour = Gen), alpha = 0.25) + 
+        geom_point(aes(colour = Gen)) + 
+        scale_colour_gradientn(colours = viridis(256))
+    }
 
+    hist <- function(data, mapping, ...) {
+      
+      var = data[,as.character(mapping$x)]
+      lower = quantile(var, c(0.025))
+      upper = quantile(var, c(0.975))
+      fill = as.numeric(cut(var, c(lower, upper)))
+      fill[which(is.na(fill))] = 'red'  
+      fill[which(fill == 1)] = 'blue'
+
+      ggplot(data = data, mapping = mapping) + 
+        geom_histogram(aes(fill = fill)) +
+        scale_fill_manual(values = c('steelblue', 'red'))
+        
+    }
+
+
+    pairs.plot = ggpairs(ptable, 
+                         upper = list(continuous = "density"),
+                         diag = list(continuous = hist),
+                         lower = list(continuous = points),  
+                         columns = c(params, 'topological.distance'),
+                         title = name
+    )
+
+ 
     return(pairs.plot)
 
 }
