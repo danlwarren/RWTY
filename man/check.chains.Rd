@@ -4,7 +4,7 @@
 \alias{check.chains}
 \title{Function for checking suitability of chains for rwty analyses, auto-generating labels, etc}
 \usage{
-check.chains(chains)
+check.chains(chains, labels = NA)
 }
 \arguments{
 \item{chains}{A list of rwty.trees objects.}

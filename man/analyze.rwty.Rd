@@ -5,8 +5,8 @@
 \title{analyze.rwty, the main interface for rwty analyses and plots.}
 \usage{
 analyze.rwty(chains, burnin = 0, window.size = 20, treespace.points = 100,
-  n.clades = 20, min.freq = 0, labels = NA, fill.color = NA,
-  filename = NA, overwrite = FALSE, facet = TRUE, free_y = FALSE,
+  n.clades = 20, min.freq = 0, fill.color = NA, filename = NA,
+  overwrite = FALSE, facet = TRUE, free_y = FALSE,
   autocorr.intervals = 100, ess.reps = 20, treedist = "PD", params = NA,
   ...)
 }
@@ -22,8 +22,6 @@ analyze.rwty(chains, burnin = 0, window.size = 20, treespace.points = 100,
 \item{n.clades}{The number of clades to include in plots of split frequencies over the course of the MCMC}
 
 \item{min.freq}{The minimum frequency for a node to be used for calculating ASDSF. Default is 0.1}
-
-\item{labels}{A vector of names to apply to a list of chains. If nothing is specified, the chain names are used.}
 
 \item{fill.color}{The name of a column in your log file that you would like to use as the fill colour of points in the treespace plots}
 
