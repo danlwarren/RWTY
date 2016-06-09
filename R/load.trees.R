@@ -2,18 +2,22 @@
 #' 
 #' Loads trees, looks for a .p file of tree likelihoods, returns and rwty.trees object containing both
 #'
-#' @param file A path to a .t file containing an MCMC chain of trees
+#' @param file A path to a tree file containing an MCMC chain of trees
 #' @param type An argument that designates the type of tree file.  If "nexus",
 #' trees are loaded using ape's read.nexus function.  Otherwise, it's read.tree.
+#' If a "format" argument is passed, type will be determined from the format definition.
 #' @param format File format, which is used to find tree and log files.  
 #' Currently accepted values are "mb" for MrBayes, "beast" for BEAST, and "*beast" for *BEAST.
 #' If you would like RWTY to understand additional formats, please contact the authors and send us some sample data.
 #' @param gens.per.tree The number of generations separating trees.  If not provided, RWTY will attempt to calculate it automatically.
 #' @param trim Used for thinning the chain.  If a number N is provided, RWTY keeps every Nth tree.
-#' @param logfile A path to a file containing model parameters and likelihoods
+#' @param logfile A path to a file containing model parameters and likelihoods.  If no path is provided but
+#' a "format" argument is supplied, RWTY will attempt to find the log file automatically based on the format
+#' definition.
 #' @param skip The number of lines that must be skipped to get to the header of the log file.  
 #' MrBayes, for instance, prints a comment line at the top of the log file, so MrBayes files should be
-#' read in with a skip value of 1.
+#' read in with a skip value of 1.  If no "skip" value is provided but a "format" is supplied, RWTY will 
+#' attempt to read logs using the skip value from the format definition.
 #' @return output An rwty.trees object containing the multiPhylo and the table of values from the log file if available.
 #'
 #' @keywords Phylogenetics, MCMC, load
