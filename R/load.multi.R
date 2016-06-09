@@ -1,6 +1,6 @@
 #' Load all matching files from a directory into a list of rwty.trees objects
 #' 
-#' Loads trees, looks for a .p file of tree likelihoods, returns rwty.trees objects containing both
+#' Finds trees and log files based on format definition, returns rwty.trees objects containing both
 #'
 #' @param path The path to the directory containing tree and log files
 #' @param format File format, which is used to find tree and log files.  

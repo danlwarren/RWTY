@@ -1,6 +1,6 @@
 #' Custom functions to load tree lists so that rwty can do basic processing on the way in.
 #' 
-#' Loads trees, looks for a .p file of tree likelihoods, returns and rwty.trees object containing both
+#' Loads trees, looks for a log file of tree likelihoods and parameter values, returns an rwty.trees object containing both
 #'
 #' @param file A path to a tree file containing an MCMC chain of trees
 #' @param type An argument that designates the type of tree file.  If "nexus",

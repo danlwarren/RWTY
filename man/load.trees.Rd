@@ -35,7 +35,7 @@ attempt to read logs using the skip value from the format definition.}
 output An rwty.trees object containing the multiPhylo and the table of values from the log file if available.
 }
 \description{
-Loads trees, looks for a .p file of tree likelihoods, returns and rwty.trees object containing both
+Loads trees, looks for a log file of tree likelihoods and parameter values, returns an rwty.trees object containing both
 }
 \examples{
 #load.trees(file="mytrees.t", format = "mb")

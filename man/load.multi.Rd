@@ -21,7 +21,7 @@ If you would like RWTY to understand additional formats, please contact the auth
 output A list of rwty.trees objects containing the multiPhylos and the tables of values from the log files if available.
 }
 \description{
-Loads trees, looks for a .p file of tree likelihoods, returns rwty.trees objects containing both
+Finds trees and log files based on format definition, returns rwty.trees objects containing both
 }
 \examples{
 #load.multi(path = "~/my trees/", format = "*beast")
