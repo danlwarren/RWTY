@@ -4,15 +4,14 @@
 \alias{load.multi}
 \title{Load all matching files from a directory into a list of rwty.trees objects}
 \usage{
-load.multi(path = ".", ext.tree = "t", ext.p = "p", labels = NA, ...)
+load.multi(path = ".", format = "mb", labels = NA, ...)
 }
 \arguments{
 \item{path}{The path to the directory containing tree and log files}
 
-\item{ext.tree}{The extension to be used in finding tree files.  Usually should be "t" or "trees", or something of that sort.}
-
-\item{ext.p}{The extension to be used in finding log files.
-Basically the function is going to chop ext.tree off of each file name and glue ext.p onto it, so "myfile.t" will look for a logfile "myfile.p", if ext.tree = "t" and ext.p = "p".}
+\item{format}{File format, which is used to find tree and log files.
+Currently accepted values are "mb" for MrBayes, "beast" for BEAST, and "*beast" for *BEAST.
+If you would like RWTY to understand additional formats, please contact the authors and send us some sample data.}
 
 \item{labels}{A vector of names to assign to chains as they are read in.}
 
@@ -25,7 +24,7 @@ output A list of rwty.trees objects containing the multiPhylos and the tables of
 Loads trees, looks for a .p file of tree likelihoods, returns rwty.trees objects containing both
 }
 \examples{
-#load.multi(path = "~/my trees/", ext.tree = "t", ext.p = "log")
+#load.multi(path = "~/my trees/", format = "*beast")
 }
 \keyword{MCMC,}
 \keyword{Phylogenetics,}

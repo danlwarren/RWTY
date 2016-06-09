@@ -38,17 +38,29 @@ A lot of analyses in RWTY can be done using just three RWTY functions: ```load.t
 
 
 ### ```load.trees()```
-This function is used to load in a single MCMC chain, where PATH representing the path to the tree file.  It will load the tree file and attempt find an associated log file, by searching for files with common suffixed.  For example, if your tree file is named "mytrees.t", RWTY will try to find "mytrees.p" or "mytrees.log" in the same directory, and will insert the file into the trees object automatically if it's found.  
+This function is used to load in a single MCMC chain, where PATH representing the path to the tree file.  It will load the tree file and attempt find an associated log file, with the type determined by the "format" command.  The default format is for MrBayes, where tree files ave a ".t" extension and log files have a ".p" extension.  For example, if your tree file is named "mytrees.t", RWTY will try to find "mytrees.p" in the same directory, and will insert the file into the trees object automatically if it's found.  
+
+RWTY can also automatically find files for BEAST and *BEAST runs, so long as you provide the appropriate format command.
 
 ```{r eval=FALSE}
 my.trees <- load.trees("PATH")
+
+my.beast.trees <- load.trees("PATH", format = "beast")
+
+my.starbeast.trees <- load.trees("PATH", format = "*beast")
+```
+
+If your trees or log files are named or formatted in a nonstandard way, you can still load your data into an RWTY object with a few extra arguments.  The "logfile" argument takes a path to your logfile, the "type" argument tells RWTY whether your trees are Nexus or Newick format, and the "skip" argument tells RWTY how many lines to skip in the log file before it reaches the header line.
+
+```{r eval=FALSE}
+my.special.trees <- load.trees("PATH", type = "nexus", logfile = "LOGPATH", skip = 1)
 ```
 
 ### ```load.multi()```
-This function is used to load more than one chain into a list of rwty.treess objects. It allows you to specify the file extension of the tree and log files from your MCMC analysis, so it should work well with output from most programs. You provide a path to the folder containing the tree files, as well as the extension to use when looking for the files. As with load.trees, load.multi will attempt to automatically find log files. However, it requires you to supply the log file extension yourself.  For example, to search a directory named PATH for all files ending in .t and associated log files ending in .log, you would input the following:
+This function is used to load more than one chain into a list of rwty.treess objects. It allows you to specify the format of your MCMC analysis, so that it can automatically find tree and log files. You provide a path to the folder containing the tree files, as well as the file format (default is MrBayes). As with load.trees, load.multi will attempt to automatically find log files. For example, to search a directory named PATH for output of a MrBayes run, you would input the following:
 
 ```{r eval=FALSE}
-my.trees <- load.multi("PATH", ext.tree="t", ext.p="log")
+my.trees <- load.multi("PATH", format = "mb")
 ```
 
 ### ```analyze.rwty()```

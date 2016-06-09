@@ -4,14 +4,18 @@
 \alias{load.trees}
 \title{Custom functions to load tree lists so that rwty can do basic processing on the way in.}
 \usage{
-load.trees(file, type = "nexus", gens.per.tree = NA, trim = 1,
-  logfile = NA, skip = 1)
+load.trees(file, type = NA, format = "mb", gens.per.tree = NA, trim = 1,
+  logfile = NA, skip = NA)
 }
 \arguments{
 \item{file}{A path to a .t file containing an MCMC chain of trees}
 
 \item{type}{An argument that designates the type of tree file.  If "nexus",
 trees are loaded using ape's read.nexus function.  Otherwise, it's read.tree.}
+
+\item{format}{File format, which is used to find tree and log files.
+Currently accepted values are "mb" for MrBayes, "beast" for BEAST, and "*beast" for *BEAST.
+If you would like RWTY to understand additional formats, please contact the authors and send us some sample data.}
 
 \item{gens.per.tree}{The number of generations separating trees.  If not provided, RWTY will attempt to calculate it automatically.}
 
@@ -30,7 +34,7 @@ output An rwty.trees object containing the multiPhylo and the table of values fr
 Loads trees, looks for a .p file of tree likelihoods, returns and rwty.trees object containing both
 }
 \examples{
-#load.trees(file="mytrees.nex", type="nexus")
+#load.trees(file="mytrees.t", format = "mb")
 }
 \keyword{MCMC,}
 \keyword{Phylogenetics,}
