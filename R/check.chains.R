@@ -14,7 +14,7 @@
 #' data(fungus)
 #' check.chains(fungus)
 
-check.chains <- function(chains, labels = NA){
+check.chains <- function(chains){
   
   # if passed a single trees object, turn it into a list
   if(class(chains) == "rwty.trees"){
