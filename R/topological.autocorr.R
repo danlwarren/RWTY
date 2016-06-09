@@ -11,9 +11,10 @@
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin 
 #' @param autocorr.intervals The number of sampling intervals to use. These will be spaced evenly between 1 and the max.sampling.interval 
-#' @param max.sampling.interval The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is 10 percent of the length of the chain).
+#' @param max.sampling.interval The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is 10% of the length of the list of trees).
 #' @param squared TRUE/FALSE use squared tree distances (necessary to calculate approximate ESS)
 #' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance
+#' @param use.all.samples (TRUE/FALSE). Whether to calculate autocorrelation from all possible pairs of trees in your chain. The default is FALSE, in which case 250 samples are taken at each sampling interval. This is sufficient to get reasonably accurate estimates of the approximate ESS. Setting this to TRUE will give you slightly more accurate ESS estimates, at the cost of potentially much longer execution times.
 #'
 #' @return A data frame with one row per sampling interval, per chain. 
 #' The first column is the sampling interval. The second column is the mean 
@@ -28,21 +29,23 @@
 #' topological.autocorr(fungus, burnin = 20)
 
 
-topological.autocorr <- function(chains, burnin = 0, max.sampling.interval = NA, autocorr.intervals = 100, squared = FALSE, treedist = 'PD'){
+topological.autocorr <- function(chains, burnin = 0, max.sampling.interval = NA, autocorr.intervals = 100, squared = FALSE, treedist = 'PD', use.all.samples = FALSE){
 
     chains = check.chains(chains)
 
     chain = chains[[1]]
 
+    N = length(chains[[1]]$trees)
+
     if(is.na(max.sampling.interval)){
-        max.sampling.interval = floor(length(chain$trees) - (0.9*length(chain$trees)))
+        max.sampling.interval = floor((N - burnin) - (0.9 * N))
     }
 
-    indices = seq(from = burnin + 1, to = length(chain$trees), by = 1)   
+    indices = seq(from = burnin + 1, to = N, by = 1)   
 
     trees = lapply(chains, function(x) x[['trees']][indices])
 
-    raw.autocorr = lapply(trees, tree.autocorr, max.sampling.interval, autocorr.intervals, squared, treedist)
+    raw.autocorr = lapply(trees, tree.autocorr, max.sampling.interval, autocorr.intervals, squared, treedist, use.all.samples)
 
     final.autocorr = do.call("rbind", raw.autocorr)
 
@@ -56,7 +59,7 @@ topological.autocorr <- function(chains, burnin = 0, max.sampling.interval = NA,
 }
 
 
-tree.autocorr <- function(tree.list, max.sampling.interval = NA, autocorr.intervals = 100, squared = FALSE, treedist = 'PD'){
+tree.autocorr <- function(tree.list, max.sampling.interval = NA, autocorr.intervals = 100, squared = FALSE, treedist = 'PD', use.all.samples = FALSE){
 
     if(!is.numeric(autocorr.intervals)) stop("autocorr.intervals must be a positive integer")
     if(autocorr.intervals<1 | autocorr.intervals%%1!=0) stop("autocorr.intervals must be a positive integer")
@@ -71,7 +74,7 @@ tree.autocorr <- function(tree.list, max.sampling.interval = NA, autocorr.interv
 
     # we analyze up to autocorr.intervals thinnings spread evenly, less if there are non-unique numbers
     thinnings <- unique(as.integer(seq(from = 1, to = max.thinning, length.out=autocorr.intervals)))
-    r <- lapply(as.list(thinnings), get.sequential.distances, tree.list, squared = squared, treedist = treedist) 
+    r <- lapply(as.list(thinnings), get.sequential.distances, tree.list, squared = squared, treedist = treedist, use.all.samples = use.all.samples) 
     r <- data.frame(matrix(unlist(r), ncol=2, byrow=T))
     names(r) = c("topo.distance", "sampling.interval")
 
@@ -80,65 +83,65 @@ tree.autocorr <- function(tree.list, max.sampling.interval = NA, autocorr.interv
 
 path.distance <- function(tree1, tree2){
 
-    return(path.dist(list(tree1, tree2)))
+    pair = c(1,2)
+    trees = list(tree1, tree2)
+    return(path.dist(pair, list(tree1, tree2)))
 
 }
 
 
 rf.distance <- function(tree1, tree2){
+    pair = c(1,2)
+    trees = list(tree1, tree2)
 
-    return(rf.dist(list(tree1, tree2)))
+    return(rf.dist(pair, list(tree1, tree2)))
 
 }
 
-rf.dist.squared <- function(trees){
+rf.dist.squared <- function(pair, trees){
 
-    rf = rf.dist(trees)
+    rf = rf.dist(pair, trees)
 
     return(rf*rf)
 
 }
 
 
-rf.dist <- function(trees){
+rf.dist <- function(pair, trees){
 
-    tree1 = trees[[1]]
-    tree2 = trees[[2]]
+    tree1 = trees[[pair[1]]]
+    tree2 = trees[[pair[2]]]
     rf = RF.dist(tree1, tree2)
     return(rf)
 
 }
 
-path.dist.squared <- function (trees, check.labels = TRUE){
+path.dist.squared <- function (pair, trees, check.labels = FALSE){
 
-    pd = path.dist(trees, check.labels)
+    pd = path.dist(pair, trees, check.labels)
 
     return(pd*pd)
 
 }
 
 
-path.dist <- function (trees, check.labels = TRUE) 
+path.dist <- function (pair, trees, check.labels = FALSE) 
 {
-    # a trimmed down version of the phangorn tree.dist function
-    tree1 = trees[[1]]
-    tree2 = trees[[2]]
 
-    tree1 = unroot(tree1)
-    tree2 = unroot(tree2)
-    if (check.labels) {
-        ind <- match(tree1$tip.label, tree2$tip.label)
-        if (any(is.na(ind)) | length(tree1$tip.label) != length(tree2$tip.label)) 
-            stop("trees have different labels")
-        tree2$tip.label <- tree2$tip.label[ind]
-        ind2 <- match(1:length(ind), tree2$edge[, 2])
-        tree2$edge[ind2, 2] <- order(ind)
-    }
+    print(pair)
+    print(trees)
+
+    # a trimmed down version of the phangorn tree.dist function
+    tree1 = trees[[pair[1]]]
+    tree2 = trees[[pair[2]]]
+
+    print(tree1)
+    print(tree2)
+
     tree1 = reorder(tree1, "postorder")
     tree2 = reorder(tree2, "postorder")
+
     path.difference = NULL
-    if (!is.binary.tree(tree1) | !is.binary.tree(tree2)) 
-        warning("Trees are not binary!")
 
     tree1$edge.length = rep(1, nrow(tree1$edge))
     tree2$edge.length = rep(1, nrow(tree2$edge))
@@ -160,29 +163,35 @@ path.dist <- function (trees, check.labels = TRUE)
 }
 
 
-get.sequential.distances <- function(thinning, tree.list, N=100, squared = FALSE, treedist = 'PD'){
+get.sequential.distances <- function(thinning, tree.list, N=500, squared = FALSE, treedist = 'PD', use.all.samples = FALSE){
     
+
+    processors = get.processors(NULL)
+
     starts = 1:(length(tree.list) - thinning)
     ends = starts + thinning
     keep = c(rbind(starts, ends))
-    tree.list <- tree.list[keep]
-    tree.index <- seq_along(tree.list)
-    
-    # turn the tree list into a list of sequential pairs
-    # e.g. c(a, b, c, d, e) -> c(a,b), c(c,d)
-    tree.pairs <- split(tree.list, ceiling(tree.index/2))
-        
+
+    pairs = split(keep, ceiling(seq_along(keep)/2))
+
+    if(use.all.samples == FALSE){
+        if(length(pairs)>N){
+            # only subsample if we have enough...
+            pairs = sample(pairs, N)
+        }
+    }
+
     if(treedist == 'PD'){
         if(squared == TRUE){
-            distances <- lapply(tree.pairs, path.dist.squared)        
+            distances <- mclapply(pairs, path.dist.squared, trees = tree.list, mc.cores = processors)        
         }else{
-            distances <- lapply(tree.pairs, path.dist)
+            distances <- mclapply(pairs, path.dist, trees = tree.list, mc.cores = processors )
         }
     }else if(treedist == 'RF'){
         if(squared == TRUE){
-            distances <- lapply(tree.pairs, rf.dist.squared)        
+            distances <- mclapply(pairs, rf.dist.squared, trees = tree.list, mc.cores = processors)        
         }else{
-            distances <- lapply(tree.pairs, rf.dist)
+            distances <- mclapply(pairs, rf.dist, trees = tree.list, mc.cores = processors)
         }
     }else{
         stop("Unknown option for treedist. Valid options are 'PD' (for path distance) or 'RF' (for Robinson Foulds distance). Please try again")

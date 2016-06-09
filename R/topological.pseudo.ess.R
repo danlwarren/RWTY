@@ -79,11 +79,12 @@ tree.distances <- function(tree.list, i = 1, treedist = 'PD', focal.tree = NA){
         focal.tree = focal.tree[[1]]
     }
 
+    processors = get.processors(NULL)
 
     if(treedist == 'PD'){
-        distances <- data.frame(matrix(unlist(lapply(tree.list, path.distance, focal.tree)), nrow=length(tree.list), byrow=T))
+        distances <- data.frame(matrix(unlist(mclapply(tree.list, path.distance, focal.tree, mc.cores=processors)), nrow=length(tree.list), byrow=T))
     }else if(treedist == 'RF'){
-        distances <- data.frame(matrix(unlist(lapply(tree.list, rf.distance, focal.tree)), nrow=length(tree.list), byrow=T))
+        distances <- data.frame(matrix(unlist(mclapply(tree.list, rf.distance, focal.tree, mc.cores=processors)), nrow=length(tree.list), byrow=T))
     }else{
         stop("Unknown option for treedist. Valid options are 'PD' (for path distance) or 'RF' (for Robinson Foulds distance). Please try again")
     }
@@ -97,8 +98,9 @@ tree.distances.from.first <- function(chains, burnin = 0, n = 50, focal.tree = N
     # return tree distances from the first tree of each chain
     # OR from the focal.tree if that argument is passed
 
-
     chains <- check.chains(chains)
+
+    processors = get.processors(NULL)
     
     chain <- chains[[1]]
 
@@ -107,9 +109,9 @@ tree.distances.from.first <- function(chains, burnin = 0, n = 50, focal.tree = N
     trees <- lapply(chains, function(x) x[['trees']][indices])
     
     if(is.na(focal.tree)){
-        distances <- lapply(trees, tree.distances, treedist = treedist)        
+        distances <- mclapply(trees, tree.distances, treedist = treedist, mc.cores = processors)        
     }else{
-        distances <- lapply(trees, tree.distances, focal.tree = focal.tree, treedist = treedist)
+        distances <- mclapply(trees, tree.distances, focal.tree = focal.tree, treedist = treedist, mc.cores = processors)
     }
 
 

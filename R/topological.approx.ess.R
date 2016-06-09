@@ -9,8 +9,9 @@
 #'
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin 
-#' @param max.sampling.interval The largest sampling interval you want to use to calculate the ESS. Every sampling interval up to and including this number will be sampled. Higher is better, but also slower. In general, setting this number to 100 should be fine for most cases. However, if you get an upper bound on the ESS estimate (i.e. ESS<x) rather than a point estimate (i.e. ESS = x) then that indicates a higher max.sampling.interval would be better, because the algorithm could not find the asymptote on the autocorrelation plot with the current max.sampling.interval. For this reason, the default max.sampling.interval is 10 percent of the length of the chain.
+#' @param max.sampling.interval The largest sampling interval you want to use to calculate the ESS. Every sampling interval up to and including this number will be sampled. Higher is better, but also slower. In general, setting this number to 100 (the default) should be fine for most cases. However, if you get an upper bound on the ESS estimate (i.e. ESS<x) rather than a point estimate (i.e. ESS = x) then that indicates a higher max.sampling.interval would be better, because the algorithm could not find the asymptote on the autocorrelation plot with the current max.sampling.interval.
 #' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance
+#' @param use.all.samples (TRUE/FALSE). Whether to calculate autocorrelation from all possible pairs of trees in your chain. The default is FALSE, in which case 100 samples are taken at each sampling interval. Setting this to TRUE will give you slightly more accurate ESS estimates, at the cost of potentially much longer execution times.
 #'
 #' @return A data frame with one row per chain, and columns describing the
 #' approximate ESS and the name of the chain. 
@@ -24,21 +25,25 @@
 
 
 
-topological.approx.ess <- function(chains, burnin = 0, max.sampling.interval = NA, treedist = 'PD'){
+topological.approx.ess <- function(chains, burnin = 0, max.sampling.interval = 100, treedist = 'PD', use.all.samples = FALSE){
 
     chains = check.chains(chains)
 
     N = length(chains[[1]]$trees)
 
-    if(is.na(max.sampling.interval)){
-        max.sampling.interval = floor(N-(0.9*N))
+    if(N-burnin < max.sampling.interval){
+        warning("Not enough trees to use your chosen max.sampling.interval")
+        warning("Setting it to 90% of the length of your post-burnin chain instead")
+        max.sampling.interval = floor((N - burnin) - (0.1 * N))
     }
 
+
+    # set them equal, so we get every interval.
     autocorr.intervals = max.sampling.interval
 
     print(sprintf("Calculating approximate ESS with sampling intervals from 1 to %d", max.sampling.interval))
 
-    autocorr.df = topological.autocorr(chains, burnin, max.sampling.interval, autocorr.intervals, squared = TRUE, treedist = treedist)
+    autocorr.df = topological.autocorr(chains, burnin, max.sampling.interval, autocorr.intervals, squared = TRUE, treedist = treedist, use.all.samples = use.all.samples)
 
     autocorr.m = estimate.autocorr.m(autocorr.df)
 
