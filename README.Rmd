@@ -38,14 +38,14 @@ A lot of analyses in RWTY can be done using just three RWTY functions: ```load.t
 
 
 ### ```load.trees()```
-This function is used to load in a single MCMC chain, where PATH representing the path to the tree file.  It will load the tree file and attempt find an associated log file, with the type determined by the "format" command.  The default format is for MrBayes, where tree files ave a ".t" extension and log files have a ".p" extension.  For example, if your tree file is named "mytrees.t", RWTY will try to find "mytrees.p" in the same directory, and will insert the file into the trees object automatically if it's found.  
+This function is used to load in a single MCMC chain, where PATH representing the path to the tree file.  It will load the tree file and attempt find an associated log file, with the type determined by the "format" command.  The default format is for MrBayes, where tree files ave a ".t" extension and log files have a ".p" extension.  For example, if your tree file is named "mytrees.t", RWTY will try to find "mytrees.p" in the same directory, and will insert the file into the trees object automatically if it's found.  RWTY can also automatically find files for BEAST and *BEAST runs, so long as you provide the appropriate format command.
 
-RWTY can also automatically find files for BEAST and *BEAST runs, so long as you provide the appropriate format command.
+If you have a large number of trees and RWTY is taking too long to produce plots, you can subsample your trees with the "trim" command.  For instance, "trim = 10" means RWTY will only keep every tenth tree for analysis
 
 ```{r eval=FALSE}
 my.trees <- load.trees("PATH")
 
-my.beast.trees <- load.trees("PATH", format = "beast")
+my.beast.trees <- load.trees("PATH", format = "beast", trim = 5)
 
 my.starbeast.trees <- load.trees("PATH", format = "*beast")
 ```
