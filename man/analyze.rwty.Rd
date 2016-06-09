@@ -37,9 +37,13 @@ analyze.rwty(chains, burnin = 0, window.size = 20, treespace.points = 100,
 
 \item{autocorr.intervals}{The maximum number of intervals to use for autocorrelation plots.}
 
-\item{...}{Extra arguments to be passed to plotting and analysis functions.}
+\item{ess.reps}{The number of replicate analyses to do when calculating the pseudo ESS.}
 
-\item{n}{The number of replicate analyses to do when calculating the pseudo ESS.}
+\item{treedist}{the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance.}
+
+\item{params}{A vector of parameters to use when making the parameter correlation plots.  Defaults to the first two columns in the log table.}
+
+\item{...}{Extra arguments to be passed to plotting and analysis functions.}
 }
 \value{
 output The output is a list containing the following plots:

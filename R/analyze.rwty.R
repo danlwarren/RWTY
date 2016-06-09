@@ -18,7 +18,9 @@
 #' @param facet A Boolean expression indicating whether multiple chains should be plotted as facet plots (default TRUE).
 #' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.
 #' @param autocorr.intervals The maximum number of intervals to use for autocorrelation plots.
-#' @param n The number of replicate analyses to do when calculating the pseudo ESS.
+#' @param ess.reps The number of replicate analyses to do when calculating the pseudo ESS.
+#' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance.
+#' @param params A vector of parameters to use when making the parameter correlation plots.  Defaults to the first two columns in the log table.
 #' @param ... Extra arguments to be passed to plotting and analysis functions.
 #'
 #' @return output The output is a list containing the following plots:

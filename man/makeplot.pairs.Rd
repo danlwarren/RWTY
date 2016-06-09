@@ -19,7 +19,7 @@ makeplot.pairs(chains, burnin = 0, treedist = "PD", params = NA,
 \item{strip}{Number indicating which column to strip off (i.e., strip=1 removes first column, which is necessary for most MCMC outputs in which the first column is just the generation).}
 }
 \value{
-topology.trace.plot Returns a ggplot object.
+pairs.plot Returns a ggplot object.
 }
 \description{
 Makes a plot matrix of each parameter against each other (including the topology) in your analysis. The default behaviour

@@ -3,9 +3,9 @@
 #' Loads trees, looks for a .p file of tree likelihoods, returns rwty.trees objects containing both
 #'
 #' @param path The path to the directory containing tree and log files
-#' @param ext.tree The extension to be used in finding tree files.  Usually should be "t" or "trees", or something of that sort.
-#' @param ext.p The extension to be used in finding log files.  
-#' Basically the function is going to chop ext.tree off of each file name and glue ext.p onto it, so "myfile.t" will look for a logfile "myfile.p", if ext.tree = "t" and ext.p = "p".
+#' @param format File format, which is used to find tree and log files.  
+#' Currently accepted values are "mb" for MrBayes, "beast" for BEAST, and "*beast" for *BEAST.
+#' If you would like RWTY to understand additional formats, please contact the authors and send us some sample data.
 #' @param labels A vector of names to assign to chains as they are read in.  
 #' @param ... Further arguments to be passed to load.trees.
 #' @return output A list of rwty.trees objects containing the multiPhylos and the tables of values from the log files if available.
@@ -14,15 +14,17 @@
 #'
 #' @export load.multi
 #' @examples
-#' #load.multi(path = "~/my trees/", ext.tree = "t", ext.p = "log")
+#' #load.multi(path = "~/my trees/", format = "*beast")
 
-load.multi <- function(path = ".", ext.tree = "t", ext.p = "p", labels=NA, ...){
+load.multi <- function(path = ".", format = "mb", labels=NA, ...){
+  
+  file.format <- get.format(format)
   
   output <- list()
   
   # Convert arguments to regex
-  ext.tree <- paste0("\\.", ext.tree, "$")
-  ext.p <- paste0(".", ext.p)
+  ext.tree <- paste0("\\",file.format$trees.suffix, "$")
+  ext.p <- file.format$log.suffix
   
   # Find t and p files
   tfiles <- list.files(path, pattern=ext.tree, full.names=TRUE)
@@ -36,10 +38,10 @@ load.multi <- function(path = ".", ext.tree = "t", ext.p = "p", labels=NA, ...){
   for(i in 1:length(tfiles)){
     print(basename(tfiles[i]))
     if(file.exists(pfiles[i])){
-      output[[i]] <- load.trees(tfiles[i], logfile = pfiles[i], ...)
+      output[[i]] <- load.trees(tfiles[i], logfile = pfiles[i], format = format, ...)
     }
     else{
-      output[[i]] <- load.trees(tfiles[i], ...)
+      output[[i]] <- load.trees(tfiles[i], format = format, ...)
     }
   }
   
