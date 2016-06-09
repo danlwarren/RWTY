@@ -11,6 +11,7 @@
 #' @param treespace.points The number of trees to plot in the treespace plot. Default is 100 
 #' @param n.clades The number of clades to include in plots of split frequencies over the course of the MCMC
 #' @param min.freq The minimum frequency for a node to be used for calculating ASDSF. Default is 0.1  
+#' @param labels A vector of names to apply to a list of chains. If nothing is specified, the chain names are used.
 #' @param fill.color The name of a column in your log file that you would like to use as the fill colour of points in the treespace plots
 #' @param filename Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not save outputs to file.
 #' @param overwrite Boolean variable saying whether output file should be overwritten, if it exists.
@@ -53,11 +54,11 @@
 #' p
 
 analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 100, n.clades = 20,
-                           min.freq = 0.0, fill.color = NA, filename = NA, 
+                           min.freq = 0.0, labels=NA, fill.color = NA, filename = NA, 
                            overwrite=FALSE, facet=TRUE, free_y=FALSE, autocorr.intervals=100, ess.reps = 20,
                           treedist = 'PD', params = NA, ...){
     
-    chains <- check.chains(chains)
+    chains <- check.chains(chains, labels)
     
     N <- length(chains[[1]]$trees)
     

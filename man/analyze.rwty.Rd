@@ -23,6 +23,8 @@ analyze.rwty(chains, burnin = 0, window.size = 20, treespace.points = 100,
 
 \item{min.freq}{The minimum frequency for a node to be used for calculating ASDSF. Default is 0.1}
 
+\item{labels}{A vector of names to apply to a list of chains. If nothing is specified, the chain names are used.}
+
 \item{fill.color}{The name of a column in your log file that you would like to use as the fill colour of points in the treespace plots}
 
 \item{filename}{Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not save outputs to file.}
