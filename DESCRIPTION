@@ -28,6 +28,7 @@ Depends:
     plyr,
     ggdendro,
     GGally,
+    parallel,
 Suggests:
     knitr,
 VignetteBuilder: knitr

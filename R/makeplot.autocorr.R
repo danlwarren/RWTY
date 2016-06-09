@@ -17,6 +17,7 @@
 #' @param facet TRUE/FALSE to turn facetting of the plot on or off (default FALSE)
 #' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.
 #' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance
+#' @param use.all.samples (TRUE/FALSE). Whether to calculate autocorrelation from all possible pairs of trees in your chain. The default is FALSE, in which case 250 samples are taken at each sampling interval. This is sufficient to get reasonably accurate estimates of the approximate ESS. Setting this to TRUE will give you slightly more accurate ESS estimates, at the cost of potentially much longer execution times.
 #'
 #' @return A ggplot2 plot object, with one line (facetting off) or facet
 #' (facetting on) per rwty.trees object.
@@ -36,8 +37,10 @@ makeplot.autocorr <- function(chains, burnin = 0, max.sampling.interval = NA, au
 
     chain = chains[[1]]
 
+    N = length(chain$trees)
+
     if(is.na(max.sampling.interval)){
-        max.sampling.interval = floor(length(chain$trees) - (0.9*length(chain$trees)))
+        max.sampling.interval = floor((N - burnin) - (0.9 * (N - burnin)))
     }
 
     dat <- topological.autocorr(chains, burnin, max.sampling.interval, autocorr.intervals, squared = squared, treedist = treedist)
