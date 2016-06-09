@@ -1,9 +1,30 @@
+globalVariables(c("lower.95", "upper.95", "lower.75", "upper.75", "Generation", "ACSF",
+                  "Chain", "Clade", "title", "Generations", "par", "cor", "text", "sd",
+                  "generation", "chain", "x", "y", "strwidth", "mtext", "Split.Frequency",
+                  "hclust", "..density..", "recordPlot", "rgb", "panel.smooth", "ci.lower",
+                  "ci.upper", "median", "quantile", "median.ess", "ASDSF" ,"Axis" ,"CSF" ,"Gen" ,
+                  "as.dist" ,"box" ,"cmdscale" ,"dev.flush" ,"dev.hold" ,"dev.off" ,"ess" ,
+                  "optim" ,"pdf" ,"plot" ,"points" ,"read.table" ,"reorder" ,"sampling.interval",
+                  "split.frequency" ,"tail" ,"topo.distance" ,"topological.distance"))
+
 #' analyze.rwty, the main interface for rwty analyses and plots.
 #' 
 #' This is the main user interface to rwty.  It allows users to conduct simple
 #' visualizations of MCMC chain performance with  very few arguments.
 #' 
-
+#' @import ape
+#' @import ggplot2
+#' @import reshape2
+#' @import phangorn
+#' @import MASS
+#' @import coda
+#' @import stringr
+#' @import viridis
+#' @import grid
+#' @import plyr
+#' @import ggdendro
+#' @import GGally
+#' @import parallel
 #'
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin.  Default value is zero.
@@ -51,6 +72,8 @@
 #' data(fungus)
 #' p <- analyze.rwty(fungus, burnin = 50, window.num = 50)
 #' p
+
+
 
 analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 100, n.clades = 20,
                            min.freq = 0.0, fill.color = NA, filename = NA, 

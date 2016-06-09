@@ -21,7 +21,7 @@ MCMC chains at least once. In the upper diagonal, we show the correlation betwee
 frequencies (Pearson's R), and the Average Standard Deviation of the split frequencies.
 }
 \examples{
-data(fungus)
+data(salamanders)
 makeplot.splitfreq.matrix(salamanders[1:4], burnin = 20)
 }
 \keyword{ASDSF}

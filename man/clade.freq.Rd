@@ -14,6 +14,8 @@ clade.freq(x, start, end, check.labels = TRUE, rooted = FALSE)
 \item{end}{The index of the last tree to consider in calculating frequencies}
 
 \item{check.labels}{See documentation for ape function prop.part}
+
+\item{rooted}{(TRUE/FALSE).  Tells RWTY whether your trees are rooted or not.}
 }
 \value{
 clade.df A data froma containing clade names and frequencies

@@ -7,6 +7,7 @@
 #' @param start The index of the first tree to consider in calcuating frequencies
 #' @param end The index of the last tree to consider in calculating frequencies
 #' @param check.labels See documentation for ape function prop.part
+#' @param rooted (TRUE/FALSE).  Tells RWTY whether your trees are rooted or not. 
 #' 
 #' @return clade.df A data froma containing clade names and frequencies
 #'

@@ -26,7 +26,7 @@ makeplot.all.params <- function(chains, burnin = 0, facet=TRUE, free_y=FALSE, st
 
     params <- names(chain$ptable)[-strip]
 
-    param.plots <- lapply(params, FUN = function(x) makeplot.param(param = x, burnin = burnin, chains = chains, facet = facet))
+    param.plots <- lapply(params, FUN = function(x) makeplot.param(parameter = x, burnin = burnin, chains = chains, facet = facet))
 
     t.plot = makeplot.topology(chains, burnin = burnin, facet = facet)
 

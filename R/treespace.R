@@ -16,7 +16,7 @@
 #' @export treespace
 #' @examples
 #' data(fungus)
-#' treespace(fungus, n.points=50, burnin=20, likelihood="LnL")
+#' treespace(fungus, n.points=50, burnin=20, fill.color="LnL")
 
 
 

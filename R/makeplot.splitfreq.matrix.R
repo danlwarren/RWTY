@@ -15,7 +15,7 @@
 #'
 #' @export makeplot.splitfreq.matrix
 #' @examples
-#' data(fungus)
+#' data(salamanders)
 #' makeplot.splitfreq.matrix(salamanders[1:4], burnin = 20)
 
 makeplot.splitfreq.matrix <- function(chains, burnin = 0){
@@ -39,7 +39,7 @@ makeplot.splitfreq.matrix <- function(chains, burnin = 0){
   else{
 
     hc <- hclust(asdsf)
-    asdsf.tree <- ggdendrogram(hc, rotate=TRUE, theme = FALSE) + ylab("Pairwise ASDSF") + xlab("")
+    asdsf.tree <- ggdendrogram(hc, rotate=TRUE, theme_dendro = FALSE) + ylab("Pairwise ASDSF") + xlab("")
 
   }
 
