@@ -126,7 +126,7 @@ salamanders.rwty$pi.C
 
 
 ### Parameter correlation plots
-If a logfile is provided, RWTY will produce a scatter plot matrix from the columns of the log file, along with the topological distance from the starting tree. Because the log file output of many MCMC programs can contain a large number of columns, the default behavior of makeplot.pairs is to only plot the topological distance along with the first two data columns. 
+If a logfile is provided, RWTY will produce a scatter plot matrix from the columns of the log file, along with the topological distance from the starting tree. Because the log file output of many MCMC programs can contain a large number of columns, the default behavior of makeplot.pairs is to only plot the topological distance along with the first two data columns.  In the density plots on the diagonal, red values indicate values outside the 95% CI.  In the scatter plots in the lower left, brighter and more yellow colors indicate samples from later in the chain.
 
 ```{r eval=FALSE, fig.width=8, fig.height=6}
 salamanders.rwty$AMOTL2.run1.correlations
