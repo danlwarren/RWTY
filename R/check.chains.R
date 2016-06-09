@@ -4,7 +4,6 @@
 #' It performs a number of tests of chain format, labels, lengths, etc.
 #'
 #' @param chains A list of rwty.trees objects. 
-#' @param labels The name to use on plots and in generating output files.  If none are provided, defaults are created using Chain 1, Chain 2, etc.  
 #'
 #' @return chains A list of rwty.trees objects
 #'
@@ -15,7 +14,7 @@
 #' data(fungus)
 #' check.chains(fungus)
 
-check.chains <- function(chains, labels = NA){
+check.chains <- function(chains){
   
   # if passed a single trees object, turn it into a list
   if(class(chains) == "rwty.trees"){
@@ -77,19 +76,11 @@ check.chains <- function(chains, labels = NA){
     stop("All MCMC chains in the 'chains' list must be sampled at the same intervals")
   }
   
-  # label the chains, and check user-supplied labels
-  if(any((is.na(labels))) | is.null(labels)){
-    labels <- c(paste("Chain", seq(1:length(chains)), sep="."))
-  }
-  
-  if(length(labels) != length(chains)){
-    stop("The length of the 'labels' list must be equal to the number of chains you have supplied")
-  }
-  
   # replace labels with auto-generated ones if there are not enough unique ones
   if(is.null(names(chains)) | length(unique(names(chains))) != length(chains)){
     names(chains) = labels
   }
+  
   
   return(chains)
   
