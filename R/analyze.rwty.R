@@ -112,7 +112,7 @@ analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 10
     # Print all to pdf if filename provided
     if(!is.na(filename)){
       print(sprintf("Saving plots to file: %s", filename))
-      pdf(file=filename, ...)
+      pdf(file=filename, width = 10, height = 7, ...)
       print(plots)
       dev.off()
     }
