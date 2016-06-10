@@ -19,7 +19,6 @@
 #'
 #' @export makeplot.pairs
 #' @examples
-#' \dontrun{
 #' data(salamanders)
 #' makeplot.pairs(salamanders[1], burnin=20)
 #'
@@ -28,7 +27,6 @@
 #'
 #' # plot specific the variables (note: you always get the topological distance)
 #' makeplot.pairs(salamanders[1], burnin=20, params = c('pi.A.', 'pi.C.', 'pi.G.', 'pi.T.'))
-#' }
 
 
 makeplot.pairs <- function(chains, burnin = 0, treedist = 'PD', params = NA, strip = 1){
@@ -86,8 +84,8 @@ do.pairs.plot <- function(chain, burnin = 0, params, treedist){
 
     points <- function(data, mapping, ...) {
       ggplot(data = data, mapping = mapping) +
-        geom_path(aes(colour = Gen), alpha = 0.25) + 
-        geom_point(aes(colour = Gen)) + 
+        geom_path(aes(colour = generation), alpha = 0.25) + 
+        geom_point(aes(colour = generation)) + 
         scale_colour_gradientn(colours = viridis(256))
     }
 
