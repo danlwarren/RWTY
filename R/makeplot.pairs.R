@@ -19,6 +19,7 @@
 #'
 #' @export makeplot.pairs
 #' @examples
+#' \dontrun{
 #' data(salamanders)
 #' makeplot.pairs(salamanders[1], burnin=20)
 #'
@@ -27,6 +28,7 @@
 #'
 #' # plot specific the variables (note: you always get the topological distance)
 #' makeplot.pairs(salamanders[1], burnin=20, params = c('pi.A.', 'pi.C.', 'pi.G.', 'pi.T.'))
+#' }
 
 
 makeplot.pairs <- function(chains, burnin = 0, treedist = 'PD', params = NA, strip = 1){

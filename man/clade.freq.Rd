@@ -16,8 +16,6 @@ clade.freq(x, start, end, rooted = FALSE, ...)
 \item{rooted}{(TRUE/FALSE).  Tells RWTY whether your trees are rooted or not.}
 
 \item{...}{Arguments to be passed to ape's prop.part function}
-
-\item{check.labels}{See documentation for ape function prop.part}
 }
 \value{
 clade.df A data froma containing clade names and frequencies

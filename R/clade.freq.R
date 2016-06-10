@@ -6,7 +6,6 @@
 #' @param x A multiPhylo or rwty.trees object
 #' @param start The index of the first tree to consider in calcuating frequencies
 #' @param end The index of the last tree to consider in calculating frequencies
-#' @param check.labels See documentation for ape function prop.part
 #' @param rooted (TRUE/FALSE).  Tells RWTY whether your trees are rooted or not. 
 #' @param ... Arguments to be passed to ape's prop.part function
 #' 
