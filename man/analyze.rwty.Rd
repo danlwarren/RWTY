@@ -71,9 +71,11 @@ This is the main user interface to rwty.  It allows users to conduct simple
 visualizations of MCMC chain performance with  very few arguments.
 }
 \examples{
+\dontrun{
 data(fungus)
 p <- analyze.rwty(fungus, burnin = 50, window.num = 50)
 p
+}
 }
 \keyword{ESS}
 \keyword{MCMC,}

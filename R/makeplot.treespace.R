@@ -13,12 +13,15 @@
 #'
 #' @export makeplot.treespace
 #' @examples
+#' \dontrun{
 #' data(fungus)
 #' 
 #' p <- makeplot.treespace(fungus, burnin = 20, fill.color = 'LnL')
 #' # Treespace plot for all the fungus data
 #' 
-#' # NB: these data indicate significant problems: the chains are sampling very different parts of tree space
+#' # NB: these data indicate significant problems: the chains are sampling very 
+#' # different parts of tree space.
+#' #
 #' # View the points plotted in treespace (these data indicate significant problems)
 #' p$treespace.points.plot
 #' 
@@ -37,6 +40,7 @@
 #' # you can colour the plot with any parameter in your ptable
 #' # to see which parameters you have you can simply do this:
 #' names(fungus[[1]]$ptable)
+#' }
 
 
 makeplot.treespace <- function(chains, burnin = 0, n.points = 100,  fill.color = NA){

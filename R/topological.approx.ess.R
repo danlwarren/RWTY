@@ -20,8 +20,10 @@
 #'
 #' @export topological.approx.ess
 #' @examples
+#' \dontrun{
 #' data(fungus)
 #' topological.approx.ess(fungus, burnin = 20)
+#' }
 
 
 

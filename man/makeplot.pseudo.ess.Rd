@@ -30,8 +30,10 @@ coda package. NB this function requires the calculation of many
 tree distances, so can take some time.
 }
 \examples{
+\dontrun{
 data(fungus)
 makeplot.pseudo.ess(fungus, burnin = 20, n = 10)
+}
 }
 \keyword{ESS,}
 \keyword{distance}

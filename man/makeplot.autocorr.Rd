@@ -42,8 +42,10 @@ off when the autocorrelation decreases to zero. The function calculates
 path distances, though other distances could also be employed.
 }
 \examples{
+\dontrun{
 data(fungus)
 makeplot.autocorr(fungus, burnin = 20)
+}
 }
 \keyword{autocorrelation,}
 \keyword{distance}

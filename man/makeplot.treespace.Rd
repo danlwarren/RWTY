@@ -22,12 +22,15 @@ A list of two ggplot objects: one plots the points in treespace, the other shows
 This function will take list of rwty.chains objects and produce plots of chains in treespace.
 }
 \examples{
+\dontrun{
 data(fungus)
 
 p <- makeplot.treespace(fungus, burnin = 20, fill.color = 'LnL')
 # Treespace plot for all the fungus data
 
-# NB: these data indicate significant problems: the chains are sampling very different parts of tree space
+# NB: these data indicate significant problems: the chains are sampling very 
+# different parts of tree space.
+#
 # View the points plotted in treespace (these data indicate significant problems)
 p$treespace.points.plot
 
@@ -46,6 +49,7 @@ makeplot.treespace(fungus[1:2], burnin = 100, fill.color = 'TL')
 # you can colour the plot with any parameter in your ptable
 # to see which parameters you have you can simply do this:
 names(fungus[[1]]$ptable)
+}
 }
 \keyword{plot,}
 \keyword{rwty}

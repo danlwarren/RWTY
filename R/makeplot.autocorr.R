@@ -26,8 +26,10 @@
 #'
 #' @export makeplot.autocorr
 #' @examples
+#' \dontrun{
 #' data(fungus)
 #' makeplot.autocorr(fungus, burnin = 20)
+#' }
 
 makeplot.autocorr <- function(chains, burnin = 0, max.sampling.interval = NA, autocorr.intervals = 40, squared = FALSE, facet = FALSE, free_y = FALSE, treedist = 'PD', use.all.samples = FALSE){
 

@@ -20,8 +20,10 @@
 #'
 #' @export makeplot.topology
 #' @examples
+#' \dontrun{
 #' data(fungus)
 #' makeplot.topology(fungus, burnin=20)
+#' }
 
 makeplot.topology <- function(chains, burnin = 0, facet=TRUE, free_y = FALSE, independent.chains = FALSE, treedist = 'PD', approx.ess = TRUE){ 
 

@@ -25,8 +25,10 @@
 #'
 #' @export topological.autocorr
 #' @examples
+#' \dontrun{
 #' data(fungus)
 #' topological.autocorr(fungus, burnin = 20)
+#' }
 
 
 topological.autocorr <- function(chains, burnin = 0, max.sampling.interval = NA, autocorr.intervals = 100, squared = FALSE, treedist = 'PD', use.all.samples = FALSE){

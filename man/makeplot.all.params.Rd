@@ -26,8 +26,10 @@ param.plot Returns a list of ggplot objects.
 Plots all parameter values, including tree topologies (see makeplot.topology) over the length of the MCMC chain
 }
 \examples{
+\dontrun{
 data(fungus)
 makeplot.all.params(fungus, burnin=20)
+}
 }
 \keyword{convergence,}
 \keyword{mcmc,}

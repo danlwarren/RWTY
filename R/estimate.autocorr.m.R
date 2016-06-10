@@ -17,10 +17,12 @@
 #' @export estimate.autocorr.m
 #' @examples
 #' data(fungus)
+#' \dontrun{
 #' # To get a good estimate we need all sampling intervals
 #' autocorr.intervals = as.integer(length(fungus[[1]]$trees)/21)
 #' sampling.table <- topological.autocorr(fungus, burnin = 20, autocorr.intervals = autocorr.intervals)
 #' estimate.autocorr.m(sampling.table)
+#' }
 
 
 estimate.autocorr.m <- function(dat, ac.cutoff = 0.95){

@@ -33,8 +33,10 @@ If required, the behaviour can be changed to plot the path distance of each tree
 of each chain, using the independent.chains option. This is not recommended in most cases.
 }
 \examples{
+\dontrun{
 data(fungus)
 makeplot.topology(fungus, burnin=20)
+}
 }
 \keyword{convergence,}
 \keyword{mcmc,}

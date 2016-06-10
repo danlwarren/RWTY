@@ -69,9 +69,11 @@ globalVariables(c("lower.95", "upper.95", "lower.75", "upper.75", "Generation", 
 #'
 #' @export analyze.rwty
 #' @examples
+#' \dontrun{
 #' data(fungus)
 #' p <- analyze.rwty(fungus, burnin = 50, window.num = 50)
 #' p
+#' }
 
 
 

@@ -23,8 +23,10 @@
 #'
 #' @export topological.pseudo.ess
 #' @examples
+#' \dontrun{
 #' data(fungus)
 #' topological.pseudo.ess(fungus, burnin = 20, n = 20)
+#' }
 
 
 

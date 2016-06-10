@@ -31,8 +31,10 @@ NB this function requires the calculation of many many
 tree distances, so can take some time.
 }
 \examples{
+\dontrun{
 data(fungus)
 topological.approx.ess(fungus, burnin = 20)
+}
 }
 \keyword{distance}
 \keyword{distance,}

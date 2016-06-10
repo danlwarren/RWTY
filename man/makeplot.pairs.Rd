@@ -30,6 +30,7 @@ busy. To include parameters of your choice, use the 'parameters' argument. In th
 calculate from the first tree in every chain.
 }
 \examples{
+\dontrun{
 data(salamanders)
 makeplot.pairs(salamanders[1], burnin=20)
 
@@ -38,6 +39,7 @@ makeplot.pairs(salamanders[1], burnin=20, params = 'all')
 
 # plot specific the variables (note: you always get the topological distance)
 makeplot.pairs(salamanders[1], burnin=20, params = c('pi.A.', 'pi.C.', 'pi.G.', 'pi.T.'))
+}
 }
 \keyword{convergence,}
 \keyword{mcmc,}
