@@ -15,11 +15,10 @@ Depends:
     R (>= 3.0.1),
     ape,
     ggplot2,
+Imports:
     reshape2,
     phangorn,
-    MASS,
     coda,
-    stringr,
     viridis,
     grid,
     plyr,
