@@ -13,6 +13,19 @@ library(rwty)
 # Load in test trees
 test.trees <- load.trees("~/GitHub/RWTY/test/testchain.t", skip=0)
 
+clade.freq(test.trees, 1, 16)
+
+# 1  1 2 3 4 5 6 7 8 9 10       1.00
+# 2              1 8 9 10       1.00
+# 3        1 5 6 7 8 9 10       1.00
+# 4      1 2 5 6 7 8 9 10       0.50
+# 5        1 2 3 4 8 9 10       1.00
+# 6      1 2 3 4 7 8 9 10       1.00
+# 7         1 2 3 4 5 6 7       1.00
+# 8       1 2 3 4 5 6 7 8       0.25
+# 9      1 3 5 6 7 8 9 10       0.50
+# 10      1 2 3 4 5 6 7 9       0.75
+
 # Evaluate the trees object
 expect_equal(names(test.trees), c("trees", "ptable", "gens.per.tree"))
 expect_equal(length(names(test.trees$trees)), 16)

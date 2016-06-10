@@ -4,7 +4,7 @@
 \alias{clade.freq}
 \title{Returns clade names and frequencies}
 \usage{
-clade.freq(x, start, end, check.labels = TRUE, rooted = FALSE)
+clade.freq(x, start, end, rooted = FALSE, ...)
 }
 \arguments{
 \item{x}{A multiPhylo or rwty.trees object}
@@ -13,9 +13,11 @@ clade.freq(x, start, end, check.labels = TRUE, rooted = FALSE)
 
 \item{end}{The index of the last tree to consider in calculating frequencies}
 
-\item{check.labels}{See documentation for ape function prop.part}
-
 \item{rooted}{(TRUE/FALSE).  Tells RWTY whether your trees are rooted or not.}
+
+\item{...}{Arguments to be passed to ape's prop.part function}
+
+\item{check.labels}{See documentation for ape function prop.part}
 }
 \value{
 clade.df A data froma containing clade names and frequencies
