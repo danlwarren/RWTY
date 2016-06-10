@@ -14,17 +14,15 @@ globalVariables(c("lower.95", "upper.95", "lower.75", "upper.75", "Generation", 
 #' 
 #' @import ape
 #' @import ggplot2
-#' @import reshape2
-#' @import phangorn
-#' @import MASS
-#' @import coda
-#' @import stringr
-#' @import viridis
-#' @import grid
-#' @import plyr
-#' @import ggdendro
-#' @import GGally
-#' @import parallel
+#' @importFrom reshape2 melt
+#' @importFrom phangorn RF.dist
+#' @importFrom coda effectiveSize mcmc
+#' @importFrom viridis scale_color_viridis viridis
+#' @importFrom grid unit
+#' @importFrom plyr ddply summarize . 
+#' @importFrom ggdendro ggdendrogram
+#' @importFrom GGally ggpairs
+#' @importFrom parallel mclapply detectCores
 #'
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin.  Default value is zero.
