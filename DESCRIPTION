@@ -12,7 +12,7 @@ Description: Implements various tests, visualizations, and metrics
     environment.
 License: GPL-2
 Depends:
-    R (>= 3.0.1),
+    R (>= 3.3.0),
     ape,
     ggplot2,
 Imports:
