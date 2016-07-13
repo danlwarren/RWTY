@@ -36,7 +36,7 @@ topological.approx.ess <- function(chains, burnin = 0, max.sampling.interval = 1
     if(N-burnin < max.sampling.interval){
         warning("Not enough trees to use your chosen max.sampling.interval")
         warning("Setting it to 90% of the length of your post-burnin chain instead")
-        max.sampling.interval = floor((N - burnin) - (0.1 * N))
+        max.sampling.interval = floor((N - burnin) * 0.9)
     }
 
 

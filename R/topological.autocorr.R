@@ -40,7 +40,7 @@ topological.autocorr <- function(chains, burnin = 0, max.sampling.interval = NA,
     N = length(chains[[1]]$trees)
 
     if(is.na(max.sampling.interval)){
-        max.sampling.interval = floor((N - burnin) - (0.9 * N))
+        max.sampling.interval = floor((N - burnin) * 0.1)
     }
 
     indices = seq(from = burnin + 1, to = N, by = 1)   
@@ -74,8 +74,16 @@ tree.autocorr <- function(tree.list, max.sampling.interval = NA, autocorr.interv
         max.thinning = length(tree.list) - 100
     }
 
+    if(max.thinning < 20){
+        stop("Too few trees to calculate autocorrelation. Try including more trees in the sample, or reducing the max.sampling.interval")
+    }
+
+
+
     # we analyze up to autocorr.intervals thinnings spread evenly, less if there are non-unique numbers
     thinnings <- unique(as.integer(seq(from = 1, to = max.thinning, length.out=autocorr.intervals)))
+
+
     r <- lapply(as.list(thinnings), get.sequential.distances, tree.list, squared = squared, treedist = treedist, use.all.samples = use.all.samples) 
     r <- data.frame(matrix(unlist(r), ncol=2, byrow=T))
     names(r) = c("topo.distance", "sampling.interval")
@@ -130,15 +138,10 @@ path.dist.squared <- function (pair, trees, check.labels = FALSE){
 path.dist <- function (pair, trees, check.labels = FALSE) 
 {
 
-    print(pair)
-    print(trees)
-
     # a trimmed down version of the phangorn tree.dist function
     tree1 = trees[[pair[1]]]
     tree2 = trees[[pair[2]]]
 
-    print(tree1)
-    print(tree2)
 
     tree1 = reorder(tree1, "postorder")
     tree2 = reorder(tree2, "postorder")
@@ -175,6 +178,7 @@ get.sequential.distances <- function(thinning, tree.list, N=500, squared = FALSE
     keep = c(rbind(starts, ends))
 
     pairs = split(keep, ceiling(seq_along(keep)/2))
+
 
     if(use.all.samples == FALSE){
         if(length(pairs)>N){

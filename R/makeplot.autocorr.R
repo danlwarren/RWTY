@@ -42,10 +42,10 @@ makeplot.autocorr <- function(chains, burnin = 0, max.sampling.interval = NA, au
     N = length(chain$trees)
 
     if(is.na(max.sampling.interval)){
-        max.sampling.interval = floor((N - burnin) - (0.9 * (N - burnin)))
+        max.sampling.interval = floor((N - burnin) * 0.1)
     }
 
-    dat <- topological.autocorr(chains, burnin, max.sampling.interval, autocorr.intervals, squared = squared, treedist = treedist)
+    dat <- topological.autocorr(chains, burnin, max.sampling.interval, autocorr.intervals, squared = squared, treedist = treedist, use.all.samples = use.all.samples)
 
     if(treedist=='RF'){
         td.name = "Robinson Foulds"
