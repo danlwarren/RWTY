@@ -10,7 +10,7 @@ load.multi(path = ".", format = "mb", labels = NA, ...)
 \item{path}{The path to the directory containing tree and log files}
 
 \item{format}{File format, which is used to find tree and log files.
-Currently accepted values are "mb" for MrBayes, "beast" for BEAST, and "*beast" for *BEAST.
+Currently accepted values are "mb" for MrBayes, "beast" for BEAST, "*beast" for *BEAST, and "revbayes" for RevBayes.
 If you would like RWTY to understand additional formats, please contact the authors and send us some sample data.}
 
 \item{labels}{A vector of names to assign to chains as they are read in.}
