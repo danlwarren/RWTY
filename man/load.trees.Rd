@@ -15,7 +15,7 @@ trees are loaded using ape's read.nexus function.  Otherwise, it's read.tree.
 If a "format" argument is passed, type will be determined from the format definition.}
 
 \item{format}{File format, which is used to find tree and log files.
-Currently accepted values are "mb" for MrBayes, "beast" for BEAST, and "*beast" for *BEAST.
+Currently accepted values are "mb" for MrBayes, "beast" for BEAST, "*beast" for *BEAST, and "revbayes" for RevBayes.
 If you would like RWTY to understand additional formats, please contact the authors and send us some sample data.}
 
 \item{gens.per.tree}{The number of generations separating trees.  If not provided, RWTY will attempt to calculate it automatically.}
@@ -28,7 +28,7 @@ definition.}
 
 \item{skip}{The number of lines that must be skipped to get to the header of the log file.
 MrBayes, for instance, prints a comment line at the top of the log file, so MrBayes files should be
-read in with a skip value of 1.  If no "skip" value is provided but a "format" is supplied, RWTY will 
+read in with a skip value of 1.  If no "skip" value is provided but a "format" is supplied, RWTY will
 attempt to read logs using the skip value from the format definition.}
 }
 \value{

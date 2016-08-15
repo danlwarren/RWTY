@@ -4,8 +4,7 @@
 #'
 #' @param path The path to the directory containing tree and log files
 #' @param format File format, which is used to find tree and log files.
-#' Currently accepted values are "mb" for MrBayes, "beast" for BEAST, and "*beast" for *BEAST.
-#' LJH: Trying to add support for format="revbayes"
+#' Currently accepted values are "mb" for MrBayes, "beast" for BEAST, "*beast" for *BEAST, and "revbayes" for RevBayes.
 #' If you would like RWTY to understand additional formats, please contact the authors and send us some sample data.
 #' @param labels A vector of names to assign to chains as they are read in.
 #' @param ... Further arguments to be passed to load.trees.

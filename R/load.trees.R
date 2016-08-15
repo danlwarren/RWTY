@@ -7,7 +7,7 @@
 #' trees are loaded using ape's read.nexus function.  Otherwise, it's read.tree.
 #' If a "format" argument is passed, type will be determined from the format definition.
 #' @param format File format, which is used to find tree and log files.
-#' Currently accepted values are "mb" for MrBayes, "beast" for BEAST, and "*beast" for *BEAST.
+#' Currently accepted values are "mb" for MrBayes, "beast" for BEAST, "*beast" for *BEAST, and "revbayes" for RevBayes.
 #' If you would like RWTY to understand additional formats, please contact the authors and send us some sample data.
 #' @param gens.per.tree The number of generations separating trees.  If not provided, RWTY will attempt to calculate it automatically.
 #' @param trim Used for thinning the chain.  If a number N is provided, RWTY keeps every Nth tree.
