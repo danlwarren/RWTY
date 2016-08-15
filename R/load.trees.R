@@ -45,7 +45,7 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
   } else if(type=="revbayes") {
     tmp <- read.revbayestrees(file=file)
     treelist <- tmp$tree
-    ptable <- tmp$param
+    rb_ptable <- tmp$param
   } else {
     treelist <- read.tree(file=file)
   }
@@ -54,7 +54,7 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
 
   if(is.na(gens.per.tree)){
     if(type=="revbayes") {
-      gens.per.tree <- rbparam[2,"Iteration"] - rbparam[1,"Iteration"]
+      gens.per.tree <- rb_ptable[2,"Iteration"] - rb_ptable[1,"Iteration"]
     } else {
       gens.per.tree <- as.numeric(tail(strsplit(x=names(treelist)[3], split="[[:punct:]]")[[1]], 1)) -
         as.numeric(tail(strsplit(x=names(treelist)[2], split="[[:punct:]]")[[1]], 1))
@@ -77,9 +77,7 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
   # Reset class
   class(treelist) <- "multiPhylo"
   
-  if(format=="revbayes") {
-    ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
-  } else {
+  
     ptable <- NULL
 
     # Check whether log file path has been supplied and doesn't exist
@@ -108,7 +106,13 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
       }
   
     }
-
+  
+    # add any columns from rb_ptable (from treefile) that are not already in ptable (from log)
+    if(format=="revbayes") {
+      to_add<-!(colnames(rb_ptable) %in% colnames(ptable))
+      if(sum(to_add)>0)
+        ptable<-cbind(rb_ptable[,to_add], ptable)
+    }
 
   output <- list(
     "trees" = treelist,
@@ -159,7 +163,7 @@ get.format <- function(format){
       trees.suffix = ".trees",
       log.suffix = ".log",
       type = "revbayes",
-      skip = 1
+      skip = 0
     ))
   }
 
