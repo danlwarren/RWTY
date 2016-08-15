@@ -168,3 +168,27 @@ get.format <- function(format){
   }
 
 }
+
+
+
+read.revbayestrees<-function(file) {
+  filelines<-readLines(file)
+  column.names<-strsplit(filelines[1], split="\t")[[1]]
+  data<-strsplit(filelines[-1], split="\t")
+  samplerow<-data[[1]]
+  treecheck<-unlist(lapply(samplerow, FUN=isTree))
+  param<-matrix(ncol=sum(!treecheck), nrow=length(data))
+  colnames(param)<-column.names[!treecheck]
+  for(i in 1:length(data))
+    param[i,]<-as.numeric(data[[i]][!treecheck])
+  tree<-list()
+  for(i in 1:length(data)) {
+    tree[[i]]<-read.tree(text=data[[i]][treecheck])
+  }
+  class(tree)<-"multiPhylo"
+  return(list(tree=tree, param=param))
+}
+
+isTree<-function(x) {
+  !is.null(try(read.tree(text=x)))
+}
