@@ -4,7 +4,7 @@
 #'
 #' @param file A path to a tree file containing an MCMC chain of trees
 #' @param type An argument that designates the type of tree file.  If "nexus",
-#' trees are loaded using ape's read.nexus function.  Otherwise, it's read.tree.
+#' trees are loaded using ape's \code{\link{read.nexus}} function.  Otherwise, it's \code{\link{read.tree}}.
 #' If a "format" argument is passed, type will be determined from the format definition.
 #' @param format File format, which is used to find tree and log files.
 #' Currently accepted values are "mb" for MrBayes, "beast" for BEAST, "*beast" for *BEAST, and "revbayes" for RevBayes.
@@ -19,7 +19,7 @@
 #' read in with a skip value of 1.  If no "skip" value is provided but a "format" is supplied, RWTY will
 #' attempt to read logs using the skip value from the format definition.
 #' @return output An rwty.trees object containing the multiPhylo and the table of values from the log file if available.
-#'
+#' @seealso \code{\link{read.tree}}, \code{\link{read.nexus}}
 #' @keywords Phylogenetics, MCMC, load
 #'
 #' @export load.trees
@@ -28,8 +28,18 @@
 
 load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, logfile=NA, skip=NA){
 
+  format <- tolower(format)
+  format_choices <- c("mb", "beast", "*beast", "revbayes", "mrbayes")
+  format <- match.arg(format, format_choices)
+  if(format=="mrbayes") format="mb"
+  if(!is.na(type)){
+    type <- tolower(type)
+    type_choices <- c("nexus", "newick")
+    type <- match.arg(type, type_choices)
+  }
+            
   file.format <- get.format(format)
-
+   
   if(is.na(type)){
     type <- file.format$type
   }
@@ -56,8 +66,12 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
     if(type=="revbayes") {
       gens.per.tree <- rb_ptable[2,"Iteration"] - rb_ptable[1,"Iteration"]
     } else {
+#   "beast" | "*beast" | "mb"   ????
+      if(!is.null(names(treelist))){
       gens.per.tree <- as.numeric(tail(strsplit(x=names(treelist)[3], split="[[:punct:]]")[[1]], 1)) -
         as.numeric(tail(strsplit(x=names(treelist)[2], split="[[:punct:]]")[[1]], 1))
+      }
+      else gens.per.tree <- 1
     }
   }
 
