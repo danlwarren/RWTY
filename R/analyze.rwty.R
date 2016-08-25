@@ -39,6 +39,7 @@ globalVariables(c("lower.95", "upper.95", "lower.75", "upper.75", "Generation", 
 #' @param ess.reps The number of replicate analyses to do when calculating the pseudo ESS.
 #' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance.
 #' @param params A vector of parameters to use when making the parameter correlation plots.  Defaults to the first two columns in the log table.
+#' @param max.sampling.interval The maximum sampling interval to use for generating autocorrelation plots
 #' @param ... Extra arguments to be passed to plotting and analysis functions.
 #'
 #' @return output The output is a list containing the following plots:
