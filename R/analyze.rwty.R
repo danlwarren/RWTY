@@ -76,72 +76,76 @@ globalVariables(c("lower.95", "upper.95", "lower.75", "upper.75", "Generation", 
 
 
 analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 100, n.clades = 20,
-                           min.freq = 0.0, fill.color = NA, filename = NA, 
-                           overwrite=FALSE, facet=TRUE, free_y=FALSE, autocorr.intervals=100, ess.reps = 20,
-                          treedist = 'PD', params = NA, ...){
+                         min.freq = 0.0, fill.color = NA, filename = NA, 
+                         overwrite=FALSE, facet=TRUE, free_y=FALSE, autocorr.intervals=100, ess.reps = 20,
+                         treedist = 'PD', params = NA, max.sampling.interval = NA, ...){
+  
+  chains <- check.chains(chains)
+  
+  N <- length(chains[[1]]$trees)
+  
+  rwty.params.check(chains, N, burnin, window.size, treespace.points, min.freq, filename, overwrite)
+  
+  # check to see if ptables exist, make related plots
+  if(all(unlist(lapply(chains, function(x) length(x$ptable[,1])))) > 0){ 
+    # plot parameters for all chains
+    parameter.plots <- makeplot.all.params(chains, burnin = burnin, facet=facet, strip = 1)
+    parameter.correlations <- makeplot.pairs(chains, burnin = burnin, params = params, treedist = treedist, strip = 1)
+    names(parameter.correlations) <- paste0(names(parameter.correlations), ".correlations")
+  }
+  else{
+    parameter.plots <- makeplot.topology(chains, burnin = burnin, facet = facet)
+  }
+  
+  # plot autocorrelation
+  if(N < 200){
+    autocorr.plot <- NULL
+  } else {
+    autocorr.plot <- makeplot.autocorr(chains, burnin = burnin, autocorr.intervals = autocorr.intervals, facet = facet, max.sampling.interval = max.sampling.interval) 
+  }
+  
+  # plot sliding window sf plots
+  splitfreq.sliding <- makeplot.splitfreqs.sliding(chains, burnin=burnin, n.clades = n.clades, window.size = window.size, facet = facet)
+  acsf.sliding <- makeplot.acsf.sliding(chains, burnin=burnin, window.size = window.size, facet = facet)
+  
+  # plot cumulative sf plots
+  splitfreq.cumulative <- makeplot.splitfreqs.cumulative(chains, burnin=burnin, n.clades = n.clades, window.size = window.size, facet = facet)
+  acsf.cumulative <- makeplot.acsf.cumulative(chains, burnin=burnin, window.size = window.size, facet = facet)
+  
+  # plot treespace for all chains
+  treespace.plots <- makeplot.treespace(chains, n.points = treespace.points, burnin = burnin, fill.color = fill.color)
+  
+  
+  plots <- c(parameter.plots,
+             parameter.correlations,
+             autocorr.plot,
+             splitfreq.sliding,
+             acsf.sliding,
+             splitfreq.cumulative,
+             acsf.cumulative,
+             treespace.plots)
+  
+  
+  # plot multichain plots when appropriate
+  if(length(chains) > 1){
     
-    chains <- check.chains(chains)
+    asdsf.plot <- makeplot.asdsf(chains, burnin = burnin, window.size = window.size, min.freq = min.freq)
     
-    N <- length(chains[[1]]$trees)
+    splitfreq.matrix.plots <- makeplot.splitfreq.matrix(chains, burnin = burnin)
     
-    rwty.params.check(chains, N, burnin, window.size, treespace.points, min.freq, filename, overwrite)
-    
-    # check to see if ptables exist, make related plots
-    if(all(unlist(lapply(chains, function(x) length(x$ptable[,1])))) > 0){ 
-      # plot parameters for all chains
-      parameter.plots <- makeplot.all.params(chains, burnin = burnin, facet=facet, strip = 1)
-      parameter.correlations <- makeplot.pairs(chains, burnin = burnin, params = params, treedist = treedist, strip = 1)
-      names(parameter.correlations) <- paste0(names(parameter.correlations), ".correlations")
-    }
-    else{
-      parameter.plots <- makeplot.topology(chains, burnin = burnin, facet = facet)
-    }
-
-    # plot autocorrelation
-    autocorr.plot <- makeplot.autocorr(chains, burnin = burnin, autocorr.intervals = autocorr.intervals, facet = facet)
-
-    # plot sliding window sf plots
-    splitfreq.sliding <- makeplot.splitfreqs.sliding(chains, burnin=burnin, n.clades = n.clades, window.size = window.size, facet = facet)
-    acsf.sliding <- makeplot.acsf.sliding(chains, burnin=burnin, window.size = window.size, facet = facet)
-
-    # plot cumulative sf plots
-    splitfreq.cumulative <- makeplot.splitfreqs.cumulative(chains, burnin=burnin, n.clades = n.clades, window.size = window.size, facet = facet)
-    acsf.cumulative <- makeplot.acsf.cumulative(chains, burnin=burnin, window.size = window.size, facet = facet)
-
-    # plot treespace for all chains
-    treespace.plots <- makeplot.treespace(chains, n.points = treespace.points, burnin = burnin, fill.color = fill.color)
-
-
-    plots <- c(parameter.plots,
-               parameter.correlations,
-                autocorr.plot,
-                splitfreq.sliding,
-                acsf.sliding,
-                splitfreq.cumulative,
-                acsf.cumulative,
-                treespace.plots)
-    
-            
-    # plot multichain plots when appropriate
-    if(length(chains) > 1){
-      
-      asdsf.plot <- makeplot.asdsf(chains, burnin = burnin, window.size = window.size, min.freq = min.freq)
-
-      splitfreq.matrix.plots <- makeplot.splitfreq.matrix(chains, burnin = burnin)
-
-      plots <- c(plots, asdsf.plot, splitfreq.matrix.plots)
-    }
-    
-    # Print all to pdf if filename provided
-    if(!is.na(filename)){
-      print(sprintf("Saving plots to file: %s", filename))
-      pdf(file=filename, width = 10, height = 7, ...)
-      print(plots)
-      dev.off()
-    }
-
-    return(plots)
-
+    plots <- c(plots, asdsf.plot, splitfreq.matrix.plots)
+  }
+  
+  # Print all to pdf if filename provided
+  if(!is.na(filename)){
+    print(sprintf("Saving plots to file: %s", filename))
+    pdf(file=filename, width = 10, height = 7, ...)
+    print(plots)
+    dev.off()
+  }
+  
+  return(plots)
+  
 }
 
 rwty.params.check <- function(chains, N, burnin, window.size, treespace.points, min.freq, filename, overwrite){
@@ -197,19 +201,19 @@ rwty.params.check <- function(chains, N, burnin, window.size, treespace.points, 
 
 
 get.processors <- function(processors){
-    
-    if(Sys.info()["sysname"] == 'Windows'){
-        # mclapply is not supported on windows
-        # so we give a single processor,
-        # in which case mclapply calls fall back
-        # on lapply
-        return(1)
-    }
-
-    if(is.null(processors)){ 
-        processors = detectCores(all.tests = FALSE, logical = FALSE)
-    }
-
-    return(processors)
-
+  
+  if(Sys.info()["sysname"] == 'Windows'){
+    # mclapply is not supported on windows
+    # so we give a single processor,
+    # in which case mclapply calls fall back
+    # on lapply
+    return(1)
+  }
+  
+  if(is.null(processors)){ 
+    processors = detectCores(all.tests = FALSE, logical = FALSE)
+  }
+  
+  return(processors)
+  
 }
