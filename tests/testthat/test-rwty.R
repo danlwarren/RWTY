@@ -6,7 +6,7 @@ library(rwty)
 
 #############################################################
 #
-#     Single chain analysis
+#     Testing file loading for single chain
 #
 #############################################################
 

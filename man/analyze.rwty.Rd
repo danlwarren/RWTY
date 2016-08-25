@@ -41,6 +41,8 @@ analyze.rwty(chains, burnin = 0, window.size = 20, treespace.points = 100,
 
 \item{params}{A vector of parameters to use when making the parameter correlation plots.  Defaults to the first two columns in the log table.}
 
+\item{max.sampling.interval}{The maximum sampling interval to use for generating autocorrelation plots}
+
 \item{...}{Extra arguments to be passed to plotting and analysis functions.}
 }
 \value{
