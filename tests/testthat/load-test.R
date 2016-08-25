@@ -3,6 +3,7 @@ rm(list=ls(all = TRUE))
 library(testthat)
 library(rwty)
 
+options("mc.cores" = 1)
 
 #############################################################
 #
