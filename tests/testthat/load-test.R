@@ -3,8 +3,6 @@ rm(list=ls(all = TRUE))
 library(testthat)
 library(rwty)
 
-options("mc.cores" = 1)
-
 #############################################################
 #
 #     Testing file loading for single chain
