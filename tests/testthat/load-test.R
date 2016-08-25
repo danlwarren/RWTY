@@ -37,8 +37,6 @@ expect_equal(test.trees$gens.per.tree, 100)
 # Get output from RWTY for test trees object
 test.output <- analyze.rwty(test.trees, window.num=4, treespace.points=4, autocorr.intervals = 4, max.sampling.interval = 4, burnin=0)
 
-# Show plots
-test.output
 
 # Test attributes of RWTY object
 expect_equal(names(test.output), c("LnL.trace", "Param1.trace", "Param2.trace", "topology.trace.plot",       
@@ -98,10 +96,4 @@ cumulative.posterior.plot <- test.output$acsf.cumulative.plot
 expect_equal(class(cumulative.posterior.plot), c("gg", "ggplot"))
 expect_equal(names(cumulative.posterior.plot), c("data", "layers", "scales", "mapping", "theme", 
                                             "coordinates", "facet","plot_env", "labels" ))
-
-# Test attributes of ess plot
-ess.plot <- test.output$ess.plot
-expect_equal(class(ess.plot), c("gg", "ggplot"))
-expect_equal(names(ess.plot), c("data", "layers", "scales", "mapping", "theme", 
-                                "coordinates", "facet","plot_env", "labels" ))
 
