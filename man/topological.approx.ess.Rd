@@ -24,7 +24,7 @@ approximate ESS and the name of the chain.
 }
 \description{
 This function takes a list of rwty.trees objects, and calculates the
-pseudo ESS of the trees from each chain, after removing burnin.
+pseudo ESS of the trees from each chain, after removing burnin. 
 The calculation uses the autocorrelation among squared topological distances between
 trees to calculate an approximate ESS of tree topologies for each chain.
 NB this function requires the calculation of many many

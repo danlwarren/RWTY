@@ -1,7 +1,7 @@
 Package: rwty
 Type: Package
 Title: R We There Yet? Visualizing MCMC Convergence in Phylogenetics
-Version: 1.0.1
+Version: 1.0.0
 Author: Dan Warren <dan.l.warren@gmail.com>,
     Anthony Geneva <anthony.geneva@gmail.com>,
     Rob Lanfear <rob.lanfear@gmail.com>

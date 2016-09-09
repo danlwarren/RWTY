@@ -6,12 +6,12 @@ library(rwty)
 
 #############################################################
 #
-#     Testing file loading for single chain
+#     Single chain analysis
 #
 #############################################################
 
 # Load in test trees
-test.trees <- load.trees("~/software/RWTY/tests/testthat/testchain.t", skip=0)
+test.trees <- load.trees("~/GitHub/RWTY/test/testchain.t", skip=0)
 
 clade.freq(test.trees, 1, 16)
 
@@ -36,7 +36,7 @@ expect_equal(names(test.trees$trees), c("tree_0", "tree_100", "tree_200", "tree_
 expect_equal(test.trees$gens.per.tree, 100)
 
 # Get output from RWTY for test trees object
-test.output <- analyze.rwty(test.trees, window.num=8, treespace.points=4, autocorr.intervals = 4, burnin=0)
+test.output <- analyze.rwty(test.trees, window.num=4, treespace.points=4, autocorr.intervals = 4, burnin=0)
 
 # Show plots
 test.output

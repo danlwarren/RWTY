@@ -7,7 +7,7 @@
 #' busy. To include parameters of your choice, use the 'parameters' argument. In this function, the topological distance is
 #' calculate from the first tree in every chain.
 #'
-#' @param chains A list of rwty.trees objects.
+#' @param chains A set of rwty.trees objects.
 #' @param burnin The number of trees to omit as burnin. 
 #' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance
 #' @param params 'NA', 'all', or a vector of column names to include in the plot. 'NA' gives the default behaviour (see above). 'all' plots all columns (watch out!). Choose specific columns by name with a vector.
