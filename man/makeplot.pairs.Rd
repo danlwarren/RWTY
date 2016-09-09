@@ -8,7 +8,7 @@ makeplot.pairs(chains, burnin = 0, treedist = "PD", params = NA,
   strip = 1)
 }
 \arguments{
-\item{chains}{A set of rwty.trees objects.}
+\item{chains}{A list of rwty.trees objects.}
 
 \item{burnin}{The number of trees to omit as burnin.}
 
