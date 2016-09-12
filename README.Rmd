@@ -122,7 +122,8 @@ If a logfile is provided, RWTY will produce a trace plot of the value of each co
 ```{r eval=FALSE, fig.width=8, fig.height=6}
 salamanders.rwty$pi.C
 ```
-![parameter plot](images/param.plot.png)
+![parameter plot](images/param.trace.plot.png)
+![parameter plot](images/param.density.plot.png)
 
 
 ### Parameter correlation plots
@@ -148,7 +149,8 @@ RWTY will produce a plot of tree topologies that is similar to those for paramet
 ```{r eval=FALSE, fig.width=8, fig.height=6}
 salamanders.rwty$topology.trace
 ```
-![topology plot](images/topology.plot.png)
+![topology plot](images/topology.trace.plot.png)
+![topology plot](images/topology.density.plot.png)
 
 ### Autocorrelation plots
 These plots demonstrate the change in average tree distance between trees at different sampling intervals. A well-mixed chain (in which sequential samples of tree topologies are effectively independent) will show flat lines on these plots. In a chain that is mixing poorly with respect to tree topologies, you will see the plot rising to an asymptote. This reflects the fact that are close to each other in the chain are more similar than trees that are further away, otherwise known as autocorrelation.
@@ -199,8 +201,8 @@ For a single chain:
 makeplot.splitfreqs.cumulative(salamanders[[1]])
 makeplot.splitfreqs.sliding(salamanders[[1]])
 ```
-![sliding split frequencies](images/sliding.single.png)
 ![cumulative split frequencies](images/cumulative.single.png)
+![sliding split frequencies](images/sliding.single.png)
 
 
 ### Sliding window and cumulative average change in split frequency (ACSF) plots
