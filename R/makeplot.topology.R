@@ -60,13 +60,17 @@ makeplot.topology <- function(chains, burnin = 0, facet=TRUE, free_y = FALSE, in
                         geom_line(aes(colour = chain)) + 
                         ggtitle("Tree topology trace") +
                         xlab("Generation") +
-                        ylab("Topological Distance of Tree from Focal Tree")
+                        ylab("Topological Distance of Tree from Focal Tree") +
+                        scale_color_viridis(begin = 0.2, end = .9, option = "C") +
+                        scale_fill_viridis(begin = 0.2, end = .9, option = "C") +
                         theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
 
     density.plot =  ggplot(data = distances, aes(x=topological.distance)) + 
                         geom_density(aes(colour = chain, fill = chain), alpha = 0.1) + 
                         ggtitle("Tree topology trace") +
-                        xlab("Topological Distance of Tree from Focal Tree")
+                        xlab("Topological Distance of Tree from Focal Tree") +
+                        scale_color_viridis(begin = 0.2, end = .9, option = "C") +
+                        scale_fill_viridis(begin = 0.2, end = .9, option = "C") +
                         theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
 
     if(facet){ 
