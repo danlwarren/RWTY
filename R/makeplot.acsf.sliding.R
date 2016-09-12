@@ -29,7 +29,7 @@ makeplot.acsf.sliding <- function(chains, burnin = 0, window.size = 20, facet = 
   slide.freq.list = slide.freq(chains, burnin = burnin, window.size = window.size)
   dat.list = lapply(slide.freq.list, get.acsf)
   dat = do.call("rbind", dat.list)
-  dat$Chain = get.dat.list.chain.names(dat.list)
+  dat$Chain = rwty:::get.dat.list.chain.names(dat.list)
   rownames(dat) = NULL
   title = "Sliding window Change in Split Frequencies"
   
@@ -42,8 +42,10 @@ makeplot.acsf.sliding <- function(chains, burnin = 0, window.size = 20, facet = 
       geom_ribbon(aes(ymin = upper.95, ymax = max, fill = Chain), alpha = 0.10) + 
       geom_line(aes(y = ACSF, colour = Chain)) + 
       geom_point(aes(y = ACSF, colour = Chain)) +
-      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
-      theme(legend.position="none") +                
+      scale_color_viridis(discrete = TRUE, end = 0.85) +
+      scale_fill_viridis(discrete = TRUE, end = 0.85) +
+      theme(legend.position="none") +   
+      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank()) +              
       expand_limits(y = 0) +
       xlab("Generation") +
       ylab("Change in Split Frequency") + 

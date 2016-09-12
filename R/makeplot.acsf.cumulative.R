@@ -29,7 +29,7 @@ makeplot.acsf.cumulative <- function(chains, burnin = 0, window.size = 20, facet
   
   dat.list = lapply(cumulative.freq.list, get.acsf)
   dat = do.call("rbind", dat.list)
-  dat$Chain = get.dat.list.chain.names(dat.list)
+  dat$Chain = rwty:::get.dat.list.chain.names(dat.list)
   
   rownames(dat) = NULL
   title = "Cumulative Change in Split Frequncies"
@@ -43,8 +43,10 @@ makeplot.acsf.cumulative <- function(chains, burnin = 0, window.size = 20, facet
       geom_ribbon(aes(ymin = upper.95, ymax = max, fill = Chain), alpha = 0.10) + 
       geom_line(aes(y = ACSF, colour = Chain)) + 
       geom_point(aes(y = ACSF, colour = Chain)) +
+      scale_color_viridis(discrete = TRUE, end = 0.85) +
+      scale_fill_viridis(discrete = TRUE, end = 0.85) +
       theme(legend.position="none") +   
-      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank()) +
       coord_cartesian(ylim=c(0,max(dat$ACSF))) +
       xlab("Generation") +
       ylab("Change in Split Frequency") + 
