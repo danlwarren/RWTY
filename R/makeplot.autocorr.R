@@ -63,6 +63,7 @@ makeplot.autocorr <- function(chains, burnin = 0, max.sampling.interval = NA, au
 
     autocorr.plot = ggplot(data=dat, aes(x=sampling.interval, y=topo.distance)) + 
             geom_line(aes(colour = chain)) + geom_point(aes(colour = chain)) + 
+            scale_color_viridis(discrete = TRUE, end = 0.85, option = "C") + 
             xlab("Sampling Interval between Trees") + ylab(y.label) + 
             ggtitle("Topological autocorrelation plot")
 

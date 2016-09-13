@@ -102,7 +102,7 @@ do.pairs.plot <- function(chain, burnin = 0, params, treedist){
 
       ggplot(data = data, mapping = mapping) + 
         geom_histogram(aes(fill = fill)) +
-        scale_fill_manual(values = c('steelblue', 'red'))
+        scale_fill_manual(values =plasma(2, end = 0.65))
         
     }
 

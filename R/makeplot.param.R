@@ -38,11 +38,15 @@ makeplot.param <- function(chains, burnin = 0, parameter = "LnL", facet=TRUE, fr
         trace.plot =  ggplot(ptable, aes_string(x="generation", y=parameter)) + 
                         geom_line(aes(colour = chain)) + 
                         ggtitle(title) +
-                        xlab("Generation")
+                        xlab("Generation") + 
+                        scale_color_viridis(discrete = TRUE, end = 0.85) 
+            
 
         density.plot =  ggplot(ptable, aes_string(x=parameter)) + 
-                        geom_density(aes(colour = chain, fill = chain), alpha = 0.1) + 
-                        ggtitle(title)
+                        geom_density(aes(colour = chain, fill = chain), alpha = 0.3) + 
+                        scale_color_viridis(discrete = TRUE, end = 0.85) +
+                        scale_fill_viridis(discrete = TRUE, end = 0.85) +
+                        ggtitle(title) 
 
         if(facet){ 
             if(free_y){
