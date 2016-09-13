@@ -11,7 +11,7 @@ analyze.rwty(chains, burnin = 0, window.size = 20, treespace.points = 100,
   max.sampling.interval = NA, ...)
 }
 \arguments{
-\item{chains}{A list of rwty.trees objects.}
+\item{chains}{A list of rwty.chain objects.}
 
 \item{burnin}{The number of trees to eliminate as burnin.  Default value is zero.}
 

@@ -3,9 +3,9 @@
 #' This function is automatically called by many other functions, but can be run manually as well.
 #' It performs a number of tests of chain format, labels, lengths, etc.
 #'
-#' @param chains A list of rwty.trees objects. 
+#' @param chains A list of rwty.chain objects. 
 #'
-#' @return chains A list of rwty.trees objects
+#' @return chains A list of rwty.chain objects
 #'
 #' @keywords MCMC, phylogenetics, convergence, awty, rwty
 #'
@@ -17,18 +17,18 @@
 check.chains <- function(chains){
   
   # if passed a single trees object, turn it into a list
-  if(class(chains) == "rwty.trees"){
+  if(class(chains) == "rwty.chain"){
     chains <- list(chains)
   }
   
   # check chains is a list
   if(class(chains)!='list'){
-    stop("'chains' must be a list of rwty.trees objects")        
+    stop("'chains' must be a list of rwty.chain objects")        
   }
   
-  # check all chains are rwty.trees objects
-  if(all(unlist(lapply(chains, FUN = class))!='rwty.trees')){
-    stop("Each chain in the list 'chains' must be a rwty.trees object")
+  # check all chains are rwty.chain objects
+  if(all(unlist(lapply(chains, FUN = class))!='rwty.chain')){
+    stop("Each chain in the list 'chains' must be a rwty.chain object")
   }
   
   # check all chains have the same tips using first tree in each chain

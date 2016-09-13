@@ -7,7 +7,7 @@
 clade.freq(x, start, end, rooted = FALSE, ...)
 }
 \arguments{
-\item{x}{A multiPhylo or rwty.trees object}
+\item{x}{A multiPhylo or rwty.chain object}
 
 \item{start}{The index of the first tree to consider in calcuating frequencies}
 

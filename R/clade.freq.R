@@ -3,7 +3,7 @@
 #' Uses ape functionality to get the frequencies and names of clades in an MCMC chain
 #' or subset thereof.
 #'
-#' @param x A multiPhylo or rwty.trees object
+#' @param x A multiPhylo or rwty.chain object
 #' @param start The index of the first tree to consider in calcuating frequencies
 #' @param end The index of the last tree to consider in calculating frequencies
 #' @param rooted (TRUE/FALSE).  Tells RWTY whether your trees are rooted or not. 
@@ -21,7 +21,7 @@
 # Modified from prop.part in APE, returning data in a more useful format
 clade.freq <- function (x, start, end, rooted=FALSE, ...) {
   
-  if(class(x) == "rwty.trees"){
+  if(class(x) == "rwty.chain"){
     x <- x$trees
   }  
   

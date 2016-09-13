@@ -8,7 +8,7 @@ makeplot.param(chains, burnin = 0, parameter = "LnL", facet = TRUE,
   free_y = FALSE)
 }
 \arguments{
-\item{chains}{A set of rwty.trees objects.}
+\item{chains}{A set of rwty.chain objects.}
 
 \item{burnin}{The number of trees to omit as burnin.}
 

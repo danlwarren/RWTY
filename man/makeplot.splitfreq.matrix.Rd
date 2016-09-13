@@ -7,7 +7,7 @@
 makeplot.splitfreq.matrix(chains, burnin = 0)
 }
 \arguments{
-\item{chains}{A list of rwty.trees objects.}
+\item{chains}{A list of rwty.chain objects.}
 
 \item{burnin}{The number of trees to eliminate as burnin}
 }
@@ -15,7 +15,7 @@ makeplot.splitfreq.matrix(chains, burnin = 0)
 output A list of two plots: the first is a matrix of scatterplots, where each point is a clade, and the values are the split frequencies of that clade in the post-burnin trees of each chain. The second plot is a tree of the chains clustered by their ASDSFs.
 }
 \description{
-This function takes list of rwty.trees objects, and returns a scatterplot matrix
+This function takes list of rwty.chain objects, and returns a scatterplot matrix
 in which each plot shows the split frequencies of all clades that appear in one or both 
 MCMC chains at least once. In the upper diagonal, we show the correlation between the split
 frequencies (Pearson's R), and the Average Standard Deviation of the split frequencies.

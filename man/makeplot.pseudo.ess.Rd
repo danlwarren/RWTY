@@ -7,7 +7,7 @@
 makeplot.pseudo.ess(chains, burnin = 0, n = 20)
 }
 \arguments{
-\item{chains}{A list of rwty.trees objects.}
+\item{chains}{A list of rwty.chain objects.}
 
 \item{burnin}{The number of trees to eliminate as burnin}
 
@@ -19,7 +19,7 @@ which represents the median pseudo ESS from the n replicates, and
 whiskers representing the upper and lower 95% intervals of the n replicates.
 }
 \description{
-This function takes a list of rwty.trees objects, and plots the
+This function takes a list of rwty.chain objects, and plots the
 pseudo ESS of the tree topologies from each chain, after removing burnin. 
 Each caulcation is repeated n times, where in each replicate a random
 tree from the chain is chosen as a 'focal' tree. The calculation works

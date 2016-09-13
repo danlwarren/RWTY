@@ -1,13 +1,13 @@
 #' Calculate the approximate Effective Sample Size (ESS) of tree topologies
 #'
-#' This function takes a list of rwty.trees objects, and calculates the
+#' This function takes a list of rwty.chain objects, and calculates the
 #' pseudo ESS of the trees from each chain, after removing burnin.
 #' The calculation uses the autocorrelation among squared topological distances between
 #' trees to calculate an approximate ESS of tree topologies for each chain.
 #' NB this function requires the calculation of many many
 #' tree distances, so can take some time.
 #'
-#' @param chains A list of rwty.trees objects.
+#' @param chains A list of rwty.chain objects.
 #' @param burnin The number of trees to eliminate as burnin
 #' @param max.sampling.interval The largest sampling interval you want to use to calculate the ESS. Every sampling interval up to and including this number will be sampled. Higher is better, but also slower. In general, setting this number to 100 (the default) should be fine for most cases. However, if you get an upper bound on the ESS estimate (i.e. ESS<x) rather than a point estimate (i.e. ESS = x) then that indicates a higher max.sampling.interval would be better, because the algorithm could not find the asymptote on the autocorrelation plot with the current max.sampling.interval.
 #' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance

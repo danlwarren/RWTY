@@ -2,7 +2,7 @@
 #' 
 #' Plots all parameter values, including tree topologies (see makeplot.topology) over the length of the MCMC chain
 #'
-#' @param chains A set of rwty.trees objects 
+#' @param chains A set of rwty.chain objects 
 #' @param burnin The number of trees to omit as burnin. 
 #' @param facet Boolean denoting whether to make a facet plot.
 #' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.

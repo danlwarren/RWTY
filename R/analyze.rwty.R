@@ -24,7 +24,7 @@ globalVariables(c("lower.95", "upper.95", "lower.75", "upper.75", "Generation", 
 #' @importFrom GGally ggpairs
 #' @importFrom parallel mclapply detectCores
 #'
-#' @param chains A list of rwty.trees objects. 
+#' @param chains A list of rwty.chain objects. 
 #' @param burnin The number of trees to eliminate as burnin.  Default value is zero.
 #' @param window.size The number of trees to include in each windows of sliding window plots
 #' @param treespace.points The number of trees to plot in the treespace plot. Default is 100 

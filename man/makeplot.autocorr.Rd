@@ -9,7 +9,7 @@ makeplot.autocorr(chains, burnin = 0, max.sampling.interval = NA,
   free_y = FALSE, treedist = "PD", use.all.samples = FALSE)
 }
 \arguments{
-\item{chains}{A list of rwty.trees objects.}
+\item{chains}{A list of rwty.chain objects.}
 
 \item{burnin}{The number of trees to eliminate as burnin.}
 
@@ -29,10 +29,10 @@ makeplot.autocorr(chains, burnin = 0, max.sampling.interval = NA,
 }
 \value{
 A ggplot2 plot object, with one line (facetting off) or facet
-(facetting on) per rwty.trees object.
+(facetting on) per rwty.chain object.
 }
 \description{
-This function takes a list of rwty.trees objects, and makes an
+This function takes a list of rwty.chain objects, and makes an
 autocorrelation plot for each chain. Each plot shows the mean phylogenetic
 distance at a series of sampling intervals. In really well behaved MCMC 
 analyses, the mean distance will stay constant as the sampling interval 

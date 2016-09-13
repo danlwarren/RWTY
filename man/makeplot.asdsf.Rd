@@ -7,7 +7,7 @@
 makeplot.asdsf(chains, burnin = 0, window.size = 20, min.freq = 0)
 }
 \arguments{
-\item{chains}{A list of rwty.trees objects.}
+\item{chains}{A list of rwty.chain objects.}
 
 \item{burnin}{The number of trees to eliminate as burnin. Defaults to zero.}
 
@@ -19,7 +19,7 @@ makeplot.asdsf(chains, burnin = 0, window.size = 20, min.freq = 0)
 output A cumulative plot of ASDSF across all chains
 }
 \description{
-This function takes two or more rwty.trees ojects and returns a plot of ASDSF as the run progresses.  
+This function takes two or more rwty.chain ojects and returns a plot of ASDSF as the run progresses.  
 The solid line with points shows the Average Standard Deviation of Split Frequences at the current generation
 The grey ribbon shows the upper and lower 95% quantiles of the SDSFs at the current generation
 }

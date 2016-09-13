@@ -1,6 +1,6 @@
 #' Calculate the pseudo Effective Sample Size (ESS) of tree topologies
 #' 
-#' This function takes a list of rwty.trees objects, and calculates the
+#' This function takes a list of rwty.chain objects, and calculates the
 #' pseudo ESS of the trees from each chain, after removing burnin. 
 #' Each caulcation is repeated n times, where in each replicate a random
 #' tree from the chain is chosen as a 'focal' tree. The calculation works
@@ -10,7 +10,7 @@
 #' coda package. NB this function requires the calculation of many many
 #' tree distances, so can take some time.
 #'
-#' @param chains A list of rwty.trees objects. 
+#' @param chains A list of rwty.chain objects. 
 #' @param burnin The number of trees to eliminate as burnin 
 #' @param n The number of replicate analyses to do 
 #' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance

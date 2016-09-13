@@ -8,7 +8,7 @@ makeplot.topology(chains, burnin = 0, facet = TRUE, free_y = FALSE,
   independent.chains = FALSE, treedist = "PD", approx.ess = TRUE)
 }
 \arguments{
-\item{chains}{A set of rwty.trees objects.}
+\item{chains}{A set of rwty.chain objects.}
 
 \item{burnin}{The number of trees to omit as burnin.}
 

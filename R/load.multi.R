@@ -1,6 +1,6 @@
-#' Load all matching files from a directory into a list of rwty.trees objects
+#' Load all matching files from a directory into a list of rwty.chain objects
 #'
-#' Finds trees and log files based on format definition, returns rwty.trees objects containing both
+#' Finds trees and log files based on format definition, returns rwty.chain objects containing both
 #'
 #' @param path The path to the directory containing tree and log files
 #' @param format File format, which is used to find tree and log files.
@@ -8,7 +8,7 @@
 #' If you would like RWTY to understand additional formats, please contact the authors and send us some sample data.
 #' @param labels A vector of names to assign to chains as they are read in.
 #' @param ... Further arguments to be passed to load.trees.
-#' @return output A list of rwty.trees objects containing the multiPhylos and the tables of values from the log files if available.
+#' @return output A list of rwty.chain objects containing the multiPhylos and the tables of values from the log files if available.
 #'
 #' @keywords Phylogenetics, MCMC, load, trees
 #'
