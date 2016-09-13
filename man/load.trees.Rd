@@ -32,10 +32,10 @@ read in with a skip value of 1.  If no "skip" value is provided but a "format" i
 attempt to read logs using the skip value from the format definition.}
 }
 \value{
-output An rwty.trees object containing the multiPhylo and the table of values from the log file if available.
+output An rwty.chain object containing the multiPhylo and the table of values from the log file if available.
 }
 \description{
-Loads trees, looks for a log file of tree likelihoods and parameter values, returns an rwty.trees object containing both
+Loads trees, looks for a log file of tree likelihoods and parameter values, returns an rwty.chain object containing both
 }
 \examples{
 #load.trees(file="mytrees.t", format = "mb")

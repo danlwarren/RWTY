@@ -1,6 +1,6 @@
 #' Plot the pseudo ESS of tree topologies from MCMC chains.
 #'
-#' This function takes a list of rwty.trees objects, and plots the
+#' This function takes a list of rwty.chain objects, and plots the
 #' pseudo ESS of the tree topologies from each chain, after removing burnin. 
 #' Each caulcation is repeated n times, where in each replicate a random
 #' tree from the chain is chosen as a 'focal' tree. The calculation works
@@ -10,7 +10,7 @@
 #' coda package. NB this function requires the calculation of many
 #' tree distances, so can take some time.
 #'
-#' @param chains A list of rwty.trees objects. 
+#' @param chains A list of rwty.chain objects. 
 #' @param burnin The number of trees to eliminate as burnin 
 #' @param n The number of replicate analyses to do
 #'

@@ -8,7 +8,7 @@ makeplot.splitfreqs.cumulative(chains, burnin = 0, n.clades = 20,
   window.size = 20, facet = TRUE, rank = "wcsf")
 }
 \arguments{
-\item{chains}{A list of rwty.trees objects.}
+\item{chains}{A list of rwty.chain objects.}
 
 \item{burnin}{The number of trees to eliminate as burnin}
 
@@ -24,7 +24,7 @@ makeplot.splitfreqs.cumulative(chains, burnin = 0, n.clades = 20,
 splitfreqs.plot Either a single ggplot2 object or a list of ggplot2 objects.
 }
 \description{
-Takes a list of rwty.trees objects.  
+Takes a list of rwty.chain objects.  
 Plots the cumulative split frequencies of clades over the course of the MCMC. Stationarity is indicated by split frequencies levelling out.
 Only plots the n.clades most variable clades, as measured by the standard deviation of the split frequencies of each clade across all windows.  
 Each line in the plot represents a single clade. The colour of the line represents the standard deviation of the split frequencies of that clade across all sliding windows.

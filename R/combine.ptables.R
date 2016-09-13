@@ -2,10 +2,10 @@
 #' 
 #' This function is automatically called by some of the plot functions.
 #'
-#' @param chains A list of rwty.trees objects. 
+#' @param chains A list of rwty.chain objects. 
 #' @param burnin The number of trees to eliminate as burnin 
 #'
-#' @return ptable A data frame of likelihood values and model parameters for the supplied rwty.trees objects
+#' @return ptable A data frame of likelihood values and model parameters for the supplied rwty.chain objects
 #'
 #' @keywords MCMC, phylogenetics, convergence, awty, rwty
 #'

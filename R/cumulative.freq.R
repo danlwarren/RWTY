@@ -2,7 +2,7 @@
 #' 
 #' This function calculates the cumulative mean split frequencies of clades as an MCMC progresses.
 #'
-#' @param chains A list of rwty.trees objects. 
+#' @param chains A list of rwty.chain objects. 
 #' @param burnin The number of trees to eliminate as burnin. Defaults to zero. 
 #' @param window.size The number of trees to include in each window (note, specified as a number of sampled trees, not a number of generations)
 #'

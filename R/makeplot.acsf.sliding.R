@@ -1,10 +1,10 @@
 #' Plot the Chaing in Split Frequencies (CSF) in sliding windows over the course of an MCMC.
 #' 
-#' This function takes one or more rwty.trees ojects and returns a plot of CSF within each chain as the MCMC progresses.  
+#' This function takes one or more rwty.chain ojects and returns a plot of CSF within each chain as the MCMC progresses.  
 #' The solid line with points shows the Average Change in Split Frequencies (ACSF) between this window and the previous window
 #' The grey ribbon shows the upper and lower 95% quantiles of the CSFs between this window and the previuos window
 #'
-#' @param chains A list of rwty.trees objects. 
+#' @param chains A list of rwty.chain objects. 
 #' @param burnin The number of trees to eliminate as burnin. Defaults to zero. 
 #' @param window.size The number of trees to include in each window (note, specified as a number of sampled trees, not a number of generations)
 #' @param facet (TRUE/FALSE). TRUE: return a single plot with one facet per chain; FALSE: return a list of individual plots with one plot per chain 

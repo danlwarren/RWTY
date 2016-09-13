@@ -7,10 +7,10 @@
 check.chains(chains)
 }
 \arguments{
-\item{chains}{A list of rwty.trees objects.}
+\item{chains}{A list of rwty.chain objects.}
 }
 \value{
-chains A list of rwty.trees objects
+chains A list of rwty.chain objects
 }
 \description{
 This function is automatically called by many other functions, but can be run manually as well.

@@ -8,7 +8,7 @@ makeplot.acsf.cumulative(chains, burnin = 0, window.size = 20,
   facet = TRUE)
 }
 \arguments{
-\item{chains}{A list of rwty.trees objects.}
+\item{chains}{A list of rwty.chain objects.}
 
 \item{burnin}{The number of trees to eliminate as burnin. Defaults to zero.}
 
@@ -22,7 +22,7 @@ output A plof of the CSF between sliding windows over all chains
 acsf.plot A ggplot object, or list of ggplot objects
 }
 \description{
-This function takes one or more rwty.trees ojects and returns a plot of CSF within each chain as the MCMC progresses.  
+This function takes one or more rwty.chain ojects and returns a plot of CSF within each chain as the MCMC progresses.  
 The solid line with points shows the Average Change in Split Frequencies (ACSF; it is average across the changes in split frequencies from all clades in the analysis) between this window and the previous window
 The grey ribbon shows the upper and lower 95% quantiles of the CSFs between this window and the previuos window
 }

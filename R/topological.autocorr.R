@@ -1,6 +1,6 @@
 #' Calculate data for autocorrelation plots of tree topologies from MCMC analyses
 #' 
-#' This function takes a list of rwty.trees objects, and calculates the
+#' This function takes a list of rwty.chain objects, and calculates the
 #' mean phylogenetic distance at a series of roughly even sampling intervals.
 #' In really well behaved MCMC analyses, the mean distance will stay constant
 #' as the sampling interval increases. If there is autocorrelation, it will 
@@ -8,7 +8,7 @@
 #' off when the autocorrelation decreases to zero. The function calculates
 #' path distances, though other distances could also be employed.
 #'
-#' @param chains A list of rwty.trees objects. 
+#' @param chains A list of rwty.chain objects. 
 #' @param burnin The number of trees to eliminate as burnin 
 #' @param autocorr.intervals The number of sampling intervals to use. These will be spaced evenly between 1 and the max.sampling.interval 
 #' @param max.sampling.interval The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is 10 percent of the length of the list of trees).

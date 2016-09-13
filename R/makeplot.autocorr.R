@@ -1,6 +1,6 @@
 #' Make autocorrelation plots of tree topologies from MCMC analyses
 #' 
-#' This function takes a list of rwty.trees objects, and makes an
+#' This function takes a list of rwty.chain objects, and makes an
 #' autocorrelation plot for each chain. Each plot shows the mean phylogenetic
 #' distance at a series of sampling intervals. In really well behaved MCMC 
 #' analyses, the mean distance will stay constant as the sampling interval 
@@ -9,7 +9,7 @@
 #' off when the autocorrelation decreases to zero. The function calculates
 #' path distances, though other distances could also be employed.
 #'
-#' @param chains A list of rwty.trees objects. 
+#' @param chains A list of rwty.chain objects. 
 #' @param burnin The number of trees to eliminate as burnin.
 #' @param autocorr.intervals The number of sampling intervals to use. These will be spaced evenly between 1 and the max.sampling.interval 
 #' @param max.sampling.interval The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is 10 percent of the length of the chain).
@@ -20,7 +20,7 @@
 #' @param use.all.samples (TRUE/FALSE). Whether to calculate autocorrelation from all possible pairs of trees in your chain. The default is FALSE, in which case 500 samples are taken at each sampling interval. This is sufficient to get reasonably accurate estimates of the approximate ESS. Setting this to TRUE will give you slightly more accurate ESS estimates, at the cost of potentially much longer execution times.
 #'
 #' @return A ggplot2 plot object, with one line (facetting off) or facet
-#' (facetting on) per rwty.trees object.
+#' (facetting on) per rwty.chain object.
 #'
 #' @keywords autocorrelation, path distance
 #'

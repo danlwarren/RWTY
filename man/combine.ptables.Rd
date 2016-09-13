@@ -7,12 +7,12 @@
 combine.ptables(chains, burnin)
 }
 \arguments{
-\item{chains}{A list of rwty.trees objects.}
+\item{chains}{A list of rwty.chain objects.}
 
 \item{burnin}{The number of trees to eliminate as burnin}
 }
 \value{
-ptable A data frame of likelihood values and model parameters for the supplied rwty.trees objects
+ptable A data frame of likelihood values and model parameters for the supplied rwty.chain objects
 }
 \description{
 This function is automatically called by some of the plot functions.

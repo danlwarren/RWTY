@@ -2,7 +2,7 @@
 % Please edit documentation in R/load.multi.R
 \name{load.multi}
 \alias{load.multi}
-\title{Load all matching files from a directory into a list of rwty.trees objects}
+\title{Load all matching files from a directory into a list of rwty.chain objects}
 \usage{
 load.multi(path = ".", format = "mb", labels = NA, ...)
 }
@@ -18,10 +18,10 @@ If you would like RWTY to understand additional formats, please contact the auth
 \item{...}{Further arguments to be passed to load.trees.}
 }
 \value{
-output A list of rwty.trees objects containing the multiPhylos and the tables of values from the log files if available.
+output A list of rwty.chain objects containing the multiPhylos and the tables of values from the log files if available.
 }
 \description{
-Finds trees and log files based on format definition, returns rwty.trees objects containing both
+Finds trees and log files based on format definition, returns rwty.chain objects containing both
 }
 \examples{
 #load.multi(path = "~/my trees/", format = "*beast")

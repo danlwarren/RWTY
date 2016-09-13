@@ -8,7 +8,7 @@ topological.approx.ess(chains, burnin = 0, max.sampling.interval = 100,
   treedist = "PD", use.all.samples = FALSE)
 }
 \arguments{
-\item{chains}{A list of rwty.trees objects.}
+\item{chains}{A list of rwty.chain objects.}
 
 \item{burnin}{The number of trees to eliminate as burnin}
 
@@ -23,7 +23,7 @@ A data frame with one row per chain, and columns describing the
 approximate ESS and the name of the chain.
 }
 \description{
-This function takes a list of rwty.trees objects, and calculates the
+This function takes a list of rwty.chain objects, and calculates the
 pseudo ESS of the trees from each chain, after removing burnin.
 The calculation uses the autocorrelation among squared topological distances between
 trees to calculate an approximate ESS of tree topologies for each chain.

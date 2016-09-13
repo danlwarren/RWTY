@@ -7,7 +7,7 @@
 treespace(chains, n.points = 100, burnin = 0, fill.color = NA)
 }
 \arguments{
-\item{chains}{A list of 1 or more rwty.trees objects.}
+\item{chains}{A list of 1 or more rwty.chain objects.}
 
 \item{n.points}{The minimum number of points you want in your plot.}
 

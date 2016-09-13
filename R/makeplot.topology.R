@@ -6,7 +6,7 @@
 #' If required, the behaviour can be changed to plot the path distance of each tree from the last tree of the burnin
 #' of each chain, using the independent.chains option. This is not recommended in most cases.
 #'
-#' @param chains A set of rwty.trees objects.
+#' @param chains A set of rwty.chain objects.
 #' @param burnin The number of trees to omit as burnin. 
 #' @param facet TRUE/FALSE denoting whether to make a facet plot (default TRUE)
 #' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.

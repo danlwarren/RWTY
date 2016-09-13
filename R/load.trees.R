@@ -1,6 +1,6 @@
 #' Custom functions to load tree lists so that rwty can do basic processing on the way in.
 #'
-#' Loads trees, looks for a log file of tree likelihoods and parameter values, returns an rwty.trees object containing both
+#' Loads trees, looks for a log file of tree likelihoods and parameter values, returns an rwty.chain object containing both
 #'
 #' @param file A path to a tree file containing an MCMC chain of trees
 #' @param type An argument that designates the type of tree file.  If "nexus",
@@ -18,7 +18,7 @@
 #' MrBayes, for instance, prints a comment line at the top of the log file, so MrBayes files should be
 #' read in with a skip value of 1.  If no "skip" value is provided but a "format" is supplied, RWTY will
 #' attempt to read logs using the skip value from the format definition.
-#' @return output An rwty.trees object containing the multiPhylo and the table of values from the log file if available.
+#' @return output An rwty.chain object containing the multiPhylo and the table of values from the log file if available.
 #' @seealso \code{\link{read.tree}}, \code{\link{read.nexus}}
 #' @keywords Phylogenetics, MCMC, load
 #'
@@ -133,7 +133,7 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
     "ptable" = ptable,
     "gens.per.tree" = gens.per.tree)
 
-  class(output) <- "rwty.trees"
+  class(output) <- "rwty.chain"
 
   output
 }

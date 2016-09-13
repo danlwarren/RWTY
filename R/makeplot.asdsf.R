@@ -1,12 +1,12 @@
 #' Plot the Standard Deviation of Split Frequencies over the course of an MCMC.
 #' 
-#' This function takes two or more rwty.trees ojects and returns a plot of ASDSF as the run progresses.  
+#' This function takes two or more rwty.chain ojects and returns a plot of ASDSF as the run progresses.  
 #' The solid line with points shows the Average Standard Deviation of Split Frequences at the current generation
 #' The grey ribbon shows the upper and lower 95% quantiles of the SDSFs at the current generation
 #'
 #'
 #'
-#' @param chains A list of rwty.trees objects. 
+#' @param chains A list of rwty.chain objects. 
 #' @param burnin The number of trees to eliminate as burnin. Defaults to zero. 
 #' @param window.size The number of trees between each point at which the ASDSFs is calculated (note, specified as a number of sampled trees, not a number of generations)
 #' @param min.freq The minimum frequency for a node to be used for calculating ASDSF.

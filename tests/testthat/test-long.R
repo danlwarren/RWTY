@@ -16,12 +16,12 @@ test.table <- data.frame(Gen = seq(100, 40000, by = 100),
                          LnL = rnorm(400),
                          Param1 = c(rep(1, 200), rep(0, 200)),
                            Param2 = c(rep(2, 200), rep(0, 200)))
-test.rwty.trees <- list(trees = test.chain,
+test.rwty.chain <- list(trees = test.chain,
                         ptable = test.table,
                         gens.per.tree = 100)
-class(test.rwty.trees) <- "rwty.trees"
+class(test.rwty.chain) <- "rwty.chain"
 
-test.output <- analyze.rwty(test.rwty.trees, window.size = 10)
+test.output <- analyze.rwty(test.rwty.chain, window.size = 10)
 
 
 # Show plots

@@ -1,11 +1,11 @@
 #' Plot split frequencies in sliding windows over the course of an MCMC
 #' 
-#' Takes a list of rwty.trees objects.  
+#' Takes a list of rwty.chain objects.  
 #' Plots the split frequencies of clades over the course of the MCMC, calculated from windows of a specified size.
 #' Only plots the n.clades most variable clades, as measured by the standard deviation of the split frequencies of each clade across the MCMC.  
 #' Each line in the plot represents a single clade. The colour of the line represents the standard deviation of the split frequencies of that clade across the MCMC.
 #'
-#' @param chains A list of rwty.trees objects. 
+#' @param chains A list of rwty.chain objects. 
 #' @param burnin The number of trees to eliminate as burnin 
 #' @param n.clades The number of clades to plot 
 #' @param window.size The number of trees to include in each window (note, specified as a number of sampled trees, not a number of generations)
