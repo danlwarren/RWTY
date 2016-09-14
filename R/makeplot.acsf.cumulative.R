@@ -29,7 +29,7 @@ makeplot.acsf.cumulative <- function(chains, burnin = 0, window.size = 20, facet
   
   dat.list = lapply(cumulative.freq.list, get.acsf)
   dat = do.call("rbind", dat.list)
-  dat$Chain = rwty:::get.dat.list.chain.names(dat.list)
+  dat$Chain = get.dat.list.chain.names(dat.list)
   
   rownames(dat) = NULL
   title = "Cumulative Change in Split Frequncies"

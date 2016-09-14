@@ -29,7 +29,7 @@ makeplot.acsf.sliding <- function(chains, burnin = 0, window.size = 20, facet = 
   slide.freq.list = slide.freq(chains, burnin = burnin, window.size = window.size)
   dat.list = lapply(slide.freq.list, get.acsf)
   dat = do.call("rbind", dat.list)
-  dat$Chain = rwty:::get.dat.list.chain.names(dat.list)
+  dat$Chain = get.dat.list.chain.names(dat.list)
   rownames(dat) = NULL
   title = "Sliding window Change in Split Frequencies"
   
