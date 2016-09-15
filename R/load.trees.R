@@ -48,7 +48,6 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
     skip <- file.format$skip
   }
 
-  browser()
 
   # Read in trees
   print("Reading trees...")
