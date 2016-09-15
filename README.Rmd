@@ -50,11 +50,25 @@ my.beast.trees <- load.trees("PATH", format = "beast", trim = 5)
 my.starbeast.trees <- load.trees("PATH", format = "*beast")
 ```
 
-If your trees or log files are named or formatted in a nonstandard way, you can still load your data into an RWTY object with a few extra arguments.  The "logfile" argument takes a path to your logfile, the "type" argument tells RWTY whether your trees are Nexus or Newick format, and the "skip" argument tells RWTY how many lines to skip in the log file before it reaches the header line.
+If your trees or log files are named or formatted in a nonstandard way, you can still load your data into an RWTY object.  The "logfile" argument takes a path to your logfile, the "type" argument tells RWTY whether your trees are Nexus or Newick format, the "skip" argument tells RWTY how many lines to skip in the log file before it reaches the header line, and the "gens.per.tree" argument tells RWTY how many generations there were in the MCMC inbetween each tree that was sampled.
 
 ```{r eval=FALSE}
-my.special.trees <- load.trees("PATH", type = "nexus", logfile = "LOGPATH", skip = 1)
+my.trees <- load.trees("path_to_tree_file", type = "nexus", logfile = "path_to_log_file", skip = 1, gens.per.tree = 1)
 ```
+
+For example, if you have a collection of trees in Newick format like this:
+
+```
+((A, B),(C, D));
+(((A, B), C), D);
+((A, C),(B, D));
+```
+and no logfile, you could load them into RWTY like this (note you'd need to change the file path to suit your machine):
+
+```{r eval=FALSE}
+my.trees <- load.trees("~/Desktop/trees.phy", type = "newick", gens.per.tree = 1)
+```
+
 
 ### ```load.multi()```
 This function is used to load more than one chain into a list of rwty.chains objects. It allows you to specify the format of your MCMC analysis, so that it can automatically find tree and log files. You provide a path to the folder containing the tree files, as well as the file format (default is MrBayes). As with load.trees, load.multi will attempt to automatically find log files. For example, to search a directory named PATH for output of a MrBayes run, you would input the following:

@@ -37,7 +37,7 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
     type_choices <- c("nexus", "newick")
     type <- match.arg(type, type_choices)
   }
-            
+
   file.format <- get.format(format)
    
   if(is.na(type)){
@@ -47,6 +47,8 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
   if(is.na(skip)){
     skip <- file.format$skip
   }
+
+  browser()
 
   # Read in trees
   print("Reading trees...")
@@ -109,16 +111,19 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
     # If logfile hasn't been supplied try to find it by searching
     if(is.na(logfile)){
   
-      logfile <- sub(pattern = paste0(file.format$trees.suffix, "$"), file.format$log.suffix, file)
-  
-      if(!is.na(logfile) && file.exists(logfile)){
-        print(paste("Reading parameter values from", basename(logfile)))
-        ptable <- read.table(logfile, skip=skip, header=TRUE)
-        ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
-      } else {
-        print(paste("Couldn't find", basename(logfile)))
+      if(grepl(paste(file.format$trees.suffix, "$"), file)){
+          logfile <- sub(pattern = paste0(file.format$trees.suffix, "$"), file.format$log.suffix, file)
       }
-  
+      
+      if(!is.na(logfile)){
+          if(file.exists(logfile)){
+            print(paste("Reading parameter values from", basename(logfile)))
+            ptable <- read.table(logfile, skip=skip, header=TRUE)
+            ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
+          } else {
+            print(paste("Couldn't find", basename(logfile)))
+          }
+      }
     }
   
     # add any columns from rb_ptable (from treefile) that are not already in ptable (from log)
