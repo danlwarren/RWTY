@@ -17,12 +17,13 @@ globalVariables(c("lower.95", "upper.95", "lower.75", "upper.75", "Generation", 
 #' @importFrom reshape2 melt
 #' @importFrom phangorn RF.dist
 #' @importFrom coda effectiveSize mcmc
-#' @importFrom viridis scale_color_viridis viridis
+#' @importFrom viridis scale_color_viridis viridis plasma
 #' @importFrom grid unit
 #' @importFrom plyr ddply summarize . 
 #' @importFrom ggdendro ggdendrogram
 #' @importFrom GGally ggpairs
 #' @importFrom parallel mclapply detectCores
+#' @importFrom utils citation
 #'
 #' @param chains A list of rwty.trees objects. 
 #' @param burnin The number of trees to eliminate as burnin.  Default value is zero.
