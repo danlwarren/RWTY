@@ -116,6 +116,21 @@ analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 10
   # plot treespace for all chains
   treespace.plots <- makeplot.treespace(chains, n.points = treespace.points, burnin = burnin, fill.color = fill.color)
   
+  # Add citations for all packages
+  citations <- list(
+    citation('rwty'),
+    citation('ape'),
+    citation('phangorn'),
+    citation('ggplot2'),
+    citation('coda'),
+    citation('viridis'),
+    citation('ggdendro'),
+    citation('GGally'),
+    citation('plyr'),
+    citation('reshape2'),
+    citation('stats')
+  )
+  
   
   plots <- c(parameter.plots,
              parameter.correlations,
@@ -136,6 +151,8 @@ analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 10
     
     plots <- c(plots, asdsf.plot, splitfreq.matrix.plots)
   }
+  
+  plots[["citations"]] <- citations
   
   # Print all to pdf if filename provided
   if(!is.na(filename)){
