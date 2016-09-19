@@ -17,11 +17,7 @@ globalVariables(c("lower.95", "upper.95", "lower.75", "upper.75", "Generation", 
 #' @importFrom reshape2 melt
 #' @importFrom phangorn RF.dist
 #' @importFrom coda effectiveSize mcmc
-<<<<<<< HEAD
-#' @importFrom viridis scale_color_viridis scale_fill_viridis viridis
-=======
-#' @importFrom viridis scale_color_viridis viridis plasma
->>>>>>> origin/acknowledge-contribs
+#' @importFrom viridis scale_color_viridis scale_fill_viridis viridis plasma
 #' @importFrom grid unit
 #' @importFrom plyr ddply summarize . 
 #' @importFrom ggdendro ggdendrogram
