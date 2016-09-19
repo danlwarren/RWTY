@@ -2,7 +2,7 @@ year <- sub("-.*", "", Sys.Date())
 note <- sprintf("R package version %s", meta$Version) 
 
 bibentry(bibtype = "Manual",
-        title = "RWTY: (R We There Yet): An R package for examining convergence of Bayesian phylogenetic analyses",          
+        title = "RWTY (R We There Yet): An R package for examining convergence of Bayesian phylogenetic analyses",          
         author = c(person("Dan", "Warren"), person("Anthony", "Geneva"),person("Rob", "Leanfear")),          
         year = year,          
         note = note,         
