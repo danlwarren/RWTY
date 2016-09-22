@@ -147,8 +147,8 @@ If a logfile is provided, RWTY will produce a trace plot of the value of each co
 ```{r eval=FALSE, fig.width=8, fig.height=6}
 salamanders.rwty$pi.C
 ```
-![parameter plot](param.trace.plot.png)
-![parameter plot](param.density.plot.png)
+![parameter plot](images/param.trace.plot.png)
+![parameter plot](images/param.density.plot.png)
 
 
 ### Parameter correlation plots
@@ -157,7 +157,7 @@ If a logfile is provided, RWTY will produce a scatter plot matrix from the colum
 ```{r eval=FALSE, fig.width=8, fig.height=6}
 salamanders.rwty$AMOTL2.run1.correlations
 ```
-![parameter plot](param.correlations.default.png)
+![parameter plot](images/param.correlations.default.png)
 
 If you would like to view correlations between likelihood, topology, and model parameters, you can do so by passing a vector of parameter names or "all" to the params argument of makeplot.pairs or analyze.rwty.
 
@@ -166,7 +166,7 @@ data(fungus)
 plotparams <- c("LnL", "pi.A.", "pi.T.")
 makeplot.pairs(fungus$Fungus.Run1, burnin = 20, params = plotparams)
 ```
-![parameter plot](param.correlations.supplied.png)
+![parameter plot](images/param.correlations.supplied.png)
 
 ### Tree topology trace plot
 RWTY will produce a plot of tree topologies that is similar to those for parameters. In these plots, the y-axis represents the distance of each tree in the chain from the last tree of the burnin of the first chain. These plots can reveal whether the MCMC was sampling from a stationary distribution of chains (in which case it should be relative stable) or whether it is moving between modes (in which case you might see large jumps). They can also show how well the chain is mixing with respect to tree topologies. Well mixed chains will show the topology trace jumping rapidly between values. Poorly mixed chains will show chains remaining at similar values in successive samples. Topology traces can also reveal whether different chains are sampling different bits of tree space, in which case the stationary distrubtions will show traces at different y values on the plot. Finally, the topology trace contains an estimate of the ESS (called the approximate ESS) of tree topologies. Note that this estimate is only useful if the trees are sampled from a stationary distribution.
@@ -174,8 +174,8 @@ RWTY will produce a plot of tree topologies that is similar to those for paramet
 ```{r eval=FALSE, fig.width=8, fig.height=6}
 salamanders.rwty$topology.trace
 ```
-![topology plot](topology.trace.plot.png)
-![topology plot](topology.density.plot.png)
+![topology plot](images/topology.trace.plot.png)
+![topology plot](images/topology.density.plot.png)
 
 ### Autocorrelation plots
 These plots demonstrate the change in average tree distance between trees at different sampling intervals. A well-mixed chain (in which sequential samples of tree topologies are effectively independent) will show flat lines on these plots. In a chain that is mixing poorly with respect to tree topologies, you will see the plot rising to an asymptote. This reflects the fact that are close to each other in the chain are more similar than trees that are further away, otherwise known as autocorrelation.
@@ -183,7 +183,7 @@ These plots demonstrate the change in average tree distance between trees at dif
 ```{r eval=FALSE, fig.width=8, fig.height=6}
 salamanders.rwty$autocorr.plot
 ```
-![autocorr plot](autocorr.plot.png)
+![autocorr plot](images/autocorr.plot.png)
 
 
 ### Treespace plots
@@ -193,8 +193,8 @@ These plots demonstrate the movement of the chain in two dimensional representat
 salamanders.rwty$treespace.heatmap
 salamanders.rwty$treespace.points.plot
 ```
-![heatmap](heatmap.png)
-![points plot](pointsplot.png)
+![heatmap](images/heatmap.png)
+![points plot](images/pointsplot.png)
 
 Since the salamanders data comes from different genes, and those genes are obviously sampling different bits of tree space, it might be more informative to compare the replicate runs of each gene individually.
 
@@ -204,8 +204,8 @@ salamanders.treespace = makeplot.treespace(salamanders[1:2], burnin = 50, n.poin
 salamanders.treespace$treespace.heatmap
 salamanders.treespace$treespace.points.plot
 ```
-![heatmap 2](heatmap2.png)
-![points plot 2](pointsplot2.png)
+![heatmap 2](images/heatmap2.png)
+![points plot 2](images/pointsplot2.png)
 
 This shows that the replicate analyses of the same gene are sampling very similar parts of treespace.
 
@@ -217,8 +217,8 @@ These plots show the split frequencies of clades in the chain, either as the fre
 salamanders.rwty$splitfreqs.sliding.plot
 salamanders.rwty$splitfreqs.cumulative.plot
 ```
-![sliding split frequencies](splitfreqs.sliding.png)
-![cumulative split frequencies](splitfreqs.cumulative.png)
+![sliding split frequencies](images/splitfreqs.sliding.png)
+![cumulative split frequencies](images/splitfreqs.cumulative.png)
 
 
 For a single chain:
@@ -226,8 +226,8 @@ For a single chain:
 makeplot.splitfreqs.cumulative(salamanders[[1]])
 makeplot.splitfreqs.sliding(salamanders[[1]])
 ```
-![cumulative split frequencies](cumulative.single.png)
-![sliding split frequencies](sliding.single.png)
+![cumulative split frequencies](images/cumulative.single.png)
+![sliding split frequencies](images/sliding.single.png)
 
 
 ### Sliding window and cumulative average change in split frequency (ACSF) plots
@@ -237,8 +237,8 @@ These plots show the change in split frequencies of clades in the chain, either 
 salamanders.rwty$acsf.sliding.plot
 salamanders.rwty$acsf.cumulative.plot
 ```
-![sliding change in split frequencies](acsf.sliding.png)
-![cumulative change in split frequencies](acsf.cumulative.png)
+![sliding change in split frequencies](images/acsf.sliding.png)
+![cumulative change in split frequencies](images/acsf.cumulative.png)
 
 
 
@@ -255,7 +255,7 @@ Note that the points and line represent the mean, not the median, SDSF.  For thi
 ```{r eval=FALSE, fig.width=8, fig.height=6}
 makeplot.asdsf(salamanders[c(1,2)])
 ```
-![asdsf plot](asdsf.plot.png)
+![asdsf plot](images/asdsf.plot.png)
 
 ### Split frequency scatterplot matrix
 These plots are another way of visualizing the agreement or disagreement between the regions of tree space that chains have sampled. For each pair of chains, the cumulative final frequency of each clade (which is also our best estimate of that clade's posterior probability) is plotted against ts frequency in another chain in the lower triangle, and the the correlation (Pearson's R) and ASDSF of each pair of chains is shown in the upper triangle.
@@ -263,7 +263,7 @@ These plots are another way of visualizing the agreement or disagreement between
 ```{r eval=FALSE, fig.width=8, fig.height=6}
 salamanders.rwty$splitfreq.matrix
 ```
-![compare plot](splitfreq.matrix.png)
+![compare plot](images/splitfreq.matrix.png)
 
 
 ### ASDSF tree 
@@ -272,4 +272,4 @@ This plot shows the similarity of split frequencies between chains. Chains with 
 ```{r eval=FALSE, fig.width=8, fig.height=6}
 salamanders.rwty$asdsf.tree
 ```
-![asdsf tree](asdsf.tree.png)
+![asdsf tree](images/asdsf.tree.png)
