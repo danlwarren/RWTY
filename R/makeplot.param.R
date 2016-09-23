@@ -34,6 +34,19 @@ makeplot.param <- function(chains, burnin = 0, parameter = "LnL", facet=TRUE, fr
         names(chains) = labels
         ptable = combine.ptables(chains, burnin)
         title = paste(parameter, "trace")
+        
+        # Calculate CIs either by chain or overall
+        in.ci <- function(x){
+          as.numeric(x > quantile(x, c(0.025)) &  x < quantile(x, c(0.975)))
+        }
+        
+        if(facet){
+          fill <- unlist(lapply(unique(ptable$chain), function(x) in.ci(ptable[ptable$chain == x,parameter])))
+        } else {
+          fill <- in.ci(ptable[,parameter])
+        }
+        fill[which(fill == 0)] = 'red'  
+        fill[which(fill == 1)] = 'blue'
 
         trace.plot =  ggplot(ptable, aes_string(x="generation", y=parameter)) + 
                         geom_line(aes(colour = chain)) + 
@@ -43,9 +56,8 @@ makeplot.param <- function(chains, burnin = 0, parameter = "LnL", facet=TRUE, fr
             
 
         density.plot =  ggplot(ptable, aes_string(x=parameter)) + 
-                        geom_density(aes(colour = chain, fill = chain), alpha = 0.3) + 
-                        scale_color_viridis(discrete = TRUE, end = 0.85) +
-                        scale_fill_viridis(discrete = TRUE, end = 0.85) +
+                        geom_histogram(aes(fill = fill)) + 
+                        scale_fill_manual(values =plasma(2, end = 0.65), guide = FALSE) +
                         ggtitle(title) 
 
         if(facet){ 
