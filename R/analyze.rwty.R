@@ -133,8 +133,7 @@ analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 10
   )
   
   
-  plots <- c(citations,
-             parameter.plots,
+  plots <- c(parameter.plots,
              parameter.correlations,
              autocorr.plot,
              splitfreq.sliding,
@@ -154,6 +153,7 @@ analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 10
     plots <- c(plots, asdsf.plot, splitfreq.matrix.plots)
   }
   
+  plots[["citations"]] <- citations
   
   # Print all to pdf if filename provided
   if(!is.na(filename)){
