@@ -4,12 +4,10 @@ author: "Dan Warren, Anthony Geneva, and Rob Lanfear"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{rwty::plot-comparisons}
+  %\VignetteIndexEntry{plot-comparisons}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-Comparing RWTY plots: what am I looking at?
-======================
 RWTY produces a number of different plots and statistics for evaluating the performance of MCMC chains.  These plots can help to illustrate problems with convergence in idividual chains as well as explore differences between chains built from different sequence data.  Here we're going to explore some of these plots in detail, comparing well-behaved to poorly-behaved chains when appropriate.
 -----
 
