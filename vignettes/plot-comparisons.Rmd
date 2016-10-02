@@ -223,7 +223,7 @@ makeplot.treespace(salamanders.amotl, burnin =50, fill.color = "LnL")
 
 Okay, now we can see a lot more detail on the similarities between these two chains, and the coloring of the dot plots is more informative.  From these plots it certainly looks like the chains are exploring the same area of tree space, albeit not in exactly the same frequency (i.e., chain 1 seems to be more heavily balanced towards the left side of our tree space and chain 2 the right side).  This might argue for running these chains longer.
 
-Notice that, although we've colored our circles in our dot plot by likelihood, it's not clear that there's any particular relationship between the likelihood (dot color) and the position in topology space.  There are a couple of reasons this might be the case; first, these NMDS plots necessarily include a huge reduction in the dimensionality of the space being explored, and may put things close together in 2D space that are in fact fairly distinct along some axis that doesn't weight heavily on those first two NMDS axes.  Second, we've eliminated burnin here and are exploring one relatively contiguous optimum.  That means that we will largely be exploring trees and parameter values that produce relatively similar likelihood estimates, so maybe we should expect a whole lot of structure in whatever residual variation there is left.
+Notice that, although we've colored our circles in our dot plot by likelihood, it's not clear that there's any particular relationship between the likelihood (dot color) and the position in topology space.  There are a couple of reasons this might be the case; first, these NMDS plots necessarily include a huge reduction in the dimensionality of the space being explored, and may put things close together in 2D space that are in fact fairly distinct along some axis that doesn't weight heavily on those first two NMDS axes.  Second, we've eliminated burnin here and are exploring one relatively contiguous optimum.  That means that we will largely be exploring trees and parameter values that produce relatively similar likelihood estimates, so maybe we shouldn't expect a whole lot of structure in whatever residual variation there is left.
 
 
 Okay, let's check out our fungus data.
@@ -278,7 +278,7 @@ Another useful way of estimating the effects of autocorrelation on your MCMC cha
 makeplot.pseudo.ess(salamanders, burnin = 50)
 ```
 
-As a general rule of thumb, it's a good idea to have an ESS or pseud-ESS of at least 200.  As such we can be pretty happy about our salamander data, but not so much when it comes to the fungus data:
+As a general rule of thumb, it's a good idea to have an ESS or pseudo-ESS of at least 200.  As such we can be pretty happy about our salamander data, but not so much when it comes to the fungus data:
 
 ```{r pseudo-ess-2, fig.width = 8, fig.height = 6, message = FALSE}
 makeplot.pseudo.ess(fungus, burnin = 50)
@@ -297,7 +297,7 @@ Split frequency matrix plots are useful for comparing the support values for cla
 makeplot.splitfreq.matrix(salamanders, burnin = 50)
 ```
 
-The first plot is a matrix of pairwise comparisons of split frequencies across chains.  Below the diagonal, we have scatter plots with support values for each clade from one chain given on the X axis, with support values from the other chain given on the Y axis.  The R values for a linear regression are given above the diagonal, as are the average standard deviation of split frequencies across that pair of chains.  
+The first plot is a matrix of pairwise comparisons of split frequencies across chains.  Below the diagonal, we have scatter plots with support values for each clade from one chain given on the X axis, with support values from the other chain given on the Y axis.  Pearson correlation coefficients are given above the diagonal, as are the average standard deviation of split frequencies across that pair of chains.  
 
 Here we see something interesting that was suggested by some of the treespace plots above: the chains for the same sequence data are very tightly correlated (e.g., AMOTL2.run1 and AMOTL2.run2, or LHX2.run1 vs. LHX2.run2).  Almost all of the points for those comparisons fall very close to the 1:1 line, and the R values are very close to 1.00, indicating that the posterior probability estimates for all clades are very nearly the same for those pairs of chains.  However, we can see that there is substantial disagreement between chains built using different sequence data; AMOTL2.run1 and LHX2.run1 each show high support values for some clades that the other chain shows very low support for, and vice versa.  This is easily seen by the presence of off-diagonal points, particularly those in the lower right and upper left corner of their pairwise plot (left column, third row from the top).  Points in the lower right and upper left represent clades that have near-perfect support in one chain but near-zero support in the other.
 
