@@ -29,7 +29,7 @@
 load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, logfile=NA, skip=NA){
 
   format <- tolower(format)
-  format_choices <- c("mb", "beast", "*beast", "revbayes", "mrbayes")
+  format_choices <- c("mb", "beast", "*beast", "revbayes", "mrbayes", "phylobayes")
   format <- match.arg(format, format_choices)
   if(format=="mrbayes") format="mb"
   if(!is.na(type)){
@@ -66,6 +66,8 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
   if(is.na(gens.per.tree)){
     if(type=="revbayes") {
       gens.per.tree <- rb_ptable[2,"Iteration"] - rb_ptable[1,"Iteration"]
+    } else if (format == "phylobayes") {
+      stop("You must provide a gens.per.tree argument when using phylobayes files!") 
     } else {
 #   "beast" | "*beast" | "mb"   ????
       if(!is.null(names(treelist))){
@@ -92,7 +94,6 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
   # Reset class
   class(treelist) <- "multiPhylo"
   
-  
     ptable <- NULL
 
     # Check whether log file path has been supplied and doesn't exist
@@ -103,21 +104,21 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
     # logfile path has been supplied and file exists
     if(!is.na(logfile) && file.exists(logfile)){
       print(paste("Reading parameter values from", basename(logfile)))
-      ptable <- read.table(logfile, skip=skip, header=TRUE)
+      ptable <- read.table(logfile, skip=skip, header=TRUE, comment.char = "")
       ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
     }
   
     # If logfile hasn't been supplied try to find it by searching
     if(is.na(logfile)){
   
-      if(grepl(paste(file.format$trees.suffix, "$"), file)){
+      if(grepl(paste0(file.format$trees.suffix, "$"), file)){
           logfile <- sub(pattern = paste0(file.format$trees.suffix, "$"), file.format$log.suffix, file)
       }
-      
+
       if(!is.na(logfile)){
           if(file.exists(logfile)){
             print(paste("Reading parameter values from", basename(logfile)))
-            ptable <- read.table(logfile, skip=skip, header=TRUE)
+            ptable <- read.table(logfile, skip=skip, header=TRUE, comment.char = "")
             ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
           } else {
             print(paste("Couldn't find", basename(logfile)))
@@ -180,7 +181,17 @@ get.format <- function(format){
     return(list(
       trees.suffix = ".trees",
       log.suffix = ".log",
-      type = "revbayes",
+      type = "nexus",
+      skip = 0
+    ))
+  }
+  
+  # Default behavior for phylobayes files
+  if(format == "phylobayes"){
+    return(list(
+      trees.suffix = ".treelist",
+      log.suffix = ".trace",
+      type = "newick",
       skip = 0
     ))
   }
