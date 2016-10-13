@@ -220,7 +220,7 @@ rwty.params.check <- function(chains, N, burnin, window.size, treespace.points, 
 
 
 get.processors <- function(processors){
-  
+
   if(Sys.info()["sysname"] == 'Windows'){
     # mclapply is not supported on windows
     # so we give a single processor,
@@ -228,9 +228,31 @@ get.processors <- function(processors){
     # on lapply
     return(1)
   }
+
+  # check for global user-defined variable
+  if(exists('rwty.processors')){
+    # should be an integer
+    if(!is.numeric(rwty.processors)){
+      stop("the global rwty.processors variable must be an integer")
+    }
+    if(rwty.processors%%1==0){
+      available_processors = detectCores(all.tests = FALSE, logical = FALSE)
+      if(rwty.processors > available_processors){
+        rwty.processors = available_processors - 1
+      }
+      if(rwty.processors < 1){
+        rwty.processors = 1
+      }
+      return(rwty.processors)
+    }else{
+      stop("the global rwty.processors variable must be an integer")
+    }
+  }
+
   
   if(is.null(processors)){ 
-    processors = detectCores(all.tests = FALSE, logical = FALSE)
+    available_processors = detectCores(all.tests = FALSE, logical = FALSE)
+    processors = max(c(1, c(available_processors - 1)))
   }
   
   return(processors)
