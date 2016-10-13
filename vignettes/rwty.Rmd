@@ -42,6 +42,18 @@ library(rwty)
 
 -----
 
+### Setting the number of cores
+
+Some of the calculations RWTY performs benefit from the availability of multiple processor cores.  To set the number of cores used by RWTY, all you need to do is assign a global variable called "rwty.processors".  
+
+```{r eval=FALSE}
+rwty.processors <<- 8
+```
+
+If no rwty.processors object exists in the global environment, RWTY will default to using N-1 cores, where N is the total number available on your system. Due to the limits of R's internal parallelization, this functionality is not available on Windows computers.  
+
+-----
+
 # Interacting with RWTY
 RWTY works with lists of rwty.chain objects. Each rwty.chain object contains outputs from a single Bayesian phylogenetic MCMC analysis, e.g. from BEAST or MrBayes. A rwty.chain object must contain the tree topologies from the chain (e.g. from the .t file from MrBayes), and can optionally contain the continuous parameters as well (e.g. from the .p file from MrBayes). A list of rwty.chain objects should all come from analyses of the same taxa. Most often, a list of rwty.chain objects will contain multiple independent replicates of a single MCMC analysis, but it could also contain independent MCMC analyses of different loci from the same set of taxa, or a combination of both (e.g. 4 replicate analyses of 3 different loci).
 
