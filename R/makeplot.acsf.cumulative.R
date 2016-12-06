@@ -32,7 +32,7 @@ makeplot.acsf.cumulative <- function(chains, burnin = 0, window.size = 20, facet
   dat$Chain = get.dat.list.chain.names(dat.list)
   
   rownames(dat) = NULL
-  title = "Cumulative Change in Split Frequncies"
+  title = "Cumulative Change in Split Frequencies"
   
   if(facet==TRUE){
     acsf.plot <- ggplot(dat, aes(x = as.numeric(as.character(Generation)))) + 
