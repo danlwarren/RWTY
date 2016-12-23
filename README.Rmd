@@ -5,6 +5,12 @@ This package implements various tests, visualizations, and metrics for diagnosin
 
 -----
 
+# Support
+
+For help with RWTY problems, please check out the [Google Group for RWTY](https://groups.google.com/forum/#!forum/rwty-phylo).
+
+
+
 # Installation
 
 At present, RWTY is downloadable from https://github.com/danlwarren/RWTY.  There are multiple ways to download it.  The easiest is to use devtools and install from GitHub.
