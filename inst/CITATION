@@ -3,7 +3,12 @@ note <- sprintf("R package version %s", meta$Version)
 
 bibentry(bibtype = "Manual",
         title = "RWTY (R We There Yet): An R package for examining convergence of Bayesian phylogenetic analyses",          
-        author = c(person("Dan", "Warren"), person("Anthony", "Geneva"),person("Rob", "Leanfear")),          
-        year = year,          
+        author = c(person("Dan", "Warren"), person("Anthony", "Geneva"),person("Rob", "Leanfear")),  
+        journal = "Molecular Biology and Evolution",        
+        year = "2017", 
+        volume = "34",
+        issue = "4",
+        pages = "1016-1020",
+        doi = "10.1093/molbev/msw279",         
         note = note,         
         url = "http://CRAN.R-project.org/package=rwty")
