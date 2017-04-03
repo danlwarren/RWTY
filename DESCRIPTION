@@ -7,6 +7,7 @@ Authors@R: c(person(given = "Dan", family = "Warren", role = c("aut", "cre"), em
               person(given = "Rob", family = "Lanfear", role = "aut", email = "rob.lanfear@gmail.com"),
               person(given = "Luke", family = "Harmon", role = "ctb"),
               person(given = "April", family = "Wright", role = "ctb"),
+              person(given = "Diego", family = "Mallo", role = "ctb"),
               person(given = "Klaus", family = "Schliep", role = "ctb")
               )
 Description: Implements various tests, visualizations, and metrics
