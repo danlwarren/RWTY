@@ -29,9 +29,14 @@ makeplot.splitfreq.matrix <- function(chains, burnin = 0){
 
   dat = dat[,(names(dat) %in% names(chains))] #keep only the chain values 
 
+  pdf(NULL)
+  dev.control(displaylist="enable")
+
   pairs2(dat, lower.panel = panel.smooth, upper.panel = panel.cor, pch = 20, col = rgb(0, 0, 1, 0.2))
   title("Split frequency comparisons")
   splitfreq.matrix = recordPlot()
+
+  invisible(dev.off())
 
   if(all(asdsf  == 0)){
     print("No non-zero ASDSF values, skipping ASDSF tree")  
