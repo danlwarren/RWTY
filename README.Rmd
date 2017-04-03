@@ -5,6 +5,11 @@ This package implements various tests, visualizations, and metrics for diagnosin
 
 -----
 
+# Citation
+
+Warren D.L., A.J. Geneva, and R. Lanfear. 2017. RWTY (R We There Yet): An R package for
+examining convergence of Bayesian phylogenetic analyses. Molecular Biology and Evolution 34:1016-1020. doi: 10.1093/molbev/msw279 
+
 # Support
 
 For help with RWTY problems, please check out the [Google Group for RWTY](https://groups.google.com/forum/#!forum/rwty-phylo).
