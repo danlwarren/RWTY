@@ -48,7 +48,7 @@ makeplot.pairs <- function(chains, burnin = 0, treedist = 'PD', params = NA, str
 
         problems = setdiff(params, param.names)
         if(length(problems)>0){
-            stop(paste(c("The following names you suppied are not parameters in your parameter table ", "'", problems, "'")))
+            stop(paste(c("The following names you suppied are not parameters in your parameter table ", "'", paste(problems, " "), "'")))
         }
         param.names = params
     }
@@ -81,7 +81,6 @@ do.pairs.plot <- function(chain, burnin = 0, params, treedist){
     # this is so that the distances look nicer in the plots
     focal.tree = chains[[1]]$trees[1]
     distances = tree.distances.from.first(chains, burnin, focal.tree = focal.tree, treedist = treedist)        
-
     ptable$topological.distance = distances$topological.distance
 
     points <- function(data, mapping, ...) {
@@ -96,7 +95,16 @@ do.pairs.plot <- function(chain, burnin = 0, params, treedist){
       var = data[,as.character(mapping$x)]
       lower = quantile(var, c(0.025))
       upper = quantile(var, c(0.975))
-      fill = as.numeric(cut(var, c(lower, upper)))
+      if(lower == upper){
+        ci.width <- round(.025 * length(var))
+        fill = c(rep(NA, ci.width),
+                 rep(1, length(var) - 2 * ci.width),
+                 rep(NA, ci.width))
+      }
+      else{
+        fill = as.numeric(cut(var, c(lower, upper)))
+      }
+      
       fill[which(is.na(fill))] = 'red'  
       fill[which(fill == 1)] = 'blue'
 
