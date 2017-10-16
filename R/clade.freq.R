@@ -31,7 +31,7 @@ clade.freq <- function (x, start, end, rooted=FALSE, ...) {
   
   x <- x[start:end]
  
-  clades <-  prop.part(x, ...)
+  clades <-  prop.part(x)
   
   if(!rooted){
     clades <- postprocess.prop.part(clades)  
