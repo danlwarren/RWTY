@@ -97,6 +97,7 @@ analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 10
   }
   else{
     parameter.plots <- makeplot.topology(chains, burnin = burnin, facet = facet)
+    parameter.correlations <- NA
   }
   
   # plot autocorrelation

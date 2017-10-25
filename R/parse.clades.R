@@ -21,7 +21,7 @@ parse.clades <- function(clades, treelist){
         nums <- as.numeric(unlist(strsplit(as.character(clades[i]), split=" ")))
         
         # Convert indices to tip names
-        output[i] <- paste(treelist$tip.label[[1]][nums], collapse=", ")
+        output[i] <- paste(treelist[[1]]$tip.label[nums], collapse=", ")
     }
     
     output
