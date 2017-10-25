@@ -46,4 +46,3 @@ makeplot.pairs(salamanders[1], burnin=20, params = c('pi.A.', 'pi.C.', 'pi.G.', 
 \keyword{parameter,}
 \keyword{phylogenetics}
 \keyword{plot,}
-

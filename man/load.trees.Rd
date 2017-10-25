@@ -46,4 +46,3 @@ Loads trees, looks for a log file of tree likelihoods and parameter values, retu
 \keyword{MCMC,}
 \keyword{Phylogenetics,}
 \keyword{load}
-

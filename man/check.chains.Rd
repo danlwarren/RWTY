@@ -25,4 +25,3 @@ check.chains(fungus)
 \keyword{convergence,}
 \keyword{phylogenetics,}
 \keyword{rwty}
-

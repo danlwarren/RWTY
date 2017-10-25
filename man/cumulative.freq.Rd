@@ -29,4 +29,3 @@ cumulative.data <- cumulative.freq(fungus, burnin=20)
 \keyword{convergence}
 \keyword{frequency,}
 \keyword{split}
-

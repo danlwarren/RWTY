@@ -33,4 +33,3 @@ makeplot.param(fungus, burnin=20, parameter="pi.A.")
 \keyword{parameter,}
 \keyword{phylogenetics}
 \keyword{plot,}
-

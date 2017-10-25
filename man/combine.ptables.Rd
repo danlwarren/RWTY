@@ -26,4 +26,3 @@ combine.ptables(fungus, burnin=20)
 \keyword{convergence,}
 \keyword{phylogenetics,}
 \keyword{rwty}
-

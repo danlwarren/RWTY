@@ -38,4 +38,3 @@ makeplot.splitfreqs.sliding(fungus, burnin = 20, n.clades=25)
 \keyword{plot}
 \keyword{sliding}
 \keyword{window,}
-

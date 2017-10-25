@@ -33,4 +33,3 @@ makeplot.acsf.sliding(fungus, burnin=20)
 \keyword{mcmc,}
 \keyword{phylogenetics,}
 \keyword{uncertainty}
-

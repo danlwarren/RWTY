@@ -54,4 +54,3 @@ names(fungus[[1]]$ptable)
 \keyword{plot,}
 \keyword{rwty}
 \keyword{treespace,}
-

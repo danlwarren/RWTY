@@ -31,4 +31,3 @@ treespace(fungus, n.points=50, burnin=20, fill.color="LnL")
 \keyword{multi-dimensional}
 \keyword{scaling}
 \keyword{treespace,}
-

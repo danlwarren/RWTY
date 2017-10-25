@@ -42,4 +42,3 @@ topological.pseudo.ess(fungus, burnin = 20, n = 20)
 \keyword{path}
 \keyword{tree}
 \keyword{treespace,}
-

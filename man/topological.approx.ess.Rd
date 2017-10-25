@@ -41,4 +41,3 @@ topological.approx.ess(fungus, burnin = 20)
 \keyword{path}
 \keyword{tree}
 \keyword{treespace,}
-

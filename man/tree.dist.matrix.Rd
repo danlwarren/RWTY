@@ -25,4 +25,3 @@ tree.dist.matrix(fungus$Fungus.Run1$trees)
 \keyword{robinson-foulds}
 \keyword{tree}
 \keyword{treespace,}
-

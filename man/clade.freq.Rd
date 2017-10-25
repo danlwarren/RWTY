@@ -33,4 +33,3 @@ clade.freq(fungus$Fungus.Run1, start=10, end=100)
 \keyword{frequencies,}
 \keyword{mcmc,}
 \keyword{phylogenetics}
-

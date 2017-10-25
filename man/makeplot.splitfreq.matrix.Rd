@@ -31,4 +31,3 @@ makeplot.splitfreq.matrix(salamanders[1:4], burnin = 20)
 \keyword{convergence,}
 \keyword{frequency,}
 \keyword{phylogenetics,}
-

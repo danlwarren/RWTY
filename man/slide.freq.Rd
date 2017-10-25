@@ -31,4 +31,3 @@ slide.data <- slide.freq(fungus, burnin=20)
 \keyword{convergence}
 \keyword{frequency,}
 \keyword{split}
-
