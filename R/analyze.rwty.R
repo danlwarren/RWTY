@@ -119,6 +119,9 @@ analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 10
   # plot treespace for all chains
   treespace.plots <- makeplot.treespace(chains, n.points = treespace.points, burnin = burnin, fill.color = fill.color)
   
+  # make convergence trees for all chains
+  convergence.trees <- makeplot.cumulative.tree(chains, burnin = burnin, window.size = window.size)
+  
   # Add citations for all packages
   citations <- list(
     citation('rwty'),
@@ -142,7 +145,8 @@ analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 10
              splitfreq.cumulative,
              splitfreq.sliding,
              acsf.sliding,
-             acsf.cumulative)
+             acsf.cumulative, 
+             convergence.trees)
   
   
   # plot multichain plots when appropriate

@@ -48,6 +48,8 @@ makeplot.cumulative.tree <- function(chains, tree = NA, burnin = 0, window.size 
                                                function(x) get.convergence.diagnostic(x$tip.label, cumulative.freq.list[[names(convergence.trees)[[i]]]], convergence.trees[[i]], rank))
   }
   
+  names(convergence.trees) <- paste0(names(convergence.trees), ".convergence.tree")
+  
   return(convergence.trees)
 }
 

@@ -4,7 +4,7 @@
 \alias{makeplot.cumulative.tree}
 \title{Plot convergence metrics for nodes on a consensus tree}
 \usage{
-makeplot.cumulative.tree(chains, burnin = 0, window.size = 20,
+makeplot.cumulative.tree(chains, tree = NA, burnin = 0, window.size = 20,
   rank = "wcsf", p = 0.5)
 }
 \arguments{
