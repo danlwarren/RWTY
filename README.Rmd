@@ -104,7 +104,7 @@ my.trees <- load.multi("PATH", format = "mb")
 ### ```analyze.rwty()```
 This function conducts a suite of analyses that are applicable to the data that are passed to it. The output from this function will depend on whether you have loaded data from one or more than one chain, and on whether your data comprises just phylogenetic trees, or whether it also includes continuous parameters from log files. Since RWTY runs can take a while, and since a single RWTY run produces a number of plots and metrics, it's a good idea to always store them in an object for later use.
 
-```analyze.rwty()``` will set sensible defaults for most parameters, but you should set the ``burnin``` and the ```fill.color``` to values that are appropriate for your data. The ```burnin``` should be set to a value that removes trees and parameters not sampled from the stationary distribution, and the ```fill.color``` should be set to the name of the parameter from your log file with which you would like to colour the points in tree space. 
+```analyze.rwty()``` will set sensible defaults for most parameters, but you should set the ```burnin``` and the ```fill.color``` to values that are appropriate for your data. The ```burnin``` should be set to a value that removes trees and parameters not sampled from the stationary distribution, and the ```fill.color``` should be set to the name of the parameter from your log file with which you would like to colour the points in tree space. 
 
 ```analyze.rwty()``` returns a long list of plots.
 
