@@ -5,6 +5,7 @@
 #' The function returns one tree per chain.
 #'
 #' @param chains A list of rwty.chain objects. 
+#' @param tree A phylo object containing the tree that convergence metric values will be attached to.  If no tree is provided, a 50% consensus tree will be used.
 #' @param burnin The number of trees to eliminate as burnin 
 #' @param window.size The number of trees to include in each window (note, specified as a number of sampled trees, not a number of generations)
 #' @param p The minimum frequency of a bipartition to appear in the consensus tree.
