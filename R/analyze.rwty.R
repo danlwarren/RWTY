@@ -135,14 +135,14 @@ analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 10
   )
   
   
-  plots <- c(parameter.plots,
+  plots <- c(treespace.plots,
              parameter.correlations,
+             parameter.plots,
              autocorr.plot,
+             splitfreq.cumulative,
              splitfreq.sliding,
              acsf.sliding,
-             splitfreq.cumulative,
-             acsf.cumulative,
-             treespace.plots)
+             acsf.cumulative)
   
   
   # plot multichain plots when appropriate
