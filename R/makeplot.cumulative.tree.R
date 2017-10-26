@@ -19,7 +19,7 @@
 #' data(fungus)
 #' makeplot.cumulative.tree(fungus, burnin = 20, window.size = 20)
 
-makeplot.cumulative.tree <- function(chains, tree = "contree", burnin = 0, window.size = 20, rank = 'wcsf', p = 0.5){ 
+makeplot.cumulative.tree <- function(chains, tree = NA, burnin = 0, window.size = 20, rank = 'wcsf', p = 0.5){ 
   
   print(sprintf("Creating cumulative split convergence trees"))
   if(rank == 'wcsf'){ 
@@ -33,13 +33,13 @@ makeplot.cumulative.tree <- function(chains, tree = "contree", burnin = 0, windo
   chains <- check.chains(chains)
   cumulative.freq.list <- cumulative.freq(chains, burnin = burnin, window.size = window.size)
 
-  if(tree == "contree"){
+  if(all(is.na(tree))){
     convergence.trees <- lapply(chains, function(x) consensus(x$trees, p = p))  
   } else if("phylo" %in% class(tree)){
     convergence.trees <- lapply(names(chains), function(x) convergence.trees$x = tree)
     names(convergence.trees) <- names(chains)
   } else {
-    stop("Tree is not of class phylo")
+    stop("Convergence tree is not of class phylo")
   }
   
   
