@@ -29,6 +29,7 @@ Imports:
     ggdendro,
     GGally,
     parallel,
+    grDevices
 Suggests:
     knitr,
     testthat,

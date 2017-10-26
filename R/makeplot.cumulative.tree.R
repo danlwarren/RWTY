@@ -37,7 +37,7 @@ makeplot.cumulative.tree <- function(chains, burnin = 0, window.size = 20, rank 
   
   for(i in 1:length(convergence.trees)){
     convergence.trees[[i]]$node.label <-sapply(subtrees(convergence.trees[[i]]), 
-                                               function(x) get.convergence.diagnostic(x$tip.label, cumulative.freq.list[[names(convergence.trees)[[i]]]], contree, "sd"))
+                                               function(x) get.convergence.diagnostic(x$tip.label, cumulative.freq.list[[names(convergence.trees)[[i]]]], convergence.trees[[i]], rank))
   }
   
   return(convergence.trees)
