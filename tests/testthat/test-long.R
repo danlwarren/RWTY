@@ -31,7 +31,7 @@ test.output
 expect_equal(names(test.output), c("LnL.trace", "Param1.trace", "Param2.trace", "topology.trace.plot",       
                                    "Chain.1.correlations", "autocorr.plot", "splitfreqs.sliding.plot", 
                                    "acsf.sliding.plot", "splitfreqs.cumulative.plot", "acsf.cumulative.plot", 
-                                   "treespace.heatmap", "treespace.points.plot", "citations"))
+                                   "treespace.heatmap", "treespace.points.plot", "citations", "Chain.1.convergence.tree"))
 
 # Test attributes of LnL object
 LnL <- test.output$LnL.trace$trace
