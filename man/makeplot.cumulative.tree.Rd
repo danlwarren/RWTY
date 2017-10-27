@@ -10,6 +10,8 @@ makeplot.cumulative.tree(chains, tree = NA, burnin = 0, window.size = 20,
 \arguments{
 \item{chains}{A list of rwty.chain objects.}
 
+\item{tree}{A phylo object containing the tree that convergence metric values will be attached to.  If no tree is provided, a 50% consensus tree will be used.}
+
 \item{burnin}{The number of trees to eliminate as burnin}
 
 \item{window.size}{The number of trees to include in each window (note, specified as a number of sampled trees, not a number of generations)}
