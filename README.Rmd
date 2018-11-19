@@ -1,4 +1,3 @@
-
 RWTY: R We There Yet?
 ======================
 This package implements various tests, visualizations, and metrics for diagnosing convergence and mixing of MCMC chains in phylogenetics. It implements and automates many of the functions of the AWTY package in the R environment. It also adds a number of new functions not available in AWTY.
