@@ -91,7 +91,11 @@ do.pairs.plot <- function(chain, burnin = 0, params, treedist){
     }
 
     hist <- function(data, mapping, ...) {
-      var = data[,as.character(mapping$x[2])]
+      if(length(as.character(mapping$x)) > 1){
+        var = data[,as.character(mapping$x[2])]  
+      } else {
+        var = data[,as.character(mapping$x)]
+      }
       lower = quantile(var, c(0.025))
       upper = quantile(var, c(0.975))
       if(lower == upper){
