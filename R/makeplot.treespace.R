@@ -55,8 +55,14 @@ makeplot.treespace <- function(chains, burnin = 0, n.points = 100,  fill.color =
       stop("You need at least two points to make a meaningful treespace plot")
     }
     
-    if(n.points > (length(chains[[1]]$trees) - burnin)) {
+    if("rwty.chain" %in% class(chains)){
+      if(n.points > (length(chains$trees) - burnin)) {
         stop("The number of trees (after removing burnin) is smaller than the number of points you have specified")
+      }
+    } else {
+      if(n.points > (length(chains[[1]]$trees) - burnin)) {
+        stop("The number of trees (after removing burnin) is smaller than the number of points you have specified")
+      }
     }
 
     if(comparisons > 1000000){
