@@ -14,8 +14,10 @@
 #'
 #' @export cumulative.freq
 #' @examples
+#' \dontrun{
 #' data(fungus)
 #' cumulative.data <- cumulative.freq(fungus, burnin=20)
+#' }
 
 cumulative.freq <- function(chains, burnin=0, window.size = 20){ 
 

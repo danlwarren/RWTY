@@ -33,4 +33,3 @@ estimate.autocorr.m(sampling.table)
 \keyword{autocorrelation,}
 \keyword{distance}
 \keyword{path}
-

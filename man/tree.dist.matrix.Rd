@@ -18,11 +18,12 @@ populated with Robinson-Foulds tree distances between all trees
 in the list.
 }
 \examples{
+\dontrun{
 data(fungus)
 tree.dist.matrix(fungus$Fungus.Run1$trees)
+}
 }
 \keyword{distance,}
 \keyword{robinson-foulds}
 \keyword{tree}
 \keyword{treespace,}
-

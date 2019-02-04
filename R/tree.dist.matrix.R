@@ -12,8 +12,10 @@
 #'
 #' @export tree.dist.matrix
 #' @examples
+#' \dontrun{
 #' data(fungus)
 #' tree.dist.matrix(fungus$Fungus.Run1$trees)
+#' }
 
 tree.dist.matrix <- function(trees){
     if (class(trees) != "multiPhylo") 

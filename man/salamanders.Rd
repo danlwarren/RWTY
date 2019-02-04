@@ -20,4 +20,3 @@ Dryad reference: Williams JS, Niedzwiecki JH, Weisrock DW (2013) Data from: Spec
 http://datadryad.org/resource/doi:10.5061/dryad.2gq14
 }
 \keyword{datasets}
-

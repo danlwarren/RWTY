@@ -17,8 +17,10 @@
 #'
 #' @export makeplot.acsf.sliding
 #' @examples
+#' \dontrun{
 #' data(fungus)
 #' makeplot.acsf.sliding(fungus, burnin=20)
+#' }
 
 makeplot.acsf.sliding <- function(chains, burnin = 0, window.size = 20, facet = TRUE){ 
   # plot variation in clade frequencies between windows

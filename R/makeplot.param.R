@@ -14,8 +14,10 @@
 #'
 #' @export makeplot.param
 #' @examples
+#' \dontrun{
 #' data(fungus)
 #' makeplot.param(fungus, burnin=20, parameter="pi.A.")
+#' }
 
 makeplot.param <- function(chains, burnin = 0, parameter = "LnL", facet=TRUE, free_y=FALSE){ 
 

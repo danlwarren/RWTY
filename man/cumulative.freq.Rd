@@ -22,11 +22,12 @@ windows, and a translation table that converts clade groupings to factors.
 This function calculates the cumulative mean split frequencies of clades as an MCMC progresses.
 }
 \examples{
+\dontrun{
 data(fungus)
 cumulative.data <- cumulative.freq(fungus, burnin=20)
+}
 }
 \keyword{MCMC,}
 \keyword{convergence}
 \keyword{frequency,}
 \keyword{split}
-

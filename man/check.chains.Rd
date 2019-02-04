@@ -17,12 +17,13 @@ This function is automatically called by many other functions, but can be run ma
 It performs a number of tests of chain format, labels, lengths, etc.
 }
 \examples{
+\dontrun{
 data(fungus)
 check.chains(fungus)
+}
 }
 \keyword{MCMC,}
 \keyword{awty,}
 \keyword{convergence,}
 \keyword{phylogenetics,}
 \keyword{rwty}
-

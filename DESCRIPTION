@@ -33,5 +33,5 @@ Suggests:
     knitr,
     testthat,
     rmarkdown
-RoxygenNote: 5.0.1
+RoxygenNote: 6.1.1
 VignetteBuilder: knitr

@@ -24,11 +24,12 @@ and uses multi-dimensional scaling to collapse it to a two-
 dimensional tree space for plotting.
 }
 \examples{
+\dontrun{
 data(fungus)
 treespace(fungus, n.points=50, burnin=20, fill.color="LnL")
+}
 }
 \keyword{mds,}
 \keyword{multi-dimensional}
 \keyword{scaling}
 \keyword{treespace,}
-

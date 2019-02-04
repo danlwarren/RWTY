@@ -13,6 +13,19 @@ RWTY: R We There Yet?
 ======================
 This package implements various tests, visualizations, and metrics for diagnosing convergence and mixing of MCMC chains in phylogenetics. It implements and automates many of the functions of the AWTY package in the R environment. It also adds a number of new functions not available in AWTY.
 
+
+<br>
+<br>
+
+# Plot comparisons - what does it all mean?
+
+We have a nice vignette talking about what all of the various plots and diagnostics mean in terms of chain performance, but unfortunately CRAN's filesize limits won't let us include the vignette in the CRAN version.  You can always install from GitHub if you want the vignette stored with the package, or you can find a backup here:
+
+http://danwarren.net/plot-comparisons.html
+
+<br>
+<br>
+
 -----
 
 # Installation

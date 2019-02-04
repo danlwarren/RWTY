@@ -15,8 +15,10 @@
 #'
 #' @export treespace
 #' @examples
+#' \dontrun{
 #' data(fungus)
 #' treespace(fungus, n.points=50, burnin=20, fill.color="LnL")
+#' }
 
 
 

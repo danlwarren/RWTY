@@ -27,11 +27,12 @@ The solid line with points shows the Average Change in Split Frequencies (ACSF; 
 The grey ribbon shows the upper and lower 95% quantiles of the CSFs between this window and the previuos window
 }
 \examples{
+\dontrun{
 data(fungus)
 makeplot.acsf.cumulative(fungus, burnin=20)
+}
 }
 \keyword{convergence,}
 \keyword{mcmc,}
 \keyword{phylogenetics,}
 \keyword{uncertainty}
-

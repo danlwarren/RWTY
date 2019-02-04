@@ -43,4 +43,3 @@ makeplot.topology(fungus, burnin=20)
 \keyword{parameter,}
 \keyword{phylogenetics}
 \keyword{plot,}
-

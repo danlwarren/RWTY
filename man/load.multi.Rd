@@ -30,4 +30,3 @@ Finds trees and log files based on format definition, returns rwty.chain objects
 \keyword{Phylogenetics,}
 \keyword{load,}
 \keyword{trees}
-

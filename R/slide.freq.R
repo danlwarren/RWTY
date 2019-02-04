@@ -16,8 +16,10 @@
 #'
 #' @export slide.freq
 #' @examples
+#' \dontrun{
 #' data(fungus)
-#' slide.data <- slide.freq(fungus, burnin=20)
+#' slide.data <- slide.freq(fungus, burnin=20)\
+#' }
 
 slide.freq <- function(chains, burnin=0, window.size = 20){ 
 

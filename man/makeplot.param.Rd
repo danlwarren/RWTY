@@ -25,12 +25,13 @@ param.plot Returns a ggplot object.
 Plots parameter values over the length of the MCMC chain
 }
 \examples{
+\dontrun{
 data(fungus)
 makeplot.param(fungus, burnin=20, parameter="pi.A.")
+}
 }
 \keyword{convergence,}
 \keyword{mcmc,}
 \keyword{parameter,}
 \keyword{phylogenetics}
 \keyword{plot,}
-

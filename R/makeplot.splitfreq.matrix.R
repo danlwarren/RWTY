@@ -15,8 +15,10 @@
 #'
 #' @export makeplot.splitfreq.matrix
 #' @examples
+#' \dontrun{
 #' data(salamanders)
 #' makeplot.splitfreq.matrix(salamanders[1:4], burnin = 20)
+#' }
 
 makeplot.splitfreq.matrix <- function(chains, burnin = 0){
 

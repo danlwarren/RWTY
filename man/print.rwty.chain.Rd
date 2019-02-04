@@ -27,4 +27,3 @@ fungus$Fungus.Run1
 \keyword{phylogenetics,}
 \keyword{plot,}
 \keyword{rwty}
-

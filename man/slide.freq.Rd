@@ -24,11 +24,12 @@ and calculates the split frequency of clades within that window.  It
 allows users to see whether the chain is visiting different areas of treespace.
 }
 \examples{
+\dontrun{
 data(fungus)
-slide.data <- slide.freq(fungus, burnin=20)
+slide.data <- slide.freq(fungus, burnin=20)\\
+}
 }
 \keyword{MCMC,}
 \keyword{convergence}
 \keyword{frequency,}
 \keyword{split}
-

@@ -25,12 +25,13 @@ Uses ape functionality to get the frequencies and names of clades in an MCMC cha
 or subset thereof.
 }
 \examples{
+\dontrun{
 data(fungus)
 clade.freq(fungus$Fungus.Run1, start=10, end=100)
+}
 }
 \keyword{Clade}
 \keyword{consensus,}
 \keyword{frequencies,}
 \keyword{mcmc,}
 \keyword{phylogenetics}
-

@@ -17,8 +17,10 @@
 #'
 #' @export makeplot.acsf.cumulative
 #' @examples
+#' \dontrun{
 #' data(fungus)
 #' makeplot.acsf.cumulative(fungus, burnin=20)
+#' }
 
 makeplot.acsf.cumulative <- function(chains, burnin = 0, window.size = 20, facet = TRUE){ 
   # plot variation in clade frequencies 

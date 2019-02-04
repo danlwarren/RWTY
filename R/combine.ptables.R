@@ -11,8 +11,10 @@
 #'
 #' @export combine.ptables
 #' @examples
+#' \dontrun{
 #' data(fungus)
 #' combine.ptables(fungus, burnin=20)
+#' }
 
 combine.ptables <- function(chains, burnin){
   
@@ -21,7 +23,11 @@ combine.ptables <- function(chains, burnin){
   # N is a vector of chain lengths
   N <- unlist(lapply(chains, function(x) length(x$trees)))
   
-  if(any((N - burnin) < 1 || burnin < 0)){
+  if(burnin < 0){
+    stop(sprintf('Burnin must be between 0 and the length of your chains (%s)', N))
+  }
+  
+  if(any((N - burnin) < 1)){
     stop(sprintf('Burnin must be between 0 and the length of your chains (%s)', N))
   }
   

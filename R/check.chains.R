@@ -11,8 +11,10 @@
 #'
 #' @export check.chains
 #' @examples
+#' \dontrun{
 #' data(fungus)
 #' check.chains(fungus)
+#' }
 
 check.chains <- function(chains){
   

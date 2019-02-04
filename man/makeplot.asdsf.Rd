@@ -24,12 +24,13 @@ The solid line with points shows the Average Standard Deviation of Split Frequen
 The grey ribbon shows the upper and lower 95% quantiles of the SDSFs at the current generation
 }
 \examples{
+\dontrun{
 data(fungus)
 p <- makeplot.asdsf(fungus, burnin = 20)
 p
+}
 }
 \keyword{ASDSF,}
 \keyword{MCMC,}
 \keyword{cumulative}
 \keyword{phylogenetics,}
-

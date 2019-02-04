@@ -18,12 +18,13 @@ ptable A data frame of likelihood values and model parameters for the supplied r
 This function is automatically called by some of the plot functions.
 }
 \examples{
+\dontrun{
 data(fungus)
 combine.ptables(fungus, burnin=20)
+}
 }
 \keyword{MCMC,}
 \keyword{awty,}
 \keyword{convergence,}
 \keyword{phylogenetics,}
 \keyword{rwty}
-

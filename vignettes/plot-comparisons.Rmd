@@ -20,6 +20,7 @@ We'll start by running RWTY on the two included demo data sets.  These are calle
 library(rwty)
 data(salamanders)
 data(fungus)
+rwty.processors <- 1
 ```
 
 For starters we won't eliminate any burnin, just load in the data and go.  You could build all of the plots below just by running analyze.rwty, like this:

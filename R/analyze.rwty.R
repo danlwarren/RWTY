@@ -5,7 +5,8 @@ globalVariables(c("lower.95", "upper.95", "lower.75", "upper.75", "Generation", 
                   "ci.upper", "median", "quantile", "median.ess", "ASDSF" ,"Axis" ,"CSF" ,"Gen" ,
                   "as.dist" ,"box" ,"cmdscale" ,"dev.flush" ,"dev.hold" ,"dev.off" ,"ess" ,
                   "optim" ,"pdf" ,"plot" ,"points" ,"read.table" ,"reorder" ,"sampling.interval",
-                  "split.frequency" ,"tail" ,"topo.distance" ,"topological.distance"))
+                  "split.frequency" ,"tail" ,"topo.distance" ,"topological.distance", 
+                  "dev.control"))
 
 #' analyze.rwty, the main interface for rwty analyses and plots.
 #' 

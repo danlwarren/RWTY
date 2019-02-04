@@ -17,9 +17,11 @@
 #'
 #' @export makeplot.asdsf
 #' @examples
+#' \dontrun{
 #' data(fungus)
 #' p <- makeplot.asdsf(fungus, burnin = 20)
 #' p
+#' }
 
 makeplot.asdsf <- function(chains, burnin = 0, window.size = 20, min.freq = 0.0){
   

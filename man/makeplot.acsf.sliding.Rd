@@ -4,7 +4,8 @@
 \alias{makeplot.acsf.sliding}
 \title{Plot the Chaing in Split Frequencies (CSF) in sliding windows over the course of an MCMC.}
 \usage{
-makeplot.acsf.sliding(chains, burnin = 0, window.size = 20, facet = TRUE)
+makeplot.acsf.sliding(chains, burnin = 0, window.size = 20,
+  facet = TRUE)
 }
 \arguments{
 \item{chains}{A list of rwty.chain objects.}
@@ -26,11 +27,12 @@ The solid line with points shows the Average Change in Split Frequencies (ACSF) 
 The grey ribbon shows the upper and lower 95% quantiles of the CSFs between this window and the previuos window
 }
 \examples{
+\dontrun{
 data(fungus)
 makeplot.acsf.sliding(fungus, burnin=20)
+}
 }
 \keyword{convergence,}
 \keyword{mcmc,}
 \keyword{phylogenetics,}
 \keyword{uncertainty}
-

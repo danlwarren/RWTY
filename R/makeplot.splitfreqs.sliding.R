@@ -18,8 +18,10 @@
 #'
 #' @export makeplot.splitfreqs.sliding
 #' @examples
+#' \dontrun{
 #' data(fungus)
 #' makeplot.splitfreqs.sliding(fungus, burnin = 20, n.clades=25)
+#' }
 
 makeplot.splitfreqs.sliding <- function(chains, burnin = 0, n.clades=20, window.size = 20, facet = TRUE, rank = 'ess'){ 
 

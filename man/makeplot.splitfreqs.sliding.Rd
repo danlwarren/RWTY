@@ -30,12 +30,13 @@ Only plots the n.clades most variable clades, as measured by the standard deviat
 Each line in the plot represents a single clade. The colour of the line represents the standard deviation of the split frequencies of that clade across the MCMC.
 }
 \examples{
+\dontrun{
 data(fungus)
 makeplot.splitfreqs.sliding(fungus, burnin = 20, n.clades=25)
+}
 }
 \keyword{mcmc,}
 \keyword{phylogenetics,}
 \keyword{plot}
 \keyword{sliding}
 \keyword{window,}
-
