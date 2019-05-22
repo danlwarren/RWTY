@@ -13,7 +13,7 @@ Authors@R: c(person(given = "Dan", family = "Warren", role = c("aut", "cre"), em
 Description: Implements various tests, visualizations, and metrics
     for diagnosing convergence of MCMC chains in phylogenetics.  It implements
     and automates many of the functions of the AWTY package in the R
-    environment.
+    environment, as well as a host of other functions.  Warren, Geneva, and Lanfear (2017), <doi:10.1093/molbev/msw279>.
 License: GPL-2
 Depends:
     R (>= 3.3.0),
