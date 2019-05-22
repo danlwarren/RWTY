@@ -10,6 +10,7 @@
 #' @param burnin The number of trees to eliminate as burnin. Defaults to zero. 
 #' @param window.size The number of trees between each point at which the ASDSFs is calculated (note, specified as a number of sampled trees, not a number of generations)
 #' @param min.freq The minimum frequency for a node to be used for calculating ASDSF.
+#' @param log.y Controls whether they Y axis is plotted on a log scale or not.  Which scale is more useful depends largely on the amount of disagreement between your chains.  Attempting to make an asdsf plot with a log Y axis for chains that include standard deviations of zero will result in warning messages.
 #' 
 #' @return output A cumulative plot of ASDSF across all chains
 #'
@@ -23,7 +24,7 @@
 #' p
 #' }
 
-makeplot.asdsf <- function(chains, burnin = 0, window.size = 20, min.freq = 0.0){
+makeplot.asdsf <- function(chains, burnin = 0, window.size = 20, min.freq = 0.0, log.y = TRUE){
   
   print(sprintf("Creating ASDSF plot"))
   
@@ -53,9 +54,14 @@ makeplot.asdsf <- function(chains, burnin = 0, window.size = 20, min.freq = 0.0)
     theme(legend.position="none") +   
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), panel.background = element_blank()) +     
     xlab("Generation") + 
-    ylab("Standard Deviation of Split Frequencies") +
-    ggtitle("Average Standard Deviation of Split Frequencies") +
-    scale_y_log10()
+    ggtitle("Average Standard Deviation of Split Frequencies") 
+  
+  if(log.y == TRUE){
+    asdsf.plot <- asdsf.plot + scale_y_log10() + ylab("Log Standard Deviation of Split Frequencies")
+  } else {
+    asdsf.plot <- asdsf.plot + ylab("Log Standard Deviation of Split Frequencies")
+  }
+    
   
   return(list("asdsf.plot" = asdsf.plot))
 }

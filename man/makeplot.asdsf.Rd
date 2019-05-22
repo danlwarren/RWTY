@@ -4,7 +4,8 @@
 \alias{makeplot.asdsf}
 \title{Plot the Standard Deviation of Split Frequencies over the course of an MCMC.}
 \usage{
-makeplot.asdsf(chains, burnin = 0, window.size = 20, min.freq = 0)
+makeplot.asdsf(chains, burnin = 0, window.size = 20, min.freq = 0,
+  log.y = TRUE)
 }
 \arguments{
 \item{chains}{A list of rwty.chain objects.}
@@ -14,6 +15,8 @@ makeplot.asdsf(chains, burnin = 0, window.size = 20, min.freq = 0)
 \item{window.size}{The number of trees between each point at which the ASDSFs is calculated (note, specified as a number of sampled trees, not a number of generations)}
 
 \item{min.freq}{The minimum frequency for a node to be used for calculating ASDSF.}
+
+\item{log.y}{Controls whether they Y axis is plotted on a log scale or not.  Which scale is more useful depends largely on the amount of disagreement between your chains.  Attempting to make an asdsf plot with a log Y axis for chains that include standard deviations of zero will result in warning messages.}
 }
 \value{
 output A cumulative plot of ASDSF across all chains
