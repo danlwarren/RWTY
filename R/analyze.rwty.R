@@ -1,4 +1,4 @@
-globalVariables(c("lower.95", "upper.95", "lower.75", "upper.75", "Generation", "ACSF",
+globalVariables(c("Generation", "ACSF",
                   "Chain", "Clade", "title", "Generations", "par", "cor", "text", "sd",
                   "generation", "chain", "x", "y", "strwidth", "mtext", "Split.Frequency",
                   "hclust", "..density..", "recordPlot", "rgb", "panel.smooth", "ci.lower",
