@@ -68,8 +68,8 @@ makeplot.topology <- function(chains, burnin = 0, facet=TRUE, free_y = FALSE, in
     fill[which(fill == 0)] = 'red'  
     fill[which(fill == 1)] = 'blue'
 
-    trace.plot =  ggplot(data = distances, aes(x=generation, y=topological.distance)) + 
-                        geom_line(aes(colour = chain)) + 
+    trace.plot =  ggplot(data = distances, aes_string(x="generation", y="topological.distance")) + 
+                        geom_line(aes_string(colour = "chain")) + 
                         ggtitle("Tree topology trace") +
                         xlab("Generation") +
                         ylab("Topological Distance of Tree from Focal Tree") +
@@ -77,7 +77,7 @@ makeplot.topology <- function(chains, burnin = 0, facet=TRUE, free_y = FALSE, in
                         scale_fill_viridis(discrete = TRUE, begin = 0.2, end = .8, option = "C") +
                         theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
 
-    density.plot =  ggplot(data = distances, aes(x=topological.distance)) + 
+    density.plot =  ggplot(data = distances, aes_string(x="topological.distance")) + 
                         geom_histogram(aes(fill = fill)) + 
                         ggtitle("Tree topology trace") +
                         xlab("Topological Distance of Tree from Focal Tree") +

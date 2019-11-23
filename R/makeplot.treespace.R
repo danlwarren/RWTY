@@ -72,8 +72,8 @@ makeplot.treespace <- function(chains, burnin = 0, n.points = 100,  fill.color =
     # now go and get the x,y coordinates from the trees
     points = treespace(chains, n.points, burnin, fill.color)
 
-    points.plot <- ggplot(data=points, aes(x=x, y=y)) + 
-      geom_path(alpha=0.25, aes(colour = generation), size=0.75) + 
+    points.plot <- ggplot(data=points, aes_string(x="x", y="y")) + 
+      geom_path(alpha=0.25, aes_string(colour = "generation"), size=0.75) + 
       scale_colour_gradient(low='red', high='yellow') +
       theme(panel.background = element_blank(), axis.line = element_line(color='grey'), panel.margin = unit(0.1, "lines")) +
       theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5)) +
@@ -93,7 +93,7 @@ makeplot.treespace <- function(chains, burnin = 0, n.points = 100,  fill.color =
     if(length(unique(c(points$x, points$y))) == 1){
         heatmap = NA
     }else{
-        heatmap <- ggplot(data=points, aes(x=x,y=y)) + 
+        heatmap <- ggplot(data=points, aes_string(x="x",y="y")) + 
           stat_density2d(geom="tile", aes(fill = ..density..), contour = FALSE) + 
           theme(panel.background = element_blank(), axis.line = element_line(color='grey'), panel.margin = unit(0.1, "lines")) +
           facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain))))) + 

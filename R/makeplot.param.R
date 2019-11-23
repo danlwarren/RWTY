@@ -51,7 +51,7 @@ makeplot.param <- function(chains, burnin = 0, parameter = "LnL", facet=TRUE, fr
         fill[which(fill == 1)] = 'blue'
 
         trace.plot =  ggplot(ptable, aes_string(x="generation", y=parameter)) + 
-                        geom_line(aes(colour = chain)) + 
+                        geom_line(aes_string(colour = "chain")) + 
                         ggtitle(title) +
                         xlab("Generation") + 
                         scale_color_viridis(discrete = TRUE, end = 0.85) 
