@@ -18,6 +18,7 @@
 #' MrBayes, for instance, prints a comment line at the top of the log file, so MrBayes files should be
 #' read in with a skip value of 1.  If no "skip" value is provided but a "format" is supplied, RWTY will
 #' attempt to read logs using the skip value from the format definition.
+#' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' (the default) for Robinson Foulds distance
 #' @return output An rwty.chain object containing the multiPhylo and the table of values from the log file if available.
 #' @seealso \code{\link{read.tree}}, \code{\link{read.nexus}}
 #' @keywords Phylogenetics, MCMC, load
@@ -26,7 +27,7 @@
 #' @examples
 #' #load.trees(file="mytrees.t", format = "mb")
 
-load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, logfile=NA, skip=NA){
+load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, logfile=NA, skip=NA, treedist='RF'){
 
   format <- tolower(format)
   format_choices <- c("mb", "beast", "*beast", "revbayes", "mrbayes")
@@ -67,7 +68,7 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
     if(type=="revbayes") {
       gens.per.tree <- rb_ptable[2,"Iteration"] - rb_ptable[1,"Iteration"]
     } else {
-#   "beast" | "*beast" | "mb"   ????
+      #   "beast" | "*beast" | "mb"   ????
       if(!is.null(names(treelist))){
       gens.per.tree <- as.numeric(tail(strsplit(x=names(treelist)[3], split="[[:punct:]]")[[1]], 1)) -
         as.numeric(tail(strsplit(x=names(treelist)[2], split="[[:punct:]]")[[1]], 1))
@@ -132,8 +133,13 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
         ptable<-cbind(rb_ptable[,to_add], ptable)
     }
 
+    
+    # calculate distance matrix for these trees
+    tree.dist.matrix = tree.dist.matrix(trees=treelist, treedist=treedist)
+    
   output <- list(
     "trees" = treelist,
+    "tree.dist.matrix" = tree.dist.matrix,
     "ptable" = ptable,
     "gens.per.tree" = gens.per.tree)
 

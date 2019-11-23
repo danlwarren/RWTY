@@ -3,12 +3,12 @@ Type: Package
 Title: R We There Yet? Visualizing MCMC Convergence in Phylogenetics
 Version: 1.0.2
 Authors@R: c(person(given = "Dan", family = "Warren", role = c("aut", "cre"), email = "dan.l.warren@gmail.com"),
-              person(given = "Anthony", family = "Geneva", role = "aut", email = "anthony.geneva@gmail.com"),
               person(given = "Rob", family = "Lanfear", role = "aut", email = "rob.lanfear@gmail.com"),
               person(given = "Luke", family = "Harmon", role = "ctb"),
               person(given = "April", family = "Wright", role = "ctb"),
               person(given = "Diego", family = "Mallo", role = "ctb"),
-              person(given = "Klaus", family = "Schliep", role = "ctb")
+              person(given = "Klaus", family = "Schliep", role = "ctb"),
+              person(given = "Anthony", family = "Geneva", role = "ctb")
               )
 Description: Implements various tests, visualizations, and metrics
     for diagnosing convergence of MCMC chains in phylogenetics.  It implements
@@ -33,5 +33,5 @@ Suggests:
     knitr,
     testthat,
     rmarkdown
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.1
 VignetteBuilder: knitr

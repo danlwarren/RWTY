@@ -4,8 +4,13 @@
 \alias{makeplot.asdsf}
 \title{Plot the Standard Deviation of Split Frequencies over the course of an MCMC.}
 \usage{
-makeplot.asdsf(chains, burnin = 0, window.size = 20, min.freq = 0,
-  log.y = TRUE)
+makeplot.asdsf(
+  chains,
+  burnin = 0,
+  window.size = 20,
+  min.freq = 0,
+  log.y = TRUE
+)
 }
 \arguments{
 \item{chains}{A list of rwty.chain objects.}

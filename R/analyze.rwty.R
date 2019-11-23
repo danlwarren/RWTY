@@ -25,6 +25,7 @@ globalVariables(c("lower.95", "upper.95", "lower.75", "upper.75", "Generation", 
 #' @importFrom GGally ggpairs
 #' @importFrom parallel mclapply detectCores
 #' @importFrom utils citation
+#' @importFrom usedist dist_get
 #'
 #' @param chains A list of rwty.chain objects. 
 #' @param burnin The number of trees to eliminate as burnin.  Default value is zero.

@@ -4,8 +4,13 @@
 \alias{topological.approx.ess}
 \title{Calculate the approximate Effective Sample Size (ESS) of tree topologies}
 \usage{
-topological.approx.ess(chains, burnin = 0, max.sampling.interval = 100,
-  treedist = "PD", use.all.samples = FALSE)
+topological.approx.ess(
+  chains,
+  burnin = 0,
+  max.sampling.interval = 100,
+  treedist = "PD",
+  use.all.samples = FALSE
+)
 }
 \arguments{
 \item{chains}{A list of rwty.chain objects.}

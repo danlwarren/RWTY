@@ -4,9 +4,12 @@
 \alias{topological.autocorr}
 \title{Calculate data for autocorrelation plots of tree topologies from MCMC analyses}
 \usage{
-topological.autocorr(chains, burnin = 0, max.sampling.interval = NA,
-  autocorr.intervals = 100, squared = FALSE, treedist = "PD",
-  use.all.samples = FALSE)
+topological.autocorr(
+  chains,
+  burnin = 0,
+  max.sampling.interval = NA,
+  autocorr.intervals = 100
+)
 }
 \arguments{
 \item{chains}{A list of rwty.chain objects.}
@@ -16,12 +19,6 @@ topological.autocorr(chains, burnin = 0, max.sampling.interval = NA,
 \item{max.sampling.interval}{The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is 10 percent of the length of the list of trees).}
 
 \item{autocorr.intervals}{The number of sampling intervals to use. These will be spaced evenly between 1 and the max.sampling.interval}
-
-\item{squared}{TRUE/FALSE use squared tree distances (necessary to calculate approximate ESS)}
-
-\item{treedist}{the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance}
-
-\item{use.all.samples}{(TRUE/FALSE). Whether to calculate autocorrelation from all possible pairs of trees in your chain. The default is FALSE, in which case 500 samples are taken at each sampling interval. This is sufficient to get reasonably accurate estimates of the approximate ESS. Setting this to TRUE will give you slightly more accurate ESS estimates, at the cost of potentially much longer execution times.}
 }
 \value{
 A data frame with one row per sampling interval, per chain. 
