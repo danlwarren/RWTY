@@ -137,11 +137,13 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
     # calculate distance matrix for these trees
     tree.dist.matrix = tree.dist.matrix(trees=treelist, treedist=treedist)
     
+    
   output <- list(
     "trees" = treelist,
     "tree.dist.matrix" = tree.dist.matrix,
     "ptable" = ptable,
-    "gens.per.tree" = gens.per.tree)
+    "gens.per.tree" = gens.per.tree,
+    "tree.dist.metric" = treedist)
 
   class(output) <- "rwty.chain"
 

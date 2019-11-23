@@ -53,6 +53,8 @@ topological.approx.ess <- function(chains, burnin = 0, max.sampling.interval = 1
 
     approx.ess.df = approx.ess.multi(autocorr.df, autocorr.m, (N-burnin))
 
+    approx.ess.df$distance.metric = chains[[1]]$tree.dist.metric
+    
     return(approx.ess.df)
 
 }

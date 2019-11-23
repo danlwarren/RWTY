@@ -74,7 +74,7 @@ tree.autocorr <- function(dist.mat, max.sampling.interval = NA, autocorr.interva
   
   if(max.thinning < 20){
     stop(paste("Too few trees to calculate autocorrelation. Try including more trees in the sample, or changing the max.sampling.interval. Current value is", 
-               max.sampling.interval, ", minimum value is 20."))
+               max.thinning, ", minimum value is 20."))
   }
   
   # we analyze up to autocorr.intervals thinnings spread evenly, less if there are non-unique numbers

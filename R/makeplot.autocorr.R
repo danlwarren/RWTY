@@ -12,7 +12,7 @@
 #' @param chains A list of rwty.chain objects. 
 #' @param burnin The number of trees to eliminate as burnin.
 #' @param autocorr.intervals The number of sampling intervals to use. These will be spaced evenly between 1 and the max.sampling.interval 
-#' @param max.sampling.interval The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is 10 percent of the length of the chain).
+#' @param max.sampling.interval The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is the larger of 10 percent of the length of the chain, or the sampling interval that gives at least 100 paired samples).
 #' @param facet TRUE/FALSE to turn facetting of the plot on or off (default FALSE)
 #' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.
 #'
@@ -39,16 +39,18 @@ makeplot.autocorr <- function(chains, burnin = 0, max.sampling.interval = NA, au
     N = length(chain$trees)
 
     if(is.na(max.sampling.interval)){
-        max.sampling.interval = floor((N - burnin) * 0.1)
+        max.sampling.interval = max(c(floor((N - burnin) * 0.1), N - burnin - 100))
     }
 
     dat <- topological.autocorr(chains, burnin, max.sampling.interval, autocorr.intervals)
 
+    ylabel = sprintf("Mean %s distance between pairs of trees", chain$tree.dist.metric)
+    
     autocorr.plot = ggplot(data=dat, aes(x=sampling.interval, y=topo.distance)) + 
             geom_line(aes(colour = chain)) + geom_point(aes(colour = chain)) + 
             scale_color_viridis(discrete = TRUE, end = 0.85, option = "C") + 
             xlab("Sampling Interval between Trees") + 
-            ylab("Mean topological distance between pairs of trees") + 
+            ylab(ylabel) + 
             ggtitle("Topological autocorrelation plot")
 
     if(facet){ 

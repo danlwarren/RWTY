@@ -18,7 +18,7 @@ makeplot.autocorr(
 
 \item{burnin}{The number of trees to eliminate as burnin.}
 
-\item{max.sampling.interval}{The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is 10 percent of the length of the chain).}
+\item{max.sampling.interval}{The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is the larger of 10 percent of the length of the chain, or the sampling interval that gives at least 100 paired samples).}
 
 \item{autocorr.intervals}{The number of sampling intervals to use. These will be spaced evenly between 1 and the max.sampling.interval}
 
