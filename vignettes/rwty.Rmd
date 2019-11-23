@@ -292,7 +292,7 @@ makeplot.asdsf(salamanders[c(1,2)])
 ![asdsf plot](asdsf.plot.png)
 
 ### Split frequency scatterplot matrix
-These plots are another way of visualizing the agreement or disagreement between the regions of tree space that chains have sampled. For each pair of chains, the cumulative final frequency of each clade (which is also our best estimate of that clade's posterior probability) is plotted against ts frequency in another chain in the lower triangle, and the the correlation (Pearson's R) and ASDSF of each pair of chains is shown in the upper triangle.
+These plots are another way of visualizing the agreement or disagreement between the regions of tree space that chains have sampled. For each pair of chains, the cumulative final frequency of each clade (which is also our best estimate of that clade's posterior probability) is plotted against ts frequency in another chain in the lower triangle, and the the correlation (Pearson's R) for each pair of chains is shown in the upper triangle.
 
 ```{r splitfreq.matrix, eval=FALSE, fig.width=8, fig.height=6}
 salamanders.rwty$splitfreq.matrix

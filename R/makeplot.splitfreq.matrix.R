@@ -37,7 +37,9 @@ makeplot.splitfreq.matrix <- function(chains, burnin = 0){
   splitfreq.matrix <- ggpairs(dat, lower = list(continuous = lower_fn),
           diag = NULL, axisLabels = "internal") + theme_bw() + 
     theme(panel.grid.minor = element_blank(),
-          panel.grid.major = element_blank())
+          panel.grid.major = element_blank()) +
+    ggtitle("Split frequency comparisons") + 
+    theme(plot.title = element_text(hjust=0.5))
   
 
   if(all(asdsf  == 0)){
@@ -46,7 +48,8 @@ makeplot.splitfreq.matrix <- function(chains, burnin = 0){
   else{
 
     hc <- hclust(asdsf)
-    asdsf.tree <- ggdendrogram(hc, rotate=TRUE, theme_dendro = FALSE) + ylab("Pairwise ASDSF") + xlab("")
+    asdsf.tree <- ggdendrogram(hc, rotate=TRUE, theme_dendro = FALSE) + 
+      ylab("Pairwise ASDSF") + xlab("") + theme_bw()
 
   }
 
@@ -55,11 +58,11 @@ makeplot.splitfreq.matrix <- function(chains, burnin = 0){
 }
 
 # Helper function to make lower diagonal plots for ggpairs
-lower_fn <- function(data, mapping, method="loess", ...){
+lower_fn <- function(data, mapping, method="glm", ...){
   p <- ggplot(data = data, mapping = mapping) + 
-    geom_point() + 
-    geom_smooth(method=method, se = FALSE, color = "black", ...) +
-    geom_abline(slope = 1, intercept = 0, linetype = "longdash")
+    geom_point(color = "grey", alpha = 0.5) + 
+    geom_smooth(method=method, se = FALSE, color = "red", formula = y ~ poly(x, 2), ...) +
+    geom_abline(slope = 1, intercept = 0, linetype = "longdash", color = "black")
   p
 }
 
