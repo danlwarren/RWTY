@@ -31,14 +31,7 @@ makeplot.splitfreq.matrix <- function(chains, burnin = 0){
 
   dat = dat[,(names(dat) %in% names(chains))] #keep only the chain values 
 
-  # Helper function to make lower diagonal plots for ggpairs
-  lower_fn <- function(data, mapping, method="loess", ...){
-    p <- ggplot(data = data, mapping = mapping) + 
-      geom_point() + 
-      geom_smooth(method=method, se = FALSE, color = "black", ...) +
-      geom_abline(slope = 1, intercept = 0, linetype = "longdash")
-    p
-  }
+
   
   # Building the split frequency plot matrix
   splitfreq.matrix <- ggpairs(dat, lower = list(continuous = lower_fn),
@@ -61,6 +54,14 @@ makeplot.splitfreq.matrix <- function(chains, burnin = 0){
 
 }
 
+# Helper function to make lower diagonal plots for ggpairs
+lower_fn <- function(data, mapping, method="loess", ...){
+  p <- ggplot(data = data, mapping = mapping) + 
+    geom_point() + 
+    geom_smooth(method=method, se = FALSE, color = "black", ...) +
+    geom_abline(slope = 1, intercept = 0, linetype = "longdash")
+  p
+}
 
 get.comparison.table <- function(chains, burnin, min.freq){
   
