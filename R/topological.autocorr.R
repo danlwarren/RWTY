@@ -54,7 +54,6 @@ topological.autocorr <- function(chains, burnin = 0, max.sampling.interval = NA,
   
   return(final.autocorr)
   
-  
 }
 
 
