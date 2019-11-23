@@ -85,8 +85,8 @@ do.pairs.plot <- function(chain, burnin = 0, params, treedist){
 
     points <- function(data, mapping, ...) {
       ggplot(data = data, mapping = mapping) +
-        geom_path(aes(colour = generation), alpha = 0.25) + 
-        geom_point(aes(colour = generation)) + 
+        geom_path(aes_string(colour = "generation"), alpha = 0.25) + 
+        geom_point(aes_string(colour = "generation")) + 
         scale_colour_gradientn(colours = viridis(256))
     }
 

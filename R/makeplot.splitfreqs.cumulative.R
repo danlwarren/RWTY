@@ -44,7 +44,7 @@ makeplot.splitfreqs.cumulative <- function(chains, burnin = 0, n.clades=20, wind
 
 
     if(facet==TRUE){
-        splitfreqs.plot <- ggplot(data=dat, aes_string(x=as.numeric(as.character(Generations)), y=Split.Frequency, group = Clade)) +
+        splitfreqs.plot <- ggplot(data=dat, aes_string(x=as.numeric(as.character(Generations)), y="Split.Frequency", group = "Clade")) +
             facet_wrap(~Chain, ncol = 1) +
             geom_line(aes_string(colour = RANK)) +
             scale_color_viridis(option = "C", end = 0.85) +

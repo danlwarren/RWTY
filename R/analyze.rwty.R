@@ -1,13 +1,3 @@
-globalVariables(c("Generation", "ACSF",
-                  "Chain", "Clade", "title", "Generations", "par", "cor", "text", "sd",
-                  "generation", "chain", "x", "y", "strwidth", "mtext", "Split.Frequency",
-                  "hclust", "..density..", "recordPlot", "rgb", "panel.smooth", "ci.lower",
-                  "ci.upper", "median", "quantile", "median.ess", "ASDSF" ,"Axis" ,"CSF" ,"Gen" ,
-                  "as.dist" ,"box" ,"cmdscale" ,"dev.flush" ,"dev.hold" ,"dev.off" ,"ess" ,
-                  "optim" ,"pdf" ,"plot" ,"points" ,"read.table" ,"reorder" ,"sampling.interval",
-                  "split.frequency" ,"tail" ,"topo.distance" ,"topological.distance", 
-                  "dev.control"))
-
 #' analyze.rwty, the main interface for rwty analyses and plots.
 #' 
 #' This is the main user interface to rwty.  It allows users to conduct simple

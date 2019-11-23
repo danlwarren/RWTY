@@ -40,8 +40,8 @@ makeplot.pseudo.ess <- function(chains, burnin = 0, n = 20){
                       ci.upper = apply(dat, 2, FUN = function(x) quantile(x, .975)),
                       chain = names(chains))
     
-    pseudo.ess.plot <- ggplot(dat, aes(x=chain, y=median.ess, colour = chain)) + 
-      geom_errorbar(aes(ymin=ci.lower, ymax=ci.upper)) +
+    pseudo.ess.plot <- ggplot(dat, aes_string(x="chain", y="median.ess", colour = "chain")) + 
+      geom_errorbar(aes_string(ymin="ci.lower", ymax="ci.upper")) +
       geom_point() +
       xlab("Chain") +
       ylab("Pseudo ESS") +      
