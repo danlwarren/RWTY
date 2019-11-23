@@ -34,7 +34,7 @@ makeplot.asdsf <- function(chains, burnin = 0, window.size = 20, min.freq = 0.0,
   slide.freq.list = slide.freq(chains, burnin, window.size)
   dat = get.asdsfs(slide.freq.list, min.freq)
   
-  asdsf.plot <- ggplot(dat, aes(x = as.numeric(as.character(Generation)))) + 
+  asdsf.plot <- ggplot(dat, aes(x = as.numeric(as.character(dat[,"Generation"])))) + 
     geom_line(aes_string(color = 14, y = "min"), linetype = 3) + 
     geom_line(aes_string(color = 13, y = "lower.95"), linetype = 2) +
     geom_line(aes_string(color = 12, y = "lower.75"), linetype = 7) +
