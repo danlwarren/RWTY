@@ -16,6 +16,11 @@ params:
 results <- params$input
 chains <- params$chain.names
 
+# This bit seems weird but what it's actually doing is
+# dynamically generating headers for each chain.  The
+# arrangement of spaces and newlines is touchy as hell
+# so don't mess with it unless you've got a super good reason
+
 template <- "
 ## %s
 
@@ -47,7 +52,7 @@ print(results$LnL.trace$density.plot)
 
 ## Topology
 
-### Topology
+### Distance from reference tree
 ```{r message = FALSE, echo = FALSE}
 print(results$topology.trace.plot$trace.plot)
 print(results$topology.trace.plot$density.plot)
@@ -82,14 +87,19 @@ print(results$treespace.points.plot)
 <br>
 <br>
 
-## Model parameters
+## Parameters
 ```{r message = FALSE, echo = FALSE, results = "asis"}
+# Here we're going to create a subheading for each parameter
+# that has a trace plot associated with it
+
 # Get names of all "trace" plots
 traces <- names(results)[grep(names(results), pattern = "trace")]
 
 # Take out just the ones that aren't already plotted elsewhere
 traces <- traces[which(!traces %in% c("LnL.trace", "topology.trace.plot"))]
 
+# As above, this bit is super touchy so don't mess with it
+# unless you have a compelling reason and several hours to kill
 
 template <- "
 ### %s
@@ -105,8 +115,6 @@ for (i in traces) {
   print(trace.plot$density.plot)
   cat("\n\n")
 }
-
-
 
 ```
 

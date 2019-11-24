@@ -155,6 +155,22 @@ analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 10
   
   plots[["citations"]] <- citations
   
+  # Make a table of ESS values.  Will need to be modified
+  # when the auto-burnin stuff is incorporated, and have topo ESS added
+  ess.table <- data.frame(matrix(nrow = length(names(chains)),
+                                 ncol = length(colnames(chains[[1]]$ptable))))
+  colnames(ess.table) <- colnames(chains[[1]]$ptable)
+  rownames(ess.table) <- c(names(chains))
+  
+  for(i in names(chains)){
+    ess.table[i,] <- coda::effectiveSize(chains[[i]]$ptable)
+  }
+  drops <- c("Gen")
+  ess.table <- ess.table[,!(names(ess.table) %in% drops)]
+  ess.table["Total",] <- apply(ess.table, 2, sum)
+  plots[["ess.table"]] <- ess.table
+  
+  
   # Print all to pdf if filename provided
   if(!is.na(pdf.filename)){
     print(sprintf("Saving plots to file: %s", pdf.filename))
