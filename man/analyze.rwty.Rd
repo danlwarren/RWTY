@@ -6,9 +6,10 @@
 \usage{
 analyze.rwty(chains, burnin = 0, window.size = 20,
   treespace.points = 100, n.clades = 20, min.freq = 0,
-  fill.color = NA, filename = NA, overwrite = FALSE, facet = TRUE,
-  free_y = FALSE, autocorr.intervals = 100, ess.reps = 20,
-  treedist = "PD", params = NA, max.sampling.interval = NA, ...)
+  fill.color = NA, pdf.filename = NA, overwrite = FALSE,
+  facet = TRUE, free_y = FALSE, autocorr.intervals = 100,
+  ess.reps = 20, treedist = "PD", params = NA,
+  max.sampling.interval = NA, report.filename = NA, ...)
 }
 \arguments{
 \item{chains}{A list of rwty.chain objects.}
@@ -25,7 +26,7 @@ analyze.rwty(chains, burnin = 0, window.size = 20,
 
 \item{fill.color}{The name of a column in your log file that you would like to use as the fill colour of points in the treespace plots}
 
-\item{filename}{Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not save outputs to file.}
+\item{pdf.filename}{Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not save outputs to file.}
 
 \item{overwrite}{Boolean variable saying whether output file should be overwritten, if it exists.}
 
@@ -42,6 +43,8 @@ analyze.rwty(chains, burnin = 0, window.size = 20,
 \item{params}{A vector of parameters to use when making the parameter correlation plots.  Defaults to the first two columns in the log table.}
 
 \item{max.sampling.interval}{The maximum sampling interval to use for generating autocorrelation plots}
+
+\item{report.filename}{If a filename is provided, rwty will compile an html report file including plots and diagnostic tables}
 
 \item{...}{Extra arguments to be passed to plotting and analysis functions.}
 }

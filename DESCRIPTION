@@ -30,6 +30,7 @@ Imports:
     ggdendro,
     GGally,
     parallel,
+    plotly
 Suggests:
     knitr,
     testthat,

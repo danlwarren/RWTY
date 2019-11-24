@@ -94,7 +94,7 @@ makeplot.treespace <- function(chains, burnin = 0, n.points = 100,  fill.color =
         heatmap = NA
     }else{
         heatmap <- ggplot(data=points, aes_string(x="x",y="y")) + 
-          stat_density2d(geom="tile", aes(fill = ..density..), contour = FALSE) + 
+          stat_density2d(geom="tile", aes_string(fill = "..density.."), contour = FALSE) + 
           theme(panel.background = element_blank(), axis.line = element_line(color='grey'), panel.margin = unit(0.1, "lines")) +
           facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain))))) + 
           scale_x_continuous(expand = c(0, 0)) +
