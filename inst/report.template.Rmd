@@ -1,0 +1,115 @@
+---
+title: "Summary file from rwty analysis"
+output:
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+params:
+    input: "nothing here"
+    chain.names: "chains"
+---
+
+```{r echo = FALSE}
+library(plotly)
+```
+
+# Single-chain diagnostics
+
+```{r single.chain, echo = FALSE, results = "asis", warning = FALSE, message = FALSE, plotly = TRUE}
+results <- params$input
+chains <- params$chain.names
+
+template <- "
+## %s
+
+
+" # dont't forget the newline
+
+for (i in chains) {
+  cat(sprintf(template, i))
+  thisplot <- results[[paste0(i, ".correlations")]]
+  print(thisplot)
+  cat("\n\n")
+}
+
+```
+
+<br>
+<br>
+
+# Multi-chain diagnostics
+
+## Likelihood
+```{r message = FALSE, echo = FALSE}
+print(results$LnL.trace$trace.plot)
+print(results$LnL.trace$density.plot)
+```
+
+<br>
+<br>
+
+## Topology
+
+### Topology
+```{r message = FALSE, echo = FALSE}
+print(results$topology.trace.plot$trace.plot)
+print(results$topology.trace.plot$density.plot)
+```
+
+### Autocorrelation
+```{r message = FALSE, echo = FALSE}
+print(results$autocorr.plot)
+```
+
+### Split frequencies
+```{r message = FALSE, echo = FALSE}
+print(results$splitfreqs.sliding.plot)
+print(results$acsf.sliding.plot)
+print(results$splitfreqs.cumulative.plot)
+print(results$acsf.cumulative.plot)
+```
+
+### Agreement between chains
+```{r message = FALSE, echo = FALSE, warning = FALSE}
+print(results$splitfreq.matrix)
+print(results$asdsf.plot)
+print(results$asdsf.tree)
+```
+
+### Treespace plots
+```{r message = FALSE, echo = FALSE}
+print(results$treespace.heatmap)
+print(results$treespace.points.plot)
+```
+
+<br>
+<br>
+
+## Model parameters
+```{r message = FALSE, echo = FALSE, results = "asis"}
+# Get names of all "trace" plots
+traces <- names(results)[grep(names(results), pattern = "trace")]
+
+# Take out just the ones that aren't already plotted elsewhere
+traces <- traces[which(!traces %in% c("LnL.trace", "topology.trace.plot"))]
+
+
+template <- "
+### %s
+
+
+" # dont't forget the newline
+
+for (i in traces) {
+  shortname <- sub(i, pattern = ".trace$", replacement = "", perl = TRUE)
+  cat(sprintf(template, shortname))
+  trace.plot <- results[[i]]
+  print(trace.plot$trace.plot)
+  print(trace.plot$density.plot)
+  cat("\n\n")
+}
+
+
+
+```
+
