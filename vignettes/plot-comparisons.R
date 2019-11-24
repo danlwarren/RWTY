@@ -2,6 +2,7 @@
 library(rwty)
 data(salamanders)
 data(fungus)
+rwty.processors <- 1
 
 ## ----eval = FALSE, message=FALSE-----------------------------------------
 #  salamanders.rwty <- analyze.rwty(salamanders)

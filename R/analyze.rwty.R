@@ -14,7 +14,10 @@
 #' @importFrom ggdendro ggdendrogram
 #' @importFrom GGally ggpairs
 #' @importFrom parallel mclapply detectCores
-#' @importFrom utils citation
+#' @importFrom utils citation read.table tail
+#' @importFrom graphics title
+#' @importFrom grDevices dev.off pdf
+#' @importFrom stats as.dist cmdscale hclust median optim quantile reorder sd
 #'
 #' @param chains A list of rwty.chain objects. 
 #' @param burnin The number of trees to eliminate as burnin.  Default value is zero.

@@ -112,7 +112,7 @@ do.pairs.plot <- function(chain, burnin = 0, params, treedist){
       fill[which(fill == 1)] = 'blue'
 
       ggplot(data = data, mapping = mapping) + 
-        geom_histogram(aes(fill = fill)) +
+        geom_histogram(aes(fill = fill, bins = 30)) +
         scale_fill_manual(values =plasma(2, end = 0.65))
         
     }

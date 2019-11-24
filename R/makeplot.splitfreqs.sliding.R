@@ -78,7 +78,7 @@ get.dat.list.chain.names <- function(dat.list){
 
 single.splitfreq.plot <- function(dat, rank){
 
-    splitfreq.plot <- ggplot(data=dat, aes(x=as.numeric(as.character(Generations)), y=Split.Frequency, group = Clade)) + 
+    splitfreq.plot <- ggplot(data=dat, aes_string(x="Generations", y="Split.Frequency", group = "Clade")) + 
         geom_line(aes_string(colour = rank)) +
         scale_color_viridis(option = "C", end = 0.85) +
         xlab("Generation") +
