@@ -9,7 +9,7 @@ makeplot.topology(chains, burnin = NA, facet = TRUE, free_y = TRUE)
 \arguments{
 \item{chains}{A set of rwty.chain objects.}
 
-\item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the burnin calculated automatically when loading the chain. This can be overidden by providing any integer value.}
+\item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.}
 
 \item{facet}{TRUE/FALSE denoting whether to make a facet plot (default TRUE)}
 

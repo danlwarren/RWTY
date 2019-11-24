@@ -6,7 +6,7 @@
 \usage{
 analyze.rwty(
   chains,
-  burnin = 0,
+  burnin = NA,
   window.size = 20,
   treespace.points = 100,
   n.clades = 20,
@@ -27,7 +27,7 @@ analyze.rwty(
 \arguments{
 \item{chains}{A list of rwty.chain objects.}
 
-\item{burnin}{The number of trees to eliminate as burnin.  Default value is zero.}
+\item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the burnin calculated automatically when loading the chain. This can be overidden by providing any integer value.}
 
 \item{window.size}{The number of trees to include in each windows of sliding window plots}
 

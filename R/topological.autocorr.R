@@ -9,9 +9,8 @@
 #' path distances, though other distances could also be employed.
 #'
 #' @param chains A list of rwty.chain objects. 
-#' @param burnin The number of trees to eliminate as burnin 
-#' @param autocorr.intervals The number of sampling intervals to use. These will be spaced evenly between 1 and the max.sampling.interval 
-#' @param max.sampling.interval The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is 10 percent of the length of the list of trees).
+#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
+#' @param max.sampling.interval The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is the larger of 10 percent of the length of the chain, or the sampling interval that gives at least 100 paired samples).
 #'
 #' @return A data frame with one row per sampling interval, per chain. 
 #' The first column is the sampling interval. The second column is the mean 
@@ -28,23 +27,26 @@
 #' }
 
 
-topological.autocorr <- function(chains, burnin = 0, max.sampling.interval = NA, autocorr.intervals = 100){
+topological.autocorr <- function(chains, burnin = NA, max.sampling.interval = NA){
   
   chains = check.chains(chains)
   
   chain = chains[[1]]
   
+  if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
+  
   N = length(chains[[1]]$trees)
   
   if(is.na(max.sampling.interval)){
-    max.sampling.interval = max(floor((N - burnin) * 0.1), 20)
+    max.sampling.interval = max(c(floor((N - burnin) * 0.1), N - burnin - 100))
   }
-  
-  indices = seq(from = burnin + 1, to = N, by = 1)   
   
   dist.matrices = lapply(chains, function(x) x[['tree.dist.matrix']])
   
-  raw.autocorr = lapply(dist.matrices, tree.autocorr, max.sampling.interval, autocorr.intervals)
+  # get all the sampling intervals
+  autocorr.intervals = max.sampling.interval
+  
+  raw.autocorr = lapply(dist.matrices, tree.autocorr, max.sampling.interval, autocorr.intervals, burnin)
   
   final.autocorr = do.call("rbind", raw.autocorr)
   
@@ -57,7 +59,7 @@ topological.autocorr <- function(chains, burnin = 0, max.sampling.interval = NA,
 }
 
 
-tree.autocorr <- function(dist.mat, max.sampling.interval = NA, autocorr.intervals = 100){
+tree.autocorr <- function(dist.mat, max.sampling.interval, autocorr.intervals, burnin){
   
   if(!is.numeric(autocorr.intervals)) stop("autocorr.intervals must be a positive integer")
   if(autocorr.intervals<1 | autocorr.intervals%%1!=0) stop("autocorr.intervals must be a positive integer")
@@ -80,7 +82,7 @@ tree.autocorr <- function(dist.mat, max.sampling.interval = NA, autocorr.interva
   # we analyze up to autocorr.intervals thinnings spread evenly, less if there are non-unique numbers
   thinnings <- unique(as.integer(seq(from = 1, to = max.thinning, length.out=autocorr.intervals)))
   
-  r <- lapply(as.list(thinnings), get.sequential.distances, dist.mat) 
+  r <- lapply(as.list(thinnings), get.sequential.distances, dist.mat, burnin) 
   r <- data.frame(matrix(unlist(r), ncol=2, byrow=T))
   names(r) = c("topo.distance", "sampling.interval")
   
@@ -89,18 +91,15 @@ tree.autocorr <- function(dist.mat, max.sampling.interval = NA, autocorr.interva
 
 
 
-get.sequential.distances <- function(thinning, dist.mat){
+get.sequential.distances <- function(thinning, dist.mat, burnin){
   
   # dist.mat is an object of class 'dist'
   
   n.samples = sqrt(2*length(dist.mat)+0.25)+0.5
   
-  starts = 1:(n.samples - thinning)
+  starts = burnin:(n.samples - thinning)
   ends = starts + thinning
-  keep = c(rbind(starts, ends))
-  
-  pairs = split(keep, ceiling(seq_along(keep)/2))
-  
+
   # calculate the mean distance from all pairs of trees at this thinning
   # as a simple list of distances
   distances = dist_get(dist.mat, starts, ends)

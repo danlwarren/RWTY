@@ -4,21 +4,14 @@
 \alias{topological.autocorr}
 \title{Calculate data for autocorrelation plots of tree topologies from MCMC analyses}
 \usage{
-topological.autocorr(
-  chains,
-  burnin = 0,
-  max.sampling.interval = NA,
-  autocorr.intervals = 100
-)
+topological.autocorr(chains, burnin = NA, max.sampling.interval = NA)
 }
 \arguments{
 \item{chains}{A list of rwty.chain objects.}
 
-\item{burnin}{The number of trees to eliminate as burnin}
+\item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.}
 
-\item{max.sampling.interval}{The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is 10 percent of the length of the list of trees).}
-
-\item{autocorr.intervals}{The number of sampling intervals to use. These will be spaced evenly between 1 and the max.sampling.interval}
+\item{max.sampling.interval}{The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is the larger of 10 percent of the length of the chain, or the sampling interval that gives at least 100 paired samples).}
 }
 \value{
 A data frame with one row per sampling interval, per chain. 

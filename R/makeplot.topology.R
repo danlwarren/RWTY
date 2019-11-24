@@ -8,7 +8,7 @@
 #' (i.e. the chain ends up sampling trees fairly close to the MCC tree).
 #'
 #' @param chains A set of rwty.chain objects.
-#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the burnin calculated automatically when loading the chain. This can be overidden by providing any integer value.  
+#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
 #' @param facet TRUE/FALSE denoting whether to make a facet plot (default TRUE)
 #' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default TRUE). Only works if facet = TRUE.
 #'
@@ -28,8 +28,9 @@ makeplot.topology <- function(chains, burnin = NA, facet=TRUE, free_y = TRUE){
     print(sprintf("Creating trace for tree topologies"))
 
     chains = check.chains(chains)
-
-    if(is.na(burnin)){ burnin = chains[[1]]$burnin}
+    
+    # set burnin to the maximum from across all chains
+    if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
     
     # get ESS values
     ess = topological.approx.ess(chains, burnin)
@@ -41,6 +42,9 @@ makeplot.topology <- function(chains, burnin = NA, facet=TRUE, free_y = TRUE){
 
     distances = tree.distances.from.mcc(chains, burnin)
 
+    # some flag for a corner case where we need to manually set axis labels
+    if(all(distances$topological.distance == 0)) { axis.flag = 1 }else{ axis.flag = 0 }
+    
     # Calculate CIs either by chain or overall
     in.ci <- function(x){
       as.numeric(x > quantile(x, c(0.025)) &  x < quantile(x, c(0.975)))
@@ -65,13 +69,23 @@ makeplot.topology <- function(chains, burnin = NA, facet=TRUE, free_y = TRUE){
                         scale_fill_viridis(discrete = TRUE, begin = 0.2, end = .8, option = "C") +
                         theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
 
-    density.plot =  ggplot(data = distances, aes(x=topological.distance)) + 
+    if(axis.flag == 0){
+        density.plot =  ggplot(data = distances, aes(x=topological.distance)) + 
                         geom_histogram(aes(fill = fill)) + 
-                        ggtitle("Tree topology trace") +
+                        ggtitle("Tree topology density plot") +
                         xlab(axis_label) +
                         scale_fill_manual(values =plasma(2, end = 0.65), guide = FALSE) +
                         theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
-
+    }else{
+        density.plot =  ggplot(data = distances, aes(x=topological.distance)) + 
+                        geom_histogram(aes(fill = fill)) + 
+                        ggtitle("Tree topology density plot") +
+                        xlab(axis_label) +
+                        scale_fill_manual(values =plasma(2, end = 0.65), guide = FALSE) +
+                        theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5)) + 
+                        xlim(c(-0.1, 1))
+        
+    }
     if(facet){ 
         if(free_y){
             trace.plot = trace.plot + facet_wrap(~chain, ncol=1, scales = "free_y") + theme(legend.position="none")
