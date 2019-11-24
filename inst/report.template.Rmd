@@ -9,9 +9,6 @@ params:
     chain.names: "chains"
 ---
 
-```{r echo = FALSE}
-library(plotly)
-```
 
 # Single-chain diagnostics
 
