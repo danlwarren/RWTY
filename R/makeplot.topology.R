@@ -1,11 +1,14 @@
 #' Plotting parameters
 #' 
 #' Plots a trace of topological distances of trees over the length of the MCMC chain. The plot shows the topological distance
-#' of each post-burnin tree (except the first) in each chain from the first post-burnin tree of that chain. These plots can be 
+#' of each post-burnin tree in each chain from the maximum clade credibility (MCC) tree for that chain. These plots can be 
 #' interpreted very similarly to parameter trace plots. The key difference is that the plot is of differences, not of absolute values.
+#' When the chain samples the MCC tree, the distance will be zero. So, one should expect that if the burnin is too short, you will
+#' have a plot that starts at high values (i.e. the chain is sampling trees far from the MCC tree) and gradually approaches low values
+#' (i.e. the chain ends up sampling trees fairly close to the MCC tree).
 #'
 #' @param chains A set of rwty.chain objects.
-#' @param burnin The number of trees to omit as burnin. 
+#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the burnin calculated automatically when loading the chain. This can be overidden by providing any integer value.  
 #' @param facet TRUE/FALSE denoting whether to make a facet plot (default TRUE)
 #' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default TRUE). Only works if facet = TRUE.
 #'
@@ -20,16 +23,14 @@
 #' makeplot.topology(fungus, burnin=20)
 #' }
 
-makeplot.topology <- function(chains, burnin = 0, facet=TRUE, free_y = TRUE){ 
+makeplot.topology <- function(chains, burnin = NA, facet=TRUE, free_y = TRUE){ 
 
     print(sprintf("Creating trace for tree topologies"))
 
     chains = check.chains(chains)
 
-    if(facet == FALSE && independent.chains == TRUE){
-        stop("Cannot produce this plot. The independent.chains argument means that each topology trace is calculated from a different focal tree, so plotting them all on the same axes would be misleading")
-    }
-
+    if(is.na(burnin)){ burnin = chains[[1]]$burnin}
+    
     # get ESS values
     ess = topological.approx.ess(chains, burnin)
     operator = ess$operator
@@ -38,7 +39,7 @@ makeplot.topology <- function(chains, burnin = 0, facet=TRUE, free_y = TRUE){
     labels = paste(names(chains), " (Approximate ESS ", operator, " ", ess, ")", sep="")
     names(chains) = labels
 
-    distances = tree.distances.from.first(chains, burnin)
+    distances = tree.distances.from.mcc(chains, burnin)
 
     # Calculate CIs either by chain or overall
     in.ci <- function(x){
@@ -86,27 +87,18 @@ makeplot.topology <- function(chains, burnin = 0, facet=TRUE, free_y = TRUE){
 }
 
 
-tree.distances.from.first <- function(chains, burnin = 0){
-  # return tree distances from the first tree of each chain
+tree.distances.from.mcc <- function(chains, burnin){
+  # return tree distances from the mcc tree of each chain
 
   chains <- check.chains(chains)
+  N = length(chains[[1]]$trees)
+  dist.vectors <- lapply(chains, function(x) x[['ptable']]$topo.dist.mcc[burnin:N])
   
-  # the focal tree is the first tree after burnin
-  focal.tree.index = burnin+1
-  other.tree.indices = (focal.tree.index+1):length(chains[[1]]$trees)
-  focal.tree.indices = rep(focal.tree.index, length(other.tree.indices))
-
-  dist.matrices <- lapply(chains, function(x) x[['tree.dist.matrix']])
+  names <- lapply(names(chains), rep, length(dist.vectors[[1]]))
   
-  processors = get.processors(NULL)
+  gens <- rep((burnin:N)*chains[[1]]$gens.per.tree, length(chains))
   
-  distances = mclapply(dist.matrices, dist_get, focal.tree.indices, other.tree.indices, mc.cores = processors)
-  
-  names <- lapply(names(chains), rep, length(other.tree.indices))
-  
-  gens <- rep((other.tree.indices)*chains[[1]]$gens.per.tree, length(chains))
-  
-  dist.df <- data.frame(topological.distance = unlist(distances), chain = unlist(names), generation = gens)
+  dist.df <- data.frame(topological.distance = unlist(dist.vectors), chain = unlist(names), generation = gens)
   
   return(dist.df)
   

@@ -4,12 +4,12 @@
 \alias{makeplot.topology}
 \title{Plotting parameters}
 \usage{
-makeplot.topology(chains, burnin = 0, facet = TRUE, free_y = TRUE)
+makeplot.topology(chains, burnin = NA, facet = TRUE, free_y = TRUE)
 }
 \arguments{
 \item{chains}{A set of rwty.chain objects.}
 
-\item{burnin}{The number of trees to omit as burnin.}
+\item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the burnin calculated automatically when loading the chain. This can be overidden by providing any integer value.}
 
 \item{facet}{TRUE/FALSE denoting whether to make a facet plot (default TRUE)}
 
@@ -20,8 +20,11 @@ topology.trace.plot Returns a ggplot object.
 }
 \description{
 Plots a trace of topological distances of trees over the length of the MCMC chain. The plot shows the topological distance
-of each post-burnin tree (except the first) in each chain from the first post-burnin tree of that chain. These plots can be 
+of each post-burnin tree in each chain from the maximum clade credibility (MCC) tree for that chain. These plots can be 
 interpreted very similarly to parameter trace plots. The key difference is that the plot is of differences, not of absolute values.
+When the chain samples the MCC tree, the distance will be zero. So, one should expect that if the burnin is too short, you will
+have a plot that starts at high values (i.e. the chain is sampling trees far from the MCC tree) and gradually approaches low values
+(i.e. the chain ends up sampling trees fairly close to the MCC tree).
 }
 \examples{
 \dontrun{

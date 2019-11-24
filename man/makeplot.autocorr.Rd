@@ -6,7 +6,7 @@
 \usage{
 makeplot.autocorr(
   chains,
-  burnin = 0,
+  burnin = NA,
   max.sampling.interval = NA,
   autocorr.intervals = 40,
   facet = FALSE,
@@ -16,7 +16,7 @@ makeplot.autocorr(
 \arguments{
 \item{chains}{A list of rwty.chain objects.}
 
-\item{burnin}{The number of trees to eliminate as burnin.}
+\item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the burnin calculated automatically when loading the chain. This can be overidden by providing any integer value.}
 
 \item{max.sampling.interval}{The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is the larger of 10 percent of the length of the chain, or the sampling interval that gives at least 100 paired samples).}
 

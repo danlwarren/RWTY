@@ -42,7 +42,7 @@ attempt to read logs using the skip value from the format definition.}
 
 \item{treedist}{the type of tree distance metric to use, can be 'PD' for path distance or 'RF' (the default) for Robinson Foulds distance}
 
-\item{burnin}{the number of samples at the start of the chain to exclude as burnin. The default (burnin = NA) is to calculate the burnin automatically.}
+\item{burnin}{the number of samples at the start of the chain to exclude as burnin. The default (burnin = NA) is to calculate the burnin automatically if there is a logfile with likelihood values, or to assume that the burnin is 25% if there is no logfile with likelihood values.}
 }
 \value{
 output An rwty.chain object containing the multiPhylo and the table of values from the log file if available.
