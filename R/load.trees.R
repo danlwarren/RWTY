@@ -19,6 +19,7 @@
 #' read in with a skip value of 1.  If no "skip" value is provided but a "format" is supplied, RWTY will
 #' attempt to read logs using the skip value from the format definition.
 #' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' (the default) for Robinson Foulds distance
+#' @param burnin the number of samples at the start of the chain to exclude as burnin. The default (burnin = NA) is to calculate the burnin automatically. 
 #' @return output An rwty.chain object containing the multiPhylo and the table of values from the log file if available.
 #' @seealso \code{\link{read.tree}}, \code{\link{read.nexus}}
 #' @keywords Phylogenetics, MCMC, load
@@ -27,7 +28,7 @@
 #' @examples
 #' #load.trees(file="mytrees.t", format = "mb")
 
-load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, logfile=NA, skip=NA, treedist='RF'){
+load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, logfile=NA, skip=NA, treedist='RF', burnin = NA){
 
   format <- tolower(format)
   format_choices <- c("mb", "beast", "*beast", "revbayes", "mrbayes")
@@ -137,7 +138,7 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
     # calculate distance matrix for these trees
     tree.dist.matrix = tree.dist.matrix(trees=treelist, treedist=treedist)
     
-    
+
   output <- list(
     "trees" = treelist,
     "tree.dist.matrix" = tree.dist.matrix,
@@ -147,8 +148,51 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
 
   class(output) <- "rwty.chain"
 
-  output
+  # calculate burnin if user didn't specify it
+  if(is.na(burnin)){
+      burnin = calculate.burnin(output, treedist)
+  }
+  
+  # calculate MCC tree from post-burnin samples
+  mcc.tree = maxCladeCred(treelist[burnin:length(treelist)])
+  
+  # calculate distances from initial MCC tree
+  if(treedist == 'RF'){
+    topo.dists = RF.dist(mcc.tree, treelist)
+  }else if(treedist == 'PD'){
+    topo.dists = path.dist(mcc.tree, treelist)
+  }else{
+    stop("treedist must be either 'PD' or 'RF'")
+  }
+  
+  # add topolgocial distance to MCC tree to p.table
+  if(is.null(output$ptable)){
+    output$ptable = data.frame("topo.dist.mcc" = topo.dists)
+  }else{
+    output$ptable = cbind(output$ptable, "topo.dist.mcc" = topo.dists)
+  }
+  
+  return(output)
 }
+
+
+calculate.burnin <- function(chain, treedist){
+  
+  # no likelihoods: just set burnin is 25%
+  if(is.null(chain$ptable)){
+    return(floor(length(trees)*0.25))
+  }else{
+  
+    # yes likelihoods: use method of Beiko, R. G., Keith, J. M., Harlow, T. J., & Ragan, M. A. (2006). Searching for convergence in phylogenetic Markov chain Monte Carlo. Systematic Biology, 55(4), 553-565.
+    # this method just finds the first generation with lnL higher than the average lnL of the final 10% of the chain  
+    N = length(chain$trees)
+    final.10pc.av = mean(chain$ptable$LnL[floor(0.9*N):N])
+    burnin.index = min(which(chain$ptable$LnL > final.10pc.av))
+    return(burnin.index)
+    
+  }  
+}    
+
 
 # This function takes the name of a format and returns a list containing important info about file suffixes and whatnot
 get.format <- function(format){
