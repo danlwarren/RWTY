@@ -1,18 +1,13 @@
 #' Plotting parameters
 #' 
-#' Plots a trace of topological distances of trees over the length of the MCMC chain. The plot shows the path distance
-#' of each tree in each chain from the last tree of the burnin of the first chain. If burnin is set to zero, then 
-#' distances are calculated from the first tree of the first chain.
-#' If required, the behaviour can be changed to plot the path distance of each tree from the last tree of the burnin
-#' of each chain, using the independent.chains option. This is not recommended in most cases.
+#' Plots a trace of topological distances of trees over the length of the MCMC chain. The plot shows the topological distance
+#' of each post-burnin tree (except the first) in each chain from the first post-burnin tree of that chain. These plots can be 
+#' interpreted very similarly to parameter trace plots. The key difference is that the plot is of differences, not of absolute values.
 #'
 #' @param chains A set of rwty.chain objects.
 #' @param burnin The number of trees to omit as burnin. 
 #' @param facet TRUE/FALSE denoting whether to make a facet plot (default TRUE)
-#' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.
-#' @param independent.chains TRUE/FALSE if FALSE (the default) then the plots show the distance of each tree from the last tree of the burnin of the first chain. If TRUE, the plots show the distance of each tree from the first tree of the chain in which that tree appears. The TRUE option should only be used in the case that different chains represent analyses of different genes or datasets.
-#' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance
-#' @param approx.ess TRUE/FALSE do you want the approximate topological ess to be calculated and displayed for each chain?
+#' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default TRUE). Only works if facet = TRUE.
 #'
 #' @return topology.trace.plot Returns a ggplot object.
 #'
@@ -25,7 +20,7 @@
 #' makeplot.topology(fungus, burnin=20)
 #' }
 
-makeplot.topology <- function(chains, burnin = 0, facet=TRUE, free_y = FALSE, independent.chains = FALSE, treedist = 'PD', approx.ess = TRUE){ 
+makeplot.topology <- function(chains, burnin = 0, facet=TRUE, free_y = TRUE){ 
 
     print(sprintf("Creating trace for tree topologies"))
 
@@ -36,24 +31,14 @@ makeplot.topology <- function(chains, burnin = 0, facet=TRUE, free_y = FALSE, in
     }
 
     # get ESS values
-    if(approx.ess==TRUE){
-        ess = topological.approx.ess(chains, burnin)
-        operator = ess$operator
-        ess = list(ess$approx.ess, stringsAsFactors=FALSE)[[1]]
-        ess = round(ess, digits = 0)
-        labels = paste(names(chains), " (Approximate ESS ", operator, " ", ess, ")", sep="")
-        names(chains) = labels
-    }
+    ess = topological.approx.ess(chains, burnin)
+    operator = ess$operator
+    ess = list(ess$approx.ess, stringsAsFactors=FALSE)[[1]]
+    ess = round(ess, digits = 0)
+    labels = paste(names(chains), " (Approximate ESS ", operator, " ", ess, ")", sep="")
+    names(chains) = labels
 
-    if(independent.chains == TRUE){
-        distances = tree.distances.from.first(chains, burnin, treedist = treedist)
-    }else{
-        # use the tree 1 before the trees used in the chains
-        index = burnin
-        if(index == 0){ index = 1 }
-        focal.tree = chains[[1]]$trees[index]
-        distances = tree.distances.from.first(chains, burnin, focal.tree = focal.tree, treedist = treedist)        
-    }
+    distances = tree.distances.from.first(chains, burnin)
 
     # Calculate CIs either by chain or overall
     in.ci <- function(x){
@@ -68,11 +53,13 @@ makeplot.topology <- function(chains, burnin = 0, facet=TRUE, free_y = FALSE, in
     fill[which(fill == 0)] = 'red'  
     fill[which(fill == 1)] = 'blue'
 
+    axis_label = sprintf("%s distance of tree from first post-burnin tree", chains[[1]]$tree.dist.metric)
+    
     trace.plot =  ggplot(data = distances, aes(x=generation, y=topological.distance)) + 
                         geom_line(aes(colour = chain)) + 
                         ggtitle("Tree topology trace") +
                         xlab("Generation") +
-                        ylab("Topological Distance of Tree from Focal Tree") +
+                        ylab(axis_label) +
                         scale_color_viridis(discrete = TRUE, begin = 0.2, end = .8, option = "C") +
                         scale_fill_viridis(discrete = TRUE, begin = 0.2, end = .8, option = "C") +
                         theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
@@ -80,7 +67,7 @@ makeplot.topology <- function(chains, burnin = 0, facet=TRUE, free_y = FALSE, in
     density.plot =  ggplot(data = distances, aes(x=topological.distance)) + 
                         geom_histogram(aes(fill = fill)) + 
                         ggtitle("Tree topology trace") +
-                        xlab("Topological Distance of Tree from Focal Tree") +
+                        xlab(axis_label) +
                         scale_fill_manual(values =plasma(2, end = 0.65), guide = FALSE) +
                         theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
 
@@ -96,4 +83,31 @@ makeplot.topology <- function(chains, burnin = 0, facet=TRUE, free_y = FALSE, in
 
     return(list(trace.plot = trace.plot, density.plot = density.plot))
 
+}
+
+
+tree.distances.from.first <- function(chains, burnin = 0){
+  # return tree distances from the first tree of each chain
+
+  chains <- check.chains(chains)
+  
+  # the focal tree is the first tree after burnin
+  focal.tree.index = burnin+1
+  other.tree.indices = (focal.tree.index+1):length(chains[[1]]$trees)
+  focal.tree.indices = rep(focal.tree.index, length(other.tree.indices))
+
+  dist.matrices <- lapply(chains, function(x) x[['tree.dist.matrix']])
+  
+  processors = get.processors(NULL)
+  
+  distances = mclapply(dist.matrices, dist_get, focal.tree.indices, other.tree.indices, mc.cores = processors)
+  
+  names <- lapply(names(chains), rep, length(other.tree.indices))
+  
+  gens <- rep((other.tree.indices)*chains[[1]]$gens.per.tree, length(chains))
+  
+  dist.df <- data.frame(topological.distance = unlist(distances), chain = unlist(names), generation = gens)
+  
+  return(dist.df)
+  
 }
