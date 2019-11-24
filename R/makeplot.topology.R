@@ -78,7 +78,7 @@ makeplot.topology <- function(chains, burnin = 0, facet=TRUE, free_y = FALSE, in
                         theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
 
     density.plot =  ggplot(data = distances, aes_string(x="topological.distance")) + 
-                        geom_histogram(aes(fill = fill, bins = 30)) + 
+                        geom_histogram(aes(fill = fill), bins = 30) + 
                         ggtitle("Tree topology trace") +
                         xlab("Topological Distance of Tree from Focal Tree") +
                         scale_fill_manual(values =plasma(2, end = 0.65), guide = FALSE) +

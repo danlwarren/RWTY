@@ -9,6 +9,10 @@ params:
     chain.names: "chains"
 ---
 
+```{r echo = FALSE}
+library(knitr)
+```
+
 
 # Single-chain diagnostics
 
@@ -88,6 +92,12 @@ print(results$treespace.points.plot)
 <br>
 
 ## Parameters
+
+### ESS table
+```{r echo = FALSE}
+kable(results$ess.table)
+```
+
 ```{r message = FALSE, echo = FALSE, results = "asis"}
 # Here we're going to create a subheading for each parameter
 # that has a trace plot associated with it

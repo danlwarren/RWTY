@@ -58,7 +58,7 @@ makeplot.param <- function(chains, burnin = 0, parameter = "LnL", facet=TRUE, fr
             
 
         density.plot =  ggplot(ptable, aes_string(x=parameter)) + 
-                        geom_histogram(aes(fill = fill)) + 
+                        geom_histogram(aes(fill = fill), bins = 30) + 
                         scale_fill_manual(values =plasma(2, end = 0.65), guide = FALSE) +
                         ggtitle(title) 
 
