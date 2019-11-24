@@ -1,3 +1,7 @@
+# These are used in ddply and subset calls 
+# so I can't get rid of them with aes_string
+utils::globalVariables(c("Generation", "CSF", "split.frequency", "ess"))
+
 #' analyze.rwty, the main interface for rwty analyses and plots.
 #' 
 #' This is the main user interface to rwty.  It allows users to conduct simple
