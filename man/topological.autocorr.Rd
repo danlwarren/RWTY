@@ -19,12 +19,11 @@ column is the chain ID.
 }
 \description{
 This function takes a list of rwty.chain objects, and calculates the
-mean phylogenetic distance at a series of roughly even sampling intervals.
+mean phylogenetic distance between pairs of trees at a range of sampling intervals.
 In really well behaved MCMC analyses, the mean distance will stay constant
 as the sampling interval increases. If there is autocorrelation, it will 
 increase as the sampling interval increases, and is expected to level
-off when the autocorrelation decreases to zero. The function calculates
-path distances, though other distances could also be employed.
+off when the autocorrelation decreases to zero.
 }
 \examples{
 \dontrun{

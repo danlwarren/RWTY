@@ -80,12 +80,6 @@ makeplot.autocorr(salamanders, burnin = 0)
 ## ----autocorr-2, fig.width = 8, fig.height = 6, message = FALSE----------
 makeplot.autocorr(fungus, burnin = 0)
 
-## ----pseudo-ess-1, fig.width = 8, fig.height = 6, message = FALSE--------
-makeplot.pseudo.ess(salamanders, burnin = 50)
-
-## ----pseudo-ess-2, fig.width = 8, fig.height = 6, message = FALSE--------
-makeplot.pseudo.ess(fungus, burnin = 50)
-
 ## ----splitfreq-matrix-1, fig.width = 8, fig.height = 6, message = FALSE----
 makeplot.splitfreq.matrix(salamanders, burnin = 50)
 
