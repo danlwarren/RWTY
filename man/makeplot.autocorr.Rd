@@ -4,20 +4,12 @@
 \alias{makeplot.autocorr}
 \title{Make autocorrelation plots of tree topologies from MCMC analyses}
 \usage{
-makeplot.autocorr(
-  chains,
-  burnin = NA,
-  max.sampling.interval = NA,
-  facet = FALSE,
-  free_y = FALSE
-)
+makeplot.autocorr(chains, burnin = NA, facet = FALSE, free_y = FALSE)
 }
 \arguments{
 \item{chains}{A list of rwty.chain objects.}
 
 \item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.}
-
-\item{max.sampling.interval}{The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is the larger of 10 percent of the length of the chain, or the sampling interval that gives at least 100 paired samples).}
 
 \item{facet}{TRUE/FALSE to turn facetting of the plot on or off (default FALSE)}
 

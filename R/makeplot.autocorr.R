@@ -11,7 +11,6 @@
 #'
 #' @param chains A list of rwty.chain objects. 
 #' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
-#' @param max.sampling.interval The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is the larger of 10 percent of the length of the chain, or the sampling interval that gives at least 100 paired samples).
 #' @param facet TRUE/FALSE to turn facetting of the plot on or off (default FALSE)
 #' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.
 #'
@@ -27,7 +26,7 @@
 #' makeplot.autocorr(fungus, burnin = 20)
 #' }
 
-makeplot.autocorr <- function(chains, burnin = NA, max.sampling.interval = NA, facet = FALSE, free_y = FALSE){
+makeplot.autocorr <- function(chains, burnin = NA, facet = FALSE, free_y = FALSE){
 
     print(sprintf("Creating topological autocorrelation plot"))
 
@@ -39,10 +38,13 @@ makeplot.autocorr <- function(chains, burnin = NA, max.sampling.interval = NA, f
     
     N = length(chain$trees)
 
-    if(is.na(max.sampling.interval)){
-        max.sampling.interval = max(c(floor((N - burnin) * 0.1), N - burnin - 100))
+    # choose a max sampling interval such that we have minimum 20 trees to get the mean topo distance from in each bin
+    max.sampling.interval = N - burnin - 20
+    
+    if(max.sampling.interval < 1){
+      stop(sprintf("Only %d trees remain after removing burnin, which is not enough to calculate any topological autocorrelation"))
     }
-
+    
     dat <- topological.autocorr(chains, burnin, max.sampling.interval)
 
     ylabel = sprintf("Mean %s distance between pairs of trees", chain$tree.dist.metric)

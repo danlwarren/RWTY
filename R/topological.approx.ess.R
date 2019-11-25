@@ -8,7 +8,6 @@
 #'
 #' @param chains A list of rwty.chain objects.
 #' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
-#' @param max.sampling.interval The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is the larger of 10 percent of the length of the chain, or the sampling interval that gives at least 100 paired samples).
 #'
 #' @return A data frame with one row per chain, and columns describing the
 #' approximate ESS and the name of the chain.
@@ -24,7 +23,7 @@
 
 
 
-topological.approx.ess <- function(chains, burnin = NA, max.sampling.interval = NA){
+topological.approx.ess <- function(chains, burnin = NA){
 
     chains = check.chains(chains)
 
@@ -33,16 +32,17 @@ topological.approx.ess <- function(chains, burnin = NA, max.sampling.interval = 
     
     N = length(chains[[1]]$trees)
     
-    if(is.na(max.sampling.interval)){
-      max.sampling.interval = max(c(floor((N - burnin) * 0.1), N - burnin - 100))
+    # choose a max sampling interval such that we have minimum 20 trees to get the mean topo distance from in each bin
+    max.sampling.interval = N - burnin - 20
+
+    if(max.sampling.interval < 10){
+      warning(sprintf("There are only %d trees left after removing burnin, which is not enough to use the method of Lanfear et al 2016 to calculate the topological ESS. Instead, RWTY simply estimates that the maximum possible ESS of trees in your chains is %d", N-burnin, N-burnin))
+      result = data.frame("operator" = "<", "approx.ess" = N-burnin, "chain" = names(chains), "distance.metric" = chains[[1]]$tree.dist.metric)
+      return(result)
     }
     
-    if(N-burnin < max.sampling.interval){
-        warning("Not enough trees to use your chosen max.sampling.interval")
-        warning("Setting the larger of 10 percent of the length of the chain, or the sampling interval that gives at least 100 paired samples")
-        max.sampling.interval = max(c(floor((N - burnin) * 0.1), N - burnin - 100))
-    }
-
+    # if we get to here, we have at least 10 intervals from which to calculate the approx.ess, so we can go ahead
+    
     # set them equal, so we get every interval
     autocorr.intervals = max.sampling.interval
 
