@@ -11,12 +11,12 @@ params:
 
 ```{r echo = FALSE}
 library(knitr)
+library(plotly)
 ```
-
 
 # Single-chain diagnostics
 
-```{r single.chain, echo = FALSE, results = "asis", warning = FALSE, message = FALSE, plotly = TRUE}
+```{r single.chain, echo = FALSE, results = "asis", warning = FALSE, message = FALSE}
 results <- params$input
 chains <- params$chain.names
 
@@ -47,9 +47,16 @@ for (i in chains) {
 
 ## Likelihood
 ```{r message = FALSE, echo = FALSE}
-print(results$LnL.trace$trace.plot)
-print(results$LnL.trace$density.plot)
+ggplotly(results$LnL.trace$trace.plot)
 ```
+
+<br>
+<br>
+
+```{r message = FALSE, echo = FALSE}
+ggplotly(results$LnL.trace$density.plot)
+```
+
 
 <br>
 <br>
@@ -58,34 +65,91 @@ print(results$LnL.trace$density.plot)
 
 ### Distance from reference tree
 ```{r message = FALSE, echo = FALSE}
-print(results$topology.trace.plot$trace.plot)
-print(results$topology.trace.plot$density.plot)
+ggplotly(results$topology.trace.plot$trace.plot)
 ```
+
+<br>
+<br>
+
+```{r message = FALSE, echo = FALSE}
+ggplotly(results$topology.trace.plot$density.plot)
+```
+
+
+<br>
+<br>
 
 ### Autocorrelation
 ```{r message = FALSE, echo = FALSE}
-print(results$autocorr.plot)
+ggplotly(results$autocorr.plot)
 ```
+
+<br>
+<br>
 
 ### Split frequencies
 ```{r message = FALSE, echo = FALSE}
-print(results$splitfreqs.sliding.plot)
-print(results$acsf.sliding.plot)
-print(results$splitfreqs.cumulative.plot)
-print(results$acsf.cumulative.plot)
+ggplotly(results$splitfreqs.sliding.plot)
 ```
+
+<br>
+<br>
+
+```{r message = FALSE, echo = FALSE}
+ggplotly(results$acsf.sliding.plot)
+```
+
+
+<br>
+<br>
+
+```{r message = FALSE, echo = FALSE}
+ggplotly(results$splitfreqs.cumulative.plot)
+```
+
+<br>
+<br>
+
+```{r message = FALSE, echo = FALSE}
+ggplotly(results$acsf.cumulative.plot)
+```
+
+<br>
+<br>
+
 
 ### Agreement between chains
 ```{r message = FALSE, echo = FALSE, warning = FALSE}
-print(results$splitfreq.matrix)
-print(results$asdsf.plot)
+ggplotly(results$splitfreq.matrix)
+```
+
+<br>
+<br>
+
+```{r message = FALSE, echo = FALSE, warning = FALSE}
+ggplotly(results$asdsf.plot)
+```
+
+<br>
+<br>
+
+```{r message = FALSE, echo = FALSE}
 print(results$asdsf.tree)
 ```
 
+<br>
+<br>
+
 ### Treespace plots
 ```{r message = FALSE, echo = FALSE}
-print(results$treespace.heatmap)
-print(results$treespace.points.plot)
+ggplotly(results$treespace.heatmap)
+```
+
+<br>
+<br>
+
+```{r message = FALSE, echo = FALSE}
+ggplotly(results$treespace.points.plot)
 ```
 
 <br>
@@ -93,10 +157,7 @@ print(results$treespace.points.plot)
 
 ## Parameters
 
-### ESS table
-```{r echo = FALSE}
-kable(results$ess.table)
-```
+
 
 ```{r message = FALSE, echo = FALSE, results = "asis"}
 # Here we're going to create a subheading for each parameter
@@ -126,5 +187,10 @@ for (i in traces) {
   cat("\n\n")
 }
 
+```
+
+### ESS table
+```{r echo = FALSE}
+kable(results$ess.table)
 ```
 
