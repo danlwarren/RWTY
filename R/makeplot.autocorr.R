@@ -43,7 +43,6 @@ makeplot.autocorr <- function(chains, burnin = NA, max.sampling.interval = NA, f
         max.sampling.interval = max(c(floor((N - burnin) * 0.1), N - burnin - 100))
     }
 
-
     dat <- topological.autocorr(chains, burnin, max.sampling.interval)
 
     ylabel = sprintf("Mean %s distance between pairs of trees", chain$tree.dist.metric)
