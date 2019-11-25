@@ -96,7 +96,7 @@ analyze.rwty <- function(chains, burnin=NA, window.size=20, treespace.points = 1
   if(all(unlist(lapply(chains, function(x) length(x$ptable[,1])))) > 0){ 
     # plot parameters for all chains
     parameter.plots <- makeplot.all.params(chains, burnin = burnin, facet=facet, strip = 1)
-    parameter.correlations <- makeplot.pairs(chains, burnin = burnin, params = params, treedist = treedist, strip = 1)
+    parameter.correlations <- makeplot.pairs(chains, burnin = burnin, params = params, strip = 1)
     names(parameter.correlations) <- paste0(names(parameter.correlations), ".correlations")
   }
   else{
@@ -108,7 +108,7 @@ analyze.rwty <- function(chains, burnin=NA, window.size=20, treespace.points = 1
   if(N < 200){
     autocorr.plot <- NULL
   } else {
-    autocorr.plot <- makeplot.autocorr(chains, burnin = burnin, autocorr.intervals = autocorr.intervals, facet = facet, max.sampling.interval = max.sampling.interval) 
+    autocorr.plot <- makeplot.autocorr(chains, burnin = burnin, facet = facet) 
   }
   
   # plot sliding window sf plots

@@ -37,15 +37,8 @@ makeplot.autocorr <- function(chains, burnin = NA, facet = FALSE, free_y = FALSE
     if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
     
     N = length(chain$trees)
-
-    # choose a max sampling interval such that we have minimum 20 trees to get the mean topo distance from in each bin
-    max.sampling.interval = N - burnin - 20
     
-    if(max.sampling.interval < 1){
-      stop(sprintf("Only %d trees remain after removing burnin, which is not enough to calculate any topological autocorrelation"))
-    }
-    
-    dat <- topological.autocorr(chains, burnin, max.sampling.interval)
+    dat <- topological.autocorr(chains, burnin)
 
     ylabel = sprintf("Mean %s distance between pairs of trees", chain$tree.dist.metric)
     
