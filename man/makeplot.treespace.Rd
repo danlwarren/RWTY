@@ -4,7 +4,7 @@
 \alias{makeplot.treespace}
 \title{Plot chains in treespace.}
 \usage{
-makeplot.treespace(chains, burnin = NA, n.points = 100, fill.color = NA)
+makeplot.treespace(chains, burnin = NA, n.points = 100, fill.color = "LnL")
 }
 \arguments{
 \item{chains}{A list of one or more rwty.chain objects}
@@ -13,7 +13,7 @@ makeplot.treespace(chains, burnin = NA, n.points = 100, fill.color = NA)
 
 \item{n.points}{The number of points on each plot}
 
-\item{fill.color}{The name of any column in your parameter file that you would like to use as a fill colour for the points of the plot.}
+\item{fill.color}{The name of the column from the log table that that you would like to use to colour the points in the plot. The default is to colour the points by LnL.}
 }
 \value{
 A list of two ggplot objects: one plots the points in treespace, the other shows a heatmap of the same points
