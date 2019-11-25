@@ -6,7 +6,7 @@
 \usage{
 makeplot.splitfreqs.cumulative(
   chains,
-  burnin = 0,
+  burnin = NA,
   n.clades = 20,
   window.size = 20,
   facet = TRUE,
@@ -16,7 +16,7 @@ makeplot.splitfreqs.cumulative(
 \arguments{
 \item{chains}{A list of rwty.chain objects.}
 
-\item{burnin}{The number of trees to eliminate as burnin}
+\item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.}
 
 \item{n.clades}{The number of clades to plot}
 

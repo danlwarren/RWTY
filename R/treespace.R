@@ -5,9 +5,9 @@
 #' dimensional tree space for plotting.
 #'
 #' @param chains A list of 1 or more rwty.chain objects.
-#' @param burnin The number of trees to eliminate as burnin. Default is zero. 
-#' @param n.points The minimum number of points you want in your plot.
-#' @param fill.color The name of the column from the log table that that you would like to use to colour the points in the plot.
+#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
+#' @param n.points The minimum number of points you want in your plot (default is 100).
+#' @param fill.color The name of the column from the log table that that you would like to use to colour the points in the plot. The default is to colour the points by LnL.
 #'
 #' @return Returns a list containing the points and a plot.
 #'
@@ -22,9 +22,13 @@
 
 
 
-treespace <- function(chains, n.points = 100, burnin=0, fill.color=NA){
+treespace <- function(chains, n.points = 100, burnin=NA, fill.color="LnL"){
 
     chains = check.chains(chains)
+    
+    # set burnin to the maximum from across all chains
+    if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
+    
     labels = names(chains)
     ptable = combine.ptables(chains, burnin=0) # we deal with burnin later for this 
 

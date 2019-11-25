@@ -6,7 +6,7 @@
 #' Each line in the plot represents a single clade. The colour of the line represents the standard deviation of the split frequencies of that clade across the MCMC.
 #'
 #' @param chains A list of rwty.chain objects. 
-#' @param burnin The number of trees to eliminate as burnin 
+#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
 #' @param n.clades The number of clades to plot 
 #' @param window.size The number of trees to include in each window (note, specified as a number of sampled trees, not a number of generations)
 #' @param facet (TRUE/FALSE). TRUE: return a single plot with one facet per chain; FALSE: return a list of individual plots with one plot per chain 
@@ -23,8 +23,14 @@
 #' makeplot.splitfreqs.sliding(fungus, burnin = 20, n.clades=25)
 #' }
 
-makeplot.splitfreqs.sliding <- function(chains, burnin = 0, n.clades=20, window.size = 20, facet = TRUE, rank = 'ess'){ 
+makeplot.splitfreqs.sliding <- function(chains, burnin = NA, n.clades=20, window.size = 20, facet = TRUE, rank = 'ess'){ 
 
+    chains = check.chains(chains)
+    
+    # set burnin to the maximum from across all chains
+    if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
+  
+  
     print(sprintf("Creating sliding window split frequency plot for %d clades", n.clades))
 
     chains = check.chains(chains)

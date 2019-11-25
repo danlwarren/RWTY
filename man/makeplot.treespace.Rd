@@ -4,12 +4,12 @@
 \alias{makeplot.treespace}
 \title{Plot chains in treespace.}
 \usage{
-makeplot.treespace(chains, burnin = 0, n.points = 100, fill.color = NA)
+makeplot.treespace(chains, burnin = NA, n.points = 100, fill.color = NA)
 }
 \arguments{
 \item{chains}{A list of one or more rwty.chain objects}
 
-\item{burnin}{The number of samples to omit as burnin.}
+\item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.}
 
 \item{n.points}{The number of points on each plot}
 
