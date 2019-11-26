@@ -36,7 +36,9 @@ makeplot.acsf.sliding <- function(chains, burnin = 0, window.size = 20, facet = 
   title = "Sliding window Change in Split Frequencies"
   
   if(facet==TRUE){
-    acsf.plot <- ggplot(dat, aes(x = "Generation")) + 
+    # Silly hack to get around declaring another global var
+    xvar <- as.numeric(as.character(dat$Generation))
+    acsf.plot <- ggplot(dat, aes(x = xvar)) + 
       geom_ribbon(aes_string(ymin = "min", ymax = "lower.95", fill = "Chain"), alpha = 0.10) + 
       geom_ribbon(aes_string(ymin = "lower.95", ymax = "lower.75", fill = "Chain"), alpha = 0.30) +
       geom_ribbon(aes_string(ymin = "lower.75", ymax = "upper.75", fill = "Chain"), alpha = 0.50) +
