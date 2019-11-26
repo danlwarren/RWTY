@@ -57,7 +57,7 @@ makeplot.pairs <- function(chains, burnin = NA, params = NA, strip = 1){
 
     chains = add.names(chains)
 
-    plots = lapply(chains, do.pairs.plot, burnin = burnin, params = param.names, treedist = treedist)
+    plots = lapply(chains, do.pairs.plot, burnin = burnin, params = param.names)
 
     names(plots) = names(chains)
 
@@ -72,11 +72,12 @@ add.names <- function(chains){
     return(chains)
 }
 
-do.pairs.plot <- function(chain, burnin = 0, params, treedist){
+do.pairs.plot <- function(chain, burnin = 0, params){
 
     ptable = combine.ptables(chain, burnin)
     name = chain$name
     chains = check.chains(chain)
+    # treedist = chains[[1]]$tree.dist.metric
 
     points <- function(data, mapping, ...) {
       ggplot(data = data, mapping = mapping) +
