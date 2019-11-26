@@ -26,8 +26,8 @@ rwty.processors <- 1
 For starters we won't eliminate any burnin, just load in the data and go.  You could build all of the plots below just by running analyze.rwty, like this:
 
 ```{r eval = FALSE, message=FALSE}
-salamanders.rwty <- analyze.rwty(salamanders)
-fungus.rwty <- analyze.rwty(fungus)
+salamanders.rwty <- analyze.rwty(salamanders, burnin = 0)
+fungus.rwty <- analyze.rwty(fungus, burnin = 0)
 ```
 
 But instead we're going to build them one by one and talk about them as we go.  
@@ -212,7 +212,7 @@ Again chains 1 and 4 clearly leap to a new area of topology space near the end o
 
 We can also visualize chains' exploration of treespace using the treespace plotting functions in RWTY.  
 
-```{r treespace-1, fig.width=8, fig.height=6, message=FALSE}
+```{r treespace-1, fig.width=8, fig.height=6, message=FALSE} 
 makeplot.treespace(salamanders, burnin =50, fill.color = "LnL")
 ```
 
