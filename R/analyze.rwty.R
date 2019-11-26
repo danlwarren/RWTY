@@ -10,7 +10,7 @@ utils::globalVariables(c("Generation", "CSF", "split.frequency", "ess"))
 #' @import ape
 #' @import ggplot2
 #' @importFrom reshape2 melt
-#' @importFrom phangorn RF.dist
+#' @importFrom phangorn RF.dist maxCladeCred treedist path.dist
 #' @importFrom coda effectiveSize mcmc
 #' @importFrom viridis scale_color_viridis scale_fill_viridis viridis plasma
 #' @importFrom grid unit
