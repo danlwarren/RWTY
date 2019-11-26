@@ -75,7 +75,7 @@ utils::globalVariables(c("Generation", "CSF", "split.frequency", "ess"))
 #' p
 #' }
 
-analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 100, n.clades = 20,
+analyze.rwty <- function(chains, burnin=NA, window.size=20, treespace.points = 100, n.clades = 20,
                          min.freq = 0.0, fill.color = NA, pdf.filename = NA, 
                          overwrite=FALSE, facet=TRUE, free_y=FALSE, autocorr.intervals=100, ess.reps = 20,
                          treedist = 'PD', params = NA, max.sampling.interval = NA, report.filename = NA, ...){
