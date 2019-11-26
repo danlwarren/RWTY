@@ -53,14 +53,14 @@ makeplot.param <- function(chains, burnin = NA, parameter = "LnL", facet=TRUE, f
         fill[which(fill == 1)] = 'blue'
 
         trace.plot =  ggplot(ptable, aes_string(x="generation", y=parameter)) + 
-                        geom_line(aes(colour = chain)) + 
+                        geom_line(aes_string(colour = "chain")) + 
                         ggtitle(title) +
                         xlab("Generation") + 
                         scale_color_viridis(discrete = TRUE, end = 0.85) 
             
 
         density.plot =  ggplot(ptable, aes_string(x=parameter)) + 
-                        geom_histogram(aes(fill = fill)) + 
+                        geom_histogram(aes(fill = fill), bins = 30) + 
                         scale_fill_manual(values =plasma(2, end = 0.65), guide = FALSE) +
                         ggtitle(title) 
 

@@ -40,14 +40,16 @@ makeplot.acsf.sliding <- function(chains, burnin = NA, window.size = 20, facet =
   title = "Sliding window Change in Split Frequencies"
   
   if(facet==TRUE){
-    acsf.plot <- ggplot(dat, aes(x = as.numeric(as.character(Generation)))) + 
-      geom_ribbon(aes(ymin = min, ymax = lower.95, fill = Chain), alpha = 0.10) + 
-      geom_ribbon(aes(ymin = lower.95, ymax = lower.75, fill = Chain), alpha = 0.30) +
-      geom_ribbon(aes(ymin = lower.75, ymax = upper.75, fill = Chain), alpha = 0.50) +
-      geom_ribbon(aes(ymin = upper.75, ymax = upper.95, fill = Chain), alpha = 0.30) + 
-      geom_ribbon(aes(ymin = upper.95, ymax = max, fill = Chain), alpha = 0.10) + 
-      geom_line(aes(y = ACSF, colour = Chain)) + 
-      geom_point(aes(y = ACSF, colour = Chain)) +
+    # Silly hack to get around declaring another global var
+    xvar <- as.numeric(as.character(dat$Generation))
+    acsf.plot <- ggplot(dat, aes(x = xvar)) + 
+      geom_ribbon(aes_string(ymin = "min", ymax = "lower.95", fill = "Chain"), alpha = 0.10) + 
+      geom_ribbon(aes_string(ymin = "lower.95", ymax = "lower.75", fill = "Chain"), alpha = 0.30) +
+      geom_ribbon(aes_string(ymin = "lower.75", ymax = "upper.75", fill = "Chain"), alpha = 0.50) +
+      geom_ribbon(aes_string(ymin = "upper.75", ymax = "upper.95", fill = "Chain"), alpha = 0.30) + 
+      geom_ribbon(aes_string(ymin = "upper.95", ymax = "max", fill = "Chain"), alpha = 0.10) + 
+      geom_line(aes_string(y = "ACSF", colour = "Chain")) + 
+      geom_point(aes_string(y = "ACSF", colour = "Chain")) +
       scale_color_viridis(discrete = TRUE, end = 0.85) +
       scale_fill_viridis(discrete = TRUE, end = 0.85) +
       theme(legend.position="none") +   
@@ -73,15 +75,15 @@ makeplot.acsf.sliding <- function(chains, burnin = NA, window.size = 20, facet =
 }
 
 single.acsf.plot <- function(dat, type){
-  acsf.plot <- ggplot(dat, aes(x = as.numeric(as.character(Generation)))) + 
-    geom_ribbon(aes(ymin = min, ymax = lower.95, fill = Chain), alpha = 0.10) + 
-    geom_ribbon(aes(ymin = lower.95, ymax = lower.75, fill = Chain), alpha = 0.30) +
-    geom_ribbon(aes(ymin = lower.75, ymax = upper.75, fill = Chain), alpha = 0.50) +
-    geom_ribbon(aes(ymin = upper.75, ymax = upper.95, fill = Chain), alpha = 0.30) + 
-    geom_ribbon(aes(ymin = upper.95, ymax = max, fill = Chain), alpha = 0.10) + 
-    geom_line(aes(y = ACSF, colour = Chain)) + 
-    geom_point(aes(y = ACSF, colour = Chain)) +
-    theme(legend.position="none") +                
+  acsf.plot <- ggplot(dat, aes(x = "Generation")) + 
+    geom_ribbon(aes_string(ymin = "min", ymax = "lower.95", fill = "Chain"), alpha = 0.10) + 
+    geom_ribbon(aes_string(ymin = "lower.95", ymax = "lower.75", fill = "Chain"), alpha = 0.30) +
+    geom_ribbon(aes_string(ymin = "lower.75", ymax = "upper.75", fill = "Chain"), alpha = 0.50) +
+    geom_ribbon(aes_string(ymin = "upper.75", ymax = "upper.95", fill = "Chain"), alpha = 0.30) + 
+    geom_ribbon(aes_string(ymin = "upper.95", ymax = "max", fill = "Chain"), alpha = 0.10) + 
+    geom_line(aes_string(y = "ACSF", colour = "Chain")) + 
+    geom_point(aes_string(y = "ACSF", colour = "Chain")) +
+    theme(legend.position="none") +   
     xlab("Generation") +
     ylab("Change in Split Frequency") + 
     facet_wrap(~Chain, ncol = 1) +

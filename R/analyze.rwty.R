@@ -1,12 +1,6 @@
-globalVariables(c("lower.95", "upper.95", "lower.75", "upper.75", "Generation", "ACSF",
-                  "Chain", "Clade", "title", "Generations", "par", "cor", "text", "sd",
-                  "generation", "chain", "x", "y", "strwidth", "mtext", "Split.Frequency",
-                  "hclust", "..density..", "recordPlot", "rgb", "panel.smooth", "ci.lower",
-                  "ci.upper", "median", "quantile", "median.ess", "ASDSF" ,"Axis" ,"CSF" ,"Gen" ,
-                  "as.dist" ,"box" ,"cmdscale" ,"dev.flush" ,"dev.hold" ,"dev.off" ,"ess" ,
-                  "optim" ,"pdf" ,"plot" ,"points" ,"read.table" ,"reorder" ,"sampling.interval",
-                  "split.frequency" ,"tail" ,"topo.distance" ,"topological.distance", 
-                  "dev.control"))
+# These are used in ddply and subset calls 
+# so I can't get rid of them with aes_string
+utils::globalVariables(c("Generation", "CSF", "split.frequency", "ess"))
 
 #' analyze.rwty, the main interface for rwty analyses and plots.
 #' 
@@ -24,8 +18,11 @@ globalVariables(c("lower.95", "upper.95", "lower.75", "upper.75", "Generation", 
 #' @importFrom ggdendro ggdendrogram
 #' @importFrom GGally ggpairs
 #' @importFrom parallel mclapply detectCores
-#' @importFrom utils citation
 #' @importFrom usedist dist_get
+#' @importFrom utils citation read.table tail
+#' @importFrom graphics title
+#' @importFrom grDevices dev.off pdf
+#' @importFrom stats as.dist cmdscale hclust median optim quantile reorder sd
 #'
 #' @param chains A list of rwty.chain objects. 
 #' @param burnin The number of trees to omit as burnin. The default (NA) is to use the burnin calculated automatically when loading the chain. This can be overidden by providing any integer value.  
@@ -34,7 +31,7 @@ globalVariables(c("lower.95", "upper.95", "lower.75", "upper.75", "Generation", 
 #' @param n.clades The number of clades to include in plots of split frequencies over the course of the MCMC
 #' @param min.freq The minimum frequency for a node to be used for calculating ASDSF. Default is 0.1  
 #' @param fill.color The name of a column in your log file that you would like to use as the fill colour of points in the treespace plots
-#' @param filename Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not save outputs to file.
+#' @param pdf.filename Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not save outputs to file.
 #' @param overwrite Boolean variable saying whether output file should be overwritten, if it exists.
 #' @param facet A Boolean expression indicating whether multiple chains should be plotted as facet plots (default TRUE).
 #' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.
@@ -43,6 +40,7 @@ globalVariables(c("lower.95", "upper.95", "lower.75", "upper.75", "Generation", 
 #' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance.
 #' @param params A vector of parameters to use when making the parameter correlation plots.  Defaults to the first two columns in the log table.
 #' @param max.sampling.interval The maximum sampling interval to use for generating autocorrelation plots
+#' @param report.filename If a filename is provided, rwty will compile an html report file including plots and diagnostic tables
 #' @param ... Extra arguments to be passed to plotting and analysis functions.
 #'
 #' @return output The output is a list containing the following plots:
@@ -77,12 +75,10 @@ globalVariables(c("lower.95", "upper.95", "lower.75", "upper.75", "Generation", 
 #' p
 #' }
 
-
-
-analyze.rwty <- function(chains, burnin=NA, window.size=20, treespace.points = 100, n.clades = 20,
-                         min.freq = 0.0, fill.color = NA, filename = NA, 
+analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 100, n.clades = 20,
+                         min.freq = 0.0, fill.color = NA, pdf.filename = NA, 
                          overwrite=FALSE, facet=TRUE, free_y=FALSE, autocorr.intervals=100, ess.reps = 20,
-                         treedist = 'PD', params = NA, max.sampling.interval = NA, ...){
+                         treedist = 'PD', params = NA, max.sampling.interval = NA, report.filename = NA, ...){
   
   chains <- check.chains(chains)
   
@@ -90,7 +86,7 @@ analyze.rwty <- function(chains, burnin=NA, window.size=20, treespace.points = 1
   
   N <- length(chains[[1]]$trees)
   
-  rwty.params.check(chains, N, burnin, window.size, treespace.points, min.freq, filename, overwrite)
+  rwty.params.check(chains, N, burnin, window.size, treespace.points, min.freq, pdf.filename, report.filename, overwrite)
   
   # check to see if ptables exist, make related plots
   if(all(unlist(lapply(chains, function(x) length(x$ptable[,1])))) > 0){ 
@@ -160,19 +156,44 @@ analyze.rwty <- function(chains, burnin=NA, window.size=20, treespace.points = 1
   
   plots[["citations"]] <- citations
   
+  # Make a table of ESS values.  Will need to be modified
+  # when the auto-burnin stuff is incorporated, and have topo ESS added
+  ess.table <- data.frame(matrix(nrow = length(names(chains)),
+                                 ncol = length(colnames(chains[[1]]$ptable))))
+  colnames(ess.table) <- colnames(chains[[1]]$ptable)
+  rownames(ess.table) <- c(names(chains))
+  
+  for(i in names(chains)){
+    ess.table[i,] <- coda::effectiveSize(chains[[i]]$ptable)
+  }
+  drops <- c("Gen")
+  ess.table <- ess.table[,!(names(ess.table) %in% drops)]
+  ess.table["Total",] <- apply(ess.table, 2, sum)
+  plots[["ess.table"]] <- ess.table
+  
+  
   # Print all to pdf if filename provided
-  if(!is.na(filename)){
-    print(sprintf("Saving plots to file: %s", filename))
-    pdf(file=filename, width = 10, height = 7, ...)
+  if(!is.na(pdf.filename)){
+    print(sprintf("Saving plots to file: %s", pdf.filename))
+    pdf(file=pdf.filename, width = 10, height = 7, ...)
     print(plots)
     dev.off()
+  }
+  
+  if(!is.na(report.filename)){
+    print(sprintf("Writing report to file: %s", report.filename))
+    rmarkdown::render(system.file("report.template.Rmd", package = "rwty"), 
+                      params = list(input = plots,
+                                    chain.names = names(chains)),
+                      envir = new.env(),
+                      output_file = report.filename)
   }
   
   return(plots)
   
 }
 
-rwty.params.check <- function(chains, N, burnin, window.size, treespace.points, min.freq, filename, overwrite){
+rwty.params.check <- function(chains, N, burnin, window.size, treespace.points, min.freq, pdf.filename, report.filename, overwrite){
   # Checks for reasonable burnin
   if(!is.numeric(burnin)){
     stop("burnin must be numeric")
@@ -214,9 +235,16 @@ rwty.params.check <- function(chains, N, burnin, window.size, treespace.points, 
     stop("min.freq must be between 0 and 1")
   }
   
-  # Checks for output file
-  if(!is.na(filename)){
-    if(file.exists(filename) && overwrite==FALSE){
+  # Checks for output file for pdf of images
+  if(!is.na(pdf.filename)){
+    if(file.exists(pdf.filename) && overwrite==FALSE){
+      stop("You specified an output filename, but an output file already exists and overwrite is set to FALSE. Please check and try again.")
+    }
+  }
+  
+  # Checks for output file for html report
+  if(!is.na(report.filename)){
+    if(file.exists(report.filename) && overwrite==FALSE){
       stop("You specified an output filename, but an output file already exists and overwrite is set to FALSE. Please check and try again.")
     }
   }

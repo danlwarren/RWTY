@@ -4,6 +4,18 @@ This package implements various tests, visualizations, and metrics for diagnosin
 
 -----
 
+<br>
+<br>
+
+# Plot comparisons - what does it all mean?
+
+We have a nice vignette talking about what all of the various plots and diagnostics mean in terms of chain performance, but unfortunately CRAN's filesize limits won't let us include the vignette in the CRAN version.  You can always install from GitHub if you want the vignette stored with the package, or you can find a backup here:
+
+http://danwarren.net/plot-comparisons.html
+
+<br>
+<br>
+
 # Citation
 
 Warren D.L., A.J. Geneva, and R. Lanfear. 2017. RWTY (R We There Yet): An R package for

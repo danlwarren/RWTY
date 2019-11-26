@@ -34,20 +34,20 @@ makeplot.asdsf <- function(chains, burnin = 0, window.size = 20, min.freq = 0.0,
   slide.freq.list = slide.freq(chains, burnin, window.size)
   dat = get.asdsfs(slide.freq.list, min.freq)
   
-  asdsf.plot <- ggplot(dat, aes(x = as.numeric(as.character(Generation)))) + 
-    geom_line(aes(color = 14, y = min), linetype = 3) + 
-    geom_line(aes(color = 13, y = lower.95), linetype = 2) +
-    geom_line(aes(color = 12, y = lower.75), linetype = 7) +
-    geom_line(aes(color = 12, y = upper.75), linetype = 7) +
-    geom_line(aes(color = 13, y = upper.95), linetype = 2) + 
-    geom_line(aes(color = 14, y = max), linetype = 3) + 
-    geom_ribbon(aes(ymin = min, ymax = lower.95, fill = 14), alpha = 0.50) + 
-    geom_ribbon(aes(ymin = lower.95, ymax = lower.75, fill = 13), alpha = 0.50) +
-    geom_ribbon(aes(ymin = lower.75, ymax = upper.75, fill = 12), alpha = 0.50) +
-    geom_ribbon(aes(ymin = upper.75, ymax = upper.95, fill = 13), alpha = 0.50) + 
-    geom_ribbon(aes(ymin = upper.95, ymax = max, fill = 14), alpha = 0.50) + 
-    geom_line(aes(y = ASDSF)) + 
-    geom_point(aes(y = ASDSF)) +
+  asdsf.plot <- ggplot(dat, aes_string(x = "Generation")) + 
+    geom_line(aes_string(color = 14, y = "min"), linetype = 3) + 
+    geom_line(aes_string(color = 13, y = "lower.95"), linetype = 2) +
+    geom_line(aes_string(color = 12, y = "lower.75"), linetype = 7) +
+    geom_line(aes_string(color = 12, y = "upper.75"), linetype = 7) +
+    geom_line(aes_string(color = 13, y = "upper.95"), linetype = 2) + 
+    geom_line(aes_string(color = 14, y = "max"), linetype = 3) + 
+    geom_ribbon(aes_string(ymin = "min", ymax = "lower.95", fill = 14), alpha = 0.50) + 
+    geom_ribbon(aes_string(ymin = "lower.95", ymax = "lower.75", fill = 13), alpha = 0.50) +
+    geom_ribbon(aes_string(ymin = "lower.75", ymax = "upper.75", fill = 12), alpha = 0.50) +
+    geom_ribbon(aes_string(ymin = "upper.75", ymax = "upper.95", fill = 13), alpha = 0.50) + 
+    geom_ribbon(aes_string(ymin = "upper.95", ymax = "max", fill = 14), alpha = 0.50) + 
+    geom_line(aes_string(y = "ASDSF")) + 
+    geom_point(aes_string(y = "ASDSF")) +
     scale_color_viridis(begin = 0.2, end = .9, option = "D") +
     scale_fill_viridis(begin = 0.2, end = .9, option = "D") +
     expand_limits(y=0) +

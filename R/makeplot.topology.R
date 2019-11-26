@@ -24,86 +24,88 @@
 #' }
 
 makeplot.topology <- function(chains, burnin = NA, facet=TRUE, free_y = TRUE){ 
-
-    print(sprintf("Creating trace for tree topologies"))
-
-    chains = check.chains(chains)
+  
+  print(sprintf("Creating trace for tree topologies"))
+  
+  chains = check.chains(chains)
+  
+  # set burnin to the maximum from across all chains
+  if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
+  
+  # get ESS values
+  ess = topological.approx.ess(chains, burnin)
+  operator = ess$operator
+  ess = list(ess$approx.ess, stringsAsFactors=FALSE)[[1]]
+  ess = round(ess, digits = 0)
+  labels = paste(names(chains), " (Approximate ESS ", operator, " ", ess, ")", sep="")
+  names(chains) = labels
+  
+  distances = tree.distances.from.mcc(chains, burnin)
+  
+  # some flag for a corner case where we need to manually set axis labels
+  if(all(distances$topological.distance == 0)) { axis.flag = 1 }else{ axis.flag = 0 }
+  
+  # Calculate CIs either by chain or overall
+  in.ci <- function(x){
+    as.numeric(x > quantile(x, c(0.025)) &  x < quantile(x, c(0.975)))
+  }
+  
+  if(facet){
+    fill <- unlist(lapply(unique(distances$chain), function(x) in.ci(distances[distances$chain == x,"topological.distance"])))
+  } else {
+    fill <- in.ci(distances[,"topological.distance"])
+  }
+  fill[which(fill == 0)] = 'red'  
+  fill[which(fill == 1)] = 'blue'
+  
+  axis_label = sprintf("%s distance of tree from first post-burnin tree", chains[[1]]$tree.dist.metric)
+  
+  trace.plot =  ggplot(data = distances, aes_string(x="generation", y="topological.distance")) + 
+    geom_line(aes_string(colour = "chain")) + 
+    ggtitle("Tree topology trace") +
+    xlab("Generation") +
+    ylab(axis_label) +
+    scale_color_viridis(discrete = TRUE, begin = 0.2, end = .8, option = "C") +
+    scale_fill_viridis(discrete = TRUE, begin = 0.2, end = .8, option = "C") +
+    theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
+  
+  if(axis.flag == 0){
     
-    # set burnin to the maximum from across all chains
-    if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
+    density.plot =  ggplot(data = distances, aes_string(x="topological.distance")) + 
+      geom_histogram(aes(fill = fill), bins = 30) + 
+      ggtitle("Tree topology density plot") +
+      xlab(axis_label) +
+      scale_fill_manual(values =plasma(2, end = 0.65), guide = FALSE) +
+      theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
+  }else{
     
-    # get ESS values
-    ess = topological.approx.ess(chains, burnin)
-    operator = ess$operator
-    ess = list(ess$approx.ess, stringsAsFactors=FALSE)[[1]]
-    ess = round(ess, digits = 0)
-    labels = paste(names(chains), " (Approximate ESS ", operator, " ", ess, ")", sep="")
-    names(chains) = labels
-
-    distances = tree.distances.from.mcc(chains, burnin)
-
-    # some flag for a corner case where we need to manually set axis labels
-    if(all(distances$topological.distance == 0)) { axis.flag = 1 }else{ axis.flag = 0 }
+    density.plot =  ggplot(data = distances, aes_string(x="topological.distance")) + 
+      geom_histogram(aes(fill = fill), bins = 30) + 
+      ggtitle("Tree topology density plot") +
+      xlab(axis_label) +
+      scale_fill_manual(values =plasma(2, end = 0.65), guide = FALSE) +
+      theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5)) + 
+      xlim(c(-0.1, 1))
     
-    # Calculate CIs either by chain or overall
-    in.ci <- function(x){
-      as.numeric(x > quantile(x, c(0.025)) &  x < quantile(x, c(0.975)))
-    }
-    
-    if(facet){
-      fill <- unlist(lapply(unique(distances$chain), function(x) in.ci(distances[distances$chain == x,"topological.distance"])))
-    } else {
-      fill <- in.ci(distances[,"topological.distance"])
-    }
-    fill[which(fill == 0)] = 'red'  
-    fill[which(fill == 1)] = 'blue'
-
-    axis_label = sprintf("%s distance of tree from first post-burnin tree", chains[[1]]$tree.dist.metric)
-    
-    trace.plot =  ggplot(data = distances, aes(x=generation, y=topological.distance)) + 
-                        geom_line(aes(colour = chain)) + 
-                        ggtitle("Tree topology trace") +
-                        xlab("Generation") +
-                        ylab(axis_label) +
-                        scale_color_viridis(discrete = TRUE, begin = 0.2, end = .8, option = "C") +
-                        scale_fill_viridis(discrete = TRUE, begin = 0.2, end = .8, option = "C") +
-                        theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
-
-    if(axis.flag == 0){
-        density.plot =  ggplot(data = distances, aes(x=topological.distance)) + 
-                        geom_histogram(aes(fill = fill)) + 
-                        ggtitle("Tree topology density plot") +
-                        xlab(axis_label) +
-                        scale_fill_manual(values =plasma(2, end = 0.65), guide = FALSE) +
-                        theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
+  }
+  if(facet){ 
+    if(free_y){
+      trace.plot = trace.plot + facet_wrap(~chain, ncol=1, scales = "free_y") + theme(legend.position="none")
+      density.plot = density.plot + facet_wrap(~chain, ncol=1, scales = "free_y") + theme(legend.position="none")
     }else{
-        density.plot =  ggplot(data = distances, aes(x=topological.distance)) + 
-                        geom_histogram(aes(fill = fill)) + 
-                        ggtitle("Tree topology density plot") +
-                        xlab(axis_label) +
-                        scale_fill_manual(values =plasma(2, end = 0.65), guide = FALSE) +
-                        theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5)) + 
-                        xlim(c(-0.1, 1))
-        
+      trace.plot = trace.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
+      density.plot = density.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
     }
-    if(facet){ 
-        if(free_y){
-            trace.plot = trace.plot + facet_wrap(~chain, ncol=1, scales = "free_y") + theme(legend.position="none")
-            density.plot = density.plot + facet_wrap(~chain, ncol=1, scales = "free_y") + theme(legend.position="none")
-        }else{
-            trace.plot = trace.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
-            density.plot = density.plot + facet_wrap(~chain, ncol=1) + theme(legend.position="none")
-        }
-    }
-
-    return(list(trace.plot = trace.plot, density.plot = density.plot))
-
+  }
+  
+  return(list(trace.plot = trace.plot, density.plot = density.plot))
+  
 }
 
 
 tree.distances.from.mcc <- function(chains, burnin){
   # return tree distances from the mcc tree of each chain
-
+  
   chains <- check.chains(chains)
   N = length(chains[[1]]$trees)
   dist.vectors <- lapply(chains, function(x) x[['ptable']]$topo.dist.mcc[burnin:N])

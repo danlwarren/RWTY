@@ -1,6 +1,6 @@
 ---
 title: "Comparing RWTY plots: what am I looking at?"
-author: "Dan Warren, Anthony Geneva, and Rob Lanfear"
+author: "Dan Warren, and Rob Lanfear"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >

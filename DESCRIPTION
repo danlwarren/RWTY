@@ -15,6 +15,7 @@ Description: Implements various tests, visualizations, and metrics
     and automates many of the functions of the AWTY package in the R
     environment, as well as a host of other functions.  Warren, Geneva, and Lanfear (2017), <doi:10.1093/molbev/msw279>.
 License: GPL-2
+Encoding: UTF-8
 Depends:
     R (>= 3.3.0),
     ape,
@@ -30,6 +31,7 @@ Imports:
     GGally,
     parallel,
     usedist,
+    plotly
 Suggests:
     knitr,
     testthat,
