@@ -43,7 +43,7 @@ makeplot.autocorr <- function(chains, burnin = NA, facet = FALSE, free_y = FALSE
     ylabel = sprintf("Mean %s distance between pairs of trees", chain$tree.dist.metric)
     
     autocorr.plot = ggplot(data=dat, aes_string(x="sampling.interval", y="topo.distance")) + 
-            geom_line(aes(colour = chain)) + geom_point(aes_string(colour = chain)) + 
+            geom_line(aes_string(colour = "chain")) + geom_point(aes_string(colour = "chain")) + 
             scale_color_viridis(discrete = TRUE, end = 0.85, option = "C") + 
             xlab("Sampling Interval between Trees") + 
             ylab(ylabel) + 
