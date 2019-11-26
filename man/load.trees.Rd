@@ -4,8 +4,17 @@
 \alias{load.trees}
 \title{Custom functions to load tree lists so that rwty can do basic processing on the way in.}
 \usage{
-load.trees(file, type = NA, format = "mb", gens.per.tree = NA,
-  trim = 1, logfile = NA, skip = NA)
+load.trees(
+  file,
+  type = NA,
+  format = "mb",
+  gens.per.tree = NA,
+  trim = 1,
+  logfile = NA,
+  skip = NA,
+  treedist = "RF",
+  burnin = NA
+)
 }
 \arguments{
 \item{file}{A path to a tree file containing an MCMC chain of trees}
@@ -30,6 +39,10 @@ definition.}
 MrBayes, for instance, prints a comment line at the top of the log file, so MrBayes files should be
 read in with a skip value of 1.  If no "skip" value is provided but a "format" is supplied, RWTY will
 attempt to read logs using the skip value from the format definition.}
+
+\item{treedist}{the type of tree distance metric to use, can be 'PD' for path distance or 'RF' (the default) for Robinson Foulds distance}
+
+\item{burnin}{the number of samples at the start of the chain to exclude as burnin. The default (burnin = NA) is to calculate the burnin automatically if there is a logfile with likelihood values, or to assume that the burnin is 25\% if there is no logfile with likelihood values.}
 }
 \value{
 output An rwty.chain object containing the multiPhylo and the table of values from the log file if available.

@@ -3,9 +3,9 @@
 #' This function will take list of rwty.chains objects and produce plots of chains in treespace.
 #'
 #' @param chains A list of one or more rwty.chain objects
-#' @param burnin The number of samples to remove from the start of the chain as burnin
+#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
 #' @param n.points The number of points on each plot
-#' @param fill.color The name of any column in your parameter file that you would like to use as a fill colour for the points of the plot.
+#' @param fill.color The name of the column from the log table that that you would like to use to colour the points in the plot. The default is to colour the points by LnL.
 #'
 #' @return A list of two ggplot objects: one plots the points in treespace, the other shows a heatmap of the same points
 #'
@@ -43,9 +43,13 @@
 #' }
 
 
-makeplot.treespace <- function(chains, burnin = 0, n.points = 100,  fill.color = NA){
+makeplot.treespace <- function(chains, burnin = NA, n.points = 100,  fill.color = "LnL"){
 
-
+    chains = check.chains(chains)
+  
+    # set burnin to the maximum from across all chains
+    if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
+  
     print(sprintf("Creating treespace plots"))
 
     # Pre - compute checks. Since the calculations can take a while...

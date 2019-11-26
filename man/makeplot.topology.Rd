@@ -4,33 +4,27 @@
 \alias{makeplot.topology}
 \title{Plotting parameters}
 \usage{
-makeplot.topology(chains, burnin = 0, facet = TRUE, free_y = FALSE,
-  independent.chains = FALSE, treedist = "PD", approx.ess = TRUE)
+makeplot.topology(chains, burnin = NA, facet = TRUE, free_y = TRUE)
 }
 \arguments{
 \item{chains}{A set of rwty.chain objects.}
 
-\item{burnin}{The number of trees to omit as burnin.}
+\item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.}
 
 \item{facet}{TRUE/FALSE denoting whether to make a facet plot (default TRUE)}
 
-\item{free_y}{TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.}
-
-\item{independent.chains}{TRUE/FALSE if FALSE (the default) then the plots show the distance of each tree from the last tree of the burnin of the first chain. If TRUE, the plots show the distance of each tree from the first tree of the chain in which that tree appears. The TRUE option should only be used in the case that different chains represent analyses of different genes or datasets.}
-
-\item{treedist}{the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance}
-
-\item{approx.ess}{TRUE/FALSE do you want the approximate topological ess to be calculated and displayed for each chain?}
+\item{free_y}{TRUE/FALSE to turn free y scales on the facetted plots on or off (default TRUE). Only works if facet = TRUE.}
 }
 \value{
 topology.trace.plot Returns a ggplot object.
 }
 \description{
-Plots a trace of topological distances of trees over the length of the MCMC chain. The plot shows the path distance
-of each tree in each chain from the last tree of the burnin of the first chain. If burnin is set to zero, then 
-distances are calculated from the first tree of the first chain.
-If required, the behaviour can be changed to plot the path distance of each tree from the last tree of the burnin
-of each chain, using the independent.chains option. This is not recommended in most cases.
+Plots a trace of topological distances of trees over the length of the MCMC chain. The plot shows the topological distance
+of each post-burnin tree in each chain from the maximum clade credibility (MCC) tree for that chain. These plots can be 
+interpreted very similarly to parameter trace plots. The key difference is that the plot is of differences, not of absolute values.
+When the chain samples the MCC tree, the distance will be zero. So, one should expect that if the burnin is too short, you will
+have a plot that starts at high values (i.e. the chain is sampling trees far from the MCC tree) and gradually approaches low values
+(i.e. the chain ends up sampling trees fairly close to the MCC tree).
 }
 \examples{
 \dontrun{

@@ -1,15 +1,14 @@
 #' Plotting parameters against each other
 #' 
-#' Makes a plot matrix of each parameter against each other (including the topology) in your analysis. The default behaviour
+#' Makes a plot matrix of each parameter against each other (including topological distance from the MCC tree) in your analysis. The default behaviour
 #' is to just plot the first two columns of your parameter file (after removing the column for the generation number) as well
-#' as the topological distance. This usually means that you see a pairs plot with the likelihood, the tree length, and the tree toppology. 
+#' as the topological distance from the MCC tree for each chain. This usually means that you see a pairs plot with the likelihood, the tree length, and the tree toppology. 
 #' We do this because some parameter files contain so many columns that the plot matrix becomes too 
 #' busy. To include parameters of your choice, use the 'parameters' argument. In this function, the topological distance is
 #' calculate from the first tree in every chain.
 #'
 #' @param chains A list of rwty.chain objects.
-#' @param burnin The number of trees to omit as burnin. 
-#' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance
+#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
 #' @param params 'NA', 'all', or a vector of column names to include in the plot. 'NA' gives the default behaviour (see above). 'all' plots all columns (watch out!). Choose specific columns by name with a vector.
 #' @param strip Number indicating which column to strip off (i.e., strip=1 removes first column, which is necessary for most MCMC outputs in which the first column is just the generation).
 #'
@@ -31,16 +30,19 @@
 #' }
 
 
-makeplot.pairs <- function(chains, burnin = 0, treedist = 'PD', params = NA, strip = 1){
+makeplot.pairs <- function(chains, burnin = NA, params = NA, strip = 1){
 
     chains = check.chains(chains)
     chain = chains[[1]]
     if(is.null(chain$ptable)) stop("No parameters associated with your chains")
 
+    # set burnin to the maximum from across all chains
+    if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
+    
     param.names <- names(chain$ptable)[-strip]
 
     if(length(params) == 1 && is.na(params)){
-        param.names = param.names[1:2]
+        param.names = c(param.names[1:2], "topo.dist.mcc")
     }else if(length(params)==1 && params=='all'){
         param.names = param.names
     }else{
@@ -54,7 +56,6 @@ makeplot.pairs <- function(chains, burnin = 0, treedist = 'PD', params = NA, str
     }
 
     chains = add.names(chains)
-
 
     plots = lapply(chains, do.pairs.plot, burnin = burnin, params = param.names, treedist = treedist)
 
@@ -76,12 +77,6 @@ do.pairs.plot <- function(chain, burnin = 0, params, treedist){
     ptable = combine.ptables(chain, burnin)
     name = chain$name
     chains = check.chains(chain)
-
-    # we use the first tree in each chain as the focal tree, 
-    # this is so that the distances look nicer in the plots
-    focal.tree = chains[[1]]$trees[1]
-    distances = tree.distances.from.first(chains, burnin, focal.tree = focal.tree, treedist = treedist)        
-    ptable$topological.distance = distances$topological.distance
 
     points <- function(data, mapping, ...) {
       ggplot(data = data, mapping = mapping) +
@@ -122,7 +117,7 @@ do.pairs.plot <- function(chain, burnin = 0, params, treedist){
                          upper = list(continuous = "density"),
                          diag = list(continuous = hist),
                          lower = list(continuous = points),  
-                         columns = c(params, 'topological.distance'),
+                         columns = c(params),
                          title = name
     )
 

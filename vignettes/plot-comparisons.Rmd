@@ -271,24 +271,6 @@ In chains that are far from stationarity, these plots will often show a general 
 <br>
 <br>
 
-## Pseudo-ESS plots
-
-Another useful way of estimating the effects of autocorrelation on your MCMC chains is by calculating effective sample size.  The math for doing this for continuous parameters is well-established, but it's not possible to apply that approach directly to tree topologies.  To deal with this, Lanfear et al. (2016) developed an approach based on looking at the ESS of distance from a focal tree.  The pseudo-ESS plots produced by RWTY simply give confidence intervals for these estimates.
-
-```{r pseudo-ess-1, fig.width = 8, fig.height = 6, message = FALSE}
-makeplot.pseudo.ess(salamanders, burnin = 50)
-```
-
-As a general rule of thumb, it's a good idea to have an ESS or pseudo-ESS of at least 200.  As such we can be pretty happy about our salamander data, but not so much when it comes to the fungus data:
-
-```{r pseudo-ess-2, fig.width = 8, fig.height = 6, message = FALSE}
-makeplot.pseudo.ess(fungus, burnin = 50)
-```
-
-
-<br>
-<br>
-<br>
 
 ## Split frequency matrix plots
 

@@ -4,12 +4,12 @@
 \alias{cumulative.freq}
 \title{Cumulative means of clade split frequencies.}
 \usage{
-cumulative.freq(chains, burnin = 0, window.size = 20)
+cumulative.freq(chains, burnin = NA, window.size = 20)
 }
 \arguments{
 \item{chains}{A list of rwty.chain objects.}
 
-\item{burnin}{The number of trees to eliminate as burnin. Defaults to zero.}
+\item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.}
 
 \item{window.size}{The number of trees to include in each window (note, specified as a number of sampled trees, not a number of generations)}
 }

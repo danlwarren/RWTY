@@ -7,7 +7,7 @@
 #'
 #'
 #' @param chains A list of rwty.chain objects.
-#' @param burnin The number of trees to eliminate as burnin 
+#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
 #'
 #' @return output A list of two plots: the first is a matrix of scatterplots, where each point is a clade, and the values are the split frequencies of that clade in the post-burnin trees of each chain. The second plot is a tree of the chains clustered by their ASDSFs.
 #'
@@ -20,8 +20,14 @@
 #' makeplot.splitfreq.matrix(salamanders[1:4], burnin = 20)
 #' }
 
-makeplot.splitfreq.matrix <- function(chains, burnin = 0){
+makeplot.splitfreq.matrix <- function(chains, burnin = NA){
 
+  chains = check.chains(chains)
+  
+  # set burnin to the maximum from across all chains
+  if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
+  
+  
   print(sprintf("Creating split frequency matrix and ASDSF clustering plots"))
 
   dat = get.comparison.table(chains, burnin, min.freq = 0)

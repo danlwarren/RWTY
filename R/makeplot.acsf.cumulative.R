@@ -5,7 +5,7 @@
 #' The grey ribbon shows the upper and lower 95% quantiles of the CSFs between this window and the previuos window
 #'
 #' @param chains A list of rwty.chain objects. 
-#' @param burnin The number of trees to eliminate as burnin. Defaults to zero. 
+#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
 #' @param window.size The number of trees to include in each window (note, specified as a number of sampled trees, not a number of generations)
 #' @param facet (TRUE/FALSE). TRUE: return a single plot with one facet per chain; FALSE: return a list of individual plots with one plot per chain 
 #' 
@@ -22,11 +22,15 @@
 #' makeplot.acsf.cumulative(fungus, burnin=20)
 #' }
 
-makeplot.acsf.cumulative <- function(chains, burnin = 0, window.size = 20, facet = TRUE){ 
+makeplot.acsf.cumulative <- function(chains, burnin = NA, window.size = 20, facet = TRUE){ 
   # plot variation in clade frequencies 
   print(sprintf("Creating cumulative ACSF plot"))
   
   chains = check.chains(chains)
+  
+  # set burnin to the maximum from across all chains
+  if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
+  
   cumulative.freq.list = cumulative.freq(chains, burnin = burnin, window.size = window.size)
   
   dat.list = lapply(cumulative.freq.list, get.acsf)

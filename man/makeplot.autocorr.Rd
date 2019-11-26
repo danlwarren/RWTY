@@ -4,28 +4,16 @@
 \alias{makeplot.autocorr}
 \title{Make autocorrelation plots of tree topologies from MCMC analyses}
 \usage{
-makeplot.autocorr(chains, burnin = 0, max.sampling.interval = NA,
-  autocorr.intervals = 40, squared = FALSE, facet = FALSE,
-  free_y = FALSE, treedist = "PD", use.all.samples = FALSE)
+makeplot.autocorr(chains, burnin = NA, facet = FALSE, free_y = FALSE)
 }
 \arguments{
 \item{chains}{A list of rwty.chain objects.}
 
-\item{burnin}{The number of trees to eliminate as burnin.}
-
-\item{max.sampling.interval}{The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is 10 percent of the length of the chain).}
-
-\item{autocorr.intervals}{The number of sampling intervals to use. These will be spaced evenly between 1 and the max.sampling.interval}
-
-\item{squared}{TRUE/FALSE use squared tree distances (necessary to calculate approximate ESS; default FALSE)}
+\item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.}
 
 \item{facet}{TRUE/FALSE to turn facetting of the plot on or off (default FALSE)}
 
 \item{free_y}{TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.}
-
-\item{treedist}{the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance}
-
-\item{use.all.samples}{(TRUE/FALSE). Whether to calculate autocorrelation from all possible pairs of trees in your chain. The default is FALSE, in which case 500 samples are taken at each sampling interval. This is sufficient to get reasonably accurate estimates of the approximate ESS. Setting this to TRUE will give you slightly more accurate ESS estimates, at the cost of potentially much longer execution times.}
 }
 \value{
 A ggplot2 plot object, with one line (facetting off) or facet

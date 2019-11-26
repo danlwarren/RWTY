@@ -10,14 +10,9 @@
 #' path distances, though other distances could also be employed.
 #'
 #' @param chains A list of rwty.chain objects. 
-#' @param burnin The number of trees to eliminate as burnin.
-#' @param autocorr.intervals The number of sampling intervals to use. These will be spaced evenly between 1 and the max.sampling.interval 
-#' @param max.sampling.interval The largest sampling interval for which you want to calculate the mean distance between pairs of trees (default is 10 percent of the length of the chain).
-#' @param squared TRUE/FALSE use squared tree distances (necessary to calculate approximate ESS; default FALSE)
+#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
 #' @param facet TRUE/FALSE to turn facetting of the plot on or off (default FALSE)
 #' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.
-#' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance
-#' @param use.all.samples (TRUE/FALSE). Whether to calculate autocorrelation from all possible pairs of trees in your chain. The default is FALSE, in which case 500 samples are taken at each sampling interval. This is sufficient to get reasonably accurate estimates of the approximate ESS. Setting this to TRUE will give you slightly more accurate ESS estimates, at the cost of potentially much longer execution times.
 #'
 #' @return A ggplot2 plot object, with one line (facetting off) or facet
 #' (facetting on) per rwty.chain object.
@@ -31,7 +26,7 @@
 #' makeplot.autocorr(fungus, burnin = 20)
 #' }
 
-makeplot.autocorr <- function(chains, burnin = 0, max.sampling.interval = NA, autocorr.intervals = 40, squared = FALSE, facet = FALSE, free_y = FALSE, treedist = 'PD', use.all.samples = FALSE){
+makeplot.autocorr <- function(chains, burnin = NA, facet = FALSE, free_y = FALSE){
 
     print(sprintf("Creating topological autocorrelation plot"))
 
@@ -39,32 +34,19 @@ makeplot.autocorr <- function(chains, burnin = 0, max.sampling.interval = NA, au
 
     chain = chains[[1]]
 
+    if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
+    
     N = length(chain$trees)
+    
+    dat <- topological.autocorr(chains, burnin)
 
-    if(is.na(max.sampling.interval)){
-        max.sampling.interval = floor((N - burnin) * 0.1)
-    }
-
-    dat <- topological.autocorr(chains, burnin, max.sampling.interval, autocorr.intervals, squared = squared, treedist = treedist, use.all.samples = use.all.samples)
-
-    if(treedist=='RF'){
-        td.name = "Robinson Foulds"
-    }else if(treedist=="PD"){
-        td.name = "Path Difference"
-    }else{
-        stop("Unknown option for treedist. Valid options are 'PD' (for path distance) or 'RF' (for Robinson Foulds distance). Please try again")
-    }
-
-    if(squared == TRUE){
-        y.label = sprintf("Mean Squared %s between Pairs of Trees", td.name)
-    }else{
-        y.label = sprintf("Mean %s between Pairs of Trees", td.name)
-    }
-
+    ylabel = sprintf("Mean %s distance between pairs of trees", chain$tree.dist.metric)
+    
     autocorr.plot = ggplot(data=dat, aes_string(x="sampling.interval", y="topo.distance")) + 
-            geom_line(aes_string(colour = "chain")) + geom_point(aes_string(colour = "chain")) + 
+            geom_line(aes(colour = chain)) + geom_point(aes_string(colour = chain)) + 
             scale_color_viridis(discrete = TRUE, end = 0.85, option = "C") + 
-            xlab("Sampling Interval between Trees") + ylab(y.label) + 
+            xlab("Sampling Interval between Trees") + 
+            ylab(ylabel) + 
             ggtitle("Topological autocorrelation plot")
 
     if(facet){ 

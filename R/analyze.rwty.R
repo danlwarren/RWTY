@@ -10,7 +10,7 @@ utils::globalVariables(c("Generation", "CSF", "split.frequency", "ess"))
 #' @import ape
 #' @import ggplot2
 #' @importFrom reshape2 melt
-#' @importFrom phangorn RF.dist
+#' @importFrom phangorn RF.dist maxCladeCred treedist path.dist
 #' @importFrom coda effectiveSize mcmc
 #' @importFrom viridis scale_color_viridis scale_fill_viridis viridis plasma
 #' @importFrom grid unit
@@ -18,13 +18,14 @@ utils::globalVariables(c("Generation", "CSF", "split.frequency", "ess"))
 #' @importFrom ggdendro ggdendrogram
 #' @importFrom GGally ggpairs
 #' @importFrom parallel mclapply detectCores
+#' @importFrom usedist dist_get
 #' @importFrom utils citation read.table tail
 #' @importFrom graphics title
 #' @importFrom grDevices dev.off pdf
 #' @importFrom stats as.dist cmdscale hclust median optim quantile reorder sd
 #'
 #' @param chains A list of rwty.chain objects. 
-#' @param burnin The number of trees to eliminate as burnin.  Default value is zero.
+#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the burnin calculated automatically when loading the chain. This can be overidden by providing any integer value.  
 #' @param window.size The number of trees to include in each windows of sliding window plots
 #' @param treespace.points The number of trees to plot in the treespace plot. Default is 100 
 #' @param n.clades The number of clades to include in plots of split frequencies over the course of the MCMC
@@ -74,14 +75,14 @@ utils::globalVariables(c("Generation", "CSF", "split.frequency", "ess"))
 #' p
 #' }
 
-
-
-analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 100, n.clades = 20,
+analyze.rwty <- function(chains, burnin=NA, window.size=20, treespace.points = 100, n.clades = 20,
                          min.freq = 0.0, fill.color = NA, pdf.filename = NA, 
                          overwrite=FALSE, facet=TRUE, free_y=FALSE, autocorr.intervals=100, ess.reps = 20,
                          treedist = 'PD', params = NA, max.sampling.interval = NA, report.filename = NA, ...){
   
   chains <- check.chains(chains)
+  
+  if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
   
   N <- length(chains[[1]]$trees)
   
@@ -91,7 +92,7 @@ analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 10
   if(all(unlist(lapply(chains, function(x) length(x$ptable[,1])))) > 0){ 
     # plot parameters for all chains
     parameter.plots <- makeplot.all.params(chains, burnin = burnin, facet=facet, strip = 1)
-    parameter.correlations <- makeplot.pairs(chains, burnin = burnin, params = params, treedist = treedist, strip = 1)
+    parameter.correlations <- makeplot.pairs(chains, burnin = burnin, params = params, strip = 1)
     names(parameter.correlations) <- paste0(names(parameter.correlations), ".correlations")
   }
   else{
@@ -103,7 +104,7 @@ analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 10
   if(N < 200){
     autocorr.plot <- NULL
   } else {
-    autocorr.plot <- makeplot.autocorr(chains, burnin = burnin, autocorr.intervals = autocorr.intervals, facet = facet, max.sampling.interval = max.sampling.interval) 
+    autocorr.plot <- makeplot.autocorr(chains, burnin = burnin, facet = facet) 
   }
   
   # plot sliding window sf plots
