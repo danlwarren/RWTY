@@ -224,7 +224,7 @@ rwty.params.check <- function(chains, N, burnin, window.size, treespace.points, 
     stop("treespace.points must be 2 or greater")
   }
   if((N - burnin) < treespace.points){
-    stop("treespace.points cannot be more than the number of post-burnin trees")
+    stop("treespace.points cannot be more than the number of post-burnin trees.\n\nIf you're seeing this message it might indicate that your chains are behaving very poorly indeed, so that the automatic burnin selection is unable to find a good solution.  If this is the case, you can visualize your chains by specifying a burnin manually when you call the analyze.rwty function.")
   }
   
   # Checks for reasonable min.freq
