@@ -4,7 +4,7 @@
 \alias{makeplot.burnin}
 \title{Plotting parameters}
 \usage{
-makeplot.burnin(chains)
+makeplot.burnin(chains, burnin = NA)
 }
 \arguments{
 \item{chains}{A set of rwty.chain objects.}
