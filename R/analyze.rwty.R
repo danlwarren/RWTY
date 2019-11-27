@@ -100,6 +100,9 @@ analyze.rwty <- function(chains, burnin=NA, window.size=20, treespace.points = 1
     parameter.correlations <- NA
   }
   
+  # plot burnin as a function of topological distance from mcc tree
+  burnin.plot <- makeplot.burnin(chains, burnin)
+  
   # plot autocorrelation
   if(N < 200){
     autocorr.plot <- NULL
@@ -136,6 +139,7 @@ analyze.rwty <- function(chains, burnin=NA, window.size=20, treespace.points = 1
   
   plots <- c(parameter.plots,
              parameter.correlations,
+             burnin.plot,
              autocorr.plot,
              splitfreq.sliding,
              acsf.sliding,
