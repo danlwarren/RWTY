@@ -6,20 +6,21 @@
 #' @param type An argument that designates the type of tree file.  If "nexus",
 #' trees are loaded using ape's \code{\link{read.nexus}} function.  Otherwise, it's \code{\link{read.tree}}.
 #' If a "format" argument is passed, type will be determined from the format definition.
-#' @param format File format, which is used to find tree and log files.
+#' @param format File format, which is used to find tree and log files, and to rename the likelihood column.
 #' Currently accepted values are "mb" for MrBayes, "beast" for BEAST, "*beast" for *BEAST, and "revbayes" for RevBayes.
 #' If you would like RWTY to understand additional formats, please contact the authors and send us some sample data.
 #' @param gens.per.tree The number of generations separating trees.  If not provided, RWTY will attempt to calculate it automatically.
 #' @param trim Used for thinning the chain.  If a number N is provided, RWTY keeps every Nth tree.
 #' @param logfile A path to a file containing model parameters and likelihoods.  If no path is provided but
 #' a "format" argument is supplied, RWTY will attempt to find the log file automatically based on the format
-#' definition.
+#' definition.  RWTY will then use the "format" argument to find the likelihood column and rename it to "LnL".
 #' @param skip The number of lines that must be skipped to get to the header of the log file.
 #' MrBayes, for instance, prints a comment line at the top of the log file, so MrBayes files should be
 #' read in with a skip value of 1.  If no "skip" value is provided but a "format" is supplied, RWTY will
 #' attempt to read logs using the skip value from the format definition.
 #' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' (the default) for Robinson Foulds distance
-#' @param burnin the number of samples at the start of the chain to exclude as burnin. The default (burnin = NA) is to calculate the burnin automatically if there is a logfile with likelihood values, or to assume that the burnin is 25\% if there is no logfile with likelihood values. 
+#' @param burnin the number of samples at the start of the chain to exclude as burnin. The default (burnin = NA) is to calculate the burnin automatically if there is a logfile with likelihood values, or to assume that the burnin is 25\% if there is no logfile with likelihood values.
+#' @param lnl.column the name of the likelihood column in the log file(s).  Only needs to be specified when it differs from the name chosen automatically from the "format" argument. 
 #' @return output An rwty.chain object containing the multiPhylo and the table of values from the log file if available.
 #' @seealso \code{\link{read.tree}}, \code{\link{read.nexus}}
 #' @keywords Phylogenetics, MCMC, load
@@ -28,7 +29,7 @@
 #' @examples
 #' #load.trees(file="mytrees.t", format = "mb")
 
-load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, logfile=NA, skip=NA, treedist='RF', burnin = NA){
+load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, logfile=NA, skip=NA, treedist='RF', burnin = NA, lnl.column = NA){
 
   format <- tolower(format)
   format_choices <- c("mb", "beast", "*beast", "revbayes", "mrbayes")
@@ -50,6 +51,10 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
     skip <- file.format$skip
   }
 
+  if(is.na(lnl.column)){
+    lnl.column <- file.format$lnl.col
+  }
+  
 
   # Read in trees
   print("Reading trees...")
@@ -162,6 +167,14 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
       ptable = data.frame("topo.dist.mcc" = topo.dists)
     }else{
       ptable = cbind(ptable, "topo.dist.mcc" = topo.dists)
+      
+      if(lnl.column %in% colnames(ptable)){
+        lnl.colnumber <- which(colnames(ptable) == lnl.column)
+        colnames(ptable)[lnl.colnumber] <- "LnL"
+      } else {
+        warn("Could not automatically identify likelihood column.  
+             Specify one manually if you want likelihoods to be included.\n\n")
+      }
     }
     
   output <- list(
@@ -204,6 +217,7 @@ get.format <- function(format){
       trees.suffix = ".t",
       log.suffix = ".p",
       type = "nexus",
+      lnl.col = "LnL",
       skip = 1
     ))
   }
@@ -214,6 +228,7 @@ get.format <- function(format){
       trees.suffix = ".species.trees",
       log.suffix = ".log",
       type = "nexus",
+      lnl.col = "likelihood",
       skip = 2
     ))
   }
@@ -224,6 +239,7 @@ get.format <- function(format){
       trees.suffix = ".trees",
       log.suffix = ".log",
       type = "nexus",
+      lnl.col = "likelihood",
       skip = 2
     ))
   }
@@ -234,6 +250,7 @@ get.format <- function(format){
       trees.suffix = ".trees",
       log.suffix = ".log",
       type = "revbayes",
+      lnl.col = "likelihood",
       skip = 0
     ))
   }
