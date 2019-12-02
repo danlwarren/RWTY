@@ -35,8 +35,8 @@ topological.autocorr <- function(chains, burnin = NA){
   
   N = length(chains[[1]]$trees)
   
-  # choose a max sampling interval such that we have minimum 20 trees to get the mean topo distance from in each bin
-  max.sampling.interval = N - burnin - 20
+  # choose a max sampling interval such that we have minimum 100 trees to get the mean topo distance from in each bin
+  max.sampling.interval = N - burnin - 100
   
   if(max.sampling.interval < 1){
     stop(sprintf("Only %d trees remain after removing burnin, which is not enough to calculate any topological autocorrelation"))
