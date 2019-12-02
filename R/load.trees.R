@@ -18,6 +18,7 @@
 #' MrBayes, for instance, prints a comment line at the top of the log file, so MrBayes files should be
 #' read in with a skip value of 1.  If no "skip" value is provided but a "format" is supplied, RWTY will
 #' attempt to read logs using the skip value from the format definition.
+#' @param comment.chars A vector of characters that indicate that a line in a log file is a comment and should not be interpreted.  Will be used to attempt to automatically determine an approporiate "skip" value if none is provided.
 #' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' (the default) for Robinson Foulds distance
 #' @param burnin the number of samples at the start of the chain to exclude as burnin. The default (burnin = NA) is to calculate the burnin automatically if there is a logfile with likelihood values, or to assume that the burnin is 25\% if there is no logfile with likelihood values.
 #' @param lnl.column the name of the likelihood column in the log file(s).  Only needs to be specified when it differs from the name chosen automatically from the "format" argument. 
@@ -29,7 +30,7 @@
 #' @examples
 #' #load.trees(file="mytrees.t", format = "mb")
 
-load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, logfile=NA, skip=NA, treedist='RF', burnin = NA, lnl.column = NA){
+load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, logfile=NA, skip=NA, comment.chars = c("[", "#"), treedist='RF', burnin = NA, lnl.column = NA){
 
   format <- tolower(format)
   format_choices <- c("mb", "beast", "*beast", "revbayes", "mrbayes")
@@ -45,10 +46,6 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
    
   if(is.na(type)){
     type <- file.format$type
-  }
-
-  if(is.na(skip)){
-    skip <- file.format$skip
   }
 
   if(is.na(lnl.column)){
@@ -109,6 +106,11 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
   
     # logfile path has been supplied and file exists
     if(!is.na(logfile) && file.exists(logfile)){
+      
+      if(is.na(skip)){
+        skip <- autoskip(file, comment.chars)
+      }
+      
       print(paste("Reading parameter values from", basename(logfile)))
       ptable <- read.table(logfile, skip=skip, header=TRUE)
       ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
@@ -116,13 +118,19 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
   
     # If logfile hasn't been supplied try to find it by searching
     if(is.na(logfile)){
-  
-      if(grepl(paste(file.format$trees.suffix, "$"), file)){
+
+      
+      if(grepl(paste0(file.format$trees.suffix, "$"), file)){
           logfile <- sub(pattern = paste0(file.format$trees.suffix, "$"), file.format$log.suffix, file)
       }
       
       if(!is.na(logfile)){
           if(file.exists(logfile)){
+            
+            if(is.na(skip)){
+              skip <- autoskip(logfile, comment.chars)
+            }
+            
             print(paste("Reading parameter values from", basename(logfile)))
             ptable <- read.table(logfile, skip=skip, header=TRUE)
             ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
@@ -217,8 +225,7 @@ get.format <- function(format){
       trees.suffix = ".t",
       log.suffix = ".p",
       type = "nexus",
-      lnl.col = "LnL",
-      skip = 1
+      lnl.col = "LnL"
     ))
   }
 
@@ -228,8 +235,7 @@ get.format <- function(format){
       trees.suffix = ".species.trees",
       log.suffix = ".log",
       type = "nexus",
-      lnl.col = "likelihood",
-      skip = 2
+      lnl.col = "likelihood"
     ))
   }
 
@@ -239,8 +245,7 @@ get.format <- function(format){
       trees.suffix = ".trees",
       log.suffix = ".log",
       type = "nexus",
-      lnl.col = "likelihood",
-      skip = 2
+      lnl.col = "likelihood"
     ))
   }
 
@@ -250,13 +255,26 @@ get.format <- function(format){
       trees.suffix = ".trees",
       log.suffix = ".log",
       type = "revbayes",
-      lnl.col = "likelihood",
-      skip = 0
+      lnl.col = "likelihood"
     ))
   }
 
 }
 
+# Function to automatically detect the first line that's not a comment
+autoskip = function(file, comment.chars) {
+  skip = 0
+  con = file(file, "r")
+  while ( TRUE ) {
+    line = readLines(con, n = 1)
+    if ( substring(line, 1, 1)  %in% comment.chars) {
+      skip <- skip + 1
+    } else {
+      close(con)
+      return(skip)
+    }
+  }
+}
 
 
 read.revbayestrees<-function(file) {

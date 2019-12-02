@@ -12,6 +12,7 @@ load.trees(
   trim = 1,
   logfile = NA,
   skip = NA,
+  comment.chars = c("[", "#"),
   treedist = "RF",
   burnin = NA,
   lnl.column = NA
@@ -40,6 +41,8 @@ definition.  RWTY will then use the "format" argument to find the likelihood col
 MrBayes, for instance, prints a comment line at the top of the log file, so MrBayes files should be
 read in with a skip value of 1.  If no "skip" value is provided but a "format" is supplied, RWTY will
 attempt to read logs using the skip value from the format definition.}
+
+\item{comment.chars}{A vector of characters that indicate that a line in a log file is a comment and should not be interpreted.  Will be used to attempt to automatically determine an approporiate "skip" value if none is provided.}
 
 \item{treedist}{the type of tree distance metric to use, can be 'PD' for path distance or 'RF' (the default) for Robinson Foulds distance}
 
