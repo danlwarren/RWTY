@@ -267,7 +267,7 @@ autoskip = function(file, comment.chars) {
   con = file(file, "r")
   while ( TRUE ) {
     line = readLines(con, n = 1)
-    if ( substring(line, 1, 1)  %in% comment.chars) {
+    if (substring(line, 1, 1)  %in% comment.chars) {
       skip <- skip + 1
     } else {
       close(con)
