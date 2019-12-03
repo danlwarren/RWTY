@@ -42,9 +42,7 @@ treespace <- function(chains, n.points = 200, burnin=NA, fill.color="LnL"){
 
     total.trees = length(chain$trees) - burnin
     if(total.trees < 3){
-      stop(sprintf("Cannot calculate treespace coordinates with fewer than 3 trees. 
-                   Your chains contain %d trees, and your burnin is %d, leaving %d 
-                   trees to work with, and that's not enough.", c(length(chain$trees, burnin, total.trees))))
+      stop(sprintf("Cannot calculate treespace coordinates with fewer than 3 trees. Your chains contain %d trees, and your burnin is %d, leaving %d tree(s) to work with, and that's not enough.", length(chain$trees), burnin, total.trees))
     }
     
     # subsample down to minimum n.points
