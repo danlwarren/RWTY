@@ -32,8 +32,8 @@ topological.approx.ess <- function(chains, burnin = NA){
     
     N = length(chains[[1]]$trees)
     
-    # choose a max sampling interval such that we have minimum 20 trees to get the mean topo distance from in each bin
-    max.sampling.interval = N - burnin - 20
+    # choose a max sampling interval such that we have minimum 100 trees to get the mean topo distance from in each bin
+    max.sampling.interval = N - burnin - 100
 
     if(max.sampling.interval < 10){
       warning(sprintf("There are only %d trees left after removing burnin, which is not enough to use the method of Lanfear et al 2016 to calculate the topological ESS. Instead, RWTY simply estimates that the maximum possible ESS of trees in your chains is %d", N-burnin, N-burnin))

@@ -12,8 +12,10 @@ load.trees(
   trim = 1,
   logfile = NA,
   skip = NA,
+  comment.chars = c("[", "#"),
   treedist = "RF",
-  burnin = NA
+  burnin = NA,
+  lnl.column = NA
 )
 }
 \arguments{
@@ -23,7 +25,7 @@ load.trees(
 trees are loaded using ape's \code{\link{read.nexus}} function.  Otherwise, it's \code{\link{read.tree}}.
 If a "format" argument is passed, type will be determined from the format definition.}
 
-\item{format}{File format, which is used to find tree and log files.
+\item{format}{File format, which is used to find tree and log files, and to rename the likelihood column.
 Currently accepted values are "mb" for MrBayes, "beast" for BEAST, "*beast" for *BEAST, and "revbayes" for RevBayes.
 If you would like RWTY to understand additional formats, please contact the authors and send us some sample data.}
 
@@ -33,16 +35,20 @@ If you would like RWTY to understand additional formats, please contact the auth
 
 \item{logfile}{A path to a file containing model parameters and likelihoods.  If no path is provided but
 a "format" argument is supplied, RWTY will attempt to find the log file automatically based on the format
-definition.}
+definition.  RWTY will then use the "format" argument to find the likelihood column and rename it to "LnL".}
 
 \item{skip}{The number of lines that must be skipped to get to the header of the log file.
 MrBayes, for instance, prints a comment line at the top of the log file, so MrBayes files should be
 read in with a skip value of 1.  If no "skip" value is provided but a "format" is supplied, RWTY will
 attempt to read logs using the skip value from the format definition.}
 
+\item{comment.chars}{A vector of characters that indicate that a line in a log file is a comment and should not be interpreted.  Will be used to attempt to automatically determine an approporiate "skip" value if none is provided.}
+
 \item{treedist}{the type of tree distance metric to use, can be 'PD' for path distance or 'RF' (the default) for Robinson Foulds distance}
 
 \item{burnin}{the number of samples at the start of the chain to exclude as burnin. The default (burnin = NA) is to calculate the burnin automatically if there is a logfile with likelihood values, or to assume that the burnin is 25\% if there is no logfile with likelihood values.}
+
+\item{lnl.column}{the name of the likelihood column in the log file(s).  Only needs to be specified when it differs from the name chosen automatically from the "format" argument.}
 }
 \value{
 output An rwty.chain object containing the multiPhylo and the table of values from the log file if available.

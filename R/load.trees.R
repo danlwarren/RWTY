@@ -6,20 +6,22 @@
 #' @param type An argument that designates the type of tree file.  If "nexus",
 #' trees are loaded using ape's \code{\link{read.nexus}} function.  Otherwise, it's \code{\link{read.tree}}.
 #' If a "format" argument is passed, type will be determined from the format definition.
-#' @param format File format, which is used to find tree and log files.
+#' @param format File format, which is used to find tree and log files, and to rename the likelihood column.
 #' Currently accepted values are "mb" for MrBayes, "beast" for BEAST, "*beast" for *BEAST, and "revbayes" for RevBayes.
 #' If you would like RWTY to understand additional formats, please contact the authors and send us some sample data.
 #' @param gens.per.tree The number of generations separating trees.  If not provided, RWTY will attempt to calculate it automatically.
 #' @param trim Used for thinning the chain.  If a number N is provided, RWTY keeps every Nth tree.
 #' @param logfile A path to a file containing model parameters and likelihoods.  If no path is provided but
 #' a "format" argument is supplied, RWTY will attempt to find the log file automatically based on the format
-#' definition.
+#' definition.  RWTY will then use the "format" argument to find the likelihood column and rename it to "LnL".
 #' @param skip The number of lines that must be skipped to get to the header of the log file.
 #' MrBayes, for instance, prints a comment line at the top of the log file, so MrBayes files should be
 #' read in with a skip value of 1.  If no "skip" value is provided but a "format" is supplied, RWTY will
 #' attempt to read logs using the skip value from the format definition.
+#' @param comment.chars A vector of characters that indicate that a line in a log file is a comment and should not be interpreted.  Will be used to attempt to automatically determine an approporiate "skip" value if none is provided.
 #' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' (the default) for Robinson Foulds distance
-#' @param burnin the number of samples at the start of the chain to exclude as burnin. The default (burnin = NA) is to calculate the burnin automatically if there is a logfile with likelihood values, or to assume that the burnin is 25\% if there is no logfile with likelihood values. 
+#' @param burnin the number of samples at the start of the chain to exclude as burnin. The default (burnin = NA) is to calculate the burnin automatically if there is a logfile with likelihood values, or to assume that the burnin is 25\% if there is no logfile with likelihood values.
+#' @param lnl.column the name of the likelihood column in the log file(s).  Only needs to be specified when it differs from the name chosen automatically from the "format" argument. 
 #' @return output An rwty.chain object containing the multiPhylo and the table of values from the log file if available.
 #' @seealso \code{\link{read.tree}}, \code{\link{read.nexus}}
 #' @keywords Phylogenetics, MCMC, load
@@ -28,7 +30,7 @@
 #' @examples
 #' #load.trees(file="mytrees.t", format = "mb")
 
-load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, logfile=NA, skip=NA, treedist='RF', burnin = NA){
+load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, logfile=NA, skip=NA, comment.chars = c("[", "#"), treedist='RF', burnin = NA, lnl.column = NA){
 
   format <- tolower(format)
   format_choices <- c("mb", "beast", "*beast", "revbayes", "mrbayes")
@@ -46,10 +48,10 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
     type <- file.format$type
   }
 
-  if(is.na(skip)){
-    skip <- file.format$skip
+  if(is.na(lnl.column)){
+    lnl.column <- file.format$lnl.col
   }
-
+  
 
   # Read in trees
   print("Reading trees...")
@@ -104,6 +106,12 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
   
     # logfile path has been supplied and file exists
     if(!is.na(logfile) && file.exists(logfile)){
+      
+      if(is.na(skip)){
+        skip <- autoskip(logfile, comment.chars)
+      }
+
+      
       print(paste("Reading parameter values from", basename(logfile)))
       ptable <- read.table(logfile, skip=skip, header=TRUE)
       ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
@@ -111,13 +119,19 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
   
     # If logfile hasn't been supplied try to find it by searching
     if(is.na(logfile)){
-  
-      if(grepl(paste(file.format$trees.suffix, "$"), file)){
+
+      
+      if(grepl(paste0(file.format$trees.suffix, "$"), file)){
           logfile <- sub(pattern = paste0(file.format$trees.suffix, "$"), file.format$log.suffix, file)
       }
       
       if(!is.na(logfile)){
           if(file.exists(logfile)){
+            
+            if(is.na(skip)){
+              skip <- autoskip(logfile, comment.chars)
+            }
+            
             print(paste("Reading parameter values from", basename(logfile)))
             ptable <- read.table(logfile, skip=skip, header=TRUE)
             ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
@@ -139,20 +153,19 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
     tree.dist.matrix = tree.dist.matrix(trees=treelist, treedist=treedist)
     
 
-    # calculate burnin
     # calculate burnin if user didn't specify it
     if(is.na(burnin)){
       burnin = calculate.burnin(treelist, ptable, treedist)
     }
     
     # calculate MCC tree from post-burnin samples
-    mcc.tree = maxCladeCred(treelist[burnin:length(treelist)])
+    mcc.tree = phangorn::maxCladeCred(treelist[burnin:length(treelist)])
     
     # calculate distances from initial MCC tree
     if(treedist == 'RF'){
-      topo.dists = RF.dist(mcc.tree, treelist)
+      topo.dists = phangorn::RF.dist(mcc.tree, treelist)
     }else if(treedist == 'PD'){
-      topo.dists = path.dist(mcc.tree, treelist)
+      topo.dists = phangorn::path.dist(mcc.tree, treelist)
     }else{
       stop("treedist must be either 'PD' or 'RF'")
     }
@@ -162,6 +175,14 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
       ptable = data.frame("topo.dist.mcc" = topo.dists)
     }else{
       ptable = cbind(ptable, "topo.dist.mcc" = topo.dists)
+      
+      if(lnl.column %in% colnames(ptable)){
+        lnl.colnumber <- which(colnames(ptable) == lnl.column)
+        colnames(ptable)[lnl.colnumber] <- "LnL"
+      } else {
+        warn("Could not automatically identify likelihood column.  
+             Specify one manually if you want likelihoods to be included.\n\n")
+      }
     }
     
   output <- list(
@@ -204,7 +225,7 @@ get.format <- function(format){
       trees.suffix = ".t",
       log.suffix = ".p",
       type = "nexus",
-      skip = 1
+      lnl.col = "LnL"
     ))
   }
 
@@ -214,7 +235,7 @@ get.format <- function(format){
       trees.suffix = ".species.trees",
       log.suffix = ".log",
       type = "nexus",
-      skip = 2
+      lnl.col = "likelihood"
     ))
   }
 
@@ -224,7 +245,7 @@ get.format <- function(format){
       trees.suffix = ".trees",
       log.suffix = ".log",
       type = "nexus",
-      skip = 2
+      lnl.col = "likelihood"
     ))
   }
 
@@ -234,12 +255,26 @@ get.format <- function(format){
       trees.suffix = ".trees",
       log.suffix = ".log",
       type = "revbayes",
-      skip = 0
+      lnl.col = "likelihood"
     ))
   }
 
 }
 
+# Function to automatically detect the first line that's not a comment
+autoskip = function(file, comment.chars) {
+  skip = 0
+  con = file(file, "r")
+  on.exit(close(con))
+  while ( TRUE ) {
+    line = readLines(con, n = 1)
+    if (substring(line, 1, 1)  %in% comment.chars) {
+      skip <- skip + 1
+    } else {
+      return(skip)
+    }
+  }
+}
 
 
 read.revbayestrees<-function(file) {
