@@ -26,6 +26,8 @@ treespace <- function(chains, n.points = 100, burnin=NA, fill.color="LnL"){
 
     chains = check.chains(chains)
     
+    chain = chains[[1]]
+    
     # set burnin to the maximum from across all chains
     if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
     
@@ -37,8 +39,6 @@ treespace <- function(chains, n.points = 100, burnin=NA, fill.color="LnL"){
         if(fill.color %in% names(ptable)){} else
         stop(sprintf("The fill.color name you supplied ('%s') wasn't found in your parameter table", fill.color))
     }
-
-    chain = chains[[1]]
 
     # subsample down to minimum n.points
     step = as.integer((length(chain$trees) - burnin) / n.points)
