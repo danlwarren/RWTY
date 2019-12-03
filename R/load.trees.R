@@ -108,8 +108,9 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
     if(!is.na(logfile) && file.exists(logfile)){
       
       if(is.na(skip)){
-        skip <- autoskip(file, comment.chars)
+        skip <- autoskip(logfile, comment.chars)
       }
+
       
       print(paste("Reading parameter values from", basename(logfile)))
       ptable <- read.table(logfile, skip=skip, header=TRUE)
@@ -152,20 +153,19 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
     tree.dist.matrix = tree.dist.matrix(trees=treelist, treedist=treedist)
     
 
-    # calculate burnin
     # calculate burnin if user didn't specify it
     if(is.na(burnin)){
       burnin = calculate.burnin(treelist, ptable, treedist)
     }
     
     # calculate MCC tree from post-burnin samples
-    mcc.tree = maxCladeCred(treelist[burnin:length(treelist)])
+    mcc.tree = phangorn::maxCladeCred(treelist[burnin:length(treelist)])
     
     # calculate distances from initial MCC tree
     if(treedist == 'RF'){
-      topo.dists = RF.dist(mcc.tree, treelist)
+      topo.dists = phangorn::RF.dist(mcc.tree, treelist)
     }else if(treedist == 'PD'){
-      topo.dists = path.dist(mcc.tree, treelist)
+      topo.dists = phangorn::path.dist(mcc.tree, treelist)
     }else{
       stop("treedist must be either 'PD' or 'RF'")
     }
@@ -265,12 +265,12 @@ get.format <- function(format){
 autoskip = function(file, comment.chars) {
   skip = 0
   con = file(file, "r")
+  on.exit(close(con))
   while ( TRUE ) {
     line = readLines(con, n = 1)
-    if ( substring(line, 1, 1)  %in% comment.chars) {
+    if (substring(line, 1, 1)  %in% comment.chars) {
       skip <- skip + 1
     } else {
-      close(con)
       return(skip)
     }
   }
