@@ -10,7 +10,7 @@
 #' Currently accepted values are "mb" for MrBayes, "beast" for BEAST, "*beast" for *BEAST, and "revbayes" for RevBayes.
 #' If you would like RWTY to understand additional formats, please contact the authors and send us some sample data.
 #' @param gens.per.tree The number of generations separating trees.  If not provided, RWTY will attempt to calculate it automatically.
-#' @param trim Used for thinning the chain.  If a number N is provided, RWTY keeps every Nth tree.
+#' @param trim Used for thinning the chain.  If a number N is provided, RWTY keeps every Nth tree.  If trim is set to "auto" or TRUE, RWTY automatically selects a trim value and subsamples the chain so that it has around 1000 trees.  If trim is set to "TRUE" or 1, all trees are retained.
 #' @param logfile A path to a file containing model parameters and likelihoods.  If no path is provided but
 #' a "format" argument is supplied, RWTY will attempt to find the log file automatically based on the format
 #' definition.  RWTY will then use the "format" argument to find the likelihood column and rename it to "LnL".
@@ -30,8 +30,8 @@
 #' @examples
 #' #load.trees(file="mytrees.t", format = "mb")
 
-load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, logfile=NA, skip=NA, comment.chars = c("[", "#"), treedist='RF', burnin = NA, lnl.column = NA){
-
+load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim="auto", logfile=NA, skip=NA, comment.chars = c("[", "#"), treedist='RF', burnin = NA, lnl.column = NA){
+  
   format <- tolower(format)
   format_choices <- c("mb", "beast", "*beast", "revbayes", "mrbayes")
   format <- match.arg(format, format_choices)
@@ -41,18 +41,17 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
     type_choices <- c("nexus", "newick")
     type <- match.arg(type, type_choices)
   }
-
+  
   file.format <- get.format(format)
-   
+  
   if(is.na(type)){
     type <- file.format$type
   }
-
+  
   if(is.na(lnl.column)){
     lnl.column <- file.format$lnl.col
   }
   
-
   # Read in trees
   print("Reading trees...")
   if(type == "nexus") {
@@ -65,23 +64,36 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
     treelist <- read.tree(file=file)
   }
   
+  # Automatically picking trim value
+  if(trim == "auto" | trim == TRUE){
+    if(length(treelist) > 1001){
+      trim = floor(length(treelist)/1000)
+    } else {
+      trim = 1
+    }
+  }
+  
+  if(trim == FALSE){
+    trim = 1
+  }
+  
   treelist <- treelist[seq(from=1, to=length(treelist), by=trim)]
-
+  
   if(is.na(gens.per.tree)){
     if(type=="revbayes") {
       gens.per.tree <- rb_ptable[2,"Iteration"] - rb_ptable[1,"Iteration"]
     } else {
       #   "beast" | "*beast" | "mb"   ????
       if(!is.null(names(treelist))){
-      gens.per.tree <- as.numeric(tail(strsplit(x=names(treelist)[3], split="[[:punct:]]")[[1]], 1)) -
-        as.numeric(tail(strsplit(x=names(treelist)[2], split="[[:punct:]]")[[1]], 1))
+        gens.per.tree <- as.numeric(tail(strsplit(x=names(treelist)[3], split="[[:punct:]]")[[1]], 1)) -
+          as.numeric(tail(strsplit(x=names(treelist)[2], split="[[:punct:]]")[[1]], 1))
       }
       else gens.per.tree <- 1
     }
   }
-
+  
   print(paste(gens.per.tree, "generations per tree..."))
-
+  
   # Unroot all trees.  Can't use lapply because it was
   # deleting tip labels.
   if(is.rooted(treelist[[1]])){
@@ -91,100 +103,106 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
     }
   }
   else{print("Trees are unrooted...")}
-
-
+  
+  
   # Reset class
   class(treelist) <- "multiPhylo"
   
   
-    ptable <- NULL
-
-    # Check whether log file path has been supplied and doesn't exist
-    if(!is.na(logfile) && !file.exists(logfile)){
-      stop(paste("Logfile not found at", logfile))
-    }
+  ptable <- NULL
   
-    # logfile path has been supplied and file exists
-    if(!is.na(logfile) && file.exists(logfile)){
-      
-      if(is.na(skip)){
-        skip <- autoskip(logfile, comment.chars)
-      }
-
-      
-      print(paste("Reading parameter values from", basename(logfile)))
-      ptable <- read.table(logfile, skip=skip, header=TRUE)
-      ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
-    }
+  # Check whether log file path has been supplied and doesn't exist
+  if(!is.na(logfile) && !file.exists(logfile)){
+    stop(paste("Logfile not found at", logfile))
+  }
   
-    # If logfile hasn't been supplied try to find it by searching
-    if(is.na(logfile)){
-
-      
-      if(grepl(paste0(file.format$trees.suffix, "$"), file)){
-          logfile <- sub(pattern = paste0(file.format$trees.suffix, "$"), file.format$log.suffix, file)
-      }
-      
-      if(!is.na(logfile)){
-          if(file.exists(logfile)){
-            
-            if(is.na(skip)){
-              skip <- autoskip(logfile, comment.chars)
-            }
-            
-            print(paste("Reading parameter values from", basename(logfile)))
-            ptable <- read.table(logfile, skip=skip, header=TRUE)
-            ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
-          } else {
-            print(paste("Couldn't find", basename(logfile)))
-          }
-      }
+  # logfile path has been supplied and file exists
+  if(!is.na(logfile) && file.exists(logfile)){
+    
+    if(is.na(skip)){
+      skip <- autoskip(logfile, comment.chars)
     }
+    
+    
+    print(paste("Reading parameter values from", basename(logfile)))
+    ptable <- read.table(logfile, skip=skip, header=TRUE)
+    ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
+  }
   
-    # add any columns from rb_ptable (from treefile) that are not already in ptable (from log)
-    if(format=="revbayes") {
-      to_add<-!(colnames(rb_ptable) %in% colnames(ptable))
-      if(sum(to_add)>0)
-        ptable<-cbind(rb_ptable[,to_add], ptable)
-    }
-
+  # If logfile hasn't been supplied try to find it by searching
+  if(is.na(logfile)){
     
-    # calculate distance matrix for these trees
-    tree.dist.matrix = tree.dist.matrix(trees=treelist, treedist=treedist)
     
-
-    # calculate burnin if user didn't specify it
-    if(is.na(burnin)){
-      burnin = calculate.burnin(treelist, ptable, treedist)
+    if(grepl(paste0(file.format$trees.suffix, "$"), file)){
+      logfile <- sub(pattern = paste0(file.format$trees.suffix, "$"), file.format$log.suffix, file)
     }
     
-    # calculate MCC tree from post-burnin samples
-    mcc.tree = phangorn::maxCladeCred(treelist[burnin:length(treelist)])
-    
-    # calculate distances from initial MCC tree
-    if(treedist == 'RF'){
-      topo.dists = phangorn::RF.dist(mcc.tree, treelist)
-    }else if(treedist == 'PD'){
-      topo.dists = phangorn::path.dist(mcc.tree, treelist)
-    }else{
-      stop("treedist must be either 'PD' or 'RF'")
-    }
-    
-    # add topolgocial distance to MCC tree to p.table
-    if(is.null(ptable)){
-      ptable = data.frame("topo.dist.mcc" = topo.dists)
-    }else{
-      ptable = cbind(ptable, "topo.dist.mcc" = topo.dists)
-      
-      if(lnl.column %in% colnames(ptable)){
-        lnl.colnumber <- which(colnames(ptable) == lnl.column)
-        colnames(ptable)[lnl.colnumber] <- "LnL"
+    if(!is.na(logfile)){
+      if(file.exists(logfile)){
+        
+        if(is.na(skip)){
+          skip <- autoskip(logfile, comment.chars)
+        }
+        
+        print(paste("Reading parameter values from", basename(logfile)))
+        ptable <- read.table(logfile, skip=skip, header=TRUE)
+        ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
       } else {
-        warn("Could not automatically identify likelihood column.  
-             Specify one manually if you want likelihoods to be included.\n\n")
+        print(paste("Couldn't find", basename(logfile)))
       }
     }
+  }
+  
+  
+  # add any columns from rb_ptable (from treefile) that are not already in ptable (from log)
+  if(format=="revbayes") {
+    to_add<-!(colnames(rb_ptable) %in% colnames(ptable))
+    if(sum(to_add)>0)
+      ptable<-cbind(rb_ptable[,to_add], ptable)
+  }
+  
+  # Rename likelihood column
+  if(!is.null(ptable)){
+    if(lnl.column %in% colnames(ptable)){
+      lnl.colnumber <- which(colnames(ptable) == lnl.column)
+      colnames(ptable)[lnl.colnumber] <- "LnL"
+    } else {
+      warn("Could not automatically identify likelihood column.  
+             Specify one manually if you want likelihoods to be included.\n\n")
+    }
+  }
+  
+  
+  
+  # calculate distance matrix for these trees
+  tree.dist.matrix = tree.dist.matrix(trees=treelist, treedist=treedist)
+  
+  
+  # calculate burnin if user didn't specify it
+  if(is.na(burnin)){
+    burnin = calculate.burnin(treelist, ptable, treedist)
+  }
+  
+  # calculate MCC tree from post-burnin samples
+  mcc.tree = phangorn::maxCladeCred(treelist[burnin:length(treelist)])
+  
+  # calculate distances from initial MCC tree
+  if(treedist == 'RF'){
+    topo.dists = phangorn::RF.dist(mcc.tree, treelist)
+  }else if(treedist == 'PD'){
+    topo.dists = phangorn::path.dist(mcc.tree, treelist)
+  }else{
+    stop("treedist must be either 'PD' or 'RF'")
+  }
+  
+  # add topolgocial distance to MCC tree to p.table
+  if(is.null(ptable)){
+    ptable = data.frame("topo.dist.mcc" = topo.dists)
+  }else{
+    ptable = cbind(ptable, "topo.dist.mcc" = topo.dists)
     
+  }
+  
   output <- list(
     "trees" = treelist,
     "tree.dist.matrix" = tree.dist.matrix,
@@ -193,32 +211,32 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
     "tree.dist.metric" = treedist,
     "burnin" = burnin,
     "mcc.tree" = mcc.tree)
-
+  
   class(output) <- "rwty.chain"
-
+  
   return(output)
 }
 
 
 calculate.burnin <- function(trees, ptable, treedist){
-
-    if(is.null(ptable)){
-        burnin = floor(0.25*length(trees)) # 25% burnin if nothing else known 
-    }else{
   
-        # use method of Beiko, R. G., Keith, J. M., Harlow, T. J., & Ragan, M. A. (2006). Searching for convergence in phylogenetic Markov chain Monte Carlo. Systematic Biology, 55(4), 553-565.
-        # this method just finds the first generation with lnL higher than the average lnL of the final 10% of the chain  
-        N = length(trees)
-        final.10pc.av = mean(ptable$LnL[floor(0.9*N):N])
-        burnin.index = min(which(ptable$LnL > final.10pc.av))
-        return(burnin.index)
-    }
+  if(is.null(ptable)){
+    burnin = floor(0.25*length(trees)) # 25% burnin if nothing else known 
+  }else{
+    
+    # use method of Beiko, R. G., Keith, J. M., Harlow, T. J., & Ragan, M. A. (2006). Searching for convergence in phylogenetic Markov chain Monte Carlo. Systematic Biology, 55(4), 553-565.
+    # this method just finds the first generation with lnL higher than the average lnL of the final 10% of the chain  
+    N = length(trees)
+    final.10pc.av = mean(ptable$LnL[floor(0.9*N):N])
+    burnin.index = min(which(ptable$LnL > final.10pc.av))
+    return(burnin.index)
+  }
 }    
 
 
 # This function takes the name of a format and returns a list containing important info about file suffixes and whatnot
 get.format <- function(format){
-
+  
   # Default behavior for MrBayes files
   if(format == "mb"){
     return(list(
@@ -228,7 +246,7 @@ get.format <- function(format){
       lnl.col = "LnL"
     ))
   }
-
+  
   # Default behavior for *BEAST files
   if(format == "*beast"){
     return(list(
@@ -238,7 +256,7 @@ get.format <- function(format){
       lnl.col = "likelihood"
     ))
   }
-
+  
   # Default behavior for BEAST files
   if(format == "beast"){
     return(list(
@@ -248,17 +266,17 @@ get.format <- function(format){
       lnl.col = "likelihood"
     ))
   }
-
+  
   # Default behavior for revbayes files
   if(format == "revbayes"){
     return(list(
-      trees.suffix = ".trees",
-      log.suffix = ".log",
+      trees.suffix = ".tre",
+      log.suffix = ".model.log",
       type = "revbayes",
-      lnl.col = "likelihood"
+      lnl.col = "Likelihood"
     ))
   }
-
+  
 }
 
 # Function to automatically detect the first line that's not a comment
@@ -278,15 +296,18 @@ autoskip = function(file, comment.chars) {
 
 
 read.revbayestrees<-function(file) {
+  skip <- autoskip(file, comment.chars)
   filelines<-readLines(file)
+  filelines <- filelines[(skip + 1):length(filelines)]
   column.names<-strsplit(filelines[1], split="\t")[[1]]
   data<-strsplit(filelines[-1], split="\t")
-  samplerow<-data[[1]]
+  samplerow<-data[[ 1]]
   treecheck<-unlist(lapply(samplerow, FUN=isTree))
   param<-matrix(ncol=sum(!treecheck), nrow=length(data))
   colnames(param)<-column.names[!treecheck]
-  for(i in 1:length(data))
+  for(i in 1:length(data)){
     param[i,]<-as.numeric(data[[i]][!treecheck])
+  }
   tree<-list()
   for(i in 1:length(data)) {
     tree[[i]]<-read.tree(text=data[[i]][treecheck])
