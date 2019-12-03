@@ -52,27 +52,10 @@ makeplot.treespace <- function(chains, burnin = NA, n.points = 200,  fill.color 
   
     print(sprintf("Creating treespace plots"))
 
-    # Pre - compute checks. Since the calculations can take a while...
-    comparisons = ((n.points * length(chains)) * (n.points * length(chains)) / 2.0) - (n.points * length(chains))
-
-    if(n.points < 2) {
-      stop("You need at least two points to make a meaningful treespace plot")
+    if(n.points < 20) {
+      stop("You need at least twenty points to make a meaningful treespace plot")
     }
     
-    if("rwty.chain" %in% class(chains)){
-      if(n.points > (length(chains$trees) - burnin)) {
-        stop("The number of trees (after removing burnin) is smaller than the number of points you have specified")
-      }
-    } else {
-      if(n.points > (length(chains[[1]]$trees) - burnin)) {
-        stop("The number of trees (after removing burnin) is smaller than the number of points you have specified")
-      }
-    }
-
-    if(comparisons > 1000000){
-        print(sprintf("WARNING: Calculating %s pairwise tree distances for the treespace plot may take a long time, consider plotting fewer points.", comparisons))
-    }
-
     # now go and get the x,y coordinates from the trees
     points = treespace(chains, n.points, burnin, fill.color)
 
