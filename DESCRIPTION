@@ -31,7 +31,10 @@ Imports:
     GGally,
     parallel,
     usedist,
-    plotly
+    plotly,
+    png,
+    gifski,
+    gganimate
 Suggests:
     knitr,
     testthat,
