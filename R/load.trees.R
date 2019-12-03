@@ -10,7 +10,7 @@
 #' Currently accepted values are "mb" for MrBayes, "beast" for BEAST, "*beast" for *BEAST, and "revbayes" for RevBayes.
 #' If you would like RWTY to understand additional formats, please contact the authors and send us some sample data.
 #' @param gens.per.tree The number of generations separating trees.  If not provided, RWTY will attempt to calculate it automatically.
-#' @param trim Used for thinning the chain.  If a number N is provided, RWTY keeps every Nth tree.
+#' @param trim Used for thinning the chain.  If a number N is provided, RWTY keeps every Nth tree.  If trim is set to "auto" or TRUE, RWTY automatically selects a trim value and subsamples the chain so that it has around 1000 trees.  If trim is set to "TRUE" or 1, all trees are retained.
 #' @param logfile A path to a file containing model parameters and likelihoods.  If no path is provided but
 #' a "format" argument is supplied, RWTY will attempt to find the log file automatically based on the format
 #' definition.  RWTY will then use the "format" argument to find the likelihood column and rename it to "LnL".
@@ -30,7 +30,7 @@
 #' @examples
 #' #load.trees(file="mytrees.t", format = "mb")
 
-load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, logfile=NA, skip=NA, comment.chars = c("[", "#"), treedist='RF', burnin = NA, lnl.column = NA){
+load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim="auto", logfile=NA, skip=NA, comment.chars = c("[", "#"), treedist='RF', burnin = NA, lnl.column = NA){
 
   format <- tolower(format)
   format_choices <- c("mb", "beast", "*beast", "revbayes", "mrbayes")
@@ -52,7 +52,6 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
     lnl.column <- file.format$lnl.col
   }
   
-
   # Read in trees
   print("Reading trees...")
   if(type == "nexus") {
@@ -63,6 +62,19 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim=1, l
     rb_ptable <- tmp$param
   } else {
     treelist <- read.tree(file=file)
+  }
+  
+  # Automatically picking trim value
+  if(trim == "auto" | trim == TRUE){
+    if(length(treelist) > 1001){
+      trim = floor(length(treelist)/1000)
+    } else {
+      trim = 1
+    }
+  }
+  
+  if(trim == FALSE){
+    trim = 1
   }
   
   treelist <- treelist[seq(from=1, to=length(treelist), by=trim)]
