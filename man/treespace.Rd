@@ -4,12 +4,12 @@
 \alias{treespace}
 \title{MDS scaling of treespace for a single tree list.}
 \usage{
-treespace(chains, n.points = 100, burnin = NA, fill.color = "LnL")
+treespace(chains, n.points = 200, burnin = NA, fill.color = "LnL")
 }
 \arguments{
 \item{chains}{A list of 1 or more rwty.chain objects.}
 
-\item{n.points}{The minimum number of points you want in your plot (default is 100).}
+\item{n.points}{The minimum number of points you want in your plot (default is 200).}
 
 \item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.}
 
