@@ -4,7 +4,7 @@
 #'
 #' @param chains A list of one or more rwty.chain objects
 #' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
-#' @param n.points The number of points on each plot
+#' @param n.points The minimum number of points on each plot. The function will automatically choose the thinning value which gets you the smallest number of trees that is at least as much as this value. The default (200) is usually sufficient to get a good idea of what is happening in your chains. 
 #' @param fill.color The name of the column from the log table that that you would like to use to colour the points in the plot. The default is to colour the points by LnL.
 #'
 #' @return A list of two ggplot objects: one plots the points in treespace, the other shows a heatmap of the same points
@@ -43,7 +43,7 @@
 #' }
 
 
-makeplot.treespace <- function(chains, burnin = NA, n.points = 100,  fill.color = "LnL"){
+makeplot.treespace <- function(chains, burnin = NA, n.points = 200,  fill.color = "LnL"){
 
     chains = check.chains(chains)
   
@@ -82,7 +82,7 @@ makeplot.treespace <- function(chains, burnin = NA, n.points = 100,  fill.color 
       theme(panel.background = element_blank(), axis.line = element_line(color='grey'), panel.spacing = unit(0.1, "lines")) +
       theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5)) +
       facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain))))) +
-      ggtitle(sprintf("Tree space for %d trees", n.points))
+      ggtitle(sprintf("Tree space for %d trees", nrow(points)))
 
 
     if(!is.na(fill.color)){
@@ -104,7 +104,7 @@ makeplot.treespace <- function(chains, burnin = NA, n.points = 100,  fill.color 
           scale_x_continuous(expand = c(0, 0)) +
           scale_y_continuous(expand = c(0, 0)) +
           scale_fill_gradientn(colours = viridis(256)) +
-          ggtitle(sprintf("Tree space heatmap for %d trees", n.points))
+          ggtitle(sprintf("Tree space heatmap for %d trees", nrow(points)))
     }
 
     return(list('treespace.heatmap' = heatmap, 'treespace.points.plot' = points.plot))
