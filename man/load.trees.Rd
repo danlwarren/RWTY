@@ -9,7 +9,7 @@ load.trees(
   type = NA,
   format = "mb",
   gens.per.tree = NA,
-  trim = 1,
+  trim = "auto",
   logfile = NA,
   skip = NA,
   comment.chars = c("[", "#"),
@@ -31,7 +31,7 @@ If you would like RWTY to understand additional formats, please contact the auth
 
 \item{gens.per.tree}{The number of generations separating trees.  If not provided, RWTY will attempt to calculate it automatically.}
 
-\item{trim}{Used for thinning the chain.  If a number N is provided, RWTY keeps every Nth tree.}
+\item{trim}{Used for thinning the chain.  If a number N is provided, RWTY keeps every Nth tree.  If trim is set to "auto" or TRUE, RWTY automatically selects a trim value and subsamples the chain so that it has around 1000 trees.  If trim is set to "TRUE" or 1, all trees are retained.}
 
 \item{logfile}{A path to a file containing model parameters and likelihoods.  If no path is provided but
 a "format" argument is supplied, RWTY will attempt to find the log file automatically based on the format

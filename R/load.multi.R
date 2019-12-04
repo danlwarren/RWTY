@@ -29,6 +29,13 @@ load.multi <- function(path = ".", format = "mb", labels=NA, ...){
   # Find t and p files
   tfiles <- list.files(path, pattern=ext.tree, full.names=TRUE)
   pfiles <- unlist(lapply(tfiles, FUN = function(x) sub(ext.tree, ext.p, x)))
+  
+  if(format == "revbayes"){
+    tfiles <- tfiles[-grep("\\.ase\\.", tfiles)]
+    pfiles <- pfiles[-grep("\\.ase\\.", pfiles)]
+    tfiles <- tfiles[-grep("\\.mcc\\.", tfiles)]
+    pfiles <- pfiles[-grep("\\.mcc\\.", pfiles)]
+  }
 
   if(length(tfiles) == 0){
     stop("Couldn't find any tree files")
