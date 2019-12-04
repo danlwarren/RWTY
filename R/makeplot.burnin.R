@@ -1,6 +1,6 @@
-#' Plotting parameters
+#' Plotting burnin
 #' 
-#' Plots parameter values over the length of the MCMC chain
+#' Plots burnin values vs. tree topology and LnL over the length of the MCMC chain. The burnin for each chain is shown as a dashed line in the colour of that chain. The global burnin used for analyses (which is just the maximum of all burnin values) is shown as a solid red line.
 #'
 #' @param chains A set of rwty.chain objects.
 #' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value either when loading the chains or to this function.  
@@ -43,14 +43,23 @@ makeplot.burnin <- function(chains, burnin = NA){
         burnin = max(vlines$burn)
     }
        
-    burnin.plot <- ggplot(ptable, aes_string(x="generation", y="topo.dist.mcc")) + 
+    burnin.topo.plot <- ggplot(ptable, aes_string(x="generation", y="topo.dist.mcc")) + 
         geom_line(aes_string(colour = "chain")) + 
-        geom_vline(xintercept = burnin, linetype = "dashed", alpha = 0.5, size = 3, color = "red") +
+        geom_vline(xintercept = burnin, alpha = 0.5, size = 2, color = "red") +
         geom_vline(data = vlines, aes(xintercept = burn, color = chain), linetype = "longdash") +
         xlab("Generation") + 
         scale_color_viridis(discrete = TRUE, end = 0.85) + 
         facet_wrap(~chain, ncol=1, scales = "free_y") + 
         theme(legend.position="none")
+
+    burnin.LnL.plot <- ggplot(ptable, aes_string(x="generation", y="LnL")) + 
+      geom_line(aes_string(colour = "chain")) + 
+      geom_vline(xintercept = burnin, alpha = 0.5, size = 2, color = "red") +
+      geom_vline(data = vlines, aes(xintercept = burn, color = chain), linetype = "longdash") +
+      xlab("Generation") + 
+      scale_color_viridis(discrete = TRUE, end = 0.85) + 
+      facet_wrap(~chain, ncol=1, scales = "free_y") + 
+      theme(legend.position="none")
     
     return(list(burnin.plot = burnin.plot))
     
