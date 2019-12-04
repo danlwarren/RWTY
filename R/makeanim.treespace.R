@@ -4,7 +4,7 @@
 #'
 #' @param chains A list of one or more rwty.chain objects
 #' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
-#' @param n.points The minimum number of points on each plot. The function will automatically choose the thinning value which gets you the smallest number of trees that is at least as much as this value. The default (200) is usually sufficient to get a good idea of what is happening in your chains. 
+#' @param min.points The minimum number of points on each plot. The function will automatically choose the thinning value which gets you the smallest number of trees that is at least as much as this value. The default (200) is usually sufficient to get a good idea of what is happening in your chains. 
 #' @param fill.color The name of the column from the log table that that you would like to use to colour the points in the plot. The default is to colour the points by LnL.
 #'
 #' @return A gganimate object which has one frame for each of the sampled generations. 
@@ -31,7 +31,7 @@
 #' }
 
 
-makeanim.treespace <- function(chains, burnin = NA, n.points = 200,  fill.color = "LnL"){
+makeanim.treespace <- function(chains, burnin = NA, min.points = 200,  fill.color = "LnL"){
 
     chains = check.chains(chains)
   
@@ -42,12 +42,12 @@ makeanim.treespace <- function(chains, burnin = NA, n.points = 200,  fill.color 
 
     # Pre - compute checks. Since the calculations can take a while...
 
-    if(n.points < 20) {
+    if(min.points < 20) {
       stop("You need at least twenty points to make a meaningful treespace plot")
     }
     
     # now go and get the x,y coordinates from the trees
-    points = treespace(chains, n.points, burnin, fill.color)
+    points = treespace(chains, min.points, burnin, fill.color)
 
     if(length(unique(points$x)) == 1 && length(unique(points$y)) == 1){
       stop("Only one tree in the posterior sample of trees, cannot create animation")
@@ -89,11 +89,10 @@ makeanim.treespace <- function(chains, burnin = NA, n.points = 200,  fill.color 
     # number of frames set so that it's one per generation
     n.frames = length(unique(q$generation))
 
-    # make the base plot, which we animate later
-    base = ggplot(q, aes(x=x, y=y, group = chain)) + 
-        geom_density2d(data = q2, aes(x=x, y=y)) +
-        geom_path(alpha=1, aes_string(colour = "generation"), size=1) + 
-        scale_colour_gradient(low='red', high='yellow') +
+    base = ggplot(q, aes_string(x='x', y='y', group = "chain")) + 
+        geom_density2d(data = q2) + 
+        geom_path(aes_string(colour = "generation")) + 
+        scale_colour_gradient("generation", low='red', high='yellow') +
         geom_point(shape = 21, size=5, colour = 'white', aes_string(fill = fill.color)) + 
         scale_fill_gradientn(colours = viridis(256)) +
         facet_wrap(~chain, nrow=round(sqrt(length(unique(q$chain))))) +
@@ -117,7 +116,7 @@ makeanim.treespace <- function(chains, burnin = NA, n.points = 200,  fill.color 
     # animate it
     animate(treespace.animation, nframes = n.frames, width = n[2], height = n[1])
   
-    beep("complete")
+    #beep("complete")
     
     #return(list("treespace.animation" = treespace.animation, "width" = n[2], "height" = n[1], "frames" = n.frames))
 }
