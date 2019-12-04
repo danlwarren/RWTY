@@ -49,6 +49,10 @@ makeanim.treespace <- function(chains, burnin = NA, n.points = 200,  fill.color 
     # now go and get the x,y coordinates from the trees
     points = treespace(chains, n.points, burnin, fill.color)
 
+    if(length(unique(points$x)) == 1 && length(unique(points$y)) == 1){
+      stop("Only one tree in the posterior sample of trees, cannot create animation")
+    } 
+    
     points$generation = as.integer(points$generation)
     points$chain = as.factor(points$chain)
     p = points
@@ -88,12 +92,14 @@ makeanim.treespace <- function(chains, burnin = NA, n.points = 200,  fill.color 
     # make the base plot, which we animate later
     base = ggplot(q, aes(x=x, y=y, group = chain)) + 
         geom_density2d(data = q2, aes(x=x, y=y)) +
-        geom_path(alpha=1, aes(colour = generation), size=1) + 
+        geom_path(alpha=1, aes_string(colour = "generation"), size=1) + 
         scale_colour_gradient(low='red', high='yellow') +
         geom_point(shape = 21, size=5, colour = 'white', aes_string(fill = fill.color)) + 
         scale_fill_gradientn(colours = viridis(256)) +
-        facet_wrap(~chain, nrow=round(sqrt(length(unique(q$chain)))))
-    
+        facet_wrap(~chain, nrow=round(sqrt(length(unique(q$chain))))) +
+        theme(panel.background = element_blank(), axis.line = element_line(color='grey'), panel.spacing = unit(0.1, "lines")) +
+        theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
+      
     treespace.animation = base +
         labs(title = 'Generation: {frame_time}', x = 'x', y = 'y') +
         transition_time(generation) +
@@ -101,7 +107,7 @@ makeanim.treespace <- function(chains, burnin = NA, n.points = 200,  fill.color 
     
     # figure out size
     # first get the dimensions
-    n = wrap_dims(length(unique(ggplot_build(base)$data[[1]]$PANEL)))
+    n = wrap_dims(length(unique(q$chain)), nrow = round(sqrt(length(unique(q$chain)))))
     # 200 pixels per frame
     n = n * 200
     # + 50 for the title, 100 for the legend
@@ -111,5 +117,7 @@ makeanim.treespace <- function(chains, burnin = NA, n.points = 200,  fill.color 
     # animate it
     animate(treespace.animation, nframes = n.frames, width = n[2], height = n[1])
   
+    beep("complete")
+    
     #return(list("treespace.animation" = treespace.animation, "width" = n[2], "height" = n[1], "frames" = n.frames))
 }
