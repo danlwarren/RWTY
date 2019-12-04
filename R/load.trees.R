@@ -57,7 +57,7 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim="aut
   if(type == "nexus") {
     treelist <- read.nexus(file=file)
   } else if(type=="revbayes") {
-    tmp <- read.revbayestrees(file=file)
+    tmp <- read.revbayestrees(file=file, comment.chars = comment.chars)
     treelist <- tmp$tree
     rb_ptable <- tmp$param
   } else {
@@ -305,7 +305,7 @@ autoskip = function(file, comment.chars) {
 }
 
 
-read.revbayestrees<-function(file) {
+read.revbayestrees<-function(file, comment.chars) {
   skip <- autoskip(file, comment.chars)
   filelines<-readLines(file)
   filelines <- filelines[(skip + 1):length(filelines)]
