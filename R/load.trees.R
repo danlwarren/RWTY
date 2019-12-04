@@ -229,19 +229,39 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim="aut
 
 
 calculate.burnin <- function(trees, ptable, treedist){
+  # use method of Beiko, R. G., Keith, J. M., Harlow, T. J., & Ragan, M. A. (2006). Searching for convergence in phylogenetic Markov chain Monte Carlo. Systematic Biology, 55(4), 553-565.
+  # this method just finds the first generation with lnL higher than the average lnL of the final 10% of the chain  
   
-  if(is.null(ptable)){
-    burnin = floor(0.25*length(trees)) # 25% burnin if nothing else known 
+  print("Calculating burnin")
+  
+  N = length(trees)
+  
+  if("LnL" %in% names(ptable)){
+    final.10pc.av.lnl = mean(ptable$LnL[floor(0.9*N):N])
+    burnin.lnl = min(which(ptable$LnL > final.10pc.av.lnl))
   }else{
-    
-    # use method of Beiko, R. G., Keith, J. M., Harlow, T. J., & Ragan, M. A. (2006). Searching for convergence in phylogenetic Markov chain Monte Carlo. Systematic Biology, 55(4), 553-565.
-    # this method just finds the first generation with lnL higher than the average lnL of the final 10% of the chain  
-    N = length(trees)
-    final.10pc.av = mean(ptable$LnL[floor(0.9*N):N])
-    burnin.index = min(which(ptable$LnL > final.10pc.av))
-    return(burnin.index)
+    burnin.lnl = as.integer(0.25*N)
   }
-}    
+  
+  mcc.tree = phangorn::maxCladeCred(trees)
+  
+  if(treedist == 'RF'){
+    topo.dists = phangorn::RF.dist(mcc.tree, trees)
+  }else if(treedist == 'PD'){
+    topo.dists = phangorn::path.dist(mcc.tree, trees)
+  }else{
+    stop("treedist must be either 'PD' or 'RF'")
+  }
+  
+  final.10pc.av.treedist = mean(topo.dists[floor(0.9*N):N])
+  burnin.treedist = min(which(topo.dists < final.10pc.av.treedist))
+
+  print(sprintf("LnL burnin: %d", burnin.lnl))
+  print(sprintf("Topology burnin: %d", burnin.treedist))
+  print("Using the larger of the two as burnin")
+  
+  return(max(burnin.lnl, burnin.treedist))
+} 
 
 
 # This function takes the name of a format and returns a list containing important info about file suffixes and whatnot
