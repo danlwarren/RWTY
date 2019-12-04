@@ -4,14 +4,8 @@
 \alias{makeplot.splitfreqs.sliding}
 \title{Plot split frequencies in sliding windows over the course of an MCMC}
 \usage{
-makeplot.splitfreqs.sliding(
-  chains,
-  burnin = NA,
-  n.clades = 20,
-  window.size = 20,
-  facet = TRUE,
-  rank = "ess"
-)
+makeplot.splitfreqs.sliding(chains, burnin = NA, n.clades = 20,
+  window.size = 20, facet = TRUE, rank = "ess")
 }
 \arguments{
 \item{chains}{A list of rwty.chain objects.}

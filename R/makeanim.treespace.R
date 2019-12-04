@@ -51,7 +51,7 @@ makeanim.treespace <- function(chains, burnin = NA, n.points = 200,  fill.color 
 
     points$generation = as.integer(points$generation)
     points$chain = as.factor(points$chain)
-    p = as_tibble(points)
+    p = points
     
     # for each chain, copy p then add it back to itself so you get 2 points per generation
     # each generation therefore contains the current and previous generation's trees

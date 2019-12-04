@@ -60,5 +60,7 @@ load.multi <- function(path = ".", format = "mb", labels=NA, ...){
     names(output) <- labels
   }
 
+  beep("complete")
+  
   output
 }

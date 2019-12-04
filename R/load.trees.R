@@ -94,6 +94,8 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim="aut
   
   print(paste(gens.per.tree, "generations per tree..."))
   
+  
+  
   # Unroot all trees.  Can't use lapply because it was
   # deleting tip labels.
   if(is.rooted(treelist[[1]])){
@@ -107,6 +109,7 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim="aut
   
   # Reset class
   class(treelist) <- "multiPhylo"
+  
   
   
   ptable <- NULL
@@ -147,6 +150,8 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim="aut
         print(paste("Reading parameter values from", basename(logfile)))
         ptable <- read.table(logfile, skip=skip, header=TRUE)
         ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
+        
+        
       } else {
         print(paste("Couldn't find", basename(logfile)))
       }
@@ -168,14 +173,17 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim="aut
       colnames(ptable)[lnl.colnumber] <- "LnL"
     } else {
       warn("Could not automatically identify likelihood column.  
-             Specify one manually if you want likelihoods to be included.\n\n")
+             Specify one manually by renaming the likelihood column 'LnL' if you want likelihoods to be included in your plots.\n\n")
     }
   }
   
   
   
   # calculate distance matrix for these trees
+  print("Calculating tree distance matrix...")
+  
   tree.dist.matrix = tree.dist.matrix(trees=treelist, treedist=treedist)
+  
   
   
   # calculate burnin if user didn't specify it
@@ -213,6 +221,8 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim="aut
     "mcc.tree" = mcc.tree)
   
   class(output) <- "rwty.chain"
+
+  beep(2)
   
   return(output)
 }

@@ -11,12 +11,14 @@ utils::globalVariables(c("Generation", "CSF", "split.frequency", "ess"))
 #' @import ggplot2
 #' @import png
 #' @import gifski
+#' @import transformr
+#' @importfrom beepr beep
 #' @importFrom reshape2 melt
 #' @importFrom phangorn RF.dist maxCladeCred treedist path.dist
 #' @importFrom coda effectiveSize mcmc
 #' @importFrom viridis scale_color_viridis scale_fill_viridis viridis plasma
 #' @importFrom grid unit
-#' @importFrom plyr ddply summarize . 
+#' @importFrom plyr arrange ddply summarize .
 #' @importFrom ggdendro ggdendrogram
 #' @importFrom GGally ggpairs
 #' @importFrom parallel mclapply detectCores

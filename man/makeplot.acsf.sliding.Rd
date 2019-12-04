@@ -4,7 +4,8 @@
 \alias{makeplot.acsf.sliding}
 \title{Plot the Chain in Split Frequencies (CSF) in sliding windows over the course of an MCMC.}
 \usage{
-makeplot.acsf.sliding(chains, burnin = NA, window.size = 20, facet = TRUE)
+makeplot.acsf.sliding(chains, burnin = NA, window.size = 20,
+  facet = TRUE)
 }
 \arguments{
 \item{chains}{A list of rwty.chain objects.}
