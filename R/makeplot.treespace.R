@@ -65,7 +65,7 @@ makeplot.treespace <- function(chains, burnin = NA, n.points = 200,  fill.color 
       theme(panel.background = element_blank(), axis.line = element_line(color='grey'), panel.spacing = unit(0.1, "lines")) +
       theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5)) +
       facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain))))) +
-      ggtitle(sprintf("Tree space for %d trees", nrow(points)))
+      ggtitle(sprintf("Tree space for %d trees", length(unique(points$generation))))
 
 
     if(!is.na(fill.color)){
