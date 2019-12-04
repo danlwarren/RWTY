@@ -6,7 +6,7 @@
 #'
 #' @param chains A list of 1 or more rwty.chain objects.
 #' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
-#' @param n.points The minimum number of points you want in your plot (default is 200).
+#' @param min.points The minimum number of points on each plot. The function will automatically choose the thinning value which gets you the smallest number of trees that is at least as much as this value. The default (200) is usually sufficient to get a good idea of what is happening in your chains. 
 #' @param fill.color The name of the column from the log table that that you would like to use to colour the points in the plot. The default is to colour the points by LnL.
 #'
 #' @return Returns a list containing the points and a plot.
@@ -17,12 +17,12 @@
 #' @examples
 #' \dontrun{
 #' data(fungus)
-#' treespace(fungus, n.points=50, burnin=20, fill.color="LnL")
+#' treespace(fungus)
 #' }
 
 
 
-treespace <- function(chains, n.points = 200, burnin=NA, fill.color="LnL"){
+treespace <- function(chains, min.points = 200, burnin=NA, fill.color="LnL"){
 
     chains = check.chains(chains)
     
@@ -45,8 +45,8 @@ treespace <- function(chains, n.points = 200, burnin=NA, fill.color="LnL"){
       stop(sprintf("Cannot calculate treespace coordinates with fewer than 3 trees. Your chains contain %d trees, and your burnin is %d, leaving %d tree(s) to work with, and that's not enough.", length(chain$trees), burnin, total.trees))
     }
     
-    # subsample down to minimum n.points
-    step = as.integer((length(chain$trees) - burnin) / n.points)
+    # subsample down to minimum min.points
+    step = as.integer((length(chain$trees) - burnin) / min.points)
     if(step<1){ step = 1 } # because sometimes the above gives step=0
     
     indices = seq(from = burnin + 1, to = length(chain$trees), by = step)   
