@@ -5,7 +5,7 @@
 #' @param chains A set of rwty.chain objects.
 #' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value either when loading the chains or to this function.  
 #' 
-#' @return param.plot Returns a ggplot object.
+#' @return burnin.plot Returns a list of two ggplot objects: one with the LnL as the parameter, and one with the topological distance.
 #'
 #' @keywords parameter, plot, convergence, mcmc, phylogenetics
 #'
@@ -61,6 +61,6 @@ makeplot.burnin <- function(chains, burnin = NA){
       facet_wrap(~chain, ncol=1, scales = "free_y") + 
       theme(legend.position="none")
     
-    return(list(burnin.plot = burnin.plot))
+    return(list(burnin.topo.plot = burnin.topo.plot, burnin.LnL.plot = burnin.LnL.plot))
     
 }
