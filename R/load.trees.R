@@ -222,7 +222,7 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim="aut
   
   class(output) <- "rwty.chain"
 
-  beep(2)
+  beepr::beep(2)
   
   return(output)
 }
