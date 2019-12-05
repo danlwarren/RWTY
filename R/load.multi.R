@@ -73,7 +73,7 @@ load.multi <- function(path = ".", format = "mb", labels=NA, ...){
     
   }
     
-  beep("complete")
+  beepr::beep("complete")
   
   output
 }
@@ -95,5 +95,5 @@ global.mcc.tree <- function(chains, burnin=NA){
       }
   }
   
-  return(mcc(trees))
+  return(phangorn::maxCladeCred(trees))
 }
