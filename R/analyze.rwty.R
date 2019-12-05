@@ -32,17 +32,16 @@ utils::globalVariables(c("Generation", "CSF", "split.frequency", "ess"))
 #' @param chains A list of rwty.chain objects. 
 #' @param burnin The number of trees to omit as burnin. The default (NA) is to use the burnin calculated automatically when loading the chain. This can be overidden by providing any integer value.  
 #' @param window.size The number of trees to include in each windows of sliding window plots
-#' @param treespace.points The number of trees to plot in the treespace plot. Default is 100 
-#' @param n.clades The number of clades to include in plots of split frequencies over the course of the MCMC
-#' @param min.freq The minimum frequency for a node to be used for calculating ASDSF. Default is 0.1  
-#' @param fill.color The name of a column in your log file that you would like to use as the fill colour of points in the treespace plots
+#' @param treespace.points The number of trees to plot in the treespace plot. Default is 200 
+#' @param n.clades The number of clades to include in plots of split frequencies over the course of the MCMC. Default is 20.
+#' @param min.freq The minimum frequency for a node to be used for calculating ASDSF. Default is 0.1.
+#' @param fill.color The name of a column in your log file that you would like to use as the fill colour of points in the treespace plots.
 #' @param pdf.filename Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not save outputs to file.
 #' @param overwrite Boolean variable saying whether output file should be overwritten, if it exists.
 #' @param facet A Boolean expression indicating whether multiple chains should be plotted as facet plots (default TRUE).
 #' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.
 #' @param autocorr.intervals The maximum number of intervals to use for autocorrelation plots.
 #' @param ess.reps The number of replicate analyses to do when calculating the pseudo ESS.
-#' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance.
 #' @param params A vector of parameters to use when making the parameter correlation plots.  Defaults to the first two columns in the log table.
 #' @param max.sampling.interval The maximum sampling interval to use for generating autocorrelation plots
 #' @param report.filename If a filename is provided, rwty will compile an html report file including plots and diagnostic tables
@@ -80,10 +79,10 @@ utils::globalVariables(c("Generation", "CSF", "split.frequency", "ess"))
 #' p
 #' }
 
-analyze.rwty <- function(chains, burnin=NA, window.size=20, treespace.points = 100, n.clades = 20,
-                         min.freq = 0.0, fill.color = NA, pdf.filename = NA, 
-                         overwrite=FALSE, facet=TRUE, free_y=FALSE, autocorr.intervals=100, ess.reps = 20,
-                         treedist = 'PD', params = NA, max.sampling.interval = NA, report.filename = NA, ...){
+analyze.rwty <- function(chains, burnin=NA, window.size=20, treespace.points = 200, n.clades = 20,
+                         min.freq = 0.0, fill.color = "LnL", pdf.filename = NA, 
+                         overwrite=FALSE, facet=TRUE, free_y=FALSE, autocorr.intervals=100, ess.reps = 20, 
+                         params = NA, max.sampling.interval = NA, report.filename = NA, ...){
   
   chains <- check.chains(chains)
   
@@ -124,7 +123,7 @@ analyze.rwty <- function(chains, burnin=NA, window.size=20, treespace.points = 1
   acsf.cumulative <- makeplot.acsf.cumulative(chains, burnin=burnin, window.size = window.size, facet = facet)
   
   # plot treespace for all chains
-  treespace.plots <- makeplot.treespace(chains, n.points = treespace.points, burnin = burnin, fill.color = fill.color)
+  treespace.plots <- makeplot.treespace(chains, min.points = treespace.points, burnin = burnin, fill.color = fill.color)
   
   # Add citations for all packages
   citations <- list(
@@ -155,7 +154,6 @@ analyze.rwty <- function(chains, burnin=NA, window.size=20, treespace.points = 1
   
   # plot multichain plots when appropriate
   if(length(chains) > 1){
-    
     asdsf.plot <- makeplot.asdsf(chains, burnin = burnin, window.size = window.size, min.freq = min.freq)
     
     splitfreq.matrix.plots <- makeplot.splitfreq.matrix(chains, burnin = burnin)
