@@ -4,12 +4,12 @@
 \alias{treespace}
 \title{MDS scaling of treespace for a single tree list.}
 \usage{
-treespace(chains, n.points = 200, burnin = NA, fill.color = "LnL")
+treespace(chains, min.points = 200, burnin = NA, fill.color = "LnL")
 }
 \arguments{
 \item{chains}{A list of 1 or more rwty.chain objects.}
 
-\item{n.points}{The minimum number of points you want in your plot (default is 200).}
+\item{min.points}{The minimum number of points on each plot. The function will automatically choose the thinning value which gets you the smallest number of trees that is at least as much as this value. The default (200) is usually sufficient to get a good idea of what is happening in your chains.}
 
 \item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.}
 
@@ -26,7 +26,7 @@ dimensional tree space for plotting.
 \examples{
 \dontrun{
 data(fungus)
-treespace(fungus, n.points=50, burnin=20, fill.color="LnL")
+treespace(fungus)
 }
 }
 \keyword{mds,}

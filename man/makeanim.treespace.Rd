@@ -4,17 +4,19 @@
 \alias{makeanim.treespace}
 \title{Plot chains in treespace.}
 \usage{
-makeanim.treespace(chains, burnin = NA, n.points = 200,
-  fill.color = "LnL")
+makeanim.treespace(chains, burnin = NA, min.points = 200,
+  fill.color = "LnL", return = FALSE)
 }
 \arguments{
 \item{chains}{A list of one or more rwty.chain objects}
 
 \item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.}
 
-\item{n.points}{The minimum number of points on each plot. The function will automatically choose the thinning value which gets you the smallest number of trees that is at least as much as this value. The default (200) is usually sufficient to get a good idea of what is happening in your chains.}
+\item{min.points}{The minimum number of points on each plot. The function will automatically choose the thinning value which gets you the smallest number of trees that is at least as much as this value. The default (200) is usually sufficient to get a good idea of what is happening in your chains.}
 
 \item{fill.color}{The name of the column from the log table that that you would like to use to colour the points in the plot. The default is to colour the points by LnL.}
+
+\item{return}{TRUE/FALSE: whether to return nothing (FALSE, the default) or return a gganimate object and the width and height so that you can use `animate()` yourself (TRUE).}
 }
 \value{
 A gganimate object which has one frame for each of the sampled generations.
