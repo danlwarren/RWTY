@@ -6,6 +6,7 @@
 #' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
 #' @param min.points The minimum number of points on each plot. The function will automatically choose the thinning value which gets you the smallest number of trees that is at least as much as this value. The default (200) is usually sufficient to get a good idea of what is happening in your chains. 
 #' @param fill.color The name of the column from the log table that that you would like to use to colour the points in the plot. The default is to colour the points by LnL.
+#' @param return TRUE/FALSE: whether to return nothing (FALSE, the default) or return a gganimate object and the width and height so that you can use `animate()` yourself (TRUE). 
 #'
 #' @return A gganimate object which has one frame for each of the sampled generations. 
 #'
@@ -31,7 +32,7 @@
 #' }
 
 
-makeanim.treespace <- function(chains, burnin = NA, min.points = 200,  fill.color = "LnL"){
+makeanim.treespace <- function(chains, burnin = NA, min.points = 200,  fill.color = "LnL", return = FALSE){
 
     chains = check.chains(chains)
   
@@ -91,9 +92,9 @@ makeanim.treespace <- function(chains, burnin = NA, min.points = 200,  fill.colo
 
     base = ggplot(q, aes_string(x='x', y='y', group = "chain")) + 
         geom_density2d(data = q2) + 
-        geom_path(aes_string(colour = "generation")) + 
+        geom_path(aes_string(colour = "generation"), size = 2) + 
         scale_colour_gradient("generation", low='red', high='yellow') +
-        geom_point(shape = 21, size=5, colour = 'white', aes_string(fill = fill.color)) + 
+        geom_point(shape = 21, size=7, colour = 'white', aes_string(fill = fill.color)) + 
         scale_fill_gradientn(colours = viridis(256)) +
         facet_wrap(~chain, nrow=round(sqrt(length(unique(q$chain))))) +
         theme(panel.background = element_blank(), axis.line = element_line(color='grey'), panel.spacing = unit(0.1, "lines")) +
@@ -107,16 +108,16 @@ makeanim.treespace <- function(chains, burnin = NA, min.points = 200,  fill.colo
     # figure out size
     # first get the dimensions
     n = wrap_dims(length(unique(q$chain)), nrow = round(sqrt(length(unique(q$chain)))))
-    # 200 pixels per frame
-    n = n * 200
+    # 250 pixels per frame
+    n = n * 250
     # + 50 for the title, 100 for the legend
     n[1] = n[1] + 50
     n[2] = n[2] + 100
     
     # animate it
-    animate(treespace.animation, nframes = n.frames, width = n[2], height = n[1])
-  
-    #beep("complete")
-    
-    #return(list("treespace.animation" = treespace.animation, "width" = n[2], "height" = n[1], "frames" = n.frames))
+    if(return==FALSE){
+        animate(treespace.animation, nframes = n.frames, width = n[2], height = n[1])
+    }else{
+        return(list("treespace.animation" = treespace.animation, "width" = n[2], "height" = n[1], "frames" = n.frames))
+    }
 }
