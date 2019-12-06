@@ -35,7 +35,9 @@ Imports:
     png,
     gifski,
     gganimate,
-    transformr
+    transformr,
+    sf,
+    units
 Suggests:
     knitr,
     testthat,
