@@ -34,7 +34,8 @@ Imports:
     plotly,
     png,
     gifski,
-    gganimate
+    gganimate,
+    transformr
 Suggests:
     knitr,
     testthat,
