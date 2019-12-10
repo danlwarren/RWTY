@@ -92,15 +92,15 @@ makeanim.treespace <- function(chains, burnin = NA, min.points = 200,  fill.colo
   
   base = ggplot(q, aes_string(x='x', y='y', group = "chain")) + 
     geom_density2d(data = q2) + 
-    geom_path(aes_string(colour = "generation"), size = 2) + 
-    scale_colour_gradient("generation", low='red', high='yellow') +
+    geom_path(aes_string(colour = "chain"), size = 1.5) + 
     geom_point(shape = 21, size=7, colour = 'white', aes_string(fill = fill.color)) + 
     scale_fill_gradientn(colours = viridis(256)) +
     facet_wrap(~chain, nrow=round(sqrt(length(unique(q$chain))))) +
     theme(panel.background = element_blank(), axis.line = element_line(color='grey'), panel.spacing = unit(0.1, "lines")) +
-    theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5))
+    theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5)) +
+    guides(color=FALSE)
   
-  treespace.animation = base +
+  space.animation = base +
     labs(title = 'Generation: {frame_time}', x = 'x', y = 'y') +
     transition_time(generation) +
     shadow_wake(wake_length = 50/n.frames, wrap=TRUE) # 50 generations of trees fading into the background
@@ -128,7 +128,7 @@ makeanim.treespace <- function(chains, burnin = NA, min.points = 200,  fill.colo
   
   # figure out size
   # first get the dimensions
-  n = wrap_dims(length(unique(q$chain)), nrow = round(sqrt(length(unique(q$chain)))))
+  n = wrap_dims(length(unique(points$chain)), nrow = round(sqrt(length(unique(points$chain)))))
   # 250 pixels per frame
   n = n * 250
   # + 50 for the title, 100 for the legend
@@ -136,7 +136,7 @@ makeanim.treespace <- function(chains, burnin = NA, min.points = 200,  fill.colo
   n[2] = n[2] + 100
   
   print("building animations (this may take a minute)...")
-  space_gif = animate(treespace.animation, nframes = n.frames, width = n[2], height = n[1])
+  space_gif = animate(space.animation, nframes = n.frames, width = n[2], height = n[1])
   trace_gif = animate(trace.animation, nframes = n.frames, width = n[2], height = 250)
   
   print("combining animations...")
