@@ -16,7 +16,7 @@ treespace(chains, min.points = 200, burnin = NA, fill.color = "LnL")
 \item{fill.color}{The name of the column from the log table that that you would like to use to colour the points in the plot. The default is to colour the points by LnL.}
 }
 \value{
-Returns a list containing the points and a plot.
+Returns a list containing the points
 }
 \description{
 This function constructs a distance matrix from a list of trees

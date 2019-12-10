@@ -12,7 +12,8 @@ utils::globalVariables(c("Generation", "CSF", "split.frequency", "ess"))
 #' @import png
 #' @import gifski
 #' @import transformr
-#' @importfrom beepr beep
+#' @importFrom magick image_read image_append 
+#' @importFrom beepr beep
 #' @importFrom reshape2 melt
 #' @importFrom phangorn RF.dist maxCladeCred treedist path.dist
 #' @importFrom coda effectiveSize mcmc
@@ -27,7 +28,7 @@ utils::globalVariables(c("Generation", "CSF", "split.frequency", "ess"))
 #' @importFrom graphics title
 #' @importFrom grDevices dev.off pdf
 #' @importFrom stats as.dist cmdscale hclust median optim quantile reorder sd
-#' @importFrom gganimate transition_time shadow_wake animate
+#' @importFrom gganimate transition_time shadow_wake animate transition_reveal
 #'
 #' @param chains A list of rwty.chain objects. 
 #' @param burnin The number of trees to omit as burnin. The default (NA) is to use the burnin calculated automatically when loading the chain. This can be overidden by providing any integer value.  
