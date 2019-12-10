@@ -9,7 +9,7 @@
 #' @param min.points The minimum number of points on each plot. The function will automatically choose the thinning value which gets you the smallest number of trees that is at least as much as this value. The default (200) is usually sufficient to get a good idea of what is happening in your chains. 
 #' @param fill.color The name of the column from the log table that that you would like to use to colour the points in the plot. The default is to colour the points by LnL.
 #'
-#' @return Returns a list containing the points and a plot.
+#' @return Returns a list containing the points
 #'
 #' @keywords treespace, mds, multi-dimensional scaling
 #'
@@ -87,6 +87,7 @@ treespace <- function(chains, min.points = 200, burnin=NA, fill.color="LnL"){
     points$chain = ptable$chain
     points$sample = ptable$sample
     points$generation = ptable$generation
+    points$topo.dist.mcc = ptable$topo.dist.mcc
 
     if(!is.na(fill.color)) points[,fill.color] = as.numeric(ptable[[fill.color]])
 
