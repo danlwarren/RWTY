@@ -124,8 +124,6 @@ makeanim.treespace <- function(chains, burnin = NA, min.points = 200,  fill.colo
     theme(plot.margin = margin(5.5, 80, 5.5, 5.5)) +
     theme(legend.position="none")
   
-  
-  
   # figure out size
   # first get the dimensions
   n = wrap_dims(length(unique(points$chain)), nrow = round(sqrt(length(unique(points$chain)))))
@@ -143,6 +141,9 @@ makeanim.treespace <- function(chains, burnin = NA, min.points = 200,  fill.colo
   
   space_mgif <- image_read(space_gif)
   trace_mgif <- image_read(trace_gif)
+  
+  # note: this is slow, could try instead using mclappy to do all of the image_append operations
+  # then use image_join to make a gif. 
   
   final_gif <- image_append(c(space_mgif[1], trace_mgif[1]), stack = TRUE)
   for(i in 2:n.frames){
