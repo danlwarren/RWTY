@@ -4,8 +4,7 @@
 \alias{makeplot.acsf.cumulative}
 \title{Plot the Change in Split Frequencies (CSF) in sliding windows over the course of an MCMC.}
 \usage{
-makeplot.acsf.cumulative(chains, burnin = NA, window.size = 20,
-  facet = TRUE)
+makeplot.acsf.cumulative(chains, burnin = NA, window.size = 20, facet = TRUE)
 }
 \arguments{
 \item{chains}{A list of rwty.chain objects.}

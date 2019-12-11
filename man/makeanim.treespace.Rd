@@ -4,8 +4,7 @@
 \alias{makeanim.treespace}
 \title{Plot chains in treespace.}
 \usage{
-makeanim.treespace(chains, burnin = NA, min.points = 200,
-  fill.color = "LnL")
+makeanim.treespace(chains, burnin = NA, min.points = 200, fill.color = "LnL")
 }
 \arguments{
 \item{chains}{A list of one or more rwty.chain objects}

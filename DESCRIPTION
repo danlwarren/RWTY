@@ -37,10 +37,12 @@ Imports:
     gganimate,
     transformr,
     sf,
-    units
+    units,
+    treespace,
+    fields
 Suggests:
     knitr,
     testthat,
     rmarkdown
-RoxygenNote: 7.0.1
+RoxygenNote: 7.0.2
 VignetteBuilder: knitr

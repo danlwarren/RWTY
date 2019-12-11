@@ -4,8 +4,13 @@
 \alias{makeplot.all.params}
 \title{Plotting all parameters}
 \usage{
-makeplot.all.params(chains, burnin = NA, facet = TRUE,
-  free_y = FALSE, strip = 1)
+makeplot.all.params(
+  chains,
+  burnin = NA,
+  facet = TRUE,
+  free_y = FALSE,
+  strip = 1
+)
 }
 \arguments{
 \item{chains}{A set of rwty.chain objects}
