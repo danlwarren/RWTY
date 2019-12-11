@@ -48,7 +48,10 @@ makeanim.treespace <- function(chains, burnin = NA, min.points = 200,  fill.colo
   }
   
   # now go and get the x,y coordinates from the trees
-  points = treespace(chains, min.points, burnin, fill.color)
+  ts = treespace(chains, min.points, burnin, fill.color)
+  
+  points = ts$points
+  mcc.xy = ts$mcc.xy
   
   if(length(unique(points$x)) == 1 && length(unique(points$y)) == 1){
     stop("Only one tree in the posterior sample of trees, cannot create animation")
@@ -81,8 +84,6 @@ makeanim.treespace <- function(chains, burnin = NA, min.points = 200,  fill.colo
     q = rbind(q, r)
   }
   
-  q = arrange(q, chain, generation)
-  
   # duplicate q and remove the 'generation' column, to allow us to plot densities
   q2 = q
   q2 = q2[ , !(names(q2) %in% c("generation"))]
@@ -90,18 +91,23 @@ makeanim.treespace <- function(chains, burnin = NA, min.points = 200,  fill.colo
   # number of frames set so that it's one per generation
   n.frames = length(unique(q$generation))
   
-  base = ggplot(q, aes_string(x='x', y='y', group = "chain")) + 
-    geom_density2d(data = q2) + 
-    geom_path(aes_string(colour = "chain"), size = 1.5) + 
+  base = ggplot(q, aes_string(x='x', y='y', group='chain')) + 
+    geom_density2d(data = q2) +
+    geom_path(aes_string(colour='chain'), size=1.5) +
+    geom_point(data=mcc.xy, group=NA, color = "red", size = 7) + 
+    geom_point(data=mcc.xy, group=NA, color = "white", size = 5.5) + 
+    geom_point(data=mcc.xy, group=NA, color = "red", size = 4) + 
+    geom_point(data=mcc.xy, group=NA, color = "white", size = 2.5) + 
+    geom_point(data=mcc.xy, group=NA, color = "red", size = 1) +
     geom_point(shape = 21, size=7, colour = 'white', aes_string(fill = fill.color)) + 
     scale_fill_gradientn(colours = viridis(256)) +
     facet_wrap(~chain, nrow=round(sqrt(length(unique(q$chain))))) +
-    theme(panel.background = element_blank(), axis.line = element_line(color='grey'), panel.spacing = unit(0.1, "lines")) +
-    theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5)) +
+    theme_minimal() +
     guides(color=FALSE)
   
   space.animation = base +
-    labs(title = 'Generation: {frame_time}', x = 'x', y = 'y') +
+    labs(title = 'Generation: {frame_time}', x = 'x', y = 'y',
+         subtitle = 'MCC tree shown as bullseye') +
     transition_time(generation) +
     shadow_wake(wake_length = 50/n.frames, wrap=TRUE) # 50 generations of trees fading into the background
   
@@ -151,7 +157,6 @@ makeanim.treespace <- function(chains, burnin = NA, min.points = 200,  fill.colo
     final_gif <- c(final_gif, combined)
   }
   
-  # animate it
   return(final_gif)
 }
 
