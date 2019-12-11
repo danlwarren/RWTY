@@ -10,7 +10,7 @@ tree.dist.matrix(trees, treedist = "RF", lambda = 0)
 \item{trees}{a multiPhylo object}
 
 \item{treedist}{the tree distance metric to use. The options are:
-#' \itemize {
+\itemize {
 \item \code{"RF"} (default) the Robinson Foulds "unweighted" metric using \code{RF.dist} from package \code{phangorn}. This considers the trees as unrooted and does not use branch lengths.
 \item \code{"wRF"} the Robinson Foulds "weighted" metric using \code{wRF.dist} from package \code{phangorn}. This considers the trees as unrooted and uses branch lengths.
 \item \code{"PD"} the Steel & Penny "unweighted" tip-tip _path difference_ metric, based on \code{path.dist} from package \code{phangorn}. This considers the trees as unrooted and does not use branch lengths, only topology.
