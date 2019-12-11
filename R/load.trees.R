@@ -195,13 +195,25 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim="aut
   mcc.tree = phangorn::maxCladeCred(treelist[burnin:length(treelist)])
   
   # calculate distances from initial MCC tree
+  # calculate distances from initial MCC tree
   if(treedist == 'RF'){
-    topo.dists = phangorn::RF.dist(mcc.tree, treelist)
+    topo.dists = phangorn::RF.dist(mcc.tree, trees, check.labels = FALSE)
+  }else if (treedist == "wRF") {
+    topo.dists = phangorn::wRF.dist(mcc.tree, trees, check.labels=FALSE)
   }else if(treedist == 'PD'){
-    topo.dists = phangorn::path.dist(mcc.tree, treelist)
+    topo.dists = phangorn::path.dist(mcc.tree, trees, check.labels = FALSE)
+  }else if (treedist == "wPD") {
+    topo.dists = phangorn::path.dist(mcc.tree, trees, check.labels = FALSE,  use.weight=TRUE)
+  }else if (treedist == "KC") {
+    mcc.tree.vec = treespace::treeVec(mcc.tree)
+    topo.dists = sapply(trees, function(x) sqrt(sum((mcc.tree.vec-treespace::treeVec(x))^2)))
+  }else if (treedist=="KF") {
+    topo.dists = phangorn::KF.dist(mcc.tree, trees, check.labels=FALSE)
   }else{
-    stop("treedist must be either 'PD' or 'RF'")
+    stop("Unknown option for treedist. See ?tree.dist.matrix for options.")
   }
+  
+  
   
   # add topolgocial distance to MCC tree to p.table
   if(is.null(ptable)){
@@ -245,13 +257,25 @@ calculate.burnin <- function(trees, ptable, treedist){
   
   mcc.tree = phangorn::maxCladeCred(trees)
   
+  # calculate distances from initial MCC tree
   if(treedist == 'RF'){
-    topo.dists = phangorn::RF.dist(mcc.tree, trees)
+    topo.dists = phangorn::RF.dist(mcc.tree, trees, check.labels = FALSE)
+  }else if (treedist == "wRF") {
+    topo.dists = phangorn::wRF.dist(mcc.tree, trees, check.labels=FALSE)
   }else if(treedist == 'PD'){
-    topo.dists = phangorn::path.dist(mcc.tree, trees)
+    topo.dists = phangorn::path.dist(mcc.tree, trees, check.labels = FALSE)
+  }else if (treedist == "wPD") {
+    topo.dists = phangorn::path.dist(mcc.tree, trees, check.labels = FALSE,  use.weight=TRUE)
+  }else if (treedist == "KC") {
+    mcc.tree.vec = treespace::treeVec(mcc.tree)
+    topo.dists = sapply(trees, function(x) sqrt(sum((mcc.tree.vec-treespace::treeVec(x))^2)))
+  }else if (treedist=="KF") {
+    topo.dists = phangorn::KF.dist(mcc.tree, trees, check.labels=FALSE)
   }else{
-    stop("treedist must be either 'PD' or 'RF'")
+    stop("Unknown option for treedist. See ?tree.dist.matrix for options.")
   }
+  
+  
   
   final.10pc.av.treedist = mean(topo.dists[floor(0.9*N):N])
   burnin.treedist = min(which(topo.dists < final.10pc.av.treedist))
