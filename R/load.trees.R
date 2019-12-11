@@ -94,17 +94,17 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim="aut
   
   print(paste(gens.per.tree, "generations per tree..."))
   
+  ## MK removing the code below to unroot trees because each metric will handle the trees correctly, rooted or unrooted
   
-  
-  # Unroot all trees.  Can't use lapply because it was
-  # deleting tip labels.
-  if(is.rooted(treelist[[1]])){
-    print("Unrooting, this may take a while...")
-    for(i in 1:length(treelist)){
-      treelist[[i]] <- unroot(treelist[[i]])
-    }
-  }
-  else{print("Trees are unrooted...")}
+  # # Unroot all trees.  Can't use lapply because it was
+  # # deleting tip labels.
+  # if(is.rooted(treelist[[1]])){
+  #   print("Unrooting, this may take a while...")
+  #   for(i in 1:length(treelist)){
+  #     treelist[[i]] <- unroot(treelist[[i]])
+  #   }
+  # }
+  # else{print("Trees are unrooted...")}
   
   
   # Reset class
