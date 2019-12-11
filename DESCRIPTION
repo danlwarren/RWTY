@@ -39,7 +39,9 @@ Imports:
     sf,
     units,
     treespace,
-    fields
+    fields,
+    beepr,
+    magick
 Suggests:
     knitr,
     testthat,
