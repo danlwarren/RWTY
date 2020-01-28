@@ -4,28 +4,73 @@
 \alias{tree.dist.matrix}
 \title{Tree distance matrix calculation}
 \usage{
-tree.dist.matrix(trees, treedist = "RF")
+tree.dist.matrix(trees, treedist = "RF", lambda = 0)
 }
 \arguments{
 \item{trees}{a multiPhylo object}
 
-\item{treedist}{the type of tree distance metric to use, can be 'PD' for path distance or 'RF' (the default) for Robinson Foulds distance}
+\item{treedist}{the tree distance metric to use. The options are:
+\itemize {
+\item \code{"RF"} (default) the Robinson Foulds "unweighted" metric using \code{RF.dist} from package \code{phangorn}. This considers the trees as unrooted and does not use branch lengths.
+\item \code{"wRF"} the Robinson Foulds "weighted" metric using \code{wRF.dist} from package \code{phangorn}. This considers the trees as unrooted and uses branch lengths.
+\item \code{"PD"} the Steel & Penny "unweighted" tip-tip _path difference_ metric, based on \code{path.dist} from package \code{phangorn}. This considers the trees as unrooted and does not use branch lengths, only topology.
+\item \code{"wPD"} the Steel & Penny "weighted" tip-tip _path difference_ metric, based on \code{path.dist} from package \code{phangorn}. This considers the trees as unrooted and uses branch lengths.
+\item \code{"KC"} the Kendall Colijn metric, using \code{treeVec} from package \code{treespace}. This is only defined for rooted trees. The extent to which branch lengths are used is controlled by the parameter \code{lambda} between 0 (topology only) and 1 (most emphasis on branch lengths).
+\item \code{"KF"} the Kuhner & Felsenstein branch score distance using \code{KF.dist} from package \code{phangorn}. This considers the trees as unrooted and uses branch lengths.
+}
+Note that if rooted trees are supplied, the metrics designed for unrooted trees will typically still run but there will inevitably be a 
+loss of information in the tree comparison about the root position and the corresponding "depths" of tips.}
+
+\item{lambda}{variable used when treedist="KC". Defaults to 0 (comparing trees by topology only) and can be increased up to 1 to include the branch lengths to a greater extent in the tree comparison.}
 }
 \value{
-RF A distance matrix of RF distances
+The matrix of tree distances
 }
 \description{
-This function takes a list of trees and returns a distance matrix
-populated with Robinson-Foulds tree distances between all trees
-in the list.
+This function takes a multiPhylo list of trees and returns a distance matrix
+populated with pairwise tree distances between all trees in the list.
+By default the distance method is the Robinson-Foulds metric.
 }
 \examples{
 \dontrun{
 data(fungus)
 tree.dist.matrix(fungus$Fungus.Run1$trees)
 }
+trees <- rmtree(10,6)
+tree.dist.matrix(trees) # RF distance matrix
+tree.dist.matrix(trees,"KC") # KC distance matrix (lambda=0)
+
+
 }
+\references{
+Robinson, D. F. and Foulds, L. R. (1981) Comparison of phylogenetic trees, Mathematical Biosciences, 53(1):131-147
+
+Robinson, D. F. and Foulds, L. R. (1979) Comparison of weighted labelled trees, Combinatorial Mathematics VI, Lecture Notes in Mathematics, 748:119-126
+
+Steel M. A. and Penny P. (1993) Distributions of tree comparison metrics - some new results, Systematic Biology, 42(2):126-141
+
+Kendall, M. and Colijn, C. (2016) Mapping phylogenetic trees to reveal distinct patterns of evolution, Molecular Biology and Evolution, 33(10):2735–2743, DOI: 10.1093/molbev/msw124
+
+Jombart, T., Kendall, M., Almagro-Garcia, J. and Colijn, C. (2017), treespace: Statistical exploration of landscapes of phylogenetic trees. Molecular Ecology Resources, Nov;17(6):1385-1392, DOI: 10.1111/1755-0998.12676
+
+Kuhner, M. K. and Felsenstein, J. (1994) A simulation comparison of phylogeny algorithms under equal and unequal evolutionary rates, Molecular Biology and Evolution, 11(3), 459-468
+
+Schliep K.P. (2011), phangorn: phylogenetic analysis in R. Bioinformatics, 27(4) 592-593
+
+Schliep, K., Potts, A. J., Morrison, D. A., Grimm, G. W. (2017), Intertwining phylogenetic trees and networks. Methods in Ecology and Evolution, 8:1212-1220. DOI: 10.1111/2041-210X.12760
+}
+\keyword{Colijn,}
+\keyword{Felsenstein}
+\keyword{Kendall}
+\keyword{Kuhner}
+\keyword{Penny,}
+\keyword{Steel}
+\keyword{and}
+\keyword{branch}
+\keyword{difference,}
 \keyword{distance,}
-\keyword{robinson-foulds}
+\keyword{path}
+\keyword{robinson-foulds,}
+\keyword{score}
 \keyword{tree}
 \keyword{treespace,}
