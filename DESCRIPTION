@@ -37,7 +37,8 @@ Imports:
     gganimate,
     transformr,
     sf,
-    units
+    units,
+    beepr
 Suggests:
     knitr,
     testthat,
