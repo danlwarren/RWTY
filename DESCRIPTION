@@ -38,7 +38,8 @@ Imports:
     transformr,
     sf,
     units,
-    beepr
+    beepr,
+    magick
 Suggests:
     knitr,
     testthat,
