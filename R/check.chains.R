@@ -49,7 +49,6 @@ check.chains <- function(chains){
     }
   }
   
-  
   # checks to be run if ptables are supplied
   if(any(unlist(lapply(chains, function(x) length(x$ptable[,1])))) > 0){
     

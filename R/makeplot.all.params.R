@@ -1,9 +1,9 @@
 #' Plotting all parameters
 #' 
-#' Plots all parameter values, including the distance of trees from the MCC tree for each chain (see makeplot.topology) over the length of the MCMC chain
+#' Plots all parameter values, including tree topologies (see makeplot.topology) over the length of the MCMC chain
 #'
 #' @param chains A set of rwty.chain objects 
-#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
+#' @param burnin The number of trees to omit as burnin. 
 #' @param facet Boolean denoting whether to make a facet plot.
 #' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.
 #' @param strip Number indicating which column to strip off (i.e., strip=1 removes first column, which is necessary for most MCMC outputs in which the first column is just the generation).
@@ -20,18 +20,21 @@
 #' makeplot.all.params(fungus, burnin=20)
 #' }
 
-makeplot.all.params <- function(chains, burnin = NA, facet=TRUE, free_y=FALSE, strip = 1){
+makeplot.all.params <- function(chains, burnin = 0, facet=TRUE, free_y=FALSE, strip = 1){
 
     chains = check.chains(chains)
     chain = chains[[1]]
     if(is.null(chain$ptable)) stop("No parameters associated with your chains")
-    if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
-    
+
     params <- names(chain$ptable)[-strip]
 
     param.plots <- lapply(params, FUN = function(x) makeplot.param(parameter = x, burnin = burnin, chains = chains, facet = facet))
 
-    plot.names = c(paste(params, ".trace", sep=""))
+    t.plot = makeplot.topology(chains, burnin = burnin, facet = facet)
+
+    param.plots[[length(param.plots)+1]] <- t.plot
+
+    plot.names = c(paste(params, ".trace", sep=""), "topology.trace.plot")
 
     names(param.plots) <- plot.names
 

@@ -5,11 +5,11 @@
 #' dimensional tree space for plotting.
 #'
 #' @param chains A list of 1 or more rwty.chain objects.
-#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
-#' @param min.points The minimum number of points on each plot. The function will automatically choose the thinning value which gets you the smallest number of trees that is at least as much as this value. The default (200) is usually sufficient to get a good idea of what is happening in your chains. 
-#' @param fill.color The name of the column from the log table that that you would like to use to colour the points in the plot. The default is to colour the points by LnL.
+#' @param burnin The number of trees to eliminate as burnin. Default is zero. 
+#' @param n.points The minimum number of points you want in your plot.
+#' @param fill.color The name of the column from the log table that that you would like to use to colour the points in the plot.
 #'
-#' @return Returns a list of two objects: the `points` dataframe, and the `mcc.xy` dataframe. The former contains x and y coordinates for each tree calculated with mds, as well as the details pertaining to that tree. The latter contains just the x and y coordinates of the MCC tree for the chain(s) in question.
+#' @return Returns a list containing the points and a plot.
 #'
 #' @keywords treespace, mds, multi-dimensional scaling
 #'
@@ -17,20 +17,14 @@
 #' @examples
 #' \dontrun{
 #' data(fungus)
-#' treespace(fungus)
+#' treespace(fungus, n.points=50, burnin=20, fill.color="LnL")
 #' }
 
 
 
-treespace <- function(chains, min.points = 200, burnin=NA, fill.color="LnL"){
+treespace <- function(chains, n.points = 100, burnin=0, fill.color=NA){
 
     chains = check.chains(chains)
-    
-    chain = chains[[1]]
-    
-    # set burnin to the maximum from across all chains
-    if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
-    
     labels = names(chains)
     ptable = combine.ptables(chains, burnin=0) # we deal with burnin later for this 
 
@@ -40,22 +34,15 @@ treespace <- function(chains, min.points = 200, burnin=NA, fill.color="LnL"){
         stop(sprintf("The fill.color name you supplied ('%s') wasn't found in your parameter table", fill.color))
     }
 
-    total.trees = length(chain$trees) - burnin
-    if(total.trees < 3){
-      stop(sprintf("Cannot calculate treespace coordinates with fewer than 3 trees. Your chains contain %d trees, and your burnin is %d, leaving %d tree(s) to work with, and that's not enough.", length(chain$trees), burnin, total.trees))
-    }
-    
-    # subsample down to minimum min.points
-    step = as.integer((length(chain$trees) - burnin) / min.points)
-    if(step<1){ step = 1 } # because sometimes the above gives step=0
-    
+    chain = chains[[1]]
+
+    # subsample down to minimum n.points
+    step = as.integer((length(chain$trees) - burnin) / n.points)
     indices = seq(from = burnin + 1, to = length(chain$trees), by = step)   
 
     # subsample trees and parameters by indices
     trees = lapply(chains, function(x) x[['trees']][indices])
 
-    # get all the rows from ptable that we want. The 'additional' here accounts for the separate chains
-    # by figuring out where in the table each chain starts
     additional = unlist(lapply(length(chain$trees) * (0:(length(chains) - 1)), function(x) rep(x, length(indices))))
     ptable = ptable[(indices + additional),]
     
@@ -70,9 +57,6 @@ treespace <- function(chains, min.points = 200, burnin=NA, fill.color="LnL"){
         }
     }
 
-    # add on the mcc tree
-    alltrees = c(alltrees, chains[[1]]$mcc.tree)
-    
     d <- tree.dist.matrix(alltrees)
 
     # here's a catch in case all trees are identical, in which case all of d==0
@@ -86,23 +70,16 @@ treespace <- function(chains, min.points = 200, burnin=NA, fill.color="LnL"){
     }
 
     points <- as.data.frame(mds)
-    names(points) <- c("x", "y")
-    
-    # here we take the mcc tree off the list
-    mcc.xy <- points[nrow(points),]
-    rownames(mcc.xy) = "mcc.tree"
-    points <- points[-nrow(points),]
-    
     row.names(points) <- seq(nrow(points))
+    names(points) <- c("x", "y")
 
     points$chain = ptable$chain
     points$sample = ptable$sample
     points$generation = ptable$generation
-    points$topo.dist.mcc = ptable$topo.dist.mcc
 
     if(!is.na(fill.color)) points[,fill.color] = as.numeric(ptable[[fill.color]])
 
-    return(list(points = points, mcc.xy = mcc.xy))
+    return(points)
         
 }
 

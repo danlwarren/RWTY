@@ -6,7 +6,7 @@
 #' Each line in the plot represents a single clade. The colour of the line represents the standard deviation of the split frequencies of that clade across all sliding windows.
 #'
 #' @param chains A list of rwty.chain objects. 
-#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
+#' @param burnin The number of trees to eliminate as burnin 
 #' @param n.clades The number of clades to plot 
 #' @param window.size The number of trees to include in each window (note, specified as a number of sampled trees, not a number of generations)
 #' @param facet (TRUE/FALSE). TRUE: return a single plot with one facet per chain; FALSE: return a list of individual plots with one plot per chain 
@@ -23,14 +23,8 @@
 #' makeplot.splitfreqs.cumulative(fungus, burnin = 20, n.clades=25)
 #' }
 
-makeplot.splitfreqs.cumulative <- function(chains, burnin = NA, n.clades=20, window.size = 20, facet = TRUE, rank = 'wcsf'){ 
+makeplot.splitfreqs.cumulative <- function(chains, burnin = 0, n.clades=20, window.size = 20, facet = TRUE, rank = 'wcsf'){ 
 
-    chains = check.chains(chains)
-  
-    # set burnin to the maximum from across all chains
-    if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
-  
-  
     print(sprintf("Creating cumulative split frequency plot for %d clades", n.clades))
     if(rank == 'wcsf'){ 
         RANK = "WCSF"
@@ -50,7 +44,7 @@ makeplot.splitfreqs.cumulative <- function(chains, burnin = NA, n.clades=20, win
 
 
     if(facet==TRUE){
-        splitfreqs.plot <- ggplot(data=dat, aes_string(x=as.numeric(as.character(dat$Generations)), y="Split.Frequency", group = "Clade")) +
+        splitfreqs.plot <- ggplot(data=dat, aes(x=as.numeric(as.character(Generations)), y=Split.Frequency, group = Clade)) +
             facet_wrap(~Chain, ncol = 1) +
             geom_line(aes_string(colour = RANK)) +
             scale_color_viridis(option = "C", end = 0.85) +

@@ -3,9 +3,9 @@
 #' This function will take list of rwty.chains objects and produce plots of chains in treespace.
 #'
 #' @param chains A list of one or more rwty.chain objects
-#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
-#' @param min.points The minimum number of points on each plot. The function will automatically choose the thinning value which gets you the smallest number of trees that is at least as much as this value. The default (200) is usually sufficient to get a good idea of what is happening in your chains. 
-#' @param fill.color The name of the column from the log table that that you would like to use to colour the points in the plot. The default is to colour the points by LnL.
+#' @param burnin The number of samples to remove from the start of the chain as burnin
+#' @param n.points The number of points on each plot
+#' @param fill.color The name of any column in your parameter file that you would like to use as a fill colour for the points of the plot.
 #'
 #' @return A list of two ggplot objects: one plots the points in treespace, the other shows a heatmap of the same points
 #'
@@ -16,7 +16,7 @@
 #' \dontrun{
 #' data(fungus)
 #' 
-#' p <- makeplot.treespace(fungus)
+#' p <- makeplot.treespace(fungus, burnin = 20, fill.color = 'LnL')
 #' # Treespace plot for all the fungus data
 #' 
 #' # NB: these data indicate significant problems: the chains are sampling very 
@@ -32,10 +32,10 @@
 #' 
 #' # we can also plot different parameters as the fill colour.
 #' # e.g. we can plot the first two fungus chains with likelihood as the fill
-#' makeplot.treespace(fungus[1:2], fill.color = 'LnL')
+#' makeplot.treespace(fungus[1:2], burnin = 100, fill.color = 'LnL')
 #' 
 #' # or with tree length as the fill
-#' makeplot.treespace(fungus[1:2], fill.color = 'TL')
+#' makeplot.treespace(fungus[1:2], burnin = 100, fill.color = 'TL')
 #'
 #' # you can colour the plot with any parameter in your ptable
 #' # to see which parameters you have you can simply do this:
@@ -43,32 +43,42 @@
 #' }
 
 
-makeplot.treespace <- function(chains, burnin = NA, min.points = 200,  fill.color = "LnL"){
+makeplot.treespace <- function(chains, burnin = 0, n.points = 100,  fill.color = NA){
 
-    chains = check.chains(chains)
-  
-    # set burnin to the maximum from across all chains
-    if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
-  
+
     print(sprintf("Creating treespace plots"))
 
-    if(min.points < 20) {
-      stop("You need at least twenty points to make a meaningful treespace plot")
+    # Pre - compute checks. Since the calculations can take a while...
+    comparisons = ((n.points * length(chains)) * (n.points * length(chains)) / 2.0) - (n.points * length(chains))
+
+    if(n.points < 2) {
+      stop("You need at least two points to make a meaningful treespace plot")
     }
     
+    if("rwty.chain" %in% class(chains)){
+      if(n.points > (length(chains$trees) - burnin)) {
+        stop("The number of trees (after removing burnin) is smaller than the number of points you have specified")
+      }
+    } else {
+      if(n.points > (length(chains[[1]]$trees) - burnin)) {
+        stop("The number of trees (after removing burnin) is smaller than the number of points you have specified")
+      }
+    }
+
+    if(comparisons > 1000000){
+        print(sprintf("WARNING: Calculating %s pairwise tree distances for the treespace plot may take a long time, consider plotting fewer points.", comparisons))
+    }
+
     # now go and get the x,y coordinates from the trees
-    ts = treespace(chains, min.points, burnin, fill.color)
-    
-    points = ts$points
-    mcc.xy = ts$mcc.xy
-    
-    points.plot <- ggplot(data=points, aes_string(x="x", y="y")) + 
-      geom_path(alpha=0.25, aes_string(colour = "generation"), size=0.75) + 
+    points = treespace(chains, n.points, burnin, fill.color)
+
+    points.plot <- ggplot(data=points, aes(x=x, y=y)) + 
+      geom_path(alpha=0.25, aes(colour = generation), size=0.75) + 
       scale_colour_gradient(low='red', high='yellow') +
-      theme_minimal() +
+      theme(panel.background = element_blank(), axis.line = element_line(color='grey'), panel.margin = unit(0.1, "lines")) +
+      theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5)) +
       facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain))))) +
-      labs(title = sprintf("Tree space for %d trees per chain", length(unique(points$generation))),
-           subtitle = "MCC tree shown as bullseye")
+      ggtitle(sprintf("Tree space for %d trees", n.points))
 
 
     if(!is.na(fill.color)){
@@ -79,26 +89,18 @@ makeplot.treespace <- function(chains, burnin = NA, min.points = 200,  fill.colo
       points.plot <- points.plot + geom_point(size=4) 
     }
 
-    # add a bullseye for the mcc tree
-    points.plot = points.plot + 
-      geom_point(data=mcc.xy, color = "red", size = 4) + 
-      geom_point(data=mcc.xy, color = "white", size = 3.125) + 
-      geom_point(data=mcc.xy, color = "red", size = 2.25) + 
-      geom_point(data=mcc.xy, color = "white", size = 1.375) + 
-      geom_point(data=mcc.xy, color = "red", size = 0.5)
-    
     # only make a heatmap if we have > 1 unique point to look at
     if(length(unique(c(points$x, points$y))) == 1){
         heatmap = NA
     }else{
-        heatmap <- ggplot(data=points, aes_string(x="x",y="y")) + 
-          stat_density2d(geom="tile", aes_string(fill = "..density.."), contour = FALSE) + 
-          theme(panel.background = element_blank(), axis.line = element_line(color='grey'), panel.spacing = unit(0.1, "lines")) +
+        heatmap <- ggplot(data=points, aes(x=x,y=y)) + 
+          stat_density2d(geom="tile", aes(fill = ..density..), contour = FALSE) + 
+          theme(panel.background = element_blank(), axis.line = element_line(color='grey'), panel.margin = unit(0.1, "lines")) +
           facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain))))) + 
           scale_x_continuous(expand = c(0, 0)) +
           scale_y_continuous(expand = c(0, 0)) +
           scale_fill_gradientn(colours = viridis(256)) +
-          ggtitle(sprintf("Tree space heatmap for %d trees", nrow(points)))
+          ggtitle(sprintf("Tree space heatmap for %d trees", n.points))
     }
 
     return(list('treespace.heatmap' = heatmap, 'treespace.points.plot' = points.plot))
