@@ -1,11 +1,11 @@
-#' Plotting parameters
+#' Plotting burnin
 #' 
-#' Plots parameter values over the length of the MCMC chain
+#' Plots burnin values vs. tree topology and LnL over the length of the MCMC chain. The burnin for each chain is shown as a dashed line in the colour of that chain. The global burnin used for analyses (which is just the maximum of all burnin values) is shown as a solid red line.
 #'
 #' @param chains A set of rwty.chain objects.
-#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
+#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value either when loading the chains or to this function.  
 #' 
-#' @return param.plot Returns a ggplot object.
+#' @return burnin.plot Returns a list of two ggplot objects: one with the LnL as the parameter, and one with the topological distance.
 #'
 #' @keywords parameter, plot, convergence, mcmc, phylogenetics
 #'
@@ -33,20 +33,34 @@ makeplot.burnin <- function(chains, burnin = NA){
     vlines <- data.frame(burn = unlist(lapply(chains, function(x) x[['burnin']])),
                          chain = names(chains))
     
+    gens.per.tree <- data.frame(gens = unlist(lapply(chains, function(x) x[['gens.per.tree']])),
+                         chain = names(chains))
+    
+    vlines$burn = vlines$burn * gens.per.tree$gens
+    
     # Use the automatic burnin if one isn't supplied
     if(is.na(burnin)){
         burnin = max(vlines$burn)
     }
-    
-    burnin.plot <- ggplot(ptable, aes_string(x="generation", y="topo.dist.mcc")) + 
+       
+    burnin.topo.plot <- ggplot(ptable, aes_string(x="generation", y="topo.dist.mcc")) + 
         geom_line(aes_string(colour = "chain")) + 
-        geom_vline(xintercept = burnin, linetype = "dashed", alpha = 0.5) +
+        geom_vline(xintercept = burnin, alpha = 0.5, size = 2, color = "red") +
         geom_vline(data = vlines, aes(xintercept = burn, color = chain), linetype = "longdash") +
         xlab("Generation") + 
         scale_color_viridis(discrete = TRUE, end = 0.85) + 
         facet_wrap(~chain, ncol=1, scales = "free_y") + 
         theme(legend.position="none")
+
+    burnin.LnL.plot <- ggplot(ptable, aes_string(x="generation", y="LnL")) + 
+      geom_line(aes_string(colour = "chain")) + 
+      geom_vline(xintercept = burnin, alpha = 0.5, size = 2, color = "red") +
+      geom_vline(data = vlines, aes(xintercept = burn, color = chain), linetype = "longdash") +
+      xlab("Generation") + 
+      scale_color_viridis(discrete = TRUE, end = 0.85) + 
+      facet_wrap(~chain, ncol=1, scales = "free_y") + 
+      theme(legend.position="none")
     
-    return(list(burnin.plot = burnin.plot))
+    return(list(burnin.topo.plot = burnin.topo.plot, burnin.LnL.plot = burnin.LnL.plot))
     
 }

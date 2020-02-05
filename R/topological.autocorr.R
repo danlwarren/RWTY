@@ -38,16 +38,18 @@ topological.autocorr <- function(chains, burnin = NA){
   # choose a max sampling interval such that we have minimum 100 trees to get the mean topo distance from in each bin
   max.sampling.interval = N - burnin - 100
   
+  # now make the max sampling interval such that we only do enough intervals to detect a minimum ESS of 5
+  if(max.sampling.interval>(N-burnin)/5){
+    max.sampling.interval = as.integer((N-burnin)/5)
+  }
+  
   if(max.sampling.interval < 1){
     stop(sprintf("Only %d trees remain after removing burnin, which is not enough to calculate any topological autocorrelation"))
   }
   
   dist.matrices = lapply(chains, function(x) x[['tree.dist.matrix']])
   
-  # get all the sampling intervals
-  autocorr.intervals = max.sampling.interval
-  
-  raw.autocorr = lapply(dist.matrices, tree.autocorr, max.sampling.interval, autocorr.intervals, burnin)
+  raw.autocorr = lapply(dist.matrices, tree.autocorr, max.sampling.interval, burnin)
   
   final.autocorr = do.call("rbind", raw.autocorr)
   
@@ -60,23 +62,13 @@ topological.autocorr <- function(chains, burnin = NA){
 }
 
 
-tree.autocorr <- function(dist.mat, max.sampling.interval, autocorr.intervals, burnin){
+tree.autocorr <- function(dist.mat, max.sampling.interval, burnin){
   
-  if(!is.numeric(autocorr.intervals)) stop("autocorr.intervals must be a positive integer")
-  if(autocorr.intervals<1 | autocorr.intervals%%1!=0) stop("autocorr.intervals must be a positive integer")
-  
-  # this ensures that we can tell you if your ESS is < some threshold
-  # the max(,2) bit is a fallback for extremely short tree lists
-  #max.thinning <- max.sampling.interval
-  
-  #n.samples = sqrt(2*length(dist.mat)+0.25)+0.5
-  
-  #if(max.thinning > (n.samples - 20)) {
-  #  max.thinning = n.samples - 20
-  #}
+  if(!is.numeric(max.sampling.interval)) stop("autocorr.intervals must be a positive integer")
+  if(max.sampling.interval<1 | max.sampling.interval%%1!=0) stop("autocorr.intervals must be a positive integer")
   
   # we analyze up to autocorr.intervals thinnings spread evenly, less if there are non-unique numbers
-  thinnings <- unique(as.integer(seq(from = 1, to = max.sampling.interval, length.out=autocorr.intervals)))
+  thinnings <- unique(as.integer(seq(from = 1, to = max.sampling.interval, length.out=max.sampling.interval)))
   
   r <- lapply(as.list(thinnings), get.sequential.distances, dist.mat, burnin) 
   r <- data.frame(matrix(unlist(r), ncol=2, byrow=T))

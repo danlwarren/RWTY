@@ -41,14 +41,15 @@ topological.approx.ess <- function(chains, burnin = NA){
       return(result)
     }
     
-    # if we get to here, we have at least 10 intervals from which to calculate the approx.ess, so we can go ahead
+    # now make the max sampling interval such that we only do enough intervals to detect a minimum ESS of 5
+    if(max.sampling.interval>(N-burnin)/5 & (N-burnin)/5 > 20){
+      max.sampling.interval = as.integer((N-burnin)/5)
+    }
     
-    # set them equal, so we get every interval
-    autocorr.intervals = max.sampling.interval
-
+    # if we get to here, we have at least 10 intervals from which to calculate the approx.ess, so we can go ahead
     print(sprintf("Calculating approximate ESS with sampling intervals from 1 to %d", max.sampling.interval))
 
-    autocorr.df = topological.autocorr.squared(chains, burnin, max.sampling.interval, autocorr.intervals)
+    autocorr.df = topological.autocorr.squared(chains, burnin, max.sampling.interval)
 
     autocorr.m = estimate.autocorr.m(autocorr.df)
 
@@ -60,19 +61,20 @@ topological.approx.ess <- function(chains, burnin = NA){
 
 }
 
+  
 
-topological.autocorr.squared <- function(chains, burnin, max.sampling.interval, autocorr.intervals){
+topological.autocorr.squared <- function(chains, burnin, max.sampling.interval){
   
   #identical to the topological.autocorr function but tree distances are squared first, see https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5010905/
   
   chain = chains[[1]]
   
   N = length(chains[[1]]$trees)
-  
+
   # here we square all the distance matrices to use in the ESS calculation
   dist.matrices = lapply(chains, function(x) x[['tree.dist.matrix']]^2)
   
-  raw.autocorr = lapply(dist.matrices, tree.autocorr, max.sampling.interval, autocorr.intervals, burnin)
+  raw.autocorr = lapply(dist.matrices, tree.autocorr, max.sampling.interval, burnin)
   
   final.autocorr = do.call("rbind", raw.autocorr)
   

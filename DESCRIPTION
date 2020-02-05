@@ -34,7 +34,12 @@ Imports:
     plotly,
     png,
     gifski,
-    gganimate
+    gganimate,
+    transformr,
+    sf,
+    units,
+    beepr,
+    magick
 Suggests:
     knitr,
     testthat,

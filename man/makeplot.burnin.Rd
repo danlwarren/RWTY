@@ -2,20 +2,20 @@
 % Please edit documentation in R/makeplot.burnin.R
 \name{makeplot.burnin}
 \alias{makeplot.burnin}
-\title{Plotting parameters}
+\title{Plotting burnin}
 \usage{
 makeplot.burnin(chains, burnin = NA)
 }
 \arguments{
 \item{chains}{A set of rwty.chain objects.}
 
-\item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.}
+\item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value either when loading the chains or to this function.}
 }
 \value{
-param.plot Returns a ggplot object.
+burnin.plot Returns a list of two ggplot objects: one with the LnL as the parameter, and one with the topological distance.
 }
 \description{
-Plots parameter values over the length of the MCMC chain
+Plots burnin values vs. tree topology and LnL over the length of the MCMC chain. The burnin for each chain is shown as a dashed line in the colour of that chain. The global burnin used for analyses (which is just the maximum of all burnin values) is shown as a solid red line.
 }
 \examples{
 \dontrun{

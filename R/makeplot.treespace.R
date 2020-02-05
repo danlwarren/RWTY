@@ -4,7 +4,7 @@
 #'
 #' @param chains A list of one or more rwty.chain objects
 #' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
-#' @param n.points The minimum number of points on each plot. The function will automatically choose the thinning value which gets you the smallest number of trees that is at least as much as this value. The default (200) is usually sufficient to get a good idea of what is happening in your chains. 
+#' @param min.points The minimum number of points on each plot. The function will automatically choose the thinning value which gets you the smallest number of trees that is at least as much as this value. The default (200) is usually sufficient to get a good idea of what is happening in your chains. 
 #' @param fill.color The name of the column from the log table that that you would like to use to colour the points in the plot. The default is to colour the points by LnL.
 #'
 #' @return A list of two ggplot objects: one plots the points in treespace, the other shows a heatmap of the same points
@@ -16,7 +16,7 @@
 #' \dontrun{
 #' data(fungus)
 #' 
-#' p <- makeplot.treespace(fungus, burnin = 20, fill.color = 'LnL')
+#' p <- makeplot.treespace(fungus)
 #' # Treespace plot for all the fungus data
 #' 
 #' # NB: these data indicate significant problems: the chains are sampling very 
@@ -32,10 +32,10 @@
 #' 
 #' # we can also plot different parameters as the fill colour.
 #' # e.g. we can plot the first two fungus chains with likelihood as the fill
-#' makeplot.treespace(fungus[1:2], burnin = 100, fill.color = 'LnL')
+#' makeplot.treespace(fungus[1:2], fill.color = 'LnL')
 #' 
 #' # or with tree length as the fill
-#' makeplot.treespace(fungus[1:2], burnin = 100, fill.color = 'TL')
+#' makeplot.treespace(fungus[1:2], fill.color = 'TL')
 #'
 #' # you can colour the plot with any parameter in your ptable
 #' # to see which parameters you have you can simply do this:
@@ -43,7 +43,7 @@
 #' }
 
 
-makeplot.treespace <- function(chains, burnin = NA, n.points = 200,  fill.color = "LnL"){
+makeplot.treespace <- function(chains, burnin = NA, min.points = 200,  fill.color = "LnL"){
 
     chains = check.chains(chains)
   
@@ -52,20 +52,23 @@ makeplot.treespace <- function(chains, burnin = NA, n.points = 200,  fill.color 
   
     print(sprintf("Creating treespace plots"))
 
-    if(n.points < 20) {
+    if(min.points < 20) {
       stop("You need at least twenty points to make a meaningful treespace plot")
     }
     
     # now go and get the x,y coordinates from the trees
-    points = treespace(chains, n.points, burnin, fill.color)
-
+    ts = treespace(chains, min.points, burnin, fill.color)
+    
+    points = ts$points
+    mcc.xy = ts$mcc.xy
+    
     points.plot <- ggplot(data=points, aes_string(x="x", y="y")) + 
       geom_path(alpha=0.25, aes_string(colour = "generation"), size=0.75) + 
       scale_colour_gradient(low='red', high='yellow') +
-      theme(panel.background = element_blank(), axis.line = element_line(color='grey'), panel.spacing = unit(0.1, "lines")) +
-      theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5)) +
+      theme_minimal() +
       facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain))))) +
-      ggtitle(sprintf("Tree space for %d trees", nrow(points)))
+      labs(title = sprintf("Tree space for %d trees per chain", length(unique(points$generation))),
+           subtitle = "MCC tree shown as bullseye")
 
 
     if(!is.na(fill.color)){
@@ -76,6 +79,14 @@ makeplot.treespace <- function(chains, burnin = NA, n.points = 200,  fill.color 
       points.plot <- points.plot + geom_point(size=4) 
     }
 
+    # add a bullseye for the mcc tree
+    points.plot = points.plot + 
+      geom_point(data=mcc.xy, color = "red", size = 4) + 
+      geom_point(data=mcc.xy, color = "white", size = 3.125) + 
+      geom_point(data=mcc.xy, color = "red", size = 2.25) + 
+      geom_point(data=mcc.xy, color = "white", size = 1.375) + 
+      geom_point(data=mcc.xy, color = "red", size = 0.5)
+    
     # only make a heatmap if we have > 1 unique point to look at
     if(length(unique(c(points$x, points$y))) == 1){
         heatmap = NA

@@ -57,7 +57,7 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim="aut
   if(type == "nexus") {
     treelist <- read.nexus(file=file)
   } else if(type=="revbayes") {
-    tmp <- read.revbayestrees(file=file)
+    tmp <- read.revbayestrees(file=file, comment.chars = comment.chars)
     treelist <- tmp$tree
     rb_ptable <- tmp$param
   } else {
@@ -94,6 +94,8 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim="aut
   
   print(paste(gens.per.tree, "generations per tree..."))
   
+  
+  
   # Unroot all trees.  Can't use lapply because it was
   # deleting tip labels.
   if(is.rooted(treelist[[1]])){
@@ -107,6 +109,7 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim="aut
   
   # Reset class
   class(treelist) <- "multiPhylo"
+  
   
   
   ptable <- NULL
@@ -147,6 +150,8 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim="aut
         print(paste("Reading parameter values from", basename(logfile)))
         ptable <- read.table(logfile, skip=skip, header=TRUE)
         ptable <- ptable[seq(from=1, to=length(ptable[,1]), by=trim),]
+        
+        
       } else {
         print(paste("Couldn't find", basename(logfile)))
       }
@@ -168,14 +173,17 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim="aut
       colnames(ptable)[lnl.colnumber] <- "LnL"
     } else {
       warn("Could not automatically identify likelihood column.  
-             Specify one manually if you want likelihoods to be included.\n\n")
+             Specify one manually by renaming the likelihood column 'LnL' if you want likelihoods to be included in your plots.\n\n")
     }
   }
   
   
   
   # calculate distance matrix for these trees
+  print("Calculating tree distance matrix...")
+  
   tree.dist.matrix = tree.dist.matrix(trees=treelist, treedist=treedist)
+  
   
   
   # calculate burnin if user didn't specify it
@@ -213,25 +221,47 @@ load.trees <- function(file, type=NA, format = "mb", gens.per.tree=NA, trim="aut
     "mcc.tree" = mcc.tree)
   
   class(output) <- "rwty.chain"
+
+  beepr::beep(2)
   
   return(output)
 }
 
 
 calculate.burnin <- function(trees, ptable, treedist){
+  # use method of Beiko, R. G., Keith, J. M., Harlow, T. J., & Ragan, M. A. (2006). Searching for convergence in phylogenetic Markov chain Monte Carlo. Systematic Biology, 55(4), 553-565.
+  # this method just finds the first generation with lnL higher than the average lnL of the final 10% of the chain  
   
-  if(is.null(ptable)){
-    burnin = floor(0.25*length(trees)) # 25% burnin if nothing else known 
+  print("Calculating burnin")
+  
+  N = length(trees)
+  
+  if("LnL" %in% names(ptable)){
+    final.10pc.av.lnl = mean(ptable$LnL[floor(0.9*N):N])
+    burnin.lnl = min(which(ptable$LnL > final.10pc.av.lnl))
   }else{
-    
-    # use method of Beiko, R. G., Keith, J. M., Harlow, T. J., & Ragan, M. A. (2006). Searching for convergence in phylogenetic Markov chain Monte Carlo. Systematic Biology, 55(4), 553-565.
-    # this method just finds the first generation with lnL higher than the average lnL of the final 10% of the chain  
-    N = length(trees)
-    final.10pc.av = mean(ptable$LnL[floor(0.9*N):N])
-    burnin.index = min(which(ptable$LnL > final.10pc.av))
-    return(burnin.index)
+    burnin.lnl = as.integer(0.25*N)
   }
-}    
+  
+  mcc.tree = phangorn::maxCladeCred(trees)
+  
+  if(treedist == 'RF'){
+    topo.dists = phangorn::RF.dist(mcc.tree, trees)
+  }else if(treedist == 'PD'){
+    topo.dists = phangorn::path.dist(mcc.tree, trees)
+  }else{
+    stop("treedist must be either 'PD' or 'RF'")
+  }
+  
+  final.10pc.av.treedist = mean(topo.dists[floor(0.9*N):N])
+  burnin.treedist = min(which(topo.dists < final.10pc.av.treedist))
+
+  print(sprintf("LnL burnin: %d", burnin.lnl))
+  print(sprintf("Topology burnin: %d", burnin.treedist))
+  print("Using the larger of the two as burnin")
+  
+  return(max(burnin.lnl, burnin.treedist))
+} 
 
 
 # This function takes the name of a format and returns a list containing important info about file suffixes and whatnot
@@ -295,7 +325,7 @@ autoskip = function(file, comment.chars) {
 }
 
 
-read.revbayestrees<-function(file) {
+read.revbayestrees<-function(file, comment.chars) {
   skip <- autoskip(file, comment.chars)
   filelines<-readLines(file)
   filelines <- filelines[(skip + 1):length(filelines)]
