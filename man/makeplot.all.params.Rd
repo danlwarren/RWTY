@@ -4,13 +4,18 @@
 \alias{makeplot.all.params}
 \title{Plotting all parameters}
 \usage{
-makeplot.all.params(chains, burnin = 0, facet = TRUE, free_y = FALSE,
-  strip = 1)
+makeplot.all.params(
+  chains,
+  burnin = NA,
+  facet = TRUE,
+  free_y = FALSE,
+  strip = 1
+)
 }
 \arguments{
 \item{chains}{A set of rwty.chain objects}
 
-\item{burnin}{The number of trees to omit as burnin.}
+\item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.}
 
 \item{facet}{Boolean denoting whether to make a facet plot.}
 
@@ -23,7 +28,7 @@ You can skip multiple columns by passing a vector of columns to skip, e.g., stri
 param.plot Returns a list of ggplot objects.
 }
 \description{
-Plots all parameter values, including tree topologies (see makeplot.topology) over the length of the MCMC chain
+Plots all parameter values, including the distance of trees from the MCC tree for each chain (see makeplot.topology) over the length of the MCMC chain
 }
 \examples{
 \dontrun{

@@ -4,12 +4,12 @@
 \alias{makeplot.splitfreq.matrix}
 \title{Plots a matrix of split frequency comparisons between multiple MCMC chains.}
 \usage{
-makeplot.splitfreq.matrix(chains, burnin = 0)
+makeplot.splitfreq.matrix(chains, burnin = NA)
 }
 \arguments{
 \item{chains}{A list of rwty.chain objects.}
 
-\item{burnin}{The number of trees to eliminate as burnin}
+\item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.}
 }
 \value{
 output A list of two plots: the first is a matrix of scatterplots, where each point is a clade, and the values are the split frequencies of that clade in the post-burnin trees of each chain. The second plot is a tree of the chains clustered by their ASDSFs.

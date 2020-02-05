@@ -1,17 +1,13 @@
 #' Calculate the approximate Effective Sample Size (ESS) of tree topologies
 #'
 #' This function takes a list of rwty.chain objects, and calculates the
-#' pseudo ESS of the trees from each chain, after removing burnin.
+#' approximate ESS of the trees from each chain, after removing burnin.
 #' The calculation uses the autocorrelation among squared topological distances between
 #' trees to calculate an approximate ESS of tree topologies for each chain.
-#' NB this function requires the calculation of many many
-#' tree distances, so can take some time.
+#' NB: if all post-burnin trees are identical, the function will return an ESS value that equals the number of post burnin samples.
 #'
 #' @param chains A list of rwty.chain objects.
-#' @param burnin The number of trees to eliminate as burnin
-#' @param max.sampling.interval The largest sampling interval you want to use to calculate the ESS. Every sampling interval up to and including this number will be sampled. Higher is better, but also slower. In general, setting this number to 100 (the default) should be fine for most cases. However, if you get an upper bound on the ESS estimate (i.e. ESS<x) rather than a point estimate (i.e. ESS = x) then that indicates a higher max.sampling.interval would be better, because the algorithm could not find the asymptote on the autocorrelation plot with the current max.sampling.interval.
-#' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance
-#' @param use.all.samples (TRUE/FALSE). Whether to calculate autocorrelation from all possible pairs of trees in your chain. The default is FALSE, in which case 500 samples are taken at each sampling interval. Setting this to TRUE will give you slightly more accurate ESS estimates, at the cost of potentially much longer execution times.
+#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
 #'
 #' @return A data frame with one row per chain, and columns describing the
 #' approximate ESS and the name of the chain.
@@ -27,36 +23,67 @@
 
 
 
-topological.approx.ess <- function(chains, burnin = 0, max.sampling.interval = 100, treedist = 'PD', use.all.samples = FALSE){
+topological.approx.ess <- function(chains, burnin = NA){
 
     chains = check.chains(chains)
 
-    if(inherits(chains, "list")){
-      N = length(chains[[1]]$trees)
-    } else {
-      N = length(chains$trees)
+    # set burnin to the maximum from across all chains
+    if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
+    
+    N = length(chains[[1]]$trees)
+    
+    # choose a max sampling interval such that we have minimum 100 trees to get the mean topo distance from in each bin
+    max.sampling.interval = N - burnin - 100
+
+    if(max.sampling.interval < 10){
+      warning(sprintf("There are only %d trees left after removing burnin, which is not enough to use the method of Lanfear et al 2016 to calculate the topological ESS. Instead, RWTY simply estimates that the maximum possible ESS of trees in your chains is %d", N-burnin, N-burnin))
+      result = data.frame("operator" = "<", "approx.ess" = N-burnin, "chain" = names(chains), "distance.metric" = chains[[1]]$tree.dist.metric)
+      return(result)
     }
-
-    if(N-burnin < max.sampling.interval){
-        warning("Not enough trees to use your chosen max.sampling.interval")
-        warning("Setting it to 90% of the length of your post-burnin chain instead")
-        max.sampling.interval = floor((N - burnin) * 0.9)
+    
+    # now make the max sampling interval such that we only do enough intervals to detect a minimum ESS of 5
+    if(max.sampling.interval>(N-burnin)/5 & (N-burnin)/5 > 20){
+      max.sampling.interval = as.integer((N-burnin)/5)
     }
-
-
-    # set them equal, so we get every interval.
-    autocorr.intervals = max.sampling.interval
-
+    
+    # if we get to here, we have at least 10 intervals from which to calculate the approx.ess, so we can go ahead
     print(sprintf("Calculating approximate ESS with sampling intervals from 1 to %d", max.sampling.interval))
 
-    autocorr.df = topological.autocorr(chains, burnin, max.sampling.interval, autocorr.intervals, squared = TRUE, treedist = treedist, use.all.samples = use.all.samples)
+    autocorr.df = topological.autocorr.squared(chains, burnin, max.sampling.interval)
 
     autocorr.m = estimate.autocorr.m(autocorr.df)
 
     approx.ess.df = approx.ess.multi(autocorr.df, autocorr.m, (N-burnin))
 
+    approx.ess.df$distance.metric = chains[[1]]$tree.dist.metric
+    
     return(approx.ess.df)
 
+}
+
+  
+
+topological.autocorr.squared <- function(chains, burnin, max.sampling.interval){
+  
+  #identical to the topological.autocorr function but tree distances are squared first, see https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5010905/
+  
+  chain = chains[[1]]
+  
+  N = length(chains[[1]]$trees)
+
+  # here we square all the distance matrices to use in the ESS calculation
+  dist.matrices = lapply(chains, function(x) x[['tree.dist.matrix']]^2)
+  
+  raw.autocorr = lapply(dist.matrices, tree.autocorr, max.sampling.interval, burnin)
+  
+  final.autocorr = do.call("rbind", raw.autocorr)
+  
+  final.autocorr$chain = unlist(lapply(names(chains), rep, nrow(raw.autocorr[[1]])))
+  
+  rownames(final.autocorr) = NULL
+  
+  return(final.autocorr)
+  
 }
 
 
@@ -74,7 +101,6 @@ approx.ess.multi <- function(autocorr.df, autocorr.m, N){
         thischain = approx.ess.df$chain[i]
         thism = autocorr.m$autocorr.time[autocorr.m$chain == thischain]
         thisdata = autocorr.df[autocorr.df$chain == thischain,]
-
 
         ess.info = approx.ess.single(thisdata, thism, N)
 
@@ -96,6 +122,7 @@ approx.ess.single <- function(df, autocorr.time, N){
 
     # if the autocorrelation time is larger than the maximum sample
     # our it is recorded as -1
+  
     if(autocorr.time < 0){
         m = nrow(df) + 1
     }else{
@@ -103,6 +130,13 @@ approx.ess.single <- function(df, autocorr.time, N){
     }
 
     D = max(df$topo.distance)
+    
+    if(D==0){
+      ESS = N
+      operator = "="
+      return(list("ess" = ESS, "operator" = operator))
+    }
+    
     S = 0
 
     if(m>1){

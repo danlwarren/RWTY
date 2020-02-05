@@ -4,19 +4,19 @@
 \alias{treespace}
 \title{MDS scaling of treespace for a single tree list.}
 \usage{
-treespace(chains, n.points = 100, burnin = 0, fill.color = NA)
+treespace(chains, min.points = 200, burnin = NA, fill.color = "LnL")
 }
 \arguments{
 \item{chains}{A list of 1 or more rwty.chain objects.}
 
-\item{n.points}{The minimum number of points you want in your plot.}
+\item{min.points}{The minimum number of points on each plot. The function will automatically choose the thinning value which gets you the smallest number of trees that is at least as much as this value. The default (200) is usually sufficient to get a good idea of what is happening in your chains.}
 
-\item{burnin}{The number of trees to eliminate as burnin. Default is zero.}
+\item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.}
 
-\item{fill.color}{The name of the column from the log table that that you would like to use to colour the points in the plot.}
+\item{fill.color}{The name of the column from the log table that that you would like to use to colour the points in the plot. The default is to colour the points by LnL.}
 }
 \value{
-Returns a list containing the points and a plot.
+Returns a list of two objects: the `points` dataframe, and the `mcc.xy` dataframe. The former contains x and y coordinates for each tree calculated with mds, as well as the details pertaining to that tree. The latter contains just the x and y coordinates of the MCC tree for the chain(s) in question.
 }
 \description{
 This function constructs a distance matrix from a list of trees
@@ -26,7 +26,7 @@ dimensional tree space for plotting.
 \examples{
 \dontrun{
 data(fungus)
-treespace(fungus, n.points=50, burnin=20, fill.color="LnL")
+treespace(fungus)
 }
 }
 \keyword{mds,}

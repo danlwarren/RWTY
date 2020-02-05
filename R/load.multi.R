@@ -1,6 +1,8 @@
 #' Load all matching files from a directory into a list of rwty.chain objects
 #'
 #' Finds trees and log files based on format definition, returns rwty.chain objects containing both
+#' Note that the mcc.tree in each chain will be the global mcc tree calculated from the complete set of post-burnin
+#' trees across all chains.
 #'
 #' @param path The path to the directory containing tree and log files
 #' @param format File format, which is used to find tree and log files.
@@ -29,6 +31,13 @@ load.multi <- function(path = ".", format = "mb", labels=NA, ...){
   # Find t and p files
   tfiles <- list.files(path, pattern=ext.tree, full.names=TRUE)
   pfiles <- unlist(lapply(tfiles, FUN = function(x) sub(ext.tree, ext.p, x)))
+  
+  if(format == "revbayes"){
+    tfiles <- tfiles[-grep("\\.ase\\.", tfiles)]
+    pfiles <- pfiles[-grep("\\.ase\\.", pfiles)]
+    tfiles <- tfiles[-grep("\\.mcc\\.", tfiles)]
+    pfiles <- pfiles[-grep("\\.mcc\\.", pfiles)]
+  }
 
   if(length(tfiles) == 0){
     stop("Couldn't find any tree files")
@@ -53,5 +62,38 @@ load.multi <- function(path = ".", format = "mb", labels=NA, ...){
     names(output) <- labels
   }
 
+  
+  # calculate global mcc tree and add to slots in chains
+  chains = check.chains(output)
+  global.mcc.tree = global.mcc.tree(chains)
+
+  for(chain in chains){
+    
+    chain$mcc.tree = global.mcc.tree
+    
+  }
+    
+  beepr::beep("complete")
+  
   output
+}
+
+
+global.mcc.tree <- function(chains, burnin=NA){
+  
+  N = length(chains[[1]]$trees)
+  
+  if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
+  
+  trees = chains[[1]]$trees[burnin:N]
+  
+  if(length(chains)>1){
+      for(i in 2:length(chains)){
+          newtrees = chains[[i]]$trees[burnin:N]
+          trees = c(trees, newtrees)
+    
+      }
+  }
+  
+  return(phangorn::maxCladeCred(trees))
 }

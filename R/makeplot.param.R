@@ -3,9 +3,9 @@
 #' Plots parameter values over the length of the MCMC chain
 #'
 #' @param chains A set of rwty.chain objects.
-#' @param burnin The number of trees to omit as burnin. 
+#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
 #' @param parameter The column name of the parameter to plot.
-#' @param facet Boolean denoting whether to make a facet plot.
+#' @param facet TRUE/FALSE denoting whether to make a facet plot.
 #' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.
 #'
 #' @return param.plot Returns a ggplot object.
@@ -19,14 +19,16 @@
 #' makeplot.param(fungus, burnin=20, parameter="pi.A.")
 #' }
 
-makeplot.param <- function(chains, burnin = 0, parameter = "LnL", facet=TRUE, free_y=FALSE){ 
+makeplot.param <- function(chains, burnin = NA, parameter = "LnL", facet=TRUE, free_y=FALSE){ 
 
     print(sprintf("Creating trace for %s", parameter))
 
 
     chains = check.chains(chains)
+    if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
     ptable = combine.ptables(chains, burnin)
 
+    
     if(parameter %in% names(ptable)){
 
         # get ESS values
@@ -51,14 +53,14 @@ makeplot.param <- function(chains, burnin = 0, parameter = "LnL", facet=TRUE, fr
         fill[which(fill == 1)] = 'blue'
 
         trace.plot =  ggplot(ptable, aes_string(x="generation", y=parameter)) + 
-                        geom_line(aes(colour = chain)) + 
+                        geom_line(aes_string(colour = "chain")) + 
                         ggtitle(title) +
                         xlab("Generation") + 
                         scale_color_viridis(discrete = TRUE, end = 0.85) 
             
 
         density.plot =  ggplot(ptable, aes_string(x=parameter)) + 
-                        geom_histogram(aes(fill = fill)) + 
+                        geom_histogram(aes(fill = fill), bins = 30) + 
                         scale_fill_manual(values =plasma(2, end = 0.65), guide = FALSE) +
                         ggtitle(title) 
 

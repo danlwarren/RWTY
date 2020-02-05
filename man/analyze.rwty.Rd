@@ -4,28 +4,42 @@
 \alias{analyze.rwty}
 \title{analyze.rwty, the main interface for rwty analyses and plots.}
 \usage{
-analyze.rwty(chains, burnin = 0, window.size = 20,
-  treespace.points = 100, n.clades = 20, min.freq = 0,
-  fill.color = NA, filename = NA, overwrite = FALSE, facet = TRUE,
-  free_y = FALSE, autocorr.intervals = 100, ess.reps = 20,
-  treedist = "PD", params = NA, max.sampling.interval = NA, ...)
+analyze.rwty(
+  chains,
+  burnin = NA,
+  window.size = 20,
+  treespace.points = 200,
+  n.clades = 20,
+  min.freq = 0,
+  fill.color = "LnL",
+  pdf.filename = NA,
+  overwrite = FALSE,
+  facet = TRUE,
+  free_y = FALSE,
+  autocorr.intervals = 100,
+  ess.reps = 20,
+  params = NA,
+  max.sampling.interval = NA,
+  report.filename = NA,
+  ...
+)
 }
 \arguments{
 \item{chains}{A list of rwty.chain objects.}
 
-\item{burnin}{The number of trees to eliminate as burnin.  Default value is zero.}
+\item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the burnin calculated automatically when loading the chain. This can be overidden by providing any integer value.}
 
 \item{window.size}{The number of trees to include in each windows of sliding window plots}
 
-\item{treespace.points}{The number of trees to plot in the treespace plot. Default is 100}
+\item{treespace.points}{The number of trees to plot in the treespace plot. Default is 200}
 
-\item{n.clades}{The number of clades to include in plots of split frequencies over the course of the MCMC}
+\item{n.clades}{The number of clades to include in plots of split frequencies over the course of the MCMC. Default is 20.}
 
-\item{min.freq}{The minimum frequency for a node to be used for calculating ASDSF. Default is 0.1}
+\item{min.freq}{The minimum frequency for a node to be used for calculating ASDSF. Default is 0.1.}
 
-\item{fill.color}{The name of a column in your log file that you would like to use as the fill colour of points in the treespace plots}
+\item{fill.color}{The name of a column in your log file that you would like to use as the fill colour of points in the treespace plots.}
 
-\item{filename}{Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not save outputs to file.}
+\item{pdf.filename}{Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not save outputs to file.}
 
 \item{overwrite}{Boolean variable saying whether output file should be overwritten, if it exists.}
 
@@ -37,11 +51,11 @@ analyze.rwty(chains, burnin = 0, window.size = 20,
 
 \item{ess.reps}{The number of replicate analyses to do when calculating the pseudo ESS.}
 
-\item{treedist}{the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance.}
-
 \item{params}{A vector of parameters to use when making the parameter correlation plots.  Defaults to the first two columns in the log table.}
 
 \item{max.sampling.interval}{The maximum sampling interval to use for generating autocorrelation plots}
+
+\item{report.filename}{If a filename is provided, rwty will compile an html report file including plots and diagnostic tables}
 
 \item{...}{Extra arguments to be passed to plotting and analysis functions.}
 }
