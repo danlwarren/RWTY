@@ -6,7 +6,7 @@ before_install:
   - echo 'options(Ncpus = 2)' >> ~/.Rprofile
   - echo 'options(mc.cores = 2)' >> ~/.Rprofile
   - sudo apt-get update -y && sudo apt-get install -y libudunits2-dev
-  - sudo apt-get libgdal-dev
+  - sudo apt-get install libgdal-dev
   - sudo apt-get install cargo
 
 env:
