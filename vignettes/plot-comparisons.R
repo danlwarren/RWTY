@@ -2,11 +2,10 @@
 library(rwty)
 data(salamanders)
 data(fungus)
-rwty.processors <- 1
 
 ## ----eval = FALSE, message=FALSE-----------------------------------------
-#  salamanders.rwty <- analyze.rwty(salamanders, burnin = 0)
-#  fungus.rwty <- analyze.rwty(fungus, burnin = 0)
+#  salamanders.rwty <- analyze.rwty(salamanders)
+#  fungus.rwty <- analyze.rwty(fungus)
 
 ## ----make-ptables-1, fig.width=8, fig.height=6, message=FALSE------------
 colnames(fungus$Fungus.Run1$ptable)
@@ -79,6 +78,12 @@ makeplot.autocorr(salamanders, burnin = 0)
 
 ## ----autocorr-2, fig.width = 8, fig.height = 6, message = FALSE----------
 makeplot.autocorr(fungus, burnin = 0)
+
+## ----pseudo-ess-1, fig.width = 8, fig.height = 6, message = FALSE--------
+makeplot.pseudo.ess(salamanders, burnin = 50)
+
+## ----pseudo-ess-2, fig.width = 8, fig.height = 6, message = FALSE--------
+makeplot.pseudo.ess(fungus, burnin = 50)
 
 ## ----splitfreq-matrix-1, fig.width = 8, fig.height = 6, message = FALSE----
 makeplot.splitfreq.matrix(salamanders, burnin = 50)

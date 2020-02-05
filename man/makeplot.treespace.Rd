@@ -4,16 +4,17 @@
 \alias{makeplot.treespace}
 \title{Plot chains in treespace.}
 \usage{
-makeplot.treespace(chains, burnin = NA, min.points = 200, fill.color = "LnL")
+makeplot.treespace(chains, burnin = 0, n.points = 100,
+  fill.color = NA)
 }
 \arguments{
 \item{chains}{A list of one or more rwty.chain objects}
 
-\item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.}
+\item{burnin}{The number of samples to remove from the start of the chain as burnin}
 
-\item{min.points}{The minimum number of points on each plot. The function will automatically choose the thinning value which gets you the smallest number of trees that is at least as much as this value. The default (200) is usually sufficient to get a good idea of what is happening in your chains.}
+\item{n.points}{The number of points on each plot}
 
-\item{fill.color}{The name of the column from the log table that that you would like to use to colour the points in the plot. The default is to colour the points by LnL.}
+\item{fill.color}{The name of any column in your parameter file that you would like to use as a fill colour for the points of the plot.}
 }
 \value{
 A list of two ggplot objects: one plots the points in treespace, the other shows a heatmap of the same points
@@ -25,7 +26,7 @@ This function will take list of rwty.chains objects and produce plots of chains 
 \dontrun{
 data(fungus)
 
-p <- makeplot.treespace(fungus)
+p <- makeplot.treespace(fungus, burnin = 20, fill.color = 'LnL')
 # Treespace plot for all the fungus data
 
 # NB: these data indicate significant problems: the chains are sampling very 
@@ -41,10 +42,10 @@ p$treespace.heatmap
 
 # we can also plot different parameters as the fill colour.
 # e.g. we can plot the first two fungus chains with likelihood as the fill
-makeplot.treespace(fungus[1:2], fill.color = 'LnL')
+makeplot.treespace(fungus[1:2], burnin = 100, fill.color = 'LnL')
 
 # or with tree length as the fill
-makeplot.treespace(fungus[1:2], fill.color = 'TL')
+makeplot.treespace(fungus[1:2], burnin = 100, fill.color = 'TL')
 
 # you can colour the plot with any parameter in your ptable
 # to see which parameters you have you can simply do this:

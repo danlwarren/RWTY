@@ -3,7 +3,7 @@
 #' This function is automatically called by some of the plot functions.
 #'
 #' @param chains A list of rwty.chain objects. 
-#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
+#' @param burnin The number of trees to eliminate as burnin 
 #'
 #' @return ptable A data frame of likelihood values and model parameters for the supplied rwty.chain objects
 #'
@@ -16,12 +16,10 @@
 #' combine.ptables(fungus, burnin=20)
 #' }
 
-combine.ptables <- function(chains, burnin=NA){
+combine.ptables <- function(chains, burnin){
   
   chains = check.chains(chains)
-  # set burnin to the maximum from across all chains
-  if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
-  
+
   # N is a vector of chain lengths
   N <- unlist(lapply(chains, function(x) length(x$trees)))
   

@@ -2,14 +2,15 @@
 % Please edit documentation in R/makeplot.acsf.sliding.R
 \name{makeplot.acsf.sliding}
 \alias{makeplot.acsf.sliding}
-\title{Plot the Chain in Split Frequencies (CSF) in sliding windows over the course of an MCMC.}
+\title{Plot the Chaing in Split Frequencies (CSF) in sliding windows over the course of an MCMC.}
 \usage{
-makeplot.acsf.sliding(chains, burnin = NA, window.size = 20, facet = TRUE)
+makeplot.acsf.sliding(chains, burnin = 0, window.size = 20,
+  facet = TRUE)
 }
 \arguments{
 \item{chains}{A list of rwty.chain objects.}
 
-\item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.}
+\item{burnin}{The number of trees to eliminate as burnin. Defaults to zero.}
 
 \item{window.size}{The number of trees to include in each window (note, specified as a number of sampled trees, not a number of generations)}
 

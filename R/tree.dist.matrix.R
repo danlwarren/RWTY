@@ -5,7 +5,6 @@
 #' in the list.
 #'
 #' @param trees a multiPhylo object 
-#' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' (the default) for Robinson Foulds distance
 #'
 #' @return RF A distance matrix of RF distances 
 #'
@@ -18,25 +17,24 @@
 #' tree.dist.matrix(fungus$Fungus.Run1$trees)
 #' }
 
-tree.dist.matrix <- function(trees, treedist='RF'){
+tree.dist.matrix <- function(trees){
     if (class(trees) != "multiPhylo") 
         stop("trees should be an object of class \"multiPhylo\"")
 
+    N <- length(trees)
+
+    treenames <- 1:N
     
     # use the RF.dist function from Phangorn. Thanks to Klaus Vigo for pointing
     # out that we were doing this all wrong before!
     # https://github.com/danlwarren/RWTY/issues/47
-    # we don't need to waste time checking labels because we check them later with check.chains
-    if(treedist == 'PD'){
-      DM = path.dist(tree1=trees, check.labels = FALSE)
-    }else if(treedist == 'RF'){
-      DM = RF.dist(tree1=trees, check.labels = FALSE)
-    }else{
-      stop("Unknown option for treedist. Valid options are 'PD' (for path distance) or 'RF' (for Robinson Foulds distance). Please try again")
-    }
-  
+    RF <- as.matrix(RF.dist(trees))
 
-    return(DM)
+    #Row and column names
+    rownames(RF) <- treenames
+    colnames(RF) <- treenames
+    
+    RF
 }
 
 

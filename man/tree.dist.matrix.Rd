@@ -4,12 +4,10 @@
 \alias{tree.dist.matrix}
 \title{Tree distance matrix calculation}
 \usage{
-tree.dist.matrix(trees, treedist = "RF")
+tree.dist.matrix(trees)
 }
 \arguments{
 \item{trees}{a multiPhylo object}
-
-\item{treedist}{the type of tree distance metric to use, can be 'PD' for path distance or 'RF' (the default) for Robinson Foulds distance}
 }
 \value{
 RF A distance matrix of RF distances

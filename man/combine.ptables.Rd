@@ -4,12 +4,12 @@
 \alias{combine.ptables}
 \title{Function for merging p tables for multiple MCMC chains}
 \usage{
-combine.ptables(chains, burnin = NA)
+combine.ptables(chains, burnin)
 }
 \arguments{
 \item{chains}{A list of rwty.chain objects.}
 
-\item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.}
+\item{burnin}{The number of trees to eliminate as burnin}
 }
 \value{
 ptable A data frame of likelihood values and model parameters for the supplied rwty.chain objects
