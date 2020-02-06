@@ -39,7 +39,8 @@ Imports:
     sf,
     units,
     beepr,
-    magick
+    magick,
+    DT
 Suggests:
     knitr,
     testthat,

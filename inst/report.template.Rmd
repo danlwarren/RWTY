@@ -12,6 +12,7 @@ params:
 ```{r echo = FALSE}
 library(knitr)
 library(plotly)
+library(DT)
 ```
 
 # Single-chain diagnostics
@@ -189,8 +190,18 @@ for (i in traces) {
 
 ```
 
+<br>
+<br>
+
+
 ### ESS table
 ```{r echo = FALSE}
-kable(results$ess.table)
+
+datatable(results$ess.table, extensions = 'Buttons',
+            options = list(dom = 'Blfrtip',
+                           buttons = c('copy', 'csv', 
+                                       'excel', 'pdf', 'print'),
+                           lengthMenu = list(c(10,25,50,-1),
+                                             c(10,25,50,"All"))))
 ```
 
