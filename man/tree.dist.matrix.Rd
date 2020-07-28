@@ -5,12 +5,12 @@
 \alias{tree.dist.matrix}
 \title{Tree distance matrix calculation}
 \usage{
-tree.dist.matrix(trees, method = "rf", ...)
+tree.dist.matrix(trees, treedist = "rf", ...)
 }
 \arguments{
 \item{trees}{an object of class 'multiPhylo'.}
 
-\item{method}{acronym of distance method to employ: one of \code{cid},
+\item{treedist}{acronym of distance method to employ: one of \code{cid},
 \code{icrf}, \code{jrf}, \code{mast}, \code{masti}, \code{ms}, \code{msid},
 \code{nni},  \code{pd}, \code{pid}, \code{rf} (default), or \code{spr}.
 See below for details.}
