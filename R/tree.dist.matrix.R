@@ -110,7 +110,7 @@
 #'
 #' @param trees an object of class 'multiPhylo'.
 #' 
-#' @param method acronym of distance method to employ: one of \code{cid},
+#' @param treedist acronym of distance method to employ: one of \code{cid},
 #' \code{icrf}, \code{jrf}, \code{mast}, \code{masti}, \code{ms}, \code{msid},
 #' \code{nni},  \code{pd}, \code{pid}, \code{rf} (default), or \code{spr}.
 #' See below for details.
@@ -131,16 +131,16 @@
 #' tree.dist.matrix(fungus$Fungus.Run1$trees)
 #' }
 
-tree.dist.matrix <- function(trees, method = 'rf', ...){
+tree.dist.matrix <- function(trees, treedist = 'rf', ...){
     if (!inherits(trees, "multiPhylo"))
         stop("trees should be an object of class \"multiPhylo\"")
 
     
     distanceMethods <- c('cid', 'icrf', 'jrf', 'mast', 'masti', 'ms', 'msid',
                          'nni', 'nye', 'pd', 'pid', 'rf', 'spr')
-    how <- pmatch(tolower(method), distanceMethods)
+    how <- pmatch(tolower(treedist), distanceMethods)
     if (is.na(how)) {
-        stop("method must be one of: ",
+        stop("`treedist` must be one of: ",
              paste0(distanceMethods, collapse = ', '))
     }
     
