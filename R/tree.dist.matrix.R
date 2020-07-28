@@ -20,10 +20,8 @@
 tree.dist.matrix <- function(trees){
     if (!inherits(trees, "multiPhylo"))
         stop("trees should be an object of class \"multiPhylo\"")
-
-    N <- length(trees)
-
-    treenames <- 1:N
+    
+    treenames <- seq_along(trees)
     
     # use the RF.dist function from Phangorn. Thanks to Klaus Vigo for pointing
     # out that we were doing this all wrong before!
