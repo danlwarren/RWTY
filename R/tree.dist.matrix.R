@@ -119,7 +119,7 @@
 #'
 #' @return a matrix of distances between each pair of trees
 #'
-#' @keywords treespace, tree distance, robinson-foulds
+#' @keywords treespace tree-distance robinson-foulds
 #'
 #' @importFrom TreeDist ClusteringInfoDistance InfoRobinsonFoulds 
 #' JaccardRobinsonFoulds MASTSize MASTInfo MatchingSplitInfoDistance NNIDist 
