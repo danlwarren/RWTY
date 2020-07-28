@@ -18,7 +18,7 @@
 #' }
 
 tree.dist.matrix <- function(trees){
-    if (class(trees) != "multiPhylo") 
+    if (!inherits(trees, "multiPhylo"))
         stop("trees should be an object of class \"multiPhylo\"")
 
     N <- length(trees)
