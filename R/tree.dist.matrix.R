@@ -157,6 +157,7 @@ tree.dist.matrix <- function(trees, treedist = 'rf', ...){
                        JRF,
                        MAST,
                        MASTI,
+                       MatchingSplitDistance,
                        MatchingSplitInfoDistance,
                        NNIDist,
                        NyeDist,
