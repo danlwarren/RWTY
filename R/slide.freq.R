@@ -1,11 +1,11 @@
 #' Sliding window measurements of clade split frequencies.
-#' 
+#'
 #' This function takes sliding windows of a specified length over an MCMC chain
 #' and calculates the split frequency of clades within that window.  It
 #' allows users to see whether the chain is visiting different areas of treespace.
 #'
-#' @param chains A list of rwty.chain objects. 
-#' @param burnin The number of trees to eliminate as burnin. Defaults to zero. 
+#' @param chains A list of rwty.chain objects.
+#' @param burnin The number of trees to eliminate as burnin. Defaults to zero.
 #' @param window.size The number of trees to include in each window (note, specified as a number of sampled trees, not a number of generations)
 #'
 #' @return A list of rwty.slide objects, one per chain in the input list of chains.
@@ -21,7 +21,7 @@
 #' slide.data <- slide.freq(fungus, burnin=20)\
 #' }
 
-slide.freq <- function(chains, burnin=0, window.size = 20){ 
+slide.freq <- function(chains, burnin=0, window.size = 20){
 
     chains = check.chains(chains)
     trees = lapply(chains, function(x) x[['trees']])
@@ -52,7 +52,7 @@ get.slide.freq.table <- function(tree.list, burnin = 0, window.size = 20, gens.p
 
     # now we calculate clade frequencies on each of the lists of trees
     clade.freq.list = lapply(tree.windows, clade.freq, start=1, end=window.size)
-    
+
     # and rename the list to the first tree of each window
     names(clade.freq.list) = prettyNum(seq((burnin + 1),(burnin + length(clade.freq.list) * window.size), by=window.size)*gens.per.tree, sci=TRUE)
 
@@ -70,32 +70,30 @@ get.slide.freq.table <- function(tree.list, burnin = 0, window.size = 20, gens.p
     slide.freq.table[is.na(slide.freq.table)] = 0.0
     rownames(slide.freq.table) = slide.freq.table$cladenames
     slide.freq.table = slide.freq.table[,-1]
-    
+
     # calculate sd and mean of cumulative frequency and mean
     thissd = apply(slide.freq.table, 1, sd)
-    thismean = apply(slide.freq.table, 1, mean) 
+    thismean = apply(slide.freq.table, 1, mean)
     thisess = apply(slide.freq.table, 1, effectiveSize)
 
     slide.freq.table$sd = thissd
     slide.freq.table$mean = thismean
     slide.freq.table$ess = thisess
-   
+
     # Sorting by sd, since these are usually the most interesting clades
     slide.freq.table = slide.freq.table[order(slide.freq.table$sd, decreasing=TRUE),]
-    
+
     # Building a new table that contains parsed clade names
-    translation.table = cbind(as.numeric(as.factor(rownames(slide.freq.table))), 
-                                as.character(rownames(slide.freq.table)), 
-                                parse.clades(rownames(slide.freq.table), tree.list))
+    translation.table = cbind(as.numeric(as.factor(rownames(slide.freq.table))),
+                                as.character(rownames(slide.freq.table)),
+                                parse.slide.clades(rownames(slide.freq.table), tree.list))
     colnames(translation.table) = c("Clade number", "Tip numbers", "Tip names")
-    
+
     # Seting slide.freq.table to the same names as the translation table
     rownames(slide.freq.table) = as.numeric(as.factor(rownames(slide.freq.table)))
-    
+
     output <- list("slide.table" = slide.freq.table, "translation" = translation.table)
     class(output) <- "rwty.slide"
-    
+
     return(output)
 }
-
-   
