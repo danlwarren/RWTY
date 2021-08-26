@@ -57,15 +57,18 @@ makeplot.treespace <- function(chains, burnin = NA, min.points = 200,  fill.colo
     }
     
     # now go and get the x,y coordinates from the trees
-    points = treespace(chains, min.points, burnin, fill.color)
-
+    ts = treespace(chains, min.points, burnin, fill.color)
+    
+    points = ts$points
+    mcc.xy = ts$mcc.xy
+    
     points.plot <- ggplot(data=points, aes_string(x="x", y="y")) + 
       geom_path(alpha=0.25, aes_string(colour = "generation"), size=0.75) + 
       scale_colour_gradient(low='red', high='yellow') +
-      theme(panel.background = element_blank(), axis.line = element_line(color='grey'), panel.spacing = unit(0.1, "lines")) +
-      theme(axis.title.x = element_text(vjust = -.5), axis.title.y = element_text(vjust=1.5)) +
+      theme_minimal() +
       facet_wrap(~chain, nrow=round(sqrt(length(unique(points$chain))))) +
-      ggtitle(sprintf("Tree space for %d trees", length(unique(points$generation))))
+      labs(title = sprintf("Tree space for %d trees per chain", length(unique(points$generation))),
+           subtitle = "MCC tree shown as bullseye")
 
 
     if(!is.na(fill.color)){
@@ -76,6 +79,14 @@ makeplot.treespace <- function(chains, burnin = NA, min.points = 200,  fill.colo
       points.plot <- points.plot + geom_point(size=4) 
     }
 
+    # add a bullseye for the mcc tree
+    points.plot = points.plot + 
+      geom_point(data=mcc.xy, color = "red", size = 4) + 
+      geom_point(data=mcc.xy, color = "white", size = 3.125) + 
+      geom_point(data=mcc.xy, color = "red", size = 2.25) + 
+      geom_point(data=mcc.xy, color = "white", size = 1.375) + 
+      geom_point(data=mcc.xy, color = "red", size = 0.5)
+    
     # only make a heatmap if we have > 1 unique point to look at
     if(length(unique(c(points$x, points$y))) == 1){
         heatmap = NA

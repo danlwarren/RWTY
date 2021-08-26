@@ -14,8 +14,6 @@ makeanim.treespace(chains, burnin = NA, min.points = 200, fill.color = "LnL")
 \item{min.points}{The minimum number of points on each plot. The function will automatically choose the thinning value which gets you the smallest number of trees that is at least as much as this value. The default (200) is usually sufficient to get a good idea of what is happening in your chains.}
 
 \item{fill.color}{The name of the column from the log table that that you would like to use to colour the points in the plot. The default is to colour the points by LnL.}
-
-\item{return}{TRUE/FALSE: whether to return nothing (FALSE, the default) or return a gganimate object and the width and height so that you can use `animate()` yourself (TRUE).}
 }
 \value{
 A gganimate object which has one frame for each of the sampled generations.

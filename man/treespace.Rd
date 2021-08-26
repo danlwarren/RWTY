@@ -16,7 +16,7 @@ treespace(chains, min.points = 200, burnin = NA, fill.color = "LnL")
 \item{fill.color}{The name of the column from the log table that that you would like to use to colour the points in the plot. The default is to colour the points by LnL.}
 }
 \value{
-Returns a list containing the points
+Returns a list of two objects: the `points` dataframe, and the `mcc.xy` dataframe. The former contains x and y coordinates for each tree calculated with mds, as well as the details pertaining to that tree. The latter contains just the x and y coordinates of the MCC tree for the chain(s) in question.
 }
 \description{
 This function constructs a distance matrix from a list of trees
