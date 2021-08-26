@@ -33,6 +33,7 @@ Imports:
 Suggests:
     knitr,
     testthat,
+    markdown,
     rmarkdown
 Encoding: UTF-8
 RoxygenNote: 7.1.1
