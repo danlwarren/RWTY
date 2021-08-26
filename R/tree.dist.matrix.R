@@ -1,24 +1,63 @@
 #' Tree distance matrix calculation
 #' 
-#' This function takes a list of trees and returns a distance matrix
-#' populated with Robinson-Foulds tree distances between all trees
-#' in the list.
+#' This function takes a multiPhylo list of trees and returns a distance matrix
+#' populated with pairwise tree distances between all trees in the list.
+#' By default the distance method is the Robinson-Foulds metric.
 #'
 #' @param trees a multiPhylo object 
-#' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' (the default) for Robinson Foulds distance
+#' @param treedist the tree distance metric to use. The options are:
+#' \itemize {
+#' \item \code{"RF"} (default) the Robinson Foulds "unweighted" metric using \code{RF.dist} from package \code{phangorn}. This considers the trees as unrooted and does not use branch lengths.
+#' \item \code{"wRF"} the Robinson Foulds "weighted" metric using \code{wRF.dist} from package \code{phangorn}. This considers the trees as unrooted and uses branch lengths.
+#' \item \code{"PD"} the Steel & Penny "unweighted" tip-tip _path difference_ metric, based on \code{path.dist} from package \code{phangorn}. This considers the trees as unrooted and does not use branch lengths, only topology.
+#' \item \code{"wPD"} the Steel & Penny "weighted" tip-tip _path difference_ metric, based on \code{path.dist} from package \code{phangorn}. This considers the trees as unrooted and uses branch lengths.
+#' \item \code{"KC"} the Kendall Colijn metric, using \code{treeVec} from package \code{treespace}. This is only defined for rooted trees. The extent to which branch lengths are used is controlled by the parameter \code{lambda} between 0 (topology only) and 1 (most emphasis on branch lengths).
+#' \item \code{"KF"} the Kuhner & Felsenstein branch score distance using \code{KF.dist} from package \code{phangorn}. This considers the trees as unrooted and uses branch lengths.
+#' }
+#' Note that if rooted trees are supplied, the metrics designed for unrooted trees will typically still run but there will inevitably be a 
+#' loss of information in the tree comparison about the root position and the corresponding "depths" of tips.
+#' @param lambda variable used when treedist="KC". Defaults to 0 (comparing trees by topology only) and can be increased up to 1 to include the branch lengths to a greater extent in the tree comparison.
+#' 
+#' @return The matrix of tree distances 
 #'
-#' @return RF A distance matrix of RF distances 
+#' @keywords treespace, tree distance, robinson-foulds, path difference, Steel and Penny, Kendall Colijn, Kuhner Felsenstein branch score
 #'
-#' @keywords treespace, tree distance, robinson-foulds
+#' @references Robinson, D. F. and Foulds, L. R. (1981) Comparison of phylogenetic trees, Mathematical Biosciences, 53(1):131-147
+#' 
+#' Robinson, D. F. and Foulds, L. R. (1979) Comparison of weighted labelled trees, Combinatorial Mathematics VI, Lecture Notes in Mathematics, 748:119-126
+#' 
+#' Steel M. A. and Penny P. (1993) Distributions of tree comparison metrics - some new results, Systematic Biology, 42(2):126-141
+#' 
+#' Kendall, M. and Colijn, C. (2016) Mapping phylogenetic trees to reveal distinct patterns of evolution, Molecular Biology and Evolution, 33(10):2735–2743, DOI: 10.1093/molbev/msw124
+#' 
+#' Jombart, T., Kendall, M., Almagro-Garcia, J. and Colijn, C. (2017), treespace: Statistical exploration of landscapes of phylogenetic trees. Molecular Ecology Resources, Nov;17(6):1385-1392, DOI: 10.1111/1755-0998.12676
+#' 
+#' Kuhner, M. K. and Felsenstein, J. (1994) A simulation comparison of phylogeny algorithms under equal and unequal evolutionary rates, Molecular Biology and Evolution, 11(3), 459-468
+#' 
+#' Schliep K.P. (2011), phangorn: phylogenetic analysis in R. Bioinformatics, 27(4) 592-593
+#' 
+#' Schliep, K., Potts, A. J., Morrison, D. A., Grimm, G. W. (2017), Intertwining phylogenetic trees and networks. Methods in Ecology and Evolution, 8:1212-1220. DOI: 10.1111/2041-210X.12760
+#' 
 #'
+#' @importFrom phangorn RF.dist
+#' @importFrom phangorn wRF.dist
+#' @importFrom phangorn path.dist
+#' @importFrom treespace treeVec
+#' @importFrom fields rdist
+#' @importFrom phangorn KF.dist
+#' 
 #' @export tree.dist.matrix
 #' @examples
 #' \dontrun{
 #' data(fungus)
 #' tree.dist.matrix(fungus$Fungus.Run1$trees)
 #' }
-
-tree.dist.matrix <- function(trees, treedist='RF'){
+#' trees <- rmtree(10,6)
+#' tree.dist.matrix(trees) # RF distance matrix
+#' tree.dist.matrix(trees,"KC") # KC distance matrix (lambda=0)
+#' 
+#'
+tree.dist.matrix <- function(trees, treedist='RF', lambda=0){
     if (class(trees) != "multiPhylo") 
         stop("trees should be an object of class \"multiPhylo\"")
 
@@ -27,12 +66,21 @@ tree.dist.matrix <- function(trees, treedist='RF'){
     # out that we were doing this all wrong before!
     # https://github.com/danlwarren/RWTY/issues/47
     # we don't need to waste time checking labels because we check them later with check.chains
-    if(treedist == 'PD'){
-      DM = path.dist(tree1=trees, check.labels = FALSE)
-    }else if(treedist == 'RF'){
-      DM = RF.dist(tree1=trees, check.labels = FALSE)
+    if(treedist == 'RF'){
+      DM = phangorn::RF.dist(trees, check.labels = FALSE)
+    }else if (treedist == "wRF") {
+      DM = phangorn::wRF.dist(trees, check.labels=FALSE)
+    }else if(treedist == 'PD'){
+      DM = phangorn::path.dist(trees, check.labels = FALSE)
+    }else if (treedist == "wPD") {
+      DM = phangorn::path.dist(trees,  use.weight=TRUE)
+    }else if (treedist == "KC") {
+      treeVecs = t(sapply(trees, function(x) treespace::treeVec(x, lambda=lambda)))
+      DM = as.dist(rdist(treeVecs))
+    }else if (treedist=="KF") {
+      DM = phangorn::KF.dist(trees, check.labels=FALSE)
     }else{
-      stop("Unknown option for treedist. Valid options are 'PD' (for path distance) or 'RF' (for Robinson Foulds distance). Please try again")
+      stop("Unknown option for treedist. See ?tree.dist.matrix for options.")
     }
   
 

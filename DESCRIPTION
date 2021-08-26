@@ -8,7 +8,8 @@ Authors@R: c(person(given = "Dan", family = "Warren", role = c("aut", "cre"), em
               person(given = "April", family = "Wright", role = "ctb"),
               person(given = "Diego", family = "Mallo", role = "ctb"),
               person(given = "Klaus", family = "Schliep", role = "ctb"),
-              person(given = "Anthony", family = "Geneva", role = "ctb")
+              person(given = "Anthony", family = "Geneva", role = "ctb"),
+              person(given = "Michelle", family = "Kendall", role = "ctb")
               )
 Description: Implements various tests, visualizations, and metrics
     for diagnosing convergence of MCMC chains in phylogenetics.  It implements
@@ -38,11 +39,13 @@ Imports:
     transformr,
     sf,
     units,
+    treespace,
+    fields,
     beepr,
     magick
 Suggests:
     knitr,
     testthat,
     rmarkdown
-RoxygenNote: 7.0.1
+RoxygenNote: 7.0.2
 VignetteBuilder: knitr
