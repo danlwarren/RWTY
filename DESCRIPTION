@@ -37,7 +37,8 @@ Suggests:
     knitr,
     testthat,
     markdown,
-    rmarkdown
+    rmarkdown,
+    stringi
 Encoding: UTF-8
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
