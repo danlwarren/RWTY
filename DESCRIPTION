@@ -8,7 +8,10 @@ Authors@R: c(person(given = "Dan", family = "Warren", role = c("aut", "cre"), em
               person(given = "Luke", family = "Harmon", role = "ctb"),
               person(given = "April", family = "Wright", role = "ctb"),
               person(given = "Diego", family = "Mallo", role = "ctb"),
-              person(given = "Klaus", family = "Schliep", role = "ctb")
+              person(given = "Klaus", family = "Schliep", role = "ctb"),
+              person(given = "Kelly", family = "Luke", role = "ctb"),
+              person(given = "Kendall", family = "Michelle", role = "ctb"),
+              person(given = "Smith", family = "Martin", role = "ctb")
               )
 Description: Implements various tests, visualizations, and metrics
     for diagnosing convergence of MCMC chains in phylogenetics.  It implements
