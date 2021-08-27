@@ -32,7 +32,16 @@ Imports:
     ggdendro,
     GGally,
     parallel,
-    TreeDist
+    usedist,
+    plotly,
+    png,
+    gifski,
+    gganimate,
+    transformr,
+    sf,
+    units,
+    beepr,
+    magick
 Suggests:
     knitr,
     testthat,
