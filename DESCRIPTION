@@ -41,7 +41,7 @@ Imports:
     sf,
     units,
     beepr,
-    DT
+    DT,
     TreeDist,
     magick,
 Suggests:
