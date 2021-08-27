@@ -4,22 +4,17 @@
 \alias{makeplot.param}
 \title{Plotting parameters}
 \usage{
-makeplot.param(
-  chains,
-  burnin = NA,
-  parameter = "LnL",
-  facet = TRUE,
-  free_y = FALSE
-)
+makeplot.param(chains, burnin = 0, parameter = "LnL", facet = TRUE,
+  free_y = FALSE)
 }
 \arguments{
 \item{chains}{A set of rwty.chain objects.}
 
-\item{burnin}{The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.}
+\item{burnin}{The number of trees to omit as burnin.}
 
 \item{parameter}{The column name of the parameter to plot.}
 
-\item{facet}{TRUE/FALSE denoting whether to make a facet plot.}
+\item{facet}{Boolean denoting whether to make a facet plot.}
 
 \item{free_y}{TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.}
 }

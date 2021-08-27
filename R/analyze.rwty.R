@@ -1,6 +1,12 @@
-# These are used in ddply and subset calls 
-# so I can't get rid of them with aes_string
-utils::globalVariables(c("Generation", "CSF", "split.frequency", "ess"))
+globalVariables(c("lower.95", "upper.95", "lower.75", "upper.75", "Generation", "ACSF",
+                  "Chain", "Clade", "title", "Generations", "par", "cor", "text", "sd",
+                  "generation", "chain", "x", "y", "strwidth", "mtext", "Split.Frequency",
+                  "hclust", "..density..", "recordPlot", "rgb", "panel.smooth", "ci.lower",
+                  "ci.upper", "median", "quantile", "median.ess", "ASDSF" ,"Axis" ,"CSF" ,"Gen" ,
+                  "as.dist" ,"box" ,"cmdscale" ,"dev.flush" ,"dev.hold" ,"dev.off" ,"ess" ,
+                  "optim" ,"pdf" ,"plot" ,"points" ,"read.table" ,"reorder" ,"sampling.interval",
+                  "split.frequency" ,"tail" ,"topo.distance" ,"topological.distance", 
+                  "dev.control"))
 
 #' analyze.rwty, the main interface for rwty analyses and plots.
 #' 
@@ -9,43 +15,33 @@ utils::globalVariables(c("Generation", "CSF", "split.frequency", "ess"))
 #' 
 #' @import ape
 #' @import ggplot2
-#' @import png
-#' @import gifski
-#' @import transformr
-#' @importFrom magick image_read image_append 
-#' @importFrom beepr beep
 #' @importFrom reshape2 melt
-#' @importFrom phangorn RF.dist maxCladeCred treedist path.dist
+#' @importFrom phangorn RF.dist
 #' @importFrom coda effectiveSize mcmc
 #' @importFrom viridis scale_color_viridis scale_fill_viridis viridis plasma
 #' @importFrom grid unit
-#' @importFrom plyr arrange ddply summarize .
+#' @importFrom plyr ddply summarize . 
 #' @importFrom ggdendro ggdendrogram
 #' @importFrom GGally ggpairs
 #' @importFrom parallel mclapply detectCores
-#' @importFrom usedist dist_get
-#' @importFrom utils citation read.table tail
-#' @importFrom graphics title
-#' @importFrom grDevices dev.off pdf
-#' @importFrom stats as.dist cmdscale hclust median optim quantile reorder sd
-#' @importFrom gganimate transition_time shadow_wake animate transition_reveal
+#' @importFrom utils citation
 #'
 #' @param chains A list of rwty.chain objects. 
-#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the burnin calculated automatically when loading the chain. This can be overidden by providing any integer value.  
+#' @param burnin The number of trees to eliminate as burnin.  Default value is zero.
 #' @param window.size The number of trees to include in each windows of sliding window plots
-#' @param treespace.points The number of trees to plot in the treespace plot. Default is 200 
-#' @param n.clades The number of clades to include in plots of split frequencies over the course of the MCMC. Default is 20.
-#' @param min.freq The minimum frequency for a node to be used for calculating ASDSF. Default is 0.1.
-#' @param fill.color The name of a column in your log file that you would like to use as the fill colour of points in the treespace plots.
-#' @param pdf.filename Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not save outputs to file.
+#' @param treespace.points The number of trees to plot in the treespace plot. Default is 100 
+#' @param n.clades The number of clades to include in plots of split frequencies over the course of the MCMC
+#' @param min.freq The minimum frequency for a node to be used for calculating ASDSF. Default is 0.1  
+#' @param fill.color The name of a column in your log file that you would like to use as the fill colour of points in the treespace plots
+#' @param filename Name of an output file (e.g., "output.pdf").  If none is supplied, rwty will not save outputs to file.
 #' @param overwrite Boolean variable saying whether output file should be overwritten, if it exists.
 #' @param facet A Boolean expression indicating whether multiple chains should be plotted as facet plots (default TRUE).
 #' @param free_y TRUE/FALSE to turn free y scales on the facetted plots on or off (default FALSE). Only works if facet = TRUE.
 #' @param autocorr.intervals The maximum number of intervals to use for autocorrelation plots.
 #' @param ess.reps The number of replicate analyses to do when calculating the pseudo ESS.
+#' @param treedist the type of tree distance metric to use, can be 'PD' for path distance or 'RF' for Robinson Foulds distance.
 #' @param params A vector of parameters to use when making the parameter correlation plots.  Defaults to the first two columns in the log table.
 #' @param max.sampling.interval The maximum sampling interval to use for generating autocorrelation plots
-#' @param report.filename If a filename is provided, rwty will compile an html report file including plots and diagnostic tables
 #' @param ... Extra arguments to be passed to plotting and analysis functions.
 #'
 #' @return output The output is a list containing the following plots:
@@ -80,24 +76,24 @@ utils::globalVariables(c("Generation", "CSF", "split.frequency", "ess"))
 #' p
 #' }
 
-analyze.rwty <- function(chains, burnin=NA, window.size=20, treespace.points = 200, n.clades = 20,
-                         min.freq = 0.0, fill.color = "LnL", pdf.filename = NA, 
-                         overwrite=FALSE, facet=TRUE, free_y=FALSE, autocorr.intervals=100, ess.reps = 20, 
-                         params = NA, max.sampling.interval = NA, report.filename = NA, ...){
+
+
+analyze.rwty <- function(chains, burnin=0, window.size=20, treespace.points = 100, n.clades = 20,
+                         min.freq = 0.0, fill.color = NA, filename = NA, 
+                         overwrite=FALSE, facet=TRUE, free_y=FALSE, autocorr.intervals=100, ess.reps = 20,
+                         treedist = 'PD', params = NA, max.sampling.interval = NA, ...){
   
   chains <- check.chains(chains)
   
-  if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
-  
   N <- length(chains[[1]]$trees)
   
-  rwty.params.check(chains, N, burnin, window.size, treespace.points, min.freq, pdf.filename, report.filename, overwrite)
+  rwty.params.check(chains, N, burnin, window.size, treespace.points, min.freq, filename, overwrite)
   
   # check to see if ptables exist, make related plots
   if(all(unlist(lapply(chains, function(x) length(x$ptable[,1])))) > 0){ 
     # plot parameters for all chains
     parameter.plots <- makeplot.all.params(chains, burnin = burnin, facet=facet, strip = 1)
-    parameter.correlations <- makeplot.pairs(chains, burnin = burnin, params = params, strip = 1)
+    parameter.correlations <- makeplot.pairs(chains, burnin = burnin, params = params, treedist = treedist, strip = 1)
     names(parameter.correlations) <- paste0(names(parameter.correlations), ".correlations")
   }
   else{
@@ -105,14 +101,11 @@ analyze.rwty <- function(chains, burnin=NA, window.size=20, treespace.points = 2
     parameter.correlations <- NA
   }
   
-  # plot burnin as a function of topological distance from mcc tree
-  burnin.plot <- makeplot.burnin(chains, burnin)
-  
   # plot autocorrelation
   if(N < 200){
     autocorr.plot <- NULL
   } else {
-    autocorr.plot <- makeplot.autocorr(chains, burnin = burnin, facet = facet) 
+    autocorr.plot <- makeplot.autocorr(chains, burnin = burnin, autocorr.intervals = autocorr.intervals, facet = facet, max.sampling.interval = max.sampling.interval) 
   }
   
   # plot sliding window sf plots
@@ -124,7 +117,7 @@ analyze.rwty <- function(chains, burnin=NA, window.size=20, treespace.points = 2
   acsf.cumulative <- makeplot.acsf.cumulative(chains, burnin=burnin, window.size = window.size, facet = facet)
   
   # plot treespace for all chains
-  treespace.plots <- makeplot.treespace(chains, min.points = treespace.points, burnin = burnin, fill.color = fill.color)
+  treespace.plots <- makeplot.treespace(chains, n.points = treespace.points, burnin = burnin, fill.color = fill.color)
   
   # Add citations for all packages
   citations <- list(
@@ -144,7 +137,6 @@ analyze.rwty <- function(chains, burnin=NA, window.size=20, treespace.points = 2
   
   plots <- c(parameter.plots,
              parameter.correlations,
-             burnin.plot,
              autocorr.plot,
              splitfreq.sliding,
              acsf.sliding,
@@ -155,6 +147,7 @@ analyze.rwty <- function(chains, burnin=NA, window.size=20, treespace.points = 2
   
   # plot multichain plots when appropriate
   if(length(chains) > 1){
+    
     asdsf.plot <- makeplot.asdsf(chains, burnin = burnin, window.size = window.size, min.freq = min.freq)
     
     splitfreq.matrix.plots <- makeplot.splitfreq.matrix(chains, burnin = burnin)
@@ -164,44 +157,19 @@ analyze.rwty <- function(chains, burnin=NA, window.size=20, treespace.points = 2
   
   plots[["citations"]] <- citations
   
-  # Make a table of ESS values.  Will need to be modified
-  # when the auto-burnin stuff is incorporated, and have topo ESS added
-  ess.table <- data.frame(matrix(nrow = length(names(chains)),
-                                 ncol = length(colnames(chains[[1]]$ptable))))
-  colnames(ess.table) <- colnames(chains[[1]]$ptable)
-  rownames(ess.table) <- c(names(chains))
-  
-  for(i in names(chains)){
-    ess.table[i,] <- coda::effectiveSize(chains[[i]]$ptable)
-  }
-  drops <- c("Gen")
-  ess.table <- ess.table[,!(names(ess.table) %in% drops)]
-  ess.table["Total",] <- apply(ess.table, 2, sum)
-  plots[["ess.table"]] <- ess.table
-  
-  
   # Print all to pdf if filename provided
-  if(!is.na(pdf.filename)){
-    print(sprintf("Saving plots to file: %s", pdf.filename))
-    pdf(file=pdf.filename, width = 10, height = 7, ...)
+  if(!is.na(filename)){
+    print(sprintf("Saving plots to file: %s", filename))
+    pdf(file=filename, width = 10, height = 7, ...)
     print(plots)
     dev.off()
-  }
-  
-  if(!is.na(report.filename)){
-    print(sprintf("Writing report to file: %s", report.filename))
-    rmarkdown::render(system.file("report.template.Rmd", package = "rwty"), 
-                      params = list(input = plots,
-                                    chain.names = names(chains)),
-                      envir = new.env(),
-                      output_file = report.filename)
   }
   
   return(plots)
   
 }
 
-rwty.params.check <- function(chains, N, burnin, window.size, treespace.points, min.freq, pdf.filename, report.filename, overwrite){
+rwty.params.check <- function(chains, N, burnin, window.size, treespace.points, min.freq, filename, overwrite){
   # Checks for reasonable burnin
   if(!is.numeric(burnin)){
     stop("burnin must be numeric")
@@ -232,7 +200,7 @@ rwty.params.check <- function(chains, N, burnin, window.size, treespace.points, 
     stop("treespace.points must be 2 or greater")
   }
   if((N - burnin) < treespace.points){
-    stop("treespace.points cannot be more than the number of post-burnin trees.\n\nIf you're seeing this message it might indicate that your chains are behaving very poorly indeed, so that the automatic burnin selection is unable to find a good solution.  If this is the case, you can visualize your chains by specifying a burnin manually when you call the analyze.rwty function.")
+    stop("treespace.points cannot be more than the number of post-burnin trees")
   }
   
   # Checks for reasonable min.freq
@@ -243,16 +211,9 @@ rwty.params.check <- function(chains, N, burnin, window.size, treespace.points, 
     stop("min.freq must be between 0 and 1")
   }
   
-  # Checks for output file for pdf of images
-  if(!is.na(pdf.filename)){
-    if(file.exists(pdf.filename) && overwrite==FALSE){
-      stop("You specified an output filename, but an output file already exists and overwrite is set to FALSE. Please check and try again.")
-    }
-  }
-  
-  # Checks for output file for html report
-  if(!is.na(report.filename)){
-    if(file.exists(report.filename) && overwrite==FALSE){
+  # Checks for output file
+  if(!is.na(filename)){
+    if(file.exists(filename) && overwrite==FALSE){
       stop("You specified an output filename, but an output file already exists and overwrite is set to FALSE. Please check and try again.")
     }
   }

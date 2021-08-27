@@ -3,7 +3,7 @@
 #' This function calculates the cumulative mean split frequencies of clades as an MCMC progresses.
 #'
 #' @param chains A list of rwty.chain objects. 
-#' @param burnin The number of trees to omit as burnin. The default (NA) is to use the maximum burnin from all burnins calculated automatically when loading the chains. This can be overidden by providing any integer value.  
+#' @param burnin The number of trees to eliminate as burnin. Defaults to zero. 
 #' @param window.size The number of trees to include in each window (note, specified as a number of sampled trees, not a number of generations)
 #'
 #' @return A list of rwty.cumulative objects, one per chain in the input list of chains.
@@ -19,12 +19,9 @@
 #' cumulative.data <- cumulative.freq(fungus, burnin=20)
 #' }
 
-cumulative.freq <- function(chains, burnin=NA, window.size = 20){ 
+cumulative.freq <- function(chains, burnin=0, window.size = 20){ 
 
     chains = check.chains(chains)
-    # set burnin to the maximum from across all chains
-    if(is.na(burnin)){ burnin = max(unlist(lapply(chains, function(x) x[['burnin']]))) }
-    
     trees = lapply(chains, function(x) x[['trees']])
 
     if((length(trees[[1]]) - burnin) < 2 * window.size ){

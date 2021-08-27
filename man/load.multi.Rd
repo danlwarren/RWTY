@@ -22,8 +22,6 @@ output A list of rwty.chain objects containing the multiPhylos and the tables of
 }
 \description{
 Finds trees and log files based on format definition, returns rwty.chain objects containing both
-Note that the mcc.tree in each chain will be the global mcc tree calculated from the complete set of post-burnin
-trees across all chains.
 }
 \examples{
 #load.multi(path = "~/my trees/", format = "*beast")
