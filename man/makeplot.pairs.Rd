@@ -4,8 +4,7 @@
 \alias{makeplot.pairs}
 \title{Plotting parameters against each other}
 \usage{
-makeplot.pairs(chains, burnin = 0, treedist = "PD", params = NA,
-  strip = 1)
+makeplot.pairs(chains, burnin = 0, treedist = "PD", params = NA, strip = 1)
 }
 \arguments{
 \item{chains}{A list of rwty.chain objects.}

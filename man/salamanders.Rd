@@ -4,7 +4,9 @@
 \name{salamanders}
 \alias{salamanders}
 \title{MrBayes output from analysis of Williams et al. data}
-\format{A data frame with six chains (two each from three separate alignments) of 251 phylogenetic trees and associated likelihood and parameter values.}
+\format{
+A data frame with six chains (two each from three separate alignments) of 251 phylogenetic trees and associated likelihood and parameter values.
+}
 \usage{
 data(salamanders)
 }
