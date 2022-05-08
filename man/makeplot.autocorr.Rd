@@ -4,9 +4,17 @@
 \alias{makeplot.autocorr}
 \title{Make autocorrelation plots of tree topologies from MCMC analyses}
 \usage{
-makeplot.autocorr(chains, burnin = 0, max.sampling.interval = NA,
-  autocorr.intervals = 40, squared = FALSE, facet = FALSE,
-  free_y = FALSE, treedist = "PD", use.all.samples = FALSE)
+makeplot.autocorr(
+  chains,
+  burnin = 0,
+  max.sampling.interval = NA,
+  autocorr.intervals = 40,
+  squared = FALSE,
+  facet = FALSE,
+  free_y = FALSE,
+  treedist = "PD",
+  use.all.samples = FALSE
+)
 }
 \arguments{
 \item{chains}{A list of rwty.chain objects.}

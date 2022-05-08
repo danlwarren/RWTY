@@ -59,7 +59,17 @@ clade.freq <- function (x, start, end, rooted=FALSE, ...) {
     cladenames[i] <- paste(clades[[i]], collapse=" ")
   }
 
-  clade.df <- data.frame(cladenames, cladefreqs)
+  # dropping split corresponding to all tips
+  clade.all <- paste(seq_along(attr(clades, "labels")), collapse = " ")
+  ind.all <- which(clade.all %in% cladenames)
+  if (!(length(ind.all) == 1 && cladefreqs[ind.all] == 1)) {
+      warning("unable to find trivial split of all tips")
+  }
+
+  clade.df <- data.frame(
+      cladenames = cladenames[-ind.all],
+      cladefreqs = cladefreqs[-ind.all]
+  )
 
   return(clade.df)
 }

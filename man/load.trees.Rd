@@ -4,8 +4,15 @@
 \alias{load.trees}
 \title{Custom functions to load tree lists so that rwty can do basic processing on the way in.}
 \usage{
-load.trees(file, type = NA, format = "mb", gens.per.tree = NA,
-  trim = 1, logfile = NA, skip = NA)
+load.trees(
+  file,
+  type = NA,
+  format = "mb",
+  gens.per.tree = NA,
+  trim = 1,
+  logfile = NA,
+  skip = NA
+)
 }
 \arguments{
 \item{file}{A path to a tree file containing an MCMC chain of trees}
