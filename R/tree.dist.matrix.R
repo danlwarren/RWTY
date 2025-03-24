@@ -115,7 +115,7 @@
 #' \code{nni},  \code{pd}, \code{pid}, \code{rf} (default), or \code{spr}.
 #' See below for details.
 #' 
-#' @param dots additional parameters sent to distance functions.
+#' @param ... additional parameters sent to distance functions.
 #'
 #' @return a matrix of distances between each pair of trees
 #'

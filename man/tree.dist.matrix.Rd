@@ -15,7 +15,7 @@ tree.dist.matrix(trees, treedist = "rf", ...)
 \code{nni},  \code{pd}, \code{pid}, \code{rf} (default), or \code{spr}.
 See below for details.}
 
-\item{dots}{additional parameters sent to distance functions.}
+\item{...}{additional parameters sent to distance functions.}
 }
 \value{
 a matrix of distances between each pair of trees
