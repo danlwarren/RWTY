@@ -4,14 +4,21 @@
 \alias{load.trees}
 \title{Custom functions to load tree lists so that rwty can do basic processing on the way in.}
 \usage{
-load.trees(file, type = NA, format = "mb", gens.per.tree = NA,
-  trim = 1, logfile = NA, skip = NA)
+load.trees(
+  file,
+  type = NA,
+  format = "mb",
+  gens.per.tree = NA,
+  trim = 1,
+  logfile = NA,
+  skip = NA
+)
 }
 \arguments{
 \item{file}{A path to a tree file containing an MCMC chain of trees}
 
 \item{type}{An argument that designates the type of tree file.  If "nexus",
-trees are loaded using ape's \code{\link{read.nexus}} function.  Otherwise, it's \code{\link{read.tree}}.
+trees are loaded using ape's \code{\link[pkg:ape]{read.nexus}} function.  Otherwise, it's \code{\link[pkg:ape]{read.tree}}.
 If a "format" argument is passed, type will be determined from the format definition.}
 
 \item{format}{File format, which is used to find tree and log files.

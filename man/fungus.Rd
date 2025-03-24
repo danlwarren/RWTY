@@ -4,7 +4,9 @@
 \name{fungus}
 \alias{fungus}
 \title{MrBayes output from analysis of Hibbett et al. data}
-\format{A data frame with four chains of 251 phylogenetic trees and associated likelihood and parameter values.}
+\format{
+A data frame with four chains of 251 phylogenetic trees and associated likelihood and parameter values.
+}
 \usage{
 data(fungus)
 }

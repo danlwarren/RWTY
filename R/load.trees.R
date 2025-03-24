@@ -4,7 +4,7 @@
 #'
 #' @param file A path to a tree file containing an MCMC chain of trees
 #' @param type An argument that designates the type of tree file.  If "nexus",
-#' trees are loaded using ape's \code{\link{read.nexus}} function.  Otherwise, it's \code{\link{read.tree}}.
+#' trees are loaded using ape's \code{\link[pkg:ape]{read.nexus}} function.  Otherwise, it's \code{\link[pkg:ape]{read.tree}}.
 #' If a "format" argument is passed, type will be determined from the format definition.
 #' @param format File format, which is used to find tree and log files.
 #' Currently accepted values are "mb" for MrBayes, "beast" for BEAST, "*beast" for *BEAST, and "revbayes" for RevBayes.
