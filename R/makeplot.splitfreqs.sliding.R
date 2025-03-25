@@ -92,9 +92,9 @@ single.splitfreq.plot <- function(dat, rank){
 process.freq.table <- function(freq.table, n.clades, rank){
 
     # strip out just the parts of a slide.freq.table or a cumulative.freq.table that we need
-    if(class(freq.table) == "rwty.slide"){
+    if(inherits(freq.table, "rwty.slide")){
         dat = freq.table$slide.table
-    }else if(class(freq.table) == "rwty.cumulative"){
+    }else if(inherits(freq.table, "rwty.cumulative")){
         dat = freq.table$cumulative.table
     }else{
         stop("ERROR: unknown type of frequency table passed to process.freq.table()")
@@ -116,10 +116,10 @@ process.freq.table <- function(freq.table, n.clades, rank){
     dat$clade = rownames(dat)
 
 
-    if(class(freq.table) == "rwty.slide"){
+    if(inherits(freq.table, "rwty.slide")){
         dat = melt(dat, id.vars=c("clade", "sd", "ess"))
         colnames(dat) = c("Clade", "StDev", "ESS", "Generations", "Split.Frequency")
-    }else if(class(freq.table) == "rwty.cumulative"){
+    }else if(inherits(freq.table, "rwty.cumulative")){
         dat = melt(dat, id.vars=c("clade", "sd", "wcsf"))
         colnames(dat) = c("Clade", "StDev", "WCSF", "Generations", "Split.Frequency")
     }

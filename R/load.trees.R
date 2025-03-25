@@ -4,7 +4,7 @@
 #'
 #' @param file A path to a tree file containing an MCMC chain of trees
 #' @param type An argument that designates the type of tree file.  If "nexus",
-#' trees are loaded using ape's \code{\link[pkg:ape]{read.nexus}} function.  Otherwise, it's \code{\link[pkg:ape]{read.tree}}.
+#' trees are loaded using ape's \code{\link[ape]{read.nexus}} function.  Otherwise, it's \code{\link[ape]{read.tree}}.
 #' If a "format" argument is passed, type will be determined from the format definition.
 #' @param format File format, which is used to find tree and log files.
 #' Currently accepted values are "mb" for MrBayes, "beast" for BEAST, "*beast" for *BEAST, and "revbayes" for RevBayes.
@@ -19,7 +19,7 @@
 #' read in with a skip value of 1.  If no "skip" value is provided but a "format" is supplied, RWTY will
 #' attempt to read logs using the skip value from the format definition.
 #' @return output An rwty.chain object containing the multiPhylo and the table of values from the log file if available.
-#' @seealso \code{\link{read.tree}}, \code{\link{read.nexus}}
+#' @seealso \code{\link[ape]{read.tree}}, \code{\link[ape]{read.nexus}}
 #' @keywords Phylogenetics, MCMC, load
 #'
 #' @export load.trees

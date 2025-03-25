@@ -91,9 +91,9 @@ get.acsf <- function(freq.table){
 
 get.csf <- function(freq.table){
   # get a df of absolute differences in pp variation between windows
-  if(class(freq.table) == "rwty.slide"){
+  if(inherits(freq.table, "rwty.slide")){
     dat = freq.table$slide.table
-  }else if(class(freq.table) == "rwty.cumulative"){
+  }else if(inherits(freq.table, "rwty.cumulative")){
     dat = freq.table$cumulative.table
   }else{
     stop("ERROR: unknown type of frequency table passed to process.freq.table()")

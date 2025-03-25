@@ -23,11 +23,11 @@
 # Modified from prop.part in APE, returning data in a more useful format
 clade.freq <- function (x, start, end, rooted=FALSE, ...) {
 
-  if(class(x) == "rwty.chain"){
+  if(inherits(x, "rwty.chain")){
     x <- x$trees
   }
 
-   if (length(x) == 1 && class(x[[1]]) == "multiPhylo"){
+   if (length(x) == 1 && inherits(x[[1]], "multiPhylo")){
      x <- x[[1]]
    }
 

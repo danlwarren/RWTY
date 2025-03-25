@@ -19,12 +19,12 @@
 check.chains <- function(chains){
   
   # if passed a single trees object, turn it into a list
-  if(class(chains) == "rwty.chain"){
+  if(inherits(chains, "rwty.chain")){
     chains <- list(chains)
   }
   
   # check chains is a list
-  if(class(chains)!='list'){
+  if(!inherits(chains, 'list')){
     stop("'chains' must be a list of rwty.chain objects")        
   }
   

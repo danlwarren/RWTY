@@ -122,8 +122,8 @@
 #' @keywords treespace tree-distance robinson-foulds
 #'
 #' @importFrom TreeDist ClusteringInfoDistance InfoRobinsonFoulds 
-#' JaccardRobinsonFoulds MASTSize MASTInfo MatchingSplitInfoDistance NNIDist 
-#' NyeSimilarity PathDist PhylogeneticInfoDistance SPRDist
+#' JaccardRobinsonFoulds MASTSize MASTInfo MatchingSplitDistance MatchingSplitInfoDistance 
+#' NNIDist NyeSimilarity PathDist PhylogeneticInfoDistance SPRDist
 #' @export tree.dist.matrix
 #' @examples
 #' \dontrun{

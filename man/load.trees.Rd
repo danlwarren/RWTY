@@ -18,7 +18,7 @@ load.trees(
 \item{file}{A path to a tree file containing an MCMC chain of trees}
 
 \item{type}{An argument that designates the type of tree file.  If "nexus",
-trees are loaded using ape's \code{\link[pkg:ape]{read.nexus}} function.  Otherwise, it's \code{\link[pkg:ape]{read.tree}}.
+trees are loaded using ape's \code{\link[ape]{read.nexus}} function.  Otherwise, it's \code{\link[ape]{read.tree}}.
 If a "format" argument is passed, type will be determined from the format definition.}
 
 \item{format}{File format, which is used to find tree and log files.
@@ -48,7 +48,7 @@ Loads trees, looks for a log file of tree likelihoods and parameter values, retu
 #load.trees(file="mytrees.t", format = "mb")
 }
 \seealso{
-\code{\link{read.tree}}, \code{\link{read.nexus}}
+\code{\link[ape]{read.tree}}, \code{\link[ape]{read.nexus}}
 }
 \keyword{MCMC,}
 \keyword{Phylogenetics,}
