@@ -16,7 +16,7 @@
 #' @return A data frame with one row per chain, and columns describing the
 #' approximate ESS and the name of the chain.
 #'
-#' @keywords treespace, tree distance, path distance
+#' @keywords treespace distance
 #'
 #' @export topological.approx.ess
 #' @examples

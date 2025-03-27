@@ -21,7 +21,7 @@
 #' path distance between pairs of trees from that sampling interval. The third
 #' column is the chain ID.
 #'
-#' @keywords autocorrelation, path distance
+#' @keywords autocorrelation distance
 #'
 #' @export topological.autocorr
 #' @examples

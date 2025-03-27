@@ -21,9 +21,9 @@ This function is automatically called when printing a rwty.chain object
 data(fungus)
 fungus$Fungus.Run1
 }
-\keyword{MCMC,}
-\keyword{awty,}
-\keyword{convergence,}
-\keyword{phylogenetics,}
-\keyword{plot,}
+\keyword{MCMC}
+\keyword{awty}
+\keyword{convergence}
+\keyword{phylogenetics}
+\keyword{plot}
 \keyword{rwty}

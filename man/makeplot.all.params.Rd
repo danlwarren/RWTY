@@ -36,8 +36,8 @@ data(fungus)
 makeplot.all.params(fungus, burnin=20)
 }
 }
-\keyword{convergence,}
-\keyword{mcmc,}
-\keyword{parameter,}
+\keyword{convergence}
+\keyword{mcmc}
+\keyword{parameter}
 \keyword{phylogenetics}
-\keyword{plot,}
+\keyword{plot}

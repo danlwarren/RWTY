@@ -29,7 +29,5 @@ data(fungus)
 treespace(fungus, n.points=50, burnin=20, fill.color="LnL")
 }
 }
-\keyword{mds,}
-\keyword{multi-dimensional}
-\keyword{scaling}
-\keyword{treespace,}
+\keyword{mds}
+\keyword{treespace}

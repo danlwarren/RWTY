@@ -38,7 +38,7 @@ p <- makeplot.asdsf(fungus, burnin = 20)
 p
 }
 }
-\keyword{ASDSF,}
-\keyword{MCMC,}
+\keyword{ASDSF}
+\keyword{MCMC}
 \keyword{cumulative}
-\keyword{phylogenetics,}
+\keyword{phylogenetics}

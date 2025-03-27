@@ -12,7 +12,7 @@
 #' Each rwty.slide object contains the frequencies of clades in the sliding
 #' windows, and a translation table that converts clade groupings to factors.
 #'
-#' @keywords MCMC, split frequency, convergence
+#' @keywords MCMC convergence
 #'
 #' @export slide.freq
 #' @examples

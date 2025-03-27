@@ -18,7 +18,7 @@
 #' which represents the median pseudo ESS from the n replicates, and
 #' whiskers representing the upper and lower 95% intervals of the n replicates. 
 #'
-#' @keywords ESS, path distance
+#' @keywords ESS distance
 #'
 #' @export makeplot.pseudo.ess
 #' @examples

@@ -10,7 +10,7 @@
 #' Each rwty.cumulative object contains the cumulative mean split frequencies of clades at sp
 #' windows, and a translation table that converts clade groupings to factors.
 #'
-#' @keywords MCMC, split frequency, convergence
+#' @keywords MCMC split frequency convergence
 #'
 #' @export cumulative.freq
 #' @examples

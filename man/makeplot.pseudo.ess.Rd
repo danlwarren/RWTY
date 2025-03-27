@@ -35,6 +35,5 @@ data(fungus)
 makeplot.pseudo.ess(fungus, burnin = 20, n = 10)
 }
 }
-\keyword{ESS,}
+\keyword{ESS}
 \keyword{distance}
-\keyword{path}

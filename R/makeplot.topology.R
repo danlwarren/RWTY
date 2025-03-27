@@ -16,7 +16,7 @@
 #'
 #' @return topology.trace.plot Returns a ggplot object.
 #'
-#' @keywords parameter, plot, convergence, mcmc, phylogenetics
+#' @keywords parameter plot convergence mcmc phylogenetics
 #'
 #' @export makeplot.topology
 #' @examples

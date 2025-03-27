@@ -22,8 +22,8 @@ data(fungus)
 check.chains(fungus)
 }
 }
-\keyword{MCMC,}
-\keyword{awty,}
-\keyword{convergence,}
-\keyword{phylogenetics,}
+\keyword{MCMC}
+\keyword{awty}
+\keyword{convergence}
+\keyword{phylogenetics}
 \keyword{rwty}

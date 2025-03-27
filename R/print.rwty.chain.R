@@ -8,7 +8,7 @@
 #' 
 #' @return A summary of the contents of the chain
 #'
-#' @keywords MCMC, phylogenetics, convergence, plot, awty, rwty
+#' @keywords MCMC phylogenetics convergence plot awty rwty
 #'
 #' @export
 #' @examples

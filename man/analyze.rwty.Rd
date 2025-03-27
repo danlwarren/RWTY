@@ -94,7 +94,7 @@ p
 }
 }
 \keyword{ESS}
-\keyword{MCMC,}
-\keyword{plots,}
-\keyword{rwty,}
-\keyword{topology,}
+\keyword{MCMC}
+\keyword{plots}
+\keyword{rwty}
+\keyword{topology}

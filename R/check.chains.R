@@ -7,7 +7,7 @@
 #'
 #' @return chains A list of rwty.chain objects
 #'
-#' @keywords MCMC, phylogenetics, convergence, awty, rwty
+#' @keywords MCMC phylogenetics convergence awty rwty
 #'
 #' @export check.chains
 #' @examples

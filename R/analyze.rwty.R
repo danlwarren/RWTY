@@ -66,7 +66,7 @@ globalVariables(c("lower.95", "upper.95", "lower.75", "upper.75", "Generation", 
 #'
 #' Plot of chains clustered by their pairwise ASDSF values 
 #'
-#' @keywords plots, rwty, MCMC, topology, ESS
+#' @keywords plots rwty MCMC topology ESS
 #'
 #' @export analyze.rwty
 #' @examples

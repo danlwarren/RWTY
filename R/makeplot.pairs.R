@@ -15,7 +15,7 @@
 #'
 #' @return pairs.plot Returns a ggplot object.
 #'
-#' @keywords parameter, plot, convergence, mcmc, phylogenetics
+#' @keywords parameter plot convergence mcmc phylogenetics
 #'
 #' @export makeplot.pairs
 #' @examples

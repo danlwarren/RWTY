@@ -27,7 +27,7 @@ data(fungus)
 cumulative.data <- cumulative.freq(fungus, burnin=20)
 }
 }
-\keyword{MCMC,}
+\keyword{MCMC}
 \keyword{convergence}
-\keyword{frequency,}
+\keyword{frequency}
 \keyword{split}

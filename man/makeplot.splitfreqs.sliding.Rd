@@ -41,8 +41,6 @@ data(fungus)
 makeplot.splitfreqs.sliding(fungus, burnin = 20, n.clades=25)
 }
 }
-\keyword{mcmc,}
-\keyword{phylogenetics,}
+\keyword{mcmc}
+\keyword{phylogenetics}
 \keyword{plot}
-\keyword{sliding}
-\keyword{window,}

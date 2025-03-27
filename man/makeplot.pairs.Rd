@@ -40,8 +40,8 @@ makeplot.pairs(salamanders[1], burnin=20, params = 'all')
 makeplot.pairs(salamanders[1], burnin=20, params = c('pi.A.', 'pi.C.', 'pi.G.', 'pi.T.'))
 }
 }
-\keyword{convergence,}
-\keyword{mcmc,}
-\keyword{parameter,}
+\keyword{convergence}
+\keyword{mcmc}
+\keyword{parameter}
 \keyword{phylogenetics}
-\keyword{plot,}
+\keyword{plot}

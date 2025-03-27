@@ -55,6 +55,6 @@ data(fungus)
 makeplot.autocorr(fungus, burnin = 20)
 }
 }
-\keyword{autocorrelation,}
+\keyword{autocorrelation}
 \keyword{distance}
 \keyword{path}

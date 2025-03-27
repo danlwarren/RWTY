@@ -23,8 +23,8 @@ data(fungus)
 combine.ptables(fungus, burnin=20)
 }
 }
-\keyword{MCMC,}
-\keyword{awty,}
-\keyword{convergence,}
-\keyword{phylogenetics,}
+\keyword{MCMC}
+\keyword{awty}
+\keyword{convergence}
+\keyword{phylogenetics}
 \keyword{rwty}

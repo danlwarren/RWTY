@@ -7,7 +7,7 @@
 #'
 #' @return ptable A data frame of likelihood values and model parameters for the supplied rwty.chain objects
 #'
-#' @keywords MCMC, phylogenetics, convergence, awty, rwty
+#' @keywords MCMC phylogenetics convergence awty rwty
 #'
 #' @export combine.ptables
 #' @examples

@@ -14,7 +14,7 @@
 #' 
 #' @return output A cumulative plot of ASDSF across all chains
 #'
-#' @keywords MCMC, phylogenetics, ASDSF, cumulative
+#' @keywords MCMC phylogenetics ASDSF cumulative
 #'
 #' @export makeplot.asdsf
 #' @examples

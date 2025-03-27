@@ -22,7 +22,7 @@
 #' @return A ggplot2 plot object, with one line (facetting off) or facet
 #' (facetting on) per rwty.chain object.
 #'
-#' @keywords autocorrelation, path distance
+#' @keywords autocorrelation path distance
 #'
 #' @export makeplot.autocorr
 #' @examples

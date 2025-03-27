@@ -14,7 +14,7 @@
 #'
 #' @return splitfreqs.plot Either a single ggplot2 object or a list of ggplot2 objects.
 #'
-#' @keywords sliding window, mcmc, phylogenetics, plot
+#' @keywords mcmc phylogenetics plot
 #'
 #' @export makeplot.splitfreqs.cumulative
 #' @examples

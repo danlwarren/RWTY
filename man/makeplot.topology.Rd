@@ -45,8 +45,8 @@ data(fungus)
 makeplot.topology(fungus, burnin=20)
 }
 }
-\keyword{convergence,}
-\keyword{mcmc,}
-\keyword{parameter,}
+\keyword{convergence}
+\keyword{mcmc}
+\keyword{parameter}
 \keyword{phylogenetics}
-\keyword{plot,}
+\keyword{plot}

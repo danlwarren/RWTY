@@ -27,9 +27,9 @@ makeplot.splitfreq.matrix(salamanders[1:4], burnin = 20)
 }
 }
 \keyword{ASDSF}
-\keyword{MCMC,}
+\keyword{MCMC}
 \keyword{clade}
-\keyword{consensus,}
-\keyword{convergence,}
-\keyword{frequency,}
-\keyword{phylogenetics,}
+\keyword{consensus}
+\keyword{convergence}
+\keyword{frequency}
+\keyword{phylogenetics}

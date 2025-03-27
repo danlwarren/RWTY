@@ -30,6 +30,6 @@ sampling.table <- topological.autocorr(fungus, burnin = 20, autocorr.intervals =
 estimate.autocorr.m(sampling.table)
 }
 }
-\keyword{autocorrelation,}
+\keyword{autocorrelation}
 \keyword{distance}
 \keyword{path}

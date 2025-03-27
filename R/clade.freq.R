@@ -11,7 +11,7 @@
 #'
 #' @return clade.df A data froma containing clade names and frequencies
 #'
-#' @keywords Clade frequencies, consensus, mcmc, phylogenetics
+#' @keywords Clade frequency consensus mcmc phylogenetics
 #'
 #' @export clade.freq
 #' @examples

@@ -31,7 +31,7 @@ data(fungus)
 makeplot.acsf.cumulative(fungus, burnin=20)
 }
 }
-\keyword{convergence,}
-\keyword{mcmc,}
-\keyword{phylogenetics,}
+\keyword{convergence}
+\keyword{mcmc}
+\keyword{phylogenetics}
 \keyword{uncertainty}

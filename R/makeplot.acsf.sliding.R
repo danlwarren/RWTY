@@ -13,7 +13,7 @@
 #'
 #' @return acsf.plot A ggplot object, or list of ggplot objects
 #'
-#' @keywords mcmc, phylogenetics, convergence, uncertainty
+#' @keywords mcmc phylogenetics convergence uncertainty
 #'
 #' @export makeplot.acsf.sliding
 #' @examples

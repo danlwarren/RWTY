@@ -10,7 +10,7 @@
 #'
 #' @return param.plot Returns a ggplot object.
 #'
-#' @keywords parameter, plot, convergence, mcmc, phylogenetics
+#' @keywords parameter plot convergence mcmc phylogenetics
 #'
 #' @export makeplot.param
 #' @examples

@@ -51,6 +51,6 @@ makeplot.treespace(fungus[1:2], burnin = 100, fill.color = 'TL')
 names(fungus[[1]]$ptable)
 }
 }
-\keyword{plot,}
+\keyword{plot}
 \keyword{rwty}
-\keyword{treespace,}
+\keyword{treespace}

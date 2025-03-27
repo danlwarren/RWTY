@@ -10,7 +10,7 @@
 #' @param ... Further arguments to be passed to load.trees.
 #' @return output A list of rwty.chain objects containing the multiPhylos and the tables of values from the log files if available.
 #'
-#' @keywords Phylogenetics, MCMC, load, trees
+#' @keywords Phylogenetics MCMC load trees
 #'
 #' @export load.multi
 #' @examples

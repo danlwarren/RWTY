@@ -12,7 +12,7 @@
 #' topological distance for each chain.  This sampling interval estimates the interval at which topological distances
 #' are no longer autocorrelated. If the value is larger than the largest sampling distance, the table records this as a value of -1
 #' 
-#' @keywords autocorrelation, path distance
+#' @keywords autocorrelation path distance
 #'
 #' @export estimate.autocorr.m
 #' @examples

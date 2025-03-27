@@ -9,7 +9,7 @@
 #'
 #' @return A list of two ggplot objects: one plots the points in treespace, the other shows a heatmap of the same points
 #'
-#' @keywords plot, treespace, rwty
+#' @keywords plot treespace rwty
 #'
 #' @export makeplot.treespace
 #' @examples

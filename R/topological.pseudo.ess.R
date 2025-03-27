@@ -19,7 +19,7 @@
 #' median ESS, the upper and lower 95% confidence intervals based on the
 #' replicates performed, and the name of the chain. 
 #'
-#' @keywords treespace, tree distance, path distance
+#' @keywords treespace distance
 #'
 #' @export topological.pseudo.ess
 #' @examples

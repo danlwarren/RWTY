@@ -1,4 +1,7 @@
 ^\.travis\.yml$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.github
+^\README\.Rmd$
+^\README\.html$
 images/

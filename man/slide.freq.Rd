@@ -29,7 +29,5 @@ data(fungus)
 slide.data <- slide.freq(fungus, burnin=20)\
 }
 }
-\keyword{MCMC,}
+\keyword{MCMC}
 \keyword{convergence}
-\keyword{frequency,}
-\keyword{split}

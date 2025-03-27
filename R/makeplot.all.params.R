@@ -11,7 +11,7 @@
 #'
 #' @return param.plot Returns a list of ggplot objects.
 #'
-#' @keywords parameter, plot, convergence, mcmc, phylogenetics
+#' @keywords parameter plot convergence mcmc phylogenetics
 #'
 #' @export makeplot.all.params
 #' @examples

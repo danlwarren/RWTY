@@ -20,7 +20,7 @@
 #' attempt to read logs using the skip value from the format definition.
 #' @return output An rwty.chain object containing the multiPhylo and the table of values from the log file if available.
 #' @seealso \code{\link[ape]{read.tree}}, \code{\link[ape]{read.nexus}}
-#' @keywords Phylogenetics, MCMC, load
+#' @keywords Phylogenetics MCMC load
 #'
 #' @export load.trees
 #' @examples

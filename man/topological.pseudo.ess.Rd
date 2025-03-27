@@ -38,7 +38,4 @@ topological.pseudo.ess(fungus, burnin = 20, n = 20)
 }
 }
 \keyword{distance}
-\keyword{distance,}
-\keyword{path}
-\keyword{tree}
-\keyword{treespace,}
+\keyword{treespace}

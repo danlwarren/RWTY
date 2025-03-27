@@ -11,7 +11,7 @@
 #'
 #' @return Returns a list containing the points and a plot.
 #'
-#' @keywords treespace, mds, multi-dimensional scaling
+#' @keywords treespace mds
 #'
 #' @export treespace
 #' @examples

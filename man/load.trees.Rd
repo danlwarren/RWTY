@@ -50,6 +50,6 @@ Loads trees, looks for a log file of tree likelihoods and parameter values, retu
 \seealso{
 \code{\link[ape]{read.tree}}, \code{\link[ape]{read.nexus}}
 }
-\keyword{MCMC,}
-\keyword{Phylogenetics,}
+\keyword{MCMC}
+\keyword{Phylogenetics}
 \keyword{load}
